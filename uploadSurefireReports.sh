@@ -18,7 +18,7 @@ find . -name "*.log" -exec tar rf logs.tar {} \;
 mkdir testxml
 find . -name "TEST-*.xml" -exec cp {} testxml \;
 cd testxml
-for i in `grep "failures=\"[1-9]"`; do
+for i in `egrep "failures=\"[1-9]|errors=\"[1-9]"`; do
   echo "<a href=\"$i\">$i</a>" >> index.html
 done
 cd ..
