@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,24 +28,25 @@ public enum ResponseCode implements Result {
 	Unauthorised(FaultCode.Client),
 	Forbidden(FaultCode.Client),
 	NotFound(FaultCode.Client),
-	UnsupportedMediaType(FaultCode.Client), 
-	MediaTypeNotAcceptable(FaultCode.Client), 
+	UnsupportedMediaType(FaultCode.Client),
+	MediaTypeNotAcceptable(FaultCode.Client),
 	BadRequest(FaultCode.Client),
+	BadResponse(FaultCode.Server),
     CantWriteToSocket(FaultCode.Client),
 	Ok(null);
-	
+
 	private final FaultCode faultCode;
 
 	ResponseCode(FaultCode faultCode) {
 		this.faultCode = faultCode;
 	}
-	
+
 	public FaultCode getFaultCode() {
 		return faultCode;
 	}
-	
+
 	public boolean isSuccess() {
 		return faultCode == null;
 	}
-	
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,15 @@ package com.betfair.cougar.marshalling.impl.databinding.json;
 import com.betfair.cougar.api.ResponseCode;
 import com.betfair.cougar.api.fault.CougarApplicationException;
 import com.betfair.cougar.api.fault.FaultCode;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
+import com.betfair.cougar.core.api.exception.CougarMarshallingException;
 import com.betfair.cougar.core.api.fault.Fault;
 import com.betfair.cougar.core.api.fault.FaultController;
 import com.betfair.cougar.marshalling.api.databinding.Marshaller;
 import com.betfair.cougar.test.CougarTestCase;
 import com.betfair.cougar.util.dates.DateTimeUtility;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -47,7 +46,7 @@ public class JSONMarshallerTest extends CougarTestCase {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         TestClass tc = new TestClass();
         tc.message = "foo";
-        jsonMarshaller.marshall(bos, tc, "utf-8");
+        jsonMarshaller.marshall(bos, tc, "utf-8", false);
 
         assertEquals("{\"message\":\"foo\"}", bos.toString());
     }
@@ -57,7 +56,7 @@ public class JSONMarshallerTest extends CougarTestCase {
     public void testMarshalDate() {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         Date d = new Date();
-        jsonMarshaller.marshall(bos, d, "utf-8");
+        jsonMarshaller.marshall(bos, d, "utf-8", true);
         String out=bos.toString();
         out=out.substring(1,out.length()-1);
         assertEquals(d, DateTimeUtility.parse(out));
@@ -72,7 +71,7 @@ public class JSONMarshallerTest extends CougarTestCase {
     private void testDate(String in,String out){
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         Date date=DateTimeUtility.parse(in);
-        jsonMarshaller.marshall(bos, date, "utf-8");
+        jsonMarshaller.marshall(bos, date, "utf-8", false);
         String result=bos.toString();
         assertEquals(out, result.substring(1,result.length()-1));
     }
@@ -89,8 +88,8 @@ public class JSONMarshallerTest extends CougarTestCase {
             ObjectMapper m = new ObjectMapper();
             JsonNode rootNode = m.readValue(new ByteArrayInputStream(bos.toByteArray()), JsonNode.class);
 
-            assertEquals("Server", rootNode.get("faultcode").getTextValue());
-            assertEquals("EX01", rootNode.get("faultstring").getTextValue());
+            assertEquals("Server", rootNode.get("faultcode").asText());
+            assertEquals("EX01", rootNode.get("faultstring").asText());
 
             JsonNode detail = rootNode.get("detail");
             assertNotNull(detail);
@@ -98,8 +97,8 @@ public class JSONMarshallerTest extends CougarTestCase {
             JsonNode exceptionNode = detail.get("TestFaultException");
             assertNotNull(exceptionNode);
             assertEquals(2, exceptionNode.size());
-            assertEquals("foo", exceptionNode.get("foo").getTextValue());
-            assertEquals("1234", exceptionNode.get("bar").getTextValue());
+            assertEquals("foo", exceptionNode.get("foo").asText());
+            assertEquals("1234", exceptionNode.get("bar").asText());
         } finally {
             FaultController.getInstance().setDetailedFaults(true);
         }
@@ -121,7 +120,7 @@ public class JSONMarshallerTest extends CougarTestCase {
             }
         }
 
-        jsonMarshaller.marshall(bos, new Result(), "UTF-8");
+        jsonMarshaller.marshall(bos, new Result(), "UTF-8", false);
 
 
         byte[] streamed = bos.toByteArray();
@@ -139,8 +138,8 @@ public class JSONMarshallerTest extends CougarTestCase {
         ObjectMapper m = new ObjectMapper();
         JsonNode rootNode = m.readValue(new ByteArrayInputStream(bos.toByteArray()), JsonNode.class);
 
-        assertEquals("Server", rootNode.get("faultcode").getTextValue());
-        assertEquals("EX01", rootNode.get("faultstring").getTextValue());
+        assertEquals("Server", rootNode.get("faultcode").asText());
+        assertEquals("EX01", rootNode.get("faultstring").asText());
 
         JsonNode detail = rootNode.get("detail");
         assertNotNull(detail);
@@ -148,14 +147,14 @@ public class JSONMarshallerTest extends CougarTestCase {
         JsonNode exceptionNode = detail.get("TestFaultException");
         assertNotNull(exceptionNode);
         assertEquals(2, exceptionNode.size());
-        assertEquals("foo", exceptionNode.get("foo").getTextValue());
-        assertEquals("1234", exceptionNode.get("bar").getTextValue());
+        assertEquals("foo", exceptionNode.get("foo").asText());
+        assertEquals("1234", exceptionNode.get("bar").asText());
 
-        String trace = detail.get("trace").getTextValue();
+        String trace = detail.get("trace").asText();
         assertTrue(trace.length() > 10);
         assertTrue(trace.contains("TestFaultException"));
 
-        assertEquals("MyMessage", detail.get("message").getTextValue());
+        assertEquals("MyMessage", detail.get("message").asText());
     }
 
     public void testMarshalException() {
@@ -164,9 +163,9 @@ public class JSONMarshallerTest extends CougarTestCase {
         TestClass tc = new TestClass();
         tc.ex = new RuntimeException("ex");
         try {
-            jsonMarshaller.marshall(bos, tc, "utf-8");
+            jsonMarshaller.marshall(bos, tc, "utf-8", false);
             fail();
-        } catch (CougarServiceException dfe) {
+        } catch (CougarMarshallingException dfe) {
             assertTrue(dfe.getCause() instanceof JsonMappingException);
             assertTrue(dfe.getCause().getCause() instanceof RuntimeException);
             assertEquals(tc.ex, dfe.getCause().getCause());
@@ -187,9 +186,9 @@ public class JSONMarshallerTest extends CougarTestCase {
         TestClass tc = new TestClass();
         tc.ex = new RuntimeException("ex");
         try {
-            jsonMarshaller.marshall(bos, tc, "utf-8");
+            jsonMarshaller.marshall(bos, tc, "utf-8", false);
             fail();
-        } catch (CougarServiceException dfe) {
+        } catch (CougarMarshallingException dfe) {
             assertEquals(JsonMappingException.class, dfe.getCause().getClass());
         }
     }

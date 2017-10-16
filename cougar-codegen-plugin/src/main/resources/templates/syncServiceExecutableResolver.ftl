@@ -28,6 +28,7 @@ import com.betfair.cougar.api.ExecutionContext;
 import com.betfair.cougar.api.RequestContext;
 import com.betfair.cougar.api.fault.CougarApplicationException;
 import com.betfair.cougar.core.api.exception.CougarException;
+import com.betfair.cougar.core.api.exception.CougarClientException;
 import com.betfair.cougar.core.api.exception.CougarServiceException;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
 import com.betfair.cougar.core.api.ev.Executable;
@@ -36,6 +37,8 @@ import com.betfair.cougar.core.api.ev.ExecutionObserver;
 import com.betfair.cougar.core.api.ev.ExecutionResult;
 import com.betfair.cougar.core.api.ev.ExecutionVenue;
 import com.betfair.cougar.core.api.ev.OperationKey;
+import com.betfair.cougar.core.api.ev.TimeConstraints;
+import com.betfair.cougar.core.impl.ev.ServiceExceptionHandlingObserver;
 
 import java.util.*;
 
@@ -79,13 +82,15 @@ public class ${service}SyncServiceExecutableResolver implements ExecutableResolv
                 <#assign call=call + ", (" + javaType + ")args["  + argPos + "]"><#t>
                 <#assign argPos = argPos + 1><#t>
             </#list><#t>
-            <#assign call=call + ");"><#t>
+            <#assign call=call + ", timeConstraints);"><#t>
 	  	executableMap.put(${service}ServiceDefinition.${method}Key,
             new Executable() {
                 @Override
                 public void execute(ExecutionContext ctx, OperationKey key,
                         Object[] args, ExecutionObserver observer,
-                        ExecutionVenue executionVenue) {
+                        ExecutionVenue executionVenue, TimeConstraints timeConstraints) {
+
+                ServiceExceptionHandlingObserver exceptionHandlingObserver = new ServiceExceptionHandlingObserver(observer);
 
                 try {
                     <#if returnType!="void">
@@ -93,13 +98,13 @@ public class ${service}SyncServiceExecutableResolver implements ExecutableResolv
                     observer.onResult(new ExecutionResult(result));
                     <#else>
                     ${call}
-                    observer.onResult(new ExecutionResult());
+                    exceptionHandlingObserver.onResult(new ExecutionResult());
                     </#if>
                 } catch (CougarException ce) {
-                    observer.onResult(new ExecutionResult(ce));
+                    exceptionHandlingObserver.onResult(new ExecutionResult(ce));
                 <#list operation.parameters.exceptions.exception as exception>
                 } catch (${exception.@type} ex) {
-                    observer.onResult(new ExecutionResult((CougarApplicationException)ex));
+                    exceptionHandlingObserver.onResult(new ExecutionResult((CougarApplicationException)ex));
                 </#list>
                 };
             }
@@ -114,7 +119,7 @@ public class ${service}SyncServiceExecutableResolver implements ExecutableResolv
                 @Override
                 public void execute(ExecutionContext ctx, OperationKey key,
 							Object[] args, ExecutionObserver observer,
-							ExecutionVenue executionVenue) {
+							ExecutionVenue executionVenue, TimeConstraints timeConstraints) {
 		  			service.${method}(ctx, args, observer);
 
             }

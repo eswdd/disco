@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ public class ClientServiceRegistrationTest {
         verify(compoundExecutableResolver).registerExecutableResolver(eq((String)null), eq(executableResolver));
         verify((ServiceRegistrar)ev).registerService(eq((String)null), eq(serviceDefinition), any(Service.class), eq(compoundExecutableResolver));
 
-        verify(ev, never()).execute(any(ExecutionContext.class), any(OperationKey.class), any(Object[].class), any(ExecutionObserver.class));
+        verify(ev, never()).execute(any(ExecutionContext.class), any(OperationKey.class), any(Object[].class), any(ExecutionObserver.class), any(TimeConstraints.class));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class ClientServiceRegistrationTest {
         verify(compoundExecutableResolver).registerExecutableResolver(eq("foo"), eq(executableResolver));
         verify((ServiceRegistrar)ev).registerService(eq("foo"), eq(serviceDefinition), any(Service.class), eq(compoundExecutableResolver));
 
-        verify(ev, never()).execute(any(ExecutionContext.class), any(OperationKey.class), any(Object[].class), any(ExecutionObserver.class));
+        verify(ev, never()).execute(any(ExecutionContext.class), any(OperationKey.class), any(Object[].class), any(ExecutionObserver.class), any(TimeConstraints.class));
     }
 
     @Test

@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <!--
-  ~ Copyright 2013, The Sporting Exchange Limited
+  ~ Copyright 2014, The Sporting Exchange Limited
+  ~ Copyright 2015, Simon Matić Langford
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,7 +21,7 @@
   <parent>
     <artifactId>cougar-framework</artifactId>
     <groupId>com.betfair.cougar</groupId>
-    <version>3.0-SNAPSHOT</version>
+    <version>3.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>socket-transport</artifactId>
@@ -33,7 +34,6 @@
     <dependency>
       <groupId>com.betfair.cougar</groupId>
       <artifactId>cougar-transport-api</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
@@ -45,25 +45,17 @@
     <dependency>
       <groupId>com.betfair.cougar</groupId>
       <artifactId>cougar-util</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>com.betfair.cougar</groupId>
       <artifactId>net-util</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
         <groupId>org.apache.mina</groupId>
         <artifactId>mina-core</artifactId>
         <version>1.1.7</version>
-    </dependency>
-
-    <dependency>
-      <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>
-      <scope>test</scope>
     </dependency>
 
     <dependency>

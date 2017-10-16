@@ -1,5 +1,6 @@
 /*
  * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +42,7 @@ public class SOAPTestComplexMutatorOPTIONALELEMENTSMISSINGStringTest {
         CougarHelpers helpers = new CougarHelpers();
         try {
             CougarManager cougarManager = CougarManager.getInstance();
-            helpers.setJMXMBeanAttributeValue("com.betfair.cougar.transport:type=soapCommandProcessor", "SchemaValidationEnabled", schemaValidationEnabled);
+            helpers.setSOAPSchemaValidationEnabled(schemaValidationEnabled);
             // Create the HttpCallBean
             CougarManager cougarManager1 = CougarManager.getInstance();
             HttpCallBean httpCallBeanBaseline = cougarManager1.getNewHttpCallBean();
@@ -74,11 +75,10 @@ public class SOAPTestComplexMutatorOPTIONALELEMENTSMISSINGStringTest {
             // Create the expected response object as an XML document
             XMLHelpers xMLHelpers5 = new XMLHelpers();
             Document createAsDocument11 = xMLHelpers5.getXMLObjectFromString("<response><message>null = 7</message></response>");
-            // Convert the expected response to SOAP for comparison with the actual response
-            Map<String, Object> convertResponseToSOAP12 = cougarManager3.convertResponseToSOAP(createAsDocument11, getNewHttpCallBean3);
+
             // Check the response is as expected
             HttpResponseBean response6 = getNewHttpCallBean3.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
-            AssertionUtils.multiAssertEquals(convertResponseToSOAP12.get("SOAP"), response6.getResponseObject());
+            AssertionUtils.multiAssertEquals(createAsDocument11, response6.getResponseObject());
             // Check the log entries are as expected
 
             CougarHelpers cougarHelpers8 = new CougarHelpers();
@@ -87,7 +87,7 @@ public class SOAPTestComplexMutatorOPTIONALELEMENTSMISSINGStringTest {
             CougarManager cougarManager9 = CougarManager.getInstance();
             cougarManager9.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9, new AccessLogRequirement(null, null, "Ok"));
         } finally {
-            helpers.setJMXMBeanAttributeValue("com.betfair.cougar.transport:type=soapCommandProcessor", "SchemaValidationEnabled", true);
+            helpers.setSOAPSchemaValidationEnabled(true);
         }
     }
 

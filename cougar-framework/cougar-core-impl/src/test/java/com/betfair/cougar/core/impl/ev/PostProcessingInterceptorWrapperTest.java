@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package com.betfair.cougar.core.impl.ev;
 import com.betfair.cougar.api.ExecutionContext;
 import com.betfair.cougar.core.api.ev.*;
 import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,11 +41,6 @@ public class PostProcessingInterceptorWrapperTest {
     private OperationKey key;
     private Subscription subscription;
     private ExecutionPostProcessor mockedExecutionPostProcessor;
-
-    @BeforeClass
-    public static void suppressLogs() {
-        CougarLoggingUtils.suppressAllRootLoggerOutput();
-    }
 
     @Before
     public void init() {

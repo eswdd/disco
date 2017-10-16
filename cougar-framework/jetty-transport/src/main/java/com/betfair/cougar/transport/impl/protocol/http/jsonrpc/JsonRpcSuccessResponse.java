@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 
 package com.betfair.cougar.transport.impl.protocol.http.jsonrpc;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Used to represent a successful result of execution for a JSON-RPC call

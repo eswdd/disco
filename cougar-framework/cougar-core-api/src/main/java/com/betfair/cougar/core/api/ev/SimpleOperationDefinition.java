@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ package com.betfair.cougar.core.api.ev;
 
 import com.betfair.cougar.core.api.transcription.Parameter;
 import com.betfair.cougar.core.api.transcription.ParameterType;
+
+import java.util.Arrays;
 
 public class SimpleOperationDefinition implements OperationDefinition {
     private final OperationKey operationKey;
@@ -47,4 +49,12 @@ public class SimpleOperationDefinition implements OperationDefinition {
         return returnType;
     }
 
+    @Override
+    public String toString() {
+        return "SimpleOperationDefinition{" +
+                "operationKey=" + operationKey +
+                ", parameters=" + Arrays.toString(parameters) +
+                ", returnType=" + returnType +
+                '}';
+    }
 }

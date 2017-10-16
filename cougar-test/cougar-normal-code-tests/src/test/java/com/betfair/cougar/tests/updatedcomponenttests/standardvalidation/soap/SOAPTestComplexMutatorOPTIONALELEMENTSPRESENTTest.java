@@ -1,5 +1,6 @@
 /*
  * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +41,7 @@ public class SOAPTestComplexMutatorOPTIONALELEMENTSPRESENTTest {
         CougarHelpers helpers = new CougarHelpers();
         try {
             CougarManager cougarManager = CougarManager.getInstance();
-            helpers.setJMXMBeanAttributeValue("com.betfair.cougar.transport:type=soapCommandProcessor", "SchemaValidationEnabled", schemaValidationEnabled);
+            helpers.setSOAPSchemaValidationEnabled(schemaValidationEnabled);
             // Create the SOAP request as an XML Document (no missing parameters)
             XMLHelpers xMLHelpers1 = new XMLHelpers();
             Document createAsDocument1 = xMLHelpers1.getXMLObjectFromString("<TestComplexMutatorRequest><message><name>sum</name><value1>7</value1><value2>75</value2></message></TestComplexMutatorRequest>");
@@ -64,14 +65,13 @@ public class SOAPTestComplexMutatorOPTIONALELEMENTSPRESENTTest {
             // Create the expected response object as an XML document
             XMLHelpers xMLHelpers4 = new XMLHelpers();
             Document createAsDocument10 = xMLHelpers4.getXMLObjectFromString("<response><message>sum = 82</message></response>");
-            // Convert the expected response to SOAP for comparison with the actual response
-            Map<String, Object> convertResponseToSOAP11 = cougarManager2.convertResponseToSOAP(createAsDocument10, getNewHttpCallBean2);
+
             // Check the response is as expected
             HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
-            AssertionUtils.multiAssertEquals(convertResponseToSOAP11.get("SOAP"), response5.getResponseObject());
+            AssertionUtils.multiAssertEquals(createAsDocument10, response5.getResponseObject());
             // todo: Check the log entries are as expected
         } finally {
-            helpers.setJMXMBeanAttributeValue("com.betfair.cougar.transport:type=soapCommandProcessor", "SchemaValidationEnabled", true);
+            helpers.setSOAPSchemaValidationEnabled(true);
         }
     }
 

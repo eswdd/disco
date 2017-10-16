@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import com.betfair.cougar.api.geolocation.GeoLocationDetails;
 import com.betfair.cougar.api.security.IdentityChain;
 
 /**
- * 
+ *
  */
 public class ExecutionContextImpl implements ExecutionContext {
 
@@ -30,6 +30,7 @@ public class ExecutionContextImpl implements ExecutionContext {
     private IdentityChain identity;
     private RequestUUID requestUUID;
     private Date receivedTime;
+    private Date requestTime;
     private boolean traceLoggingEnabled;
     private int transportSecurityStrengthFactor;
 
@@ -41,6 +42,7 @@ public class ExecutionContextImpl implements ExecutionContext {
         this.identity = ctx.getIdentity();
         this.requestUUID = ctx.getRequestUUID();
         this.receivedTime = ctx.getReceivedTime();
+        this.requestTime = ctx.getRequestTime();
         this.traceLoggingEnabled = ctx.traceLoggingEnabled();
         this.transportSecurityStrengthFactor = ctx.getTransportSecurityStrengthFactor();
     }
@@ -80,6 +82,14 @@ public class ExecutionContextImpl implements ExecutionContext {
         return transportSecurityStrengthFactor > 1;
     }
 
+    public Date getRequestTime() {
+        return requestTime;
+    }
+
+    public void setRequestTime(Date requestTime) {
+        this.requestTime = requestTime;
+    }
+
     public void setGeoLocationDetails(GeoLocationDetails geoLocationDetails) {
         this.geoLocationDetails = geoLocationDetails;
     }
@@ -111,6 +121,7 @@ public class ExecutionContextImpl implements ExecutionContext {
         sb.append("identityChain=").append(identity).append("|");
         sb.append("requestUUID=").append(requestUUID).append("|");
         sb.append("receivedTime=").append(receivedTime).append("|");
+        sb.append("requestTime=").append(requestTime).append("|");
         sb.append("traceLoggingEnabled=").append(traceLoggingEnabled).append("|");
         sb.append("transportSecurityStrengthFactor=").append(transportSecurityStrengthFactor);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,9 @@
 
 package com.betfair.cougar.api;
 
+/**
+ * Extends the execution context by providing hooks to record data generated in executing a request.
+ */
 public interface RequestContext extends ExecutionContext {
 
 	public void trace(String msg, Object... args);

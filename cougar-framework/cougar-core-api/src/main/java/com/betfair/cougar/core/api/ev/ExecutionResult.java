@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,7 @@
 package com.betfair.cougar.core.api.ev;
 
 import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
+import com.betfair.cougar.core.api.exception.*;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
 
 /**
@@ -43,6 +42,8 @@ public class ExecutionResult {
     }
 
     public ExecutionResult(Object result) {
+        // todo: perhaps this shouldn't be done here, and instead should go in the service wrapper?
+        //       then we wouldn't have anything to do with service in the core ev..
         if (result instanceof CougarApplicationException) {
             this.resultType = ResultType.Fault;
             fault = new CougarServiceException(ServerFaultCode.ServiceCheckedException, "", (CougarApplicationException)result);

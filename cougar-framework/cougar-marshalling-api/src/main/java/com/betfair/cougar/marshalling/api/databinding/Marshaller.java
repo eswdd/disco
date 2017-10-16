@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import java.io.OutputStream;
 
 public interface Marshaller {
 
-	void marshall(OutputStream outputStream, Object result, String encoding);
+	void marshall(OutputStream outputStream, Object result, String encoding, boolean client);
 	public String getFormat();
 
 }

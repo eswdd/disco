@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
+  - Copyright 2013, Simon Mati? Langford
   ~ Copyright 2013, The Sporting Exchange Limited
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +18,7 @@
 
 <interface name="Health"
 		   version="3.0"
-		   namespace="com.betfair.cougar.health.service" 
+		   namespace="com.betfair.cougar.health.service"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:noNamespaceSchemaLocation="http://www.betfair.com/BSIDL/4.0.xsd">
     <authors>

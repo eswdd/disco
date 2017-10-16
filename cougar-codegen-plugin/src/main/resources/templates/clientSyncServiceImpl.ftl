@@ -1,5 +1,6 @@
 /*
  * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +30,11 @@ import com.betfair.cougar.core.api.ServiceVersion;
 import com.betfair.cougar.api.fault.CougarApplicationException;
 import com.betfair.cougar.core.api.ev.*;
 import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
+import com.betfair.cougar.core.api.exception.CougarClientException;
+import com.betfair.cougar.core.api.exception.CougarFrameworkException;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import com.betfair.cougar.core.impl.CougarInternalOperations;
+import com.betfair.cougar.core.impl.DefaultTimeConstraints;
 
 import com.betfair.tornjak.monitor.MonitorRegistry;
 
@@ -87,20 +91,24 @@ public class  ${service}SyncClientImpl implements ${service}SyncClient {<#t>
      */
     protected ${service}SyncClientImpl() {
     }
+
     protected void setEv(ExecutionVenue ev) {
         this.ev = ev;
     }
     protected void setNamespace(String namespace) {
+        if (namespace == null || "".equals(namespace)) {
+            throw new IllegalArgumentException("Namespace must be a non-empty string: "+namespace);
+        }
         this.namespace = namespace;
     }
 
     public ${service}SyncClientImpl(ExecutionVenue ev) {
-        this.ev = ev;
+        this(ev, CougarInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
     }
 
     public ${service}SyncClientImpl(ExecutionVenue ev, String namespace) {
-        this.ev = ev;
-        this.namespace = namespace;
+        setEv(ev);
+        setNamespace(namespace);
     }
 
     private OperationKey getOperationKey(OperationKey key) {
@@ -121,7 +129,7 @@ public class  ${service}SyncClientImpl implements ${service}SyncClient {<#t>
 
  /**
   * ${operation.description?trim}.  Calls ${operation.operationName} allowing you to specify a timeout
-  * @param ctx the context of the request.  
+  * @param ctx the context of the request.
     <#list operation.params as p><#t>
   * <@compress single_line=true>@param ${p.paramName} ${p.description}
      <#if p.isMandatory?? && (p.isMandatory)>
@@ -148,6 +156,40 @@ public class  ${service}SyncClientImpl implements ${service}SyncClient {<#t>
                 , ${e}
             </#list>
 	    { </@compress>
+	    <@compress single_line=true><#if operation.returnType.javaType!="void">return </#if>${operation.operationName}(${argsToBePassed},
+                   DefaultTimeConstraints.fromTimeout(timeoutMillis));</@compress>
+  }
+
+ /**
+  * ${operation.description?trim}.  Calls ${operation.operationName} allowing you to specify a timeout
+  * @param ctx the context of the request.
+    <#list operation.params as p><#t>
+  * <@compress single_line=true>@param ${p.paramName} ${p.description}
+     <#if p.isMandatory?? && (p.isMandatory)>
+     	(mandatory)
+     </#if></@compress>
+
+    </#list>
+  * @param timeConstraints - allows you to specify time constraints for this operation.  If you want a blocking call,
+  *                          use DefaultTimeConstraints.NO_CONSTRAINTS, or call the overloading without the timeout argument
+  * @return returns ${responseType}
+  * @throws TimeoutException if call does not complete in the specified time (providing timeout > 0)
+  * @throws InterruptedException if the blocking call thread was interrupted
+  <#list operation.exceptions as e>
+  * @throws ${e} if the remote Application threw ${e}
+  </#list>
+  */
+  public ${responseType} ${operation.operationName} (ExecutionContext ctx <@compress single_line=true>
+        <#assign argsToBePassed="ctx">
+        <#list operation.params as parameter>
+            <#assign argsToBePassed = argsToBePassed + "," + parameter.paramName>
+		    , <@createTypeDecl parameter.paramType/> ${parameter.paramName}
+        </#list>
+            , TimeConstraints timeConstraints) throws TimeoutException, InterruptedException <#t>
+            <#list operation.exceptions as e><#t>
+                , ${e}
+            </#list>
+	    { </@compress>
 
         final WaitingObserver observer = new WaitingObserver();
 
@@ -160,10 +202,11 @@ public class  ${service}SyncClientImpl implements ${service}SyncClient {<#t>
                         ${param.paramName}
                    </#list>
                    },</@compress>
-                   observer);
+                   observer,
+                   timeConstraints);
 
-        if (!observer.await(timeoutMillis)) {
-            throw new TimeoutException("Operation ${operation.operationName} timed out!");
+        if (!observer.await(timeConstraints)) {
+            throw new CougarClientException(ServerFaultCode.Timeout, "Operation ${operation.operationName} timed out!");
         }
 
         final ExecutionResult er = observer.getExecutionResult();
@@ -206,8 +249,11 @@ public class  ${service}SyncClientImpl implements ${service}SyncClient {<#t>
                         throw new IllegalArgumentException("An unanticipated exception was received of class [" + className + "]");
                     }
                     <#else>
-                    throw new CougarServiceException(ServerFaultCode.ServiceCheckedException, "Unknown checked exception received", cex);
+                    throw new CougarClientException(ServerFaultCode.ServiceCheckedException, "Unknown checked exception received", cex);
                     </#if>
+                } else if (cex instanceof CougarFrameworkException) {
+                    CougarFrameworkException cfe = (CougarFrameworkException) cex;
+                    throw new CougarClientException(cfe.getServerFaultCode(), cfe.getMessage(), cfe.getCause());
                 } else {
                   throw cex;
                 }
@@ -235,12 +281,12 @@ public class  ${service}SyncClientImpl implements ${service}SyncClient {<#t>
          </#list>
              )
          <#if operation.exceptions?size!=0>
-            throws 
+            throws
              <#list operation.exceptions as e>${e}<#if e_has_next>, </#if></#list>
          </#if>
          { </@compress>
         try {
-            <#if operation.returnType.javaType!="void">return </#if>${operation.operationName}(${argsToBePassed}, 0);
+            <#if operation.returnType.javaType!="void">return </#if>${operation.operationName}(${argsToBePassed}, DefaultTimeConstraints.NO_CONSTRAINTS);
         } catch (TimeoutException ex) {
             //blocking call, so won't happen
         } catch (InterruptedException interrupted) {
@@ -265,7 +311,7 @@ public class  ${service}SyncClientImpl implements ${service}SyncClient {<#t>
      * @param observer the observer to allow the application to publish events with
      */
     public void subscribeTo${eventName} (ExecutionContext ctx, Object[] args, ExecutionObserver observer) {
-        ev.execute(ctx, getOperationKey(${serviceDefinitionName}.subscribeTo${eventName}OperationKey), args, observer);
+        ev.execute(ctx, getOperationKey(${serviceDefinitionName}.subscribeTo${eventName}OperationKey), args, observer, DefaultTimeConstraints.NO_CONSTRAINTS);
     }
     </#list>
 

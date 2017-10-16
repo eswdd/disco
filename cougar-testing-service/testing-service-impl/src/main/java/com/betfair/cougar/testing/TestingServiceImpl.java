@@ -21,8 +21,9 @@ import com.betfair.cougar.api.RequestContext;
 import com.betfair.cougar.api.ResponseCode;
 import com.betfair.cougar.caching.CacheFrameworkIntegration;
 import com.betfair.cougar.caching.CacheFrameworkRegistry;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import com.betfair.cougar.core.api.ev.TimeConstraints;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.testingservice.v1.TestingService;
 import com.betfair.testingservice.v1.enumerations.TestingExceptionErrorCodeEnum;
 import com.betfair.testingservice.v1.exception.TestingException;
@@ -38,7 +39,7 @@ import java.util.logging.Level;
 
 @ManagedResource
 public class TestingServiceImpl implements TestingService {
-    final static CougarLogger logger = CougarLoggingUtils
+    final static Logger LOGGER = LoggerFactory
             .getLogger(TestingServiceImpl.class);
     private CacheFrameworkRegistry cacheFrameworkRegistry;
 
@@ -99,7 +100,7 @@ public class TestingServiceImpl implements TestingService {
     }
 
     @Override
-    public CallResponse refreshCache(RequestContext ctx, String name)
+    public CallResponse refreshCache(RequestContext ctx, String name, TimeConstraints timeConstraints)
             throws TestingException {
         CallResponse response = new CallResponse();
         boolean found = false;
@@ -119,9 +120,9 @@ public class TestingServiceImpl implements TestingService {
     }
 
     @Override
-    public IDD getIDD(RequestContext ctx, String name) throws TestingException {
+    public IDD getIDD(RequestContext ctx, String name, TimeConstraints timeConstraints) throws TestingException {
         InputStream iddStream = getClass().getResourceAsStream("/idd/" + name);
-        logger.log(Level.FINE, "Retriving IDD %s", "/idd/" + name);
+        LOGGER.debug("Retriving IDD {}", "/idd/" + name);
         if (iddStream != null) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     iddStream));
@@ -138,8 +139,7 @@ public class TestingServiceImpl implements TestingService {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    logger
-                            .log(Level.WARNING, "Failed to close input stream",
+                    LOGGER.warn( "Failed to close input stream",
                                     e);
                     // Swallow it in case the it overrides the main exception
                 }
@@ -149,14 +149,14 @@ public class TestingServiceImpl implements TestingService {
             idd.setContent(sb.toString());
             return idd;
         }
-        logger.log(Level.FINE, "IDD %s not found", "idd/" + name);
+        LOGGER.debug("IDD {} not found", "idd/" + name);
         throw new TestingException(ResponseCode.NotFound,
                 TestingExceptionErrorCodeEnum.NOT_FOUND);
 
     }
 
     @Override
-    public CallResponse refreshAllCaches(RequestContext ctx)
+    public CallResponse refreshAllCaches(RequestContext ctx, TimeConstraints timeConstraints)
             throws TestingException {
         CallResponse response = new CallResponse();
         boolean done = false;
@@ -165,24 +165,24 @@ public class TestingServiceImpl implements TestingService {
             framework.refreshAllCaches();
         }
         if (done) {
-            logger.log(Level.INFO, "Refreshed all caches");
+            LOGGER.info("Refreshed all caches");
             response.setResult("OK");
             return response;
         }
-        logger.log(Level.INFO, "No cache frameworks found");
+        LOGGER.info("No cache frameworks found");
         throw new TestingException(ResponseCode.InternalError,
                 TestingExceptionErrorCodeEnum.GENERIC);
     }
 
     @Override
     public LogFileResponse getLogEntriesByDateRange(RequestContext ctx,
-                                                    String logFileName, String startDateTime, String endDateTime)
+                                                    String logFileName, String startDateTime, String endDateTime, TimeConstraints timeConstraints)
             throws TestingException {
         List<String> logLines = null;
         String physicalLogFileName = this.getBaseLogDirectory() + logFileName;
         String logMessage = "Request for " + startDateTime + " to "
                 + endDateTime + " of logfile " + physicalLogFileName;
-        logger.log(Level.INFO, logMessage);
+        LOGGER.info(logMessage);
 
         List<LogEntryCondition> conditions = new ArrayList<LogEntryCondition>();
         if (startDateTime != null) {
@@ -192,7 +192,7 @@ public class TestingServiceImpl implements TestingService {
             if (startCond.getCheckDate() != null) {
                 conditions.add(startCond);
             } else {
-                logger.log(Level.INFO, "Couldn't parse " + startDateTime
+                LOGGER.info("Couldn't parse " + startDateTime
                         + " to date");
             }
         }
@@ -203,7 +203,7 @@ public class TestingServiceImpl implements TestingService {
             if (endCond.getCheckDate() != null) {
                 conditions.add(endCond);
             } else {
-                logger.log(Level.INFO, "Couldn't parse " + endDateTime
+                LOGGER.info("Couldn't parse " + endDateTime
                         + " to date");
             }
         }
@@ -219,7 +219,7 @@ public class TestingServiceImpl implements TestingService {
 
     @Override
     public LogFileResponse getLogEntries(RequestContext ctx, String logFileName,
-                                         Integer numberOfLines) throws TestingException {
+                                         Integer numberOfLines, TimeConstraints timeConstraints) throws TestingException {
         long start = System.nanoTime();
         List<String> logLines = null;
         String physicalLogFileName = this.getBaseLogDirectory() + logFileName;
@@ -227,14 +227,14 @@ public class TestingServiceImpl implements TestingService {
         logMessageBuilder.append(numberOfLines.intValue());
         logMessageBuilder.append(" lines of logfile ");
         logMessageBuilder.append(physicalLogFileName);
-        logger.log(Level.INFO, logMessageBuilder.toString());
-        logger.log(Level.FINE, "Do skip lines : " + this.isDoSkipLogLines());
-        logger.log(Level.FINE, "Max entry size : " + this.getMaxMessageSize());
+        LOGGER.info(logMessageBuilder.toString());
+        LOGGER.debug("Do skip lines : " + this.isDoSkipLogLines());
+        LOGGER.debug("Max entry size : " + this.getMaxMessageSize());
 
         logLines = getLogFilesSkippingReader(physicalLogFileName, numberOfLines
                 .intValue());
         long end = System.nanoTime();
-        logger.log(Level.INFO, "Took " + (end - start) + " ns");
+        LOGGER.info("Took " + (end - start) + " ns");
 
         LogFileResponse lfr = new LogFileResponse();
         lfr.setResult(logLines);
@@ -260,7 +260,7 @@ public class TestingServiceImpl implements TestingService {
             br = new BufferedReader(new FileReader(filename));
             loglineBuffer = getLogFilesBufferedReaderImpl(br, conditions, maxEntriesReturned);
         } catch (IOException iox) {
-            logger.log(iox);
+            LOGGER.error("",iox);
             throw new TestingException(iox,ResponseCode.NotFound,
                     TestingExceptionErrorCodeEnum.NOT_FOUND);
         } finally {
@@ -268,7 +268,7 @@ public class TestingServiceImpl implements TestingService {
 				try {
 					br.close();
 				} catch (IOException e) {
-					logger.log(Level.WARNING, "Error while closing file "+filename, e);
+					LOGGER.warn("Error while closing file "+filename, e);
 				}
         	}
         }
@@ -313,7 +313,7 @@ public class TestingServiceImpl implements TestingService {
             String thisLine;
             while ((thisLine = reader.readLine()) != null) {
                 if (allConditionsMatch(thisLine, conditions)) {
-                    logger.log(Level.FINE, "All conditions match " + thisLine);
+                    LOGGER.debug("All conditions match " + thisLine);
                     if (currentSize >= maxEntriesReturned) {
                         loglineBuffer.removeFirst();
                         excessRows++;
@@ -322,7 +322,7 @@ public class TestingServiceImpl implements TestingService {
                     currentSize = loglineBuffer.size();
                 }
             }
-            logger.log(Level.INFO, excessRows
+            LOGGER.info(excessRows
                     + " rows ejected due to size limit");
         }
         return loglineBuffer;
@@ -354,7 +354,7 @@ public class TestingServiceImpl implements TestingService {
                 if (fileSize > likelyLength) {
                     long skipSize = fileSize - likelyLength;
                     if (skipSize < fileSize) {
-                        logger.log(Level.INFO, "Skipping " + skipSize
+                        LOGGER.info("Skipping " + skipSize
                                 + " in file");
                         br.skip(skipSize);
                     }
@@ -362,7 +362,7 @@ public class TestingServiceImpl implements TestingService {
             }
             loglineBuffer = getLogFilesBufferedReaderImpl(br, null, numLines);
         } catch (IOException iox) {
-            logger.log(iox);
+            LOGGER.error("",iox);
             throw new TestingException(iox,ResponseCode.NotFound,
                     TestingExceptionErrorCodeEnum.NOT_FOUND);
         } finally {
@@ -370,7 +370,7 @@ public class TestingServiceImpl implements TestingService {
         		try {
         			br.close();
         		} catch(IOException ex) {
-        			logger.log(Level.WARNING, "Error while closing file "+filename, ex);
+        			LOGGER.warn("Error while closing file "+filename, ex);
         		}
         	}
         }

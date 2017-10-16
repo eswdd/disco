@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,27 @@
 
 package com.betfair.cougar.transport.impl.protocol.http;
 
+import com.betfair.cougar.api.DehydratedExecutionContext;
 import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ExecutionContextWithTokens;
 import com.betfair.cougar.api.ResponseCode;
+import com.betfair.cougar.api.export.Protocol;
 import com.betfair.cougar.api.security.*;
 import com.betfair.cougar.core.api.CougarStartingGate;
 import com.betfair.cougar.core.api.GateListener;
 import com.betfair.cougar.core.api.ServiceBindingDescriptor;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.PanicInTheCougar;
+import com.betfair.cougar.core.api.ev.TimeConstraints;
+import com.betfair.cougar.core.api.exception.*;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import com.betfair.cougar.core.impl.DefaultTimeConstraints;
+import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.transport.api.CommandValidator;
 import com.betfair.cougar.transport.api.RequestLogger;
-import com.betfair.cougar.transport.api.protocol.http.ExecutionContextFactory;
-import com.betfair.cougar.transport.api.protocol.http.GeoLocationDeserializer;
 import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
 import com.betfair.cougar.transport.api.protocol.http.HttpCommandProcessor;
 import com.betfair.cougar.transport.impl.AbstractCommandProcessor;
 import com.betfair.cougar.transport.impl.CommandValidatorRegistry;
-import com.betfair.cougar.transport.jetty.SSLRequestUtils;
-import com.betfair.cougar.util.geolocation.GeoIPLocator;
 import com.betfair.cougar.util.stream.ByteCountingInputStream;
 import com.betfair.cougar.util.stream.LimitedByteCountingInputStream;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
@@ -50,7 +47,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,12 +54,12 @@ import java.util.regex.Pattern;
  * Provides common functionality for Http CommandProcessors, mainly around
  * resolving the ExecutionContext from an HttpCommand, and registration as a
  * GateListener.
- * 
+ *
  */
-public abstract class AbstractHttpCommandProcessor extends
+public abstract class AbstractHttpCommandProcessor<CredentialsContainer> extends
 		AbstractCommandProcessor<HttpCommand> implements HttpCommandProcessor,
 		GateListener {
-    private static CougarLogger logger = CougarLoggingUtils.getLogger(AbstractHttpCommandProcessor.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(AbstractHttpCommandProcessor.class);
 
     private static Pattern VERSION_REMOVAL_PATTERN = Pattern.compile("(/?.*/v\\d+)(?:\\.\\d+)?(/.*)?", Pattern.CASE_INSENSITIVE);
 
@@ -72,13 +68,13 @@ public abstract class AbstractHttpCommandProcessor extends
         boolean isRewriteSupported();
     }
 
-	private final GeoIPLocator geoIPLocator;
+    private DehydratedExecutionContextResolution contextResolution;
+    private Protocol protocol;
 
-    private final GeoLocationDeserializer geoLocationDeserializer;
 
-	private final String uuidHeader;
 
-    private InferredCountryResolver<HttpServletRequest> inferredCountryResolver;
+    private final String requestTimeoutHeader;
+
 
 
 	private String name;
@@ -97,47 +93,23 @@ public abstract class AbstractHttpCommandProcessor extends
 
     private CommandValidatorRegistry<HttpCommand> validatorRegistry;
 
-    private int unknownCipherKeyLength;
-
     protected boolean hardFailEnumDeserialisation;
 
     protected long maxPostBodyLength;
 
-    /**
-     *
-     * @param geoIPLocator
-     *            Used for resolving the GeoLocationDetails
-     * @param geoLocationDeserializer
-     * @param uuidHeader
-     *            the key of the Http Header containing the unique id for a request
-     */
-    public AbstractHttpCommandProcessor(GeoIPLocator geoIPLocator,
-                                        GeoLocationDeserializer geoLocationDeserializer, String uuidHeader){
-        this(geoIPLocator, geoLocationDeserializer, uuidHeader, null);
-    }
-
 	/**
-	 * 
-	 * @param geoIPLocator
-	 *            Used for resolving the GeoLocationDetails
-	 * @param uuidHeader
-	 *            the key of the Http Header containing the unique id for a request
-     * @param inferredCountryResolver
-     *            The resolver used for inferring the country from the domain
-	 */
-	public AbstractHttpCommandProcessor(GeoIPLocator geoIPLocator,
-                                        GeoLocationDeserializer geoLocationDeserializer, String uuidHeader,
-                                        InferredCountryResolver<HttpServletRequest> inferredCountryResolver) {
-		this.geoIPLocator = geoIPLocator;
-        this.geoLocationDeserializer = geoLocationDeserializer;
-		this.uuidHeader = uuidHeader;
-        this.inferredCountryResolver = inferredCountryResolver;
+	 *
+     */
+	protected AbstractHttpCommandProcessor(Protocol protocol, DehydratedExecutionContextResolution contextResolution, String requestTimeoutHeader) {
+        this.protocol = protocol;
+        this.contextResolution = contextResolution;
+        this.requestTimeoutHeader = requestTimeoutHeader;
 	}
 
 	/**
 	 * By setting the starting gate property this CommandProcessor will register
 	 * itself with the CougarStartingGate
-	 * 
+	 *
 	 * @param startingGate
 	 *            the starting gate for the application
 	 */
@@ -208,7 +180,7 @@ public abstract class AbstractHttpCommandProcessor extends
 
 	/**
 	 * Returns all the ServiceBindindDescriptors registered via the bind method.
-	 * 
+	 *
 	 * @return
 	 */
 	protected Iterable<ServiceBindingDescriptor> getServiceBindingDescriptors() {
@@ -224,6 +196,8 @@ public abstract class AbstractHttpCommandProcessor extends
         requestLogger.logAccess(command, context, bytesRead, bytesWritten, requestMediaType, responseMediaType,responseCode);
     }
 
+
+
     /**
      * Resolves an HttpCommand to an ExecutionContext for the error logging scenario. This will
      * never throw an exception although it might return null. The process is:
@@ -238,62 +212,53 @@ public abstract class AbstractHttpCommandProcessor extends
      * @return the ExecutionContext, populated with information from the
      *         HttpCommend
      */
-    protected ExecutionContextWithTokens resolveContextForErrorHandling(ExecutionContextWithTokens ctx, HttpCommand command) {
+    protected DehydratedExecutionContext resolveContextForErrorHandling(DehydratedExecutionContext ctx, HttpCommand command) {
         if (ctx != null) return ctx;
         try {
-            return resolveExecutionContextWithTokens(command, null, false);
+            return contextResolution.resolveExecutionContext(protocol, command, null);
         } catch (RuntimeException e) {
             // Well that failed too... nothing to do but return null
-            logger.log(Level.FINE, "Failed to resolve error execution context", e);
+            LOGGER.debug("Failed to resolve error execution context", e);
             return null;
         }
     }
 
-    /**
-   	 * Resolves an HttpCommand to an ExecutionContext, which provides contextual
-   	 * information to the ExecutionVenue that the command will be executed in.
-   	 *
-   	 * @param http
-   	 *            contains the HttpServletRequest from which the contextual
-   	 *            information is derived
-   	 * @return the ExecutionContext, populated with information from the
-   	 *         HttpCommend
-   	 */
-    protected <Req, Cert> ExecutionContextWithTokens resolveExecutionContext(HttpCommand http, Req req, Cert certs) {
-        return resolveExecutionContext(http, req, certs, false);
-    }
 
-    /**
-   	 * Resolves an HttpCommand to an ExecutionContext, which provides contextual
-   	 * information to the ExecutionVenue that the command will be executed in.
-   	 *
-   	 * @param http
-   	 *            contains the HttpServletRequest from which the contextual
-   	 *            information is derived
-   	 * @return the ExecutionContext, populated with information from the
-   	 *         HttpCommend
-   	 */
-    protected <Req, Cert> ExecutionContextWithTokens resolveExecutionContext(HttpCommand http, Req req, Cert certs, boolean ignoreSubsequentWritesOfIdentity) {
-        IdentityTokenResolver<Req, ?, Cert> identityTokenResolver = (IdentityTokenResolver<Req, ?, Cert>) http.getIdentityTokenResolver();
-
-        List<IdentityToken> tokens = new ArrayList<IdentityToken>();
-        if (identityTokenResolver != null) {
-            tokens = identityTokenResolver.resolve(req, certs);
-        }
-		return resolveExecutionContextWithTokens(http, tokens, ignoreSubsequentWritesOfIdentity);
-    }
-
-    private ExecutionContextWithTokens resolveExecutionContextWithTokens(HttpCommand command, List<IdentityToken> tokens, boolean ignoreSubsequentWritesOfIdentity) {
-           String inferredCountry = null;
-           if (inferredCountryResolver != null) {
-               inferredCountry = inferredCountryResolver.inferCountry(command.getRequest());
-           }
-            int keyLength = 0;
-            if (command.getRequest().getScheme().equals("https")) {
-                keyLength = SSLRequestUtils.getTransportSecurityStrengthFactor(command.getRequest(), unknownCipherKeyLength);
+    protected TimeConstraints readRawTimeConstraints(HttpServletRequest request) {
+        Long timeout = null;
+        if (requestTimeoutHeader != null) {
+            String timeoutString = request.getHeader(requestTimeoutHeader);
+            try {
+                timeout = Long.parseLong(timeoutString);
+            } catch (NumberFormatException nfe) {
+                // will default to null
             }
-           return ExecutionContextFactory.resolveExecutionContext(command, tokens, uuidHeader, geoLocationDeserializer, geoIPLocator, inferredCountry, keyLength, ignoreSubsequentWritesOfIdentity);
-   	}
+        }
+        if (timeout == null) {
+            return DefaultTimeConstraints.NO_CONSTRAINTS;
+        }
+        return DefaultTimeConstraints.fromTimeout(timeout);
+    }
+
+
+    /**
+   	 * Resolves an HttpCommand to an ExecutionContext, which provides contextual
+   	 * information to the ExecutionVenue that the command will be executed in.
+   	 *
+   	 * @param http
+   	 *            contains the HttpServletRequest from which the contextual
+   	 *            information is derived
+   	 * @return the ExecutionContext, populated with information from the
+   	 *         HttpCommend
+   	 */
+    protected DehydratedExecutionContext resolveExecutionContext(HttpCommand http, CredentialsContainer cc) {
+        return contextResolution.resolveExecutionContext(protocol, http, cc);
+    }
+
+//    private DehydratedExecutionContext resolveExecutionContextWithTokensAndRequestTime(HttpCommand command, List<IdentityToken> tokens, boolean ignoreSubsequentWritesOfIdentity, Date requestTime) {
+//            int keyLength = 0;
+//           return ExecutionContextFactory.resolveExecutionContext(command, tokens, uuidHeader, uuidParentsHeader, geoLocationDeserializer, geoIPLocator, inferredCountry, keyLength, ignoreSubsequentWritesOfIdentity, requestTime);
+//   	}
 
     /**
      * Rewrites the caller's credentials back into the HTTP response. The main use case for this is
@@ -329,9 +294,8 @@ public abstract class AbstractHttpCommandProcessor extends
 		//really exceptional and should not be reported by dumping the stack trace.
 		//Instead a summary debug level log message with some relevant info
         incrementIoErrorsEncountered();
-		logger.log(
-				Level.FINE,
-				"Failed to marshall object of class %s to the output channel. Exception (%s) message is: %s",
+		LOGGER.debug(
+				"Failed to marshall object of class {} to the output channel. Exception ({}) message is: {}",
 				resultClass.getCanonicalName(),
 				e.getClass().getCanonicalName(),
 				e.getMessage()
@@ -356,7 +320,7 @@ public abstract class AbstractHttpCommandProcessor extends
         try {
             if (out != null) out.close();
         } catch (IOException e) {
-            logger.log(Level.WARNING, "Failed to close output stream", e);
+            LOGGER.warn("Failed to close output stream", e);
         }
     }
 
@@ -373,7 +337,7 @@ public abstract class AbstractHttpCommandProcessor extends
 
             return sb.toString();
         } else {
-            logger.log(Level.WARNING, "Unable to remove minor version from URI: [" + uri + "], returning unmodified");
+            LOGGER.warn("Unable to remove minor version from URI: [" + uri + "], returning unmodified");
             return uri;
         }
     }
@@ -399,27 +363,9 @@ public abstract class AbstractHttpCommandProcessor extends
         this.validatorRegistry = validatorRegistry;
     }
 
-    public void setInferredCountryResolver(InferredCountryResolver<HttpServletRequest> inferredCountryResolver) {
-        this.inferredCountryResolver = inferredCountryResolver;
-    }
-
     // for test usage only
     CommandValidatorRegistry<HttpCommand> getValidatorRegistry() {
         return validatorRegistry;
-    }
-
-    @ManagedAttribute
-    public String getUuidHeader() {
-        return uuidHeader;
-    }
-
-    @ManagedAttribute
-    public int getUnknownCipherKeyLength() {
-        return unknownCipherKeyLength;
-    }
-
-    public void setUnknownCipherKeyLength(int unknownCipherKeyLength) {
-        this.unknownCipherKeyLength = unknownCipherKeyLength;
     }
 
     @ManagedAttribute

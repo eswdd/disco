@@ -1,5 +1,6 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
+ * Copyright 2015, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +26,14 @@ import com.betfair.cougar.transport.impl.protocol.http.DefaultGeoLocationDeseria
 import com.betfair.cougar.util.RequestUUIDImpl;
 import com.betfair.cougar.util.UUIDGeneratorImpl;
 import com.betfair.cougar.util.geolocation.GeoIPLocator;
+import org.eclipse.jetty.server.Server;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 import java.io.ByteArrayOutputStream;
@@ -47,7 +50,7 @@ import static org.mockito.Mockito.*;
 public class StaticContentServiceHandlerTest {
 
 	private static final String CONTENT_TYPE = "text/xml";
-	
+
 	private StaticContentServiceHandler handler;
 	private HttpServletResponse httpServletResponse;
 	private org.eclipse.jetty.server.Request request;
@@ -55,13 +58,22 @@ public class StaticContentServiceHandlerTest {
 
     final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     final ServletOutputStream sos = new ServletOutputStream() {
+        @Override
+        public boolean isReady() {
+            return false;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        public void setWriteListener(WriteListener writeListener) {
+            //To change body of implemented methods use File | Settings | File Templates.
+        }
 
         @Override
         public void write(int b) throws IOException {
             baos.write(b);
         }
     };
-    
+
     private GeoIPLocator locator = new GeoIPLocator() {
         @Override
         public GeoLocationDetails getGeoLocation(String remoteIP, List<String> resolvedIPs, String inferredCountry) {
@@ -108,7 +120,8 @@ public class StaticContentServiceHandlerTest {
 	@Before
 	public void setUp() throws Exception {
         requestLogger = mock(RequestLogger.class);
-		handler = new StaticContentServiceHandler( "/wsdl", "/wsdl/[fo]+\\.wsdl", CONTENT_TYPE, "X-UUID", new DefaultGeoLocationDeserializer(), locator, requestLogger, true);
+		handler = new StaticContentServiceHandler( "/wsdl", "/wsdl/[fo]+\\.wsdl", CONTENT_TYPE, "X-UUID", "X-UUID-Parents", new DefaultGeoLocationDeserializer(), locator, requestLogger, true);
+        handler.setServer(mock(Server.class));
         handler.start();
 
 		// Set up the Continuations mock.

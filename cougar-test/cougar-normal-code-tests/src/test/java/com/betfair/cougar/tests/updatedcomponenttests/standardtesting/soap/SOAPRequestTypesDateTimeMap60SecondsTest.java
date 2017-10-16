@@ -1,5 +1,6 @@
 /*
  * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,9 +43,9 @@ public class SOAPRequestTypesDateTimeMap60SecondsTest {
         CougarManager cougarManager2 = CougarManager.getInstance();
         HttpCallBean hbean = cougarManager2.getNewHttpCallBean("87.248.113.14");
         CougarManager hinstance = cougarManager2;
-        
+
         hbean.setServiceName("Baseline");
-        
+
         hbean.setVersion("v2");
         // Set the created SOAP request as the PostObject
         hbean.setPostObjectForRequestType(createAsDocument1, "SOAP");
@@ -55,16 +56,15 @@ public class SOAPRequestTypesDateTimeMap60SecondsTest {
         hinstance.makeSoapCougarHTTPCalls(hbean);
         // Create the expected response object as an XML document (fault)
         XMLHelpers xMLHelpers4 = new XMLHelpers();
-        Document createAsDocument11 = xMLHelpers4.getXMLObjectFromString("<soapenv:Fault><faultcode>soapenv:Client</faultcode><faultstring>DSC-0006</faultstring><detail/></soapenv:Fault>");
-        // Convert the expected response to SOAP for comparison with actual response
-        Map<String, Object> convertResponseToSOAP12 = hinstance.convertResponseToSOAP(createAsDocument11, hbean);
+        Document createAsDocument11 = xMLHelpers4.getXMLObjectFromString("<soapenv:Fault><faultcode>soapenv:Client</faultcode><faultstring>DSC-0044</faultstring><detail/></soapenv:Fault>");
+
         // Check the response is as expected
         HttpResponseBean response5 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
-        AssertionUtils.multiAssertEquals(convertResponseToSOAP12.get("SOAP"), response5.getResponseObject());
-        
+        AssertionUtils.multiAssertEquals(createAsDocument11, response5.getResponseObject());
+
         // generalHelpers.pauseTest(3000L);
         // Check the log entries are as expected
-        
+
     }
 
 }

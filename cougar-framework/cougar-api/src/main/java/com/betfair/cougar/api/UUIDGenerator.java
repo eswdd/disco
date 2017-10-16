@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,13 @@
 
 package com.betfair.cougar.api;
 
+/**
+ * Responsible for generating valid and globally unique uuids. Implementations MUST be thread-safe.
+ */
 public interface UUIDGenerator {
-	public String getNextUUID();
+    public static String COMPONENT_SEPARATOR = ":";
+    String getNextUUID();
 
-    void validateUuid(String uuid);
+    String[] validateUuid(String uuid);
+
 }

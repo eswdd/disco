@@ -1,5 +1,6 @@
 /*
  * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +35,8 @@ import java.util.*;
 import java.util.concurrent.Executor;
 import com.betfair.cougar.core.api.ev.*;
 import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.tornjak.monitor.MonitorRegistry;
+import com.betfair.cougar.core.impl.CougarInternalOperations;
+import com.betfair.cougar.core.impl.DefaultTimeConstraints;
 
 <@compress single_line=true>
 <#include "common.ftl">
@@ -55,10 +57,13 @@ public class ${service}ClientImpl implements ${service}Client {<#t>
 	private static final ServiceVersion serviceVersion = new ServiceVersion("${dotMajorMinorVersion}");
 
 	public ${service}ClientImpl(ExecutionVenue ev, Executor executor) {
-		this(ev, executor, null);
+		this(ev, executor, CougarInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
     }<#t>
-	
+
     public ${service}ClientImpl(ExecutionVenue ev, Executor executor, String namespace) {
+        if (namespace == null || "".equals(namespace)) {
+            throw new IllegalArgumentException("Namespace must be a non-empty string: "+namespace);
+        }
         this.ev = ev;
         this.executor = executor;
         this.namespace = namespace;
@@ -70,7 +75,7 @@ public class ${service}ClientImpl implements ${service}Client {<#t>
     }
 
     private void execute(final ExecutionContext ctx, final OperationKey operationKey,
-                         final Object[] args, final ExecutionObserver observer) {
+                         final Object[] args, final ExecutionObserver observer, final TimeConstraints timeConstraints) {
 
         final ExecutionObserver wrappedObserver = new ExecutionObserver() {
             @Override
@@ -84,16 +89,12 @@ public class ${service}ClientImpl implements ${service}Client {<#t>
             }
         };
 
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                ev.execute(
-                        ctx,
-                        operationKey,
-                        args,
-                        wrappedObserver);
-            }
-        });
+        ev.execute( ctx,
+                    operationKey,
+                    args,
+                    wrappedObserver,
+                    executor,
+                    timeConstraints);
     }
 
 <#list operations as operation>
@@ -103,6 +104,23 @@ public class ${service}ClientImpl implements ${service}Client {<#t>
 			<@createTypeDecl param.paramType/> ${param.paramName},
 		</#list>
 		ExecutionObserver obs)
+
+		{<#t>
+</@compress>
+        <@compress single_line=true>${operation.operationName}(ctx,
+		<#list operation.params as param>
+			${param.paramName},
+		</#list>
+		obs, 0L);
+</@compress>
+    }
+
+	<@compress single_line=true>public void ${operation.operationName}(
+		ExecutionContext ctx,
+		<#list operation.params as param>
+			<@createTypeDecl param.paramType/> ${param.paramName},
+		</#list>
+		ExecutionObserver obs, long timeoutMillis)
 
 		{<#t>
 </@compress>
@@ -117,19 +135,19 @@ public class ${service}ClientImpl implements ${service}Client {<#t>
 				${param.paramName}
 			</#list>
 			},
-			obs
+			obs, DefaultTimeConstraints.fromTimeout(timeoutMillis)
 			);
 	</@compress>
 
 	}
-		
+
 <#t>
 </#list><#t>
 
 <#list doc.event as event><#t>
 <#assign eventClassName = event.@name?cap_first><#t>
     public void subscribeTo${eventClassName}(ExecutionContext ctx, Object[] args, ExecutionObserver obs) {
-        execute(ctx, getOperationKey(${serviceDefinitionName}.subscribeTo${event.@name?cap_first}OperationKey), args, obs);
+        execute(ctx, getOperationKey(${serviceDefinitionName}.subscribeTo${event.@name?cap_first}OperationKey), args, obs, DefaultTimeConstraints.NO_CONSTRAINTS);
     }
 
 </#list>

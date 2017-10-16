@@ -1,9 +1,11 @@
 # Intellij project files
 .idea
 *.iml
+*.ipr
 
 # Log files
 *.log
+logs
 
 # Compiled files
 target
@@ -11,3 +13,6 @@ target
 # Folder view configuration files
 .DS_Store
 Desktop.ini
+
+# Local stuff
+fixCopyrights.sh

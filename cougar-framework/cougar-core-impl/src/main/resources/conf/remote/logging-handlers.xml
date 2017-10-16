@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2013, The Sporting Exchange Limited
+  ~ Copyright 2014, The Sporting Exchange Limited
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -30,23 +30,24 @@
 	<bean id="traceLogger" class="com.betfair.cougar.logging.LogDefinition" init-method="register">
 		<property name="logName" value="TRACE-LOG" />
 		<property name="traceLog" value="true" />
-		<property name="handler">	
-            <bean factory-bean="cougar.core.logHandlerFactory" factory-method="createLogHandler">
-                <constructor-arg type="java.util.Map">
-                    <util:map map-class="java.util.HashMap">
-                        <entry key="logName" value="TRACE-LOG"/>
-                        <entry key="fileName" value="$COUGAR{cougar.log.dir}/$COUGAR{system.hostname}-$COUGAR{cougar.app.name}-trace.log"/>
-                        <entry key="flush" value="true"/>
-                        <entry key="append" value="$COUGAR{cougar.log.TRACE.append}"/>
-                        <entry key="rotation" value="$COUGAR{cougar.log.TRACE.rotation}"/>
-                        <entry key="abstractLogger" value="false"/>
-                        <entry key="format" value="$COUGAR{cougar.log.traceFormatter.pattern}"/>
-                        <entry key="isTraceLogger" value="true"/>
-                    </util:map>
-                </constructor-arg>
-            </bean>
-		</property>
 	</bean>
+
+    <bean class="com.betfair.cougar.logging.HandlerCreator" init-method="create">
+        <property name="factory" ref="cougar.core.logHandlerFactory"/>
+        <property name="properties">
+            <util:map map-class="java.util.HashMap">
+                <entry key="logName" value="TRACE-LOG"/>
+                <entry key="fileName" value="$COUGAR{cougar.log.dir}/$COUGAR{system.hostname}-$COUGAR{cougar.app.name}-trace.log"/>
+                <entry key="flush" value="true"/>
+                <entry key="append" value="$COUGAR{cougar.log.TRACE.append}"/>
+                <entry key="rotation" value="$COUGAR{cougar.log.TRACE.rotation}"/>
+                <entry key="abstractLogger" value="false"/>
+                <entry key="format" value="$COUGAR{cougar.log.traceFormatter.pattern}"/>
+                <entry key="isTraceLogger" value="true"/>
+            </util:map>
+        </property>
+    </bean>
+
 
     <alias name="$COUGAR{cougar.events.logHandlerFactory}" alias="cougar.core.logHandlerFactory"/>
 

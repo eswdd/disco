@@ -1,5 +1,6 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
+ * Copyright 2014, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +18,6 @@
 package com.betfair.cougar.core.impl.ev;
 
 import java.util.*;
-import java.util.logging.Level;
 
 import com.betfair.cougar.api.*;
 import com.betfair.cougar.core.api.ServiceDefinition;
@@ -25,12 +25,14 @@ import com.betfair.cougar.core.api.ServiceRegistrar;
 import com.betfair.cougar.core.api.ServiceVersion;
 import com.betfair.cougar.core.api.ev.*;
 import com.betfair.cougar.core.api.security.IdentityResolverFactory;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import com.betfair.cougar.core.api.tracing.Tracer;
+import com.betfair.cougar.core.impl.CougarInternalOperations;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.util.configuration.PropertyConfigurer;
 import com.betfair.tornjak.kpi.KPIMonitor;
 import com.betfair.tornjak.monitor.MonitorRegistry;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -40,8 +42,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
  *
  */
 public class ServiceRegisterableExecutionVenue extends BaseExecutionVenue implements ApplicationListener, ServiceRegistrar {
-	
-	private final static CougarLogger logger = CougarLoggingUtils.getLogger(ServiceRegisterableExecutionVenue.class);
+
+	private final static Logger LOGGER = LoggerFactory.getLogger(ServiceRegisterableExecutionVenue.class);
 
 	private Map<String, Map<ServiceDefinition, Service>> serviceImplementationMap = new HashMap<String, Map<ServiceDefinition, Service>>();
     private Map<ServiceKey, String> serviceStatNames = new HashMap<>();
@@ -50,6 +52,7 @@ public class ServiceRegisterableExecutionVenue extends BaseExecutionVenue implem
     private ServiceLogManagerFactory serviceLogManagerFactory;
     private IdentityResolverFactory identityResolverFactory;
     protected MonitorRegistry monitorRegistry;
+    private Tracer tracer;
 
     public void setIdentityResolverFactory(IdentityResolverFactory identityResolverFactory) {
         this.identityResolverFactory = identityResolverFactory;
@@ -67,15 +70,28 @@ public class ServiceRegisterableExecutionVenue extends BaseExecutionVenue implem
         this.monitorRegistry = monitorRegistry;
     }
 
+    public void setTracer(Tracer tracer) {
+        this.tracer = tracer;
+    }
+
+    public Tracer getTracer() {
+        return tracer;
+    }
+
     private void registerServiceDefinition(String namespace, ServiceDefinition serviceDefinition, ExecutableResolver resolver) {
         String serviceStatName = getServiceStatName(namespace, serviceDefinition);
         for (OperationDefinition op : serviceDefinition.getOperationDefinitions()) {
             OperationKey namespacedOperationKey = namespace == null ? op.getOperationKey() : new OperationKey(op.getOperationKey(), namespace);
+            String timeoutPropertyName = "timeout."+namespacedOperationKey;
+            String timeoutValue = PropertyConfigurer.getAllLoadedProperties().get(timeoutPropertyName);
+            if (LOGGER.isInfoEnabled() && timeoutValue != null) {
+                LOGGER.info("Setting timeout for "+namespacedOperationKey+" to "+timeoutValue+"ms");
+            }
             registerOperation(
                 namespace,
                 op,
                 resolver.resolveExecutable(namespacedOperationKey, this),
-                stats != null ? new ServiceOperationExecutionTimingRecorder(stats, serviceStatName, op.getOperationKey().getOperationName()) : new NullExecutionTimingRecorder());
+                stats != null ? new ServiceOperationExecutionTimingRecorder(stats, serviceStatName, op.getOperationKey().getOperationName()) : new NullExecutionTimingRecorder(), timeoutValue != null ? Long.parseLong(timeoutValue) : 0);
         }
     }
 
@@ -95,15 +111,26 @@ public class ServiceRegisterableExecutionVenue extends BaseExecutionVenue implem
     @Override
     public void registerService(String namespace, ServiceDefinition serviceDefinition, Service implementation, ExecutableResolver resolver) {
         getImplementationMapForNamespace(namespace).put(serviceDefinition, implementation);
+        // register the real service executables
         registerServiceDefinition(namespace, serviceDefinition, resolver);
+        if (namespace == null) {
+            // register the in process one if this is the core service binding
+            final InProcessExecutable inProcessExecutable = new InProcessExecutable(tracer);
+            registerServiceDefinition(CougarInternalOperations.COUGAR_IN_PROCESS_NAMESPACE, serviceDefinition, new ExecutableResolver() {
+                @Override
+                public Executable resolveExecutable(OperationKey operationKey, ExecutionVenue ev) {
+                    return inProcessExecutable;
+                }
+            });
+        }
 
-        logger.log(Level.INFO, "Initialising %s Service version %s",
+        LOGGER.info("Initialising {} Service version {}",
                 serviceDefinition.getServiceName(),
                 serviceDefinition.getServiceVersion().toString());
 
         implementation.init(getContainerContext(getServiceLogManager(namespace, serviceDefinition)));
 
-        logger.log(Level.INFO, "Initialisation complete");
+        LOGGER.info("Initialisation complete");
     }
 
     protected Map<String, Map<ServiceDefinition, Service>> getServiceImplementationMap() {
@@ -141,12 +168,14 @@ public class ServiceRegisterableExecutionVenue extends BaseExecutionVenue implem
 		    dumpProperties();
             // now init the identity resolver
             setIdentityResolver(identityResolverFactory.getIdentityResolver());
+            // start
+            start();
 		}
 	}
 
 	private void dumpProperties() {
 		final Map<String,String> props = PropertyConfigurer.getAllLoadedProperties();
-		logger.log(Level.INFO, "Properties loaded from config files and system property overrides");
+		LOGGER.info("Properties loaded from config files and system property overrides");
 		int longest = 0;
 		for (Map.Entry<String,String> me : props.entrySet()) {
 			longest = Math.max(longest, me.getKey().length());
@@ -157,13 +186,13 @@ public class ServiceRegisterableExecutionVenue extends BaseExecutionVenue implem
             if (me.getKey().toLowerCase().contains("password")) {
             	value = "*****";
             }
-            logger.log(Level.INFO, "  %-"+longest+"s = %s%s", 
-                            me.getKey(),
+            LOGGER.info("  {} = {}{}",
+                            StringUtils.rightPad(me.getKey(),longest),
                             value,
                             (sysOverride == null ? "" : " [OVERRIDDEN]"));
         }
 	}
-	
+
     private ContainerContext getContainerContext(final ServiceLogManager logManager) {
     	return new ContainerContext() {
 
@@ -205,7 +234,7 @@ public class ServiceRegisterableExecutionVenue extends BaseExecutionVenue implem
             }
         };
     }
-	
+
 	private ServiceInfo makeServiceInfo(String namespace, ServiceDefinition serviceDefinition, Service implementation) {
 		List<String> operations = new ArrayList<>();
 		for (OperationDefinition operationDefinition : serviceDefinition.getOperationDefinitions()) {
@@ -213,7 +242,7 @@ public class ServiceRegisterableExecutionVenue extends BaseExecutionVenue implem
 		}
 		return new ServiceInfo(namespace,
                 implementation,
-				serviceDefinition.getServiceName(), 
+				serviceDefinition.getServiceName(),
 				serviceDefinition.getServiceVersion().toString(),
                 operations);
 	}

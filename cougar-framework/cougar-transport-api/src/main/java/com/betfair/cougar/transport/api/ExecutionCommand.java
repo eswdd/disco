@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,10 @@
 
 package com.betfair.cougar.transport.api;
 
+import com.betfair.cougar.api.DehydratedExecutionContext;
 import com.betfair.cougar.core.api.ev.ExecutionObserver;
 import com.betfair.cougar.core.api.ev.OperationKey;
+import com.betfair.cougar.core.api.ev.TimeConstraints;
 
 /**
  * A command to execute an operation with the specified arguments, and to be notified of the result.
@@ -25,4 +27,5 @@ import com.betfair.cougar.core.api.ev.OperationKey;
 public interface ExecutionCommand extends ExecutionObserver {
 	public OperationKey getOperationKey();
 	public Object [] getArgs();
+    TimeConstraints getTimeConstraints();
 }

@@ -20,7 +20,7 @@
   <parent>
     <artifactId>cougar-test</artifactId>
     <groupId>com.betfair.cougar</groupId>
-    <version>3.0-SNAPSHOT</version>
+    <version>3.3-SNAPSHOT</version>
   </parent>
   
   <artifactId>cougar-binaryprotocol-tests</artifactId>
@@ -147,7 +147,6 @@
     <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpcore</artifactId>
-        <version>${apache.httpcore.version}</version>
         <scope>test</scope>
     </dependency>
 	 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ public class KPITimingUnMarshaller implements UnMarshaller {
     private final KPIMonitor monitor;
     private final String  kpiName;
     private final UnMarshaller unmarshaller;
-    
+
     public KPITimingUnMarshaller(KPIMonitor monitor, String kpiName, UnMarshaller marshaller) {
         this.monitor = monitor;
         this.kpiName = kpiName;
@@ -43,11 +43,11 @@ public class KPITimingUnMarshaller implements UnMarshaller {
 	}
 
     @Override
-    public Object unmarshall(InputStream inputStream, ParameterType parameterType, String encoding) {
+    public Object unmarshall(InputStream inputStream, ParameterType parameterType, String encoding, boolean client) {
         boolean success = false;
         long start = System.currentTimeMillis();
         try {
-            Object result = unmarshaller.unmarshall(inputStream, parameterType,  encoding);
+            Object result = unmarshaller.unmarshall(inputStream, parameterType,  encoding, client);
             success = true;
             return result;
         }
@@ -57,11 +57,11 @@ public class KPITimingUnMarshaller implements UnMarshaller {
     }
 
     @Override
-    public Object unmarshall(InputStream inputStream, Class<?> clazz, String encoding) {
+    public Object unmarshall(InputStream inputStream, Class<?> clazz, String encoding, boolean client) {
         boolean success = false;
-        long start = System.currentTimeMillis();        
+        long start = System.currentTimeMillis();
         try {
-            Object result = unmarshaller.unmarshall(inputStream, clazz, encoding);
+            Object result = unmarshaller.unmarshall(inputStream, clazz, encoding, client);
             success = true;
             return result;
         }

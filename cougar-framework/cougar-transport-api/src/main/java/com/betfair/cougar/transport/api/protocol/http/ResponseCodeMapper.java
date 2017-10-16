@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ public class ResponseCodeMapper {
 		RESPONSE_CODES.put(ResponseCode.UnsupportedMediaType, HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
 		RESPONSE_CODES.put(ResponseCode.MediaTypeNotAcceptable, HttpServletResponse.SC_NOT_ACCEPTABLE);
 		RESPONSE_CODES.put(ResponseCode.BadRequest, HttpServletResponse.SC_BAD_REQUEST);
+		RESPONSE_CODES.put(ResponseCode.BadResponse, HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // should never occur on server
 		RESPONSE_CODES.put(ResponseCode.Ok, HttpServletResponse.SC_OK);
         RESPONSE_CODES.put(ResponseCode.CantWriteToSocket, HttpServletResponse.SC_OK); // We can't write it anyway...
 
@@ -45,11 +46,11 @@ public class ResponseCodeMapper {
 			throw new IllegalStateException("Incorrect number of response codes mapped in http");
 		}
 	}
-	
+
 	public static void setResponseStatus(HttpServletResponse response, ResponseCode code) {
 		response.setStatus(RESPONSE_CODES.get(code));
 	}
-	
+
 	public static int getHttpResponseCode(ResponseCode code) {
 		return RESPONSE_CODES.get(code);
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,18 +49,18 @@ public class TerminateSubscription extends AbstractHeapTranscribable {
     }
 
     @Override
-    public void transcribe(TranscriptionOutput out, Set<TranscribableParams> params) throws Exception {
-        out.writeObject(heapId, parameters[0]);
-        out.writeObject(subscriptionId, parameters[1]);
-        out.writeObject(closeReason, parameters[2]);
+    public void transcribe(TranscriptionOutput out, Set<TranscribableParams> params, boolean client) throws Exception {
+        out.writeObject(heapId, parameters[0], client);
+        out.writeObject(subscriptionId, parameters[1], client);
+        out.writeObject(closeReason, parameters[2], client);
         // NOTE: add new fields at the end
     }
 
     @Override
-    public void transcribe(TranscriptionInput in, Set<TranscribableParams> params) throws Exception {
-        heapId = (Long) in.readObject(parameters[0]);
-        subscriptionId = (String) in.readObject(parameters[1]);
-        closeReason = (String) in.readObject(parameters[2]);
+    public void transcribe(TranscriptionInput in, Set<TranscribableParams> params, boolean client) throws Exception {
+        heapId = (Long) in.readObject(parameters[0], client);
+        subscriptionId = (String) in.readObject(parameters[1], client);
+        closeReason = (String) in.readObject(parameters[2], client);
         // NOTE: add new fields at the end
     }
 

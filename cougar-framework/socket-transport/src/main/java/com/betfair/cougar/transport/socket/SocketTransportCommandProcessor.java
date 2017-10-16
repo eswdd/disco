@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,21 @@
 
 package com.betfair.cougar.transport.socket;
 
-import com.betfair.cougar.api.ExecutionContextWithTokens;
+import com.betfair.cougar.api.DehydratedExecutionContext;
 import com.betfair.cougar.core.api.*;
 import com.betfair.cougar.core.api.ev.ConnectedResponse;
 import com.betfair.cougar.core.api.ev.ExecutionResult;
 import com.betfair.cougar.core.api.ev.OperationDefinition;
 import com.betfair.cougar.core.api.ev.OperationKey;
+import com.betfair.cougar.core.api.ev.TimeConstraints;
 import com.betfair.cougar.core.api.exception.*;
 import com.betfair.cougar.core.api.security.IdentityResolverFactory;
+import com.betfair.cougar.core.api.tracing.Tracer;
 import com.betfair.cougar.core.api.transcription.EnumDerialisationException;
 import com.betfair.cougar.core.api.transcription.TranscriptionException;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import com.betfair.cougar.core.impl.DefaultTimeConstraints;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.logging.EventLoggingRegistry;
 import com.betfair.cougar.marshalling.api.socket.RemotableMethodInvocationMarshaller;
 import com.betfair.cougar.netutil.nio.CougarProtocol;
@@ -56,11 +59,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Level;
 
 @ManagedResource
 public class SocketTransportCommandProcessor extends AbstractCommandProcessor<SocketTransportCommand> implements GateListener {
-    private static CougarLogger logger = CougarLoggingUtils.getLogger(SocketTransportCommandProcessor.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(SocketTransportCommandProcessor.class);
 
     private RemotableMethodInvocationMarshaller marshaller;
 
@@ -92,7 +94,7 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
     public void process(SocketTransportCommand command) {
         if (command instanceof SocketTransportRPCCommand) {
             incrementOutstandingRequests();
-            super.process(command);    //To change body of overridden methods use File | Settings | File Templates.
+            super.process(command);
         } else {
             try {
                 CougarObjectInput input = command.getInput();
@@ -102,15 +104,15 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
                 if (eventPayload instanceof TerminateSubscription) {
                     connectedObjectManager.terminateSubscription(command.getSession(), (TerminateSubscription) eventPayload);
                 } else {
-                    logger.log(Level.SEVERE, "SocketTransportCommandProcessor - Received unexpected event type: " + eventPayload + " - closing session");
+                    LOGGER.error("SocketTransportCommandProcessor - Received unexpected event type: " + eventPayload + " - closing session");
                     nioLogger.log(NioLogger.LoggingLevel.SESSION, command.getSession(), "SocketTransportCommandProcessor - Received unexpected event type: %s - closing session", eventPayload);
                     command.getSession().close();
                 }
             } catch (Exception e) {
                 if (e instanceof IOException) {
-                    logger.log(Level.FINE, "IO exception from session " + NioUtils.getSessionId(command.getSession()), e);
+                    LOGGER.debug("IO exception from session " + NioUtils.getSessionId(command.getSession()), e);
                 } else {
-                    logger.log(Level.WARNING, "Unexpected exception from session " + NioUtils.getSessionId(command.getSession()), e);
+                    LOGGER.warn("Unexpected exception from session " + NioUtils.getSessionId(command.getSession()), e);
                 }
                 nioLogger.log(NioLogger.LoggingLevel.SESSION, command.getSession(), "SocketTransportCommandProcessor - %s received: %s - closing session", e.getClass().getSimpleName(), e.getMessage());
                 command.getSession().close();
@@ -119,7 +121,7 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
     }
 
     @Override
-    protected CommandResolver<SocketTransportCommand> createCommandResolver(SocketTransportCommand command) {
+    protected CommandResolver<SocketTransportCommand> createCommandResolver(SocketTransportCommand command, final Tracer tracer) {
         try {
 
             final CougarObjectInput in = command.getInput();
@@ -140,7 +142,7 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
                         }
                         catch (SSLPeerUnverifiedException spue) {
                             // since we don't know in here that the client cert was required, we'll just ignore this..
-                            logger.log(Level.FINE, "SSL peer unverified");
+                            LOGGER.debug("SSL peer unverified");
                             clientCertChain = new X509Certificate[0];
                         }
                         rpcCommand.getSession().setAttribute(CougarProtocol.CLIENT_CERTS_ATTR_NAME, clientCertChain);
@@ -162,7 +164,8 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
                         rpcCommand.getSession().setAttribute(CougarProtocol.TSSF_ATTR_NAME, transportSecurityStrengthFactor);
                     }
                 }
-                ExecutionContextWithTokens context = marshaller.readExecutionContext(in, command.getRemoteAddress(), clientCertChain, transportSecurityStrengthFactor, CougarProtocol.getProtocolVersion(command.getSession()));
+                byte protocolVersion = CougarProtocol.getProtocolVersion(command.getSession());
+                final DehydratedExecutionContext context = marshaller.readExecutionContext(in, command.getRemoteAddress(), clientCertChain, transportSecurityStrengthFactor, protocolVersion);
                 final SocketRequestContextImpl requestContext = new SocketRequestContextImpl(context);
                 OperationKey remoteOperationKey = marshaller.readOperationKey(in);
                 OperationDefinition opDef = findCompatibleBinding(remoteOperationKey);
@@ -172,6 +175,8 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
                 final OperationKey operationKey = opDef.getOperationKey(); // safer to read it from locally
                 final OperationDefinition operationDefinition = getExecutionVenue().getOperationDefinition(operationKey);
                 final Object[] args = marshaller.readArgs(operationDefinition.getParameters(), in);
+                TimeConstraints rawTimeConstraints = marshaller.readTimeConstraintsIfPresent(in, protocolVersion);
+                final TimeConstraints timeConstraints = DefaultTimeConstraints.rebaseFromNewStartTime(context.getRequestTime(), rawTimeConstraints);
                 final ExecutionCommand exec = new ExecutionCommand() {
 
                     @Override
@@ -190,46 +195,51 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
                             if (operationKey.getType() == OperationKey.Type.ConnectedObject) {
                                 connectedObjectManager.addSubscription(SocketTransportCommandProcessor.this, rpcCommand, (ConnectedResponse) result.getResult(), operationDefinition, requestContext, requestContext.getConnectedObjectLogExtension());
                             } else {
-                                writeSuccessResponse(rpcCommand, result);
+                                writeSuccessResponse(rpcCommand, result, requestContext);
                             }
                         } else if (result.getResultType() == ExecutionResult.ResultType.Fault) {
-                            writeErrorResponse(rpcCommand, requestContext, result.getFault());
+                            writeErrorResponse(rpcCommand, requestContext, result.getFault(), true);
                         }
+                    }
+
+                    @Override
+                    public TimeConstraints getTimeConstraints() {
+                        return timeConstraints;
                     }
                 };
 
-                return new SingleExecutionCommandResolver<SocketTransportCommand>() {
+                return new SingleExecutionCommandResolver<SocketTransportCommand>(tracer) {
 
                     @Override
-                    public ExecutionCommand resolveExecutionCommand() {
+                    public ExecutionCommand resolveExecutionCommand(Tracer tracer) {
                         return exec;
                     }
 
                     @Override
-                    public ExecutionContextWithTokens resolveExecutionContext() {
+                    public DehydratedExecutionContext resolveExecutionContext() {
                         return requestContext;
                     }
                 };
             } else {
-                logger.log(Level.SEVERE, "SocketTransportCommandProcessor - Received an event request for processing like an rpc request, closing session");
+                LOGGER.error("SocketTransportCommandProcessor - Received an event request for processing like an rpc request, closing session");
                 nioLogger.log(NioLogger.LoggingLevel.SESSION, command.getSession(), "SocketTransportCommandProcessor - Received an event request for processing like an rpc request, closing session");
                 command.getSession().close();
                 throw new IllegalStateException("Received an event request for processing like an rpc request");
             }
         } catch (EnumDerialisationException ede) {
             final String message = ede.getMessage();
-            logger.log(Level.FINER, message, ede);
-            throw new CougarServiceException(ServerFaultCode.BinDeserialisationParseFailure, message, ede);
+            LOGGER.debug(message, ede);
+            throw CougarMarshallingException.unmarshallingException("binary",message,ede,false);
         } catch (CougarException ce) {
             throw ce;
         } catch (TranscriptionException e) {
             final String message = "transcription exception deserialising invocation";
-            logger.log(Level.FINER, message, e);
-            throw new CougarServiceException(ServerFaultCode.ClassConversionFailure, message, e);
+            LOGGER.debug(message, e);
+            throw CougarMarshallingException.unmarshallingException("binary",message,e,false);
         } catch (Exception e) {
             final String message = "Unable to deserialise invocation";
-            logger.log(Level.FINER, message, e);
-            throw new CougarServiceException(ServerFaultCode.BinDeserialisationParseFailure, message, e);
+            LOGGER.debug(message, e);
+            throw CougarMarshallingException.unmarshallingException("binary",message,e,false);
         }
 
     }
@@ -253,7 +263,7 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
         return null;
     }
 
-    protected boolean writeSuccessResponse(SocketTransportRPCCommand command, ExecutionResult result) {
+    protected boolean writeSuccessResponse(SocketTransportRPCCommand command, ExecutionResult result, DehydratedExecutionContext context) {
         CougarObjectOutput out = command.getOutput();
         try {
             synchronized (out) {
@@ -262,16 +272,17 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
             }
             return true;
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Unable to stream response to client", e);
+            LOGGER.error("Unable to stream response to client", e);
             return false;
         } finally {
             decrementOutstandingRequests();
+            tracer.end(context.getRequestUUID());
         }
 
     }
 
     @Override
-    protected void writeErrorResponse(SocketTransportCommand command, ExecutionContextWithTokens context, CougarException e) {
+    protected void writeErrorResponse(SocketTransportCommand command, DehydratedExecutionContext context, CougarException e, boolean traceStarted) {
         if (command instanceof SocketTransportRPCCommand) {
             SocketTransportRPCCommand rpcCommand = (SocketTransportRPCCommand) command;
             incrementErrorsWritten();
@@ -283,12 +294,15 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
                 }
             } catch (Exception ex) {
                 //An unrecoverable exception, lest we end up in an infinite loop
-                logger.log(Level.SEVERE, "Unable to stream error response to client", ex);
+                LOGGER.error("Unable to stream error response to client", ex);
             } finally {
                 decrementOutstandingRequests();
+                if (traceStarted && context != null) {
+                    tracer.end(context.getRequestUUID());
+                }
             }
         } else {
-            logger.log(Level.SEVERE, "SocketTransportCommandProcessor - Trying to write an error response for an event, closing session");
+            LOGGER.error("SocketTransportCommandProcessor - Trying to write an error response for an event, closing session");
             nioLogger.log(NioLogger.LoggingLevel.SESSION, command.getSession(), "SocketTransportCommandProcessor - Trying to write an error response for an event, closing session");
             command.getSession().close();
         }

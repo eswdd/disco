@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,13 @@
 package com.betfair.cougar.logging;
 
 
-import com.betfair.cougar.logging.handlers.AbstractLogHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LogDefinition {
-	private AbstractLogHandler handler;
 	private String logName;
 	private boolean traceLog;
-	
-	public void setHandler(AbstractLogHandler handler) {
-		this.handler = handler;
-	}
+
 	public void setLogName(String logName) {
 		this.logName = logName;
 	}
@@ -36,8 +33,8 @@ public class LogDefinition {
 
 	public void register() {
 		if (traceLog) {
-            CougarLogger cougarLogger = CougarLoggingUtils.getLogger(logName);
-			CougarLoggingUtils.setTraceLogger(cougarLogger);
+            Logger traceLogger = LoggerFactory.getLogger(logName);
+			CougarLoggingUtils.setTraceLogger(traceLogger);
 		}
 	}
 

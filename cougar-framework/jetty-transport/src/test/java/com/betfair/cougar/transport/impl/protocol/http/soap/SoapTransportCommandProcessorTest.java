@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,14 @@ import com.betfair.cougar.api.security.*;
 import com.betfair.cougar.core.api.OperationBindingDescriptor;
 import com.betfair.cougar.core.api.ServiceVersion;
 import com.betfair.cougar.core.api.ev.ExecutionResult;
+import com.betfair.cougar.core.api.ev.TimeConstraints;
 import com.betfair.cougar.core.api.exception.CougarServiceException;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
 import com.betfair.cougar.core.api.fault.FaultController;
 import com.betfair.cougar.marshalling.impl.databinding.xml.JdkEmbeddedXercesSchemaValidationFailureParser;
+import com.betfair.cougar.transport.api.CommandResolver;
+import com.betfair.cougar.transport.api.ExecutionCommand;
+import com.betfair.cougar.transport.api.TransportCommand;
 import com.betfair.cougar.transport.api.TransportCommand.CommandStatus;
 import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
 import com.betfair.cougar.transport.api.protocol.http.soap.SoapIdentityTokenResolver;
@@ -34,7 +38,6 @@ import com.betfair.cougar.transport.api.protocol.http.soap.SoapOperationBindingD
 import com.betfair.cougar.transport.api.protocol.http.soap.SoapServiceBindingDescriptor;
 import com.betfair.cougar.transport.impl.protocol.http.AbstractHttpCommandProcessorTest;
 import com.betfair.cougar.transport.impl.protocol.http.ContentTypeNormaliser;
-import com.betfair.cougar.transport.impl.protocol.http.DefaultGeoLocationDeserializer;
 import junit.framework.AssertionFailedError;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
@@ -46,7 +49,6 @@ import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
-import org.mockito.Matchers;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -67,10 +69,11 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
-public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProcessorTest {
+public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProcessorTest<OMElement> {
     public static final String       AZ            = "Azerbaijan";
 
 	private static final String soapEnvStart = "<?xml version='1.0' encoding='utf-8'?><soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">";
@@ -83,7 +86,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 	private static final String soapFaultFinish = "</soapenv:Fault>";
     private static final String nullSoapBody = "<soapenv:Body/>";
 
-	
+
 	private static final String firstOpIn = "<FirstTestOpRequest xmlns=\"http://www.betfair.com/soaptest\"><FirstOpFirstParam>hello</FirstOpFirstParam></FirstTestOpRequest>";
 	private static final String firstOpInDuplicate = "<FirstTestOpRequest xmlns=\"http://www.betfair.com/soaptest\"><FirstOpFirstParam>hello</FirstOpFirstParam><FirstOpFirstParam>goodbye</FirstOpFirstParam></FirstTestOpRequest>";
 	private static final String firstOpOut = "<FirstTestOpResponse xmlns=\"http://www.betfair.com/soaptest\"><response>goodbye</response></FirstTestOpResponse>";
@@ -94,15 +97,15 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 	private static final String listOpIn = "<ListOpRequest xmlns=\"http://www.betfair.com/soaptest\"><ListOpFirstParam><Date>248556211-09-30T12:12:53.297+01:00</Date><Date>248556211-09-30T12:12:53.297Z</Date></ListOpFirstParam></ListOpRequest>";
 	private static final String listOpOut = "<ListOpResponse xmlns=\"http://www.betfair.com/soaptest\"><response><Date>248556211-09-30T11:12:53.297Z</Date><Date>248556211-09-30T12:12:53.297Z</Date></response></ListOpResponse>";
 	private static final String invalidOpIn = "<InvalidOpRequest xmlns=\"http://www.betfair.com/soaptest\"><InvalidOpFirstParam>INVALID</InvalidOpFirstParam></InvalidOpRequest>";
-	private static final String invalidOpError = "<faultcode>soapenv:Client</faultcode><faultstring>DSC-0006</faultstring><detail />";
+	private static final String invalidOpError = "<faultcode>soapenv:Client</faultcode><faultstring>DSC-0044</faultstring><detail />";
     private static final String invalidCredentialsError = "<faultcode>soapenv:Client</faultcode><faultstring>DSC-0015</faultstring><detail />";
     private static final String voidResponseOpIn = "<VoidResponseRequest xmlns=\"http://www.betfair.com/soaptest\"><VoidReturnOpFirstParam>TEST1</VoidReturnOpFirstParam></VoidResponseRequest>";
     private static final String duplicateRequestParamIn = "<VoidResponseRequest xmlns=\"http://www.betfair.com/soaptest\"><VoidReturnOpFirstParam>TEST1</VoidReturnOpFirstParam><VoidReturnOpFirstParam>TEST2</VoidReturnOpFirstParam></VoidResponseRequest>";
     private static final String invalidVoidResponseOpIn = "<VoidResponseRequest xmlns=\"http://www.betfair.com/soaptest\"><VoidReturnOpFirstParam>INVALID</VoidReturnOpFirstParam></VoidResponseRequest>";
-    private static final String invalidVoidResponseOpOut = "<faultcode>soapenv:Client</faultcode><faultstring>DSC-0006</faultstring><detail />";
+    private static final String invalidVoidResponseOpOut = "<faultcode>soapenv:Client</faultcode><faultstring>DSC-0044</faultstring><detail />";
     private static final String externalEntityIn = "<!DOCTYPE foo [<!ELEMENT foo ANY ><!ENTITY xxe1 SYSTEM \"file:///etc/shadow\" >]> ";
     private static final String externalEntityInWithBody = externalEntityIn+"<VoidResponseRequest xmlns=\"http://www.betfair.com/soaptest\"><VoidReturnOpFirstParam>&foo;</VoidReturnOpFirstParam>";
-    private static final String invalidInputFault = "<faultcode>soapenv:Client</faultcode><faultstring>DSC-0006</faultstring><detail />";
+    private static final String invalidInputFault = "<faultcode>soapenv:Client</faultcode><faultstring>DSC-0044</faultstring><detail />";
 
 	private static final OperationBindingDescriptor[] operationBindings = new OperationBindingDescriptor[] {
 		new SoapOperationBindingDescriptor(firstOpKey, "FirstTestOpRequest", "FirstTestOpResponse"),
@@ -110,7 +113,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 		new SoapOperationBindingDescriptor(listOpKey, "ListOpRequest", "ListOpResponse"),
 		new SoapOperationBindingDescriptor(invalidOpKey, "InvalidOpRequest", "InvalidOpResponse"),
         new SoapOperationBindingDescriptor(voidReturnOpKey, "VoidResponseRequest", null)};
-	
+
 	private static final SoapServiceBindingDescriptor serviceBinding = new SoapServiceBindingDescriptor() {
         private ServiceVersion serviceVersion = new ServiceVersion("v1.92");
 
@@ -158,10 +161,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
     @Before
 	public void init() throws Exception {
 		super.init();
-		soapCommandProcessor = new SoapTransportCommandProcessor(geoIPLocator, new DefaultGeoLocationDeserializer(), "X-UUID",
-                new InferredCountryResolver<HttpServletRequest>() {
-                    public String inferCountry(HttpServletRequest input) { return AZ;}
-        }, new JdkEmbeddedXercesSchemaValidationFailureParser());
+		soapCommandProcessor = new SoapTransportCommandProcessor(contextResolution, "X-RequestTimeout", new JdkEmbeddedXercesSchemaValidationFailureParser());
 		init(soapCommandProcessor);
 		ContentTypeNormaliser ctn = mock(ContentTypeNormaliser.class);
 		when(ctn.getNormalisedResponseMediaType(any(HttpServletRequest.class))).thenReturn(MediaType.APPLICATION_XML_TYPE);
@@ -173,8 +173,19 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 		soapCommandProcessor.bind(serviceBinding);
 		soapCommandProcessor.onCougarStart();
         command=super.createCommand(identityTokenResolver, Protocol.SOAP);
+
 	}
-	
+
+    @Override
+    protected OMElement isCredentialContainer() {
+        return any(OMElement.class);
+    }
+
+    @Override
+    protected Protocol getProtocol() {
+        return Protocol.SOAP;
+    }
+
     /**
      * Basic test with string parameters
      * @throws Exception
@@ -205,6 +216,8 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
         verify(response).setContentType(MediaType.TEXT_XML);
         verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
                                             any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        verifyTracerCalls(firstOpKey);
     }
 
     /**
@@ -236,6 +249,8 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
         verify(response).setContentType(MediaType.TEXT_XML);
         verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
                                             any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        verifyTracerCalls(firstOpKey);
     }
 
     /**
@@ -268,6 +283,8 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
         verify(response).setContentType(MediaType.TEXT_XML);
         verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
                                             any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        verifyTracerCalls(voidReturnOpKey);
     }
 
     /**
@@ -290,6 +307,8 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
         verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
                                             any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        verifyTracerCalls(null);
     }
 
     /**
@@ -321,6 +340,8 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
         verify(response).setContentType(MediaType.TEXT_XML);
         verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
                 any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        verifyTracerCalls(voidReturnOpKey);
     }
 
 
@@ -347,13 +368,15 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 		// Assert that the expected exception is sent
 		ev.getObserver().onResult(new ExecutionResult(new CougarServiceException(
 					ServerFaultCode.ServiceCheckedException, "Error in App",
-					new TestApplicationException(ResponseCode.Forbidden, "TestError-123"))));
+					new TestApplicationException(ResponseCode.Forbidden, "TestError-123",faultMessages))));
 		assertEquals(CommandStatus.Complete, command.getStatus());
 		assertSoapyEquals(buildSoapMessage(null, null, firstOpError, firstOpErrorDetail), testOut.getOutput());
 		verify(response).setContentType(MediaType.TEXT_XML);
         verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
                                             any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        verifyTracerCalls(firstOpKey);
 	}
 
     /**
@@ -362,42 +385,48 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
      */
     @Test
     public void testDetailedFaultReporting() throws Exception {
-		// Set up the input
-		when(request.getInputStream()).thenReturn(
-				new TestServletInputStream(buildSoapMessage(null, firstOpIn, null, null)));
-        when(request.getScheme()).thenReturn("http");
-		faultMessages = new ArrayList<String[]>();
-		faultMessages.add(new String[] {"TheError", "The Error Detail"});
-
-		// Resolve the input command
-		soapCommandProcessor.process(command);
         FaultController.getInstance().setDetailedFaults(true);
+        try {
+            // Set up the input
+            when(request.getInputStream()).thenReturn(
+                    new TestServletInputStream(buildSoapMessage(null, firstOpIn, null, null)));
+            when(request.getScheme()).thenReturn("http");
+            faultMessages = new ArrayList<String[]>();
+            faultMessages.add(new String[] {"TheError", "The Error Detail"});
 
-		// Assert that the expected exception is sent
-        TestApplicationException tae = new TestApplicationException(ResponseCode.Forbidden, "TestError-123");
-		ev.getObserver().onResult(new ExecutionResult(new CougarServiceException(
-					ServerFaultCode.ServiceCheckedException, "Error in App",
-					tae)));
-		assertEquals(CommandStatus.Complete, command.getStatus());
+            // Resolve the input command
+            soapCommandProcessor.process(command);
 
-        String message = testOut.getOutput();
-        int traceStartPos = message.indexOf("<trace>");
-        int traceEndPos = message.indexOf("</trace>");
+            // Assert that the expected exception is sent
+            TestApplicationException tae = new TestApplicationException(ResponseCode.Forbidden, "TestError-123", faultMessages);
+            ev.getObserver().onResult(new ExecutionResult(new CougarServiceException(
+                        ServerFaultCode.ServiceCheckedException, "Error in App",
+                        tae)));
+            assertEquals(CommandStatus.Complete, command.getStatus());
 
-        int messageStartPos = message.indexOf("<message>");
-        int messageEndPos = message.indexOf("</message>");
+            String message = testOut.getOutput();
+            int traceStartPos = message.indexOf("<trace>");
+            int traceEndPos = message.indexOf("</trace>");
 
-        assertTrue(traceStartPos != -1);
-        assertTrue(traceEndPos != -1);
-        assertTrue(messageStartPos != -1);
-        assertTrue(messageEndPos != -1);
+            int messageStartPos = message.indexOf("<message>");
+            int messageEndPos = message.indexOf("</message>");
 
-        assertTrue(traceEndPos > (traceStartPos+7));
-        assertTrue(messageEndPos > (messageStartPos+9));
+            assertTrue(traceStartPos != -1);
+            assertTrue(traceEndPos != -1);
+            assertTrue(messageStartPos != -1);
+            assertTrue(messageEndPos != -1);
 
-        FaultController.getInstance().setDetailedFaults(false);
-        verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
-                                            any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+            assertTrue(traceEndPos > (traceStartPos+7));
+            assertTrue(messageEndPos > (messageStartPos+9));
+
+            verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
+                                                any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+            verifyTracerCalls(firstOpKey);
+        }
+        finally {
+            FaultController.getInstance().setDetailedFaults(false);
+        }
     }
 
 
@@ -413,13 +442,15 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
         when(request.getScheme()).thenReturn("http");
 
 		// Resolve the input command
-		soapCommandProcessor.process(command);	
+		soapCommandProcessor.process(command);
 		assertEquals(CommandStatus.Complete, command.getStatus());
 		assertSoapyEquals(buildSoapMessage(null, null, invalidOpError, null), testOut.getOutput());
 		verify(response).setContentType(MediaType.TEXT_XML);
         verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
                                             any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        verifyTracerCalls(null);
 	}
 
 	/**
@@ -437,7 +468,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 		// Resolve the input command
 		soapCommandProcessor.process(command);
 		assertEquals(1, ev.getInvokedCount());
-		
+
 		// Assert that we resolved the expected arguments
 		Object[] args = ev.getArgs();
 		assertNotNull(args);
@@ -465,6 +496,8 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 		assertSoapyEquals(buildSoapMessage(null, mapOpOut, null, null), testOut.getOutput());
         verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
                                             any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        verifyTracerCalls(mapOpKey);
 	}
 
 	/**
@@ -481,9 +514,9 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 		// Resolve the input command
 		soapCommandProcessor.process(command);
 		assertEquals(1, ev.getInvokedCount());
-		
+
 		DateTimeFormatter xmlFormat = ISODateTimeFormat.dateTimeParser();
-		
+
 		// Assert that we resolved the expected arguments
 		Object[] args = ev.getArgs();
 		assertNotNull(args);
@@ -498,13 +531,225 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 		List<Date> response = new ArrayList<Date>();
 		response.add(xmlFormat.parseDateTime("248556211-09-30T12:12:53.297+01:00").toDate());
 		response.add(xmlFormat.parseDateTime("248556211-09-30T12:12:53.297Z").toDate());
-		
+
 		ev.getObserver().onResult(new ExecutionResult(response));
 		assertEquals(CommandStatus.Complete, command.getStatus());
 		assertSoapyEquals(buildSoapMessage(null, listOpOut, null, null), testOut.getOutput());
         verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
                                             any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        verifyTracerCalls(listOpKey);
 	}
+
+
+    /**
+     * US53541
+     * Test for attempted XML Entity Injection
+     * @throws Exception
+     */
+    @Test
+    public void xmlEntityInjection() throws Exception {
+
+        when(request.getInputStream()).thenReturn(
+                new TestServletInputStream(buildSoapMessage(null, externalEntityIn, null, null)));
+        when(request.getScheme()).thenReturn("http");
+
+        // Resolve the input command
+        soapCommandProcessor.process(command);
+        assertEquals(CommandStatus.Complete, command.getStatus());
+        assertSoapyEquals(buildSoapMessage(null, null, invalidInputFault, null), testOut.getOutput());
+        verify(response).setContentType(MediaType.TEXT_XML);
+        verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        verify(logger).logAccess(eq(command), any(ExecutionContext.class), anyLong(), anyLong(),
+                any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        //verifyTracerCalls(); // todo: #81: put this back
+    }
+    /**
+     * US53541
+     * Test for attempted XML Entity Injection
+     * @throws Exception
+     */
+    @Test
+    public void xmlEntityInjectionWithBody() throws Exception {
+
+        when(request.getInputStream()).thenReturn(
+                new TestServletInputStream(buildSoapMessage(null, externalEntityInWithBody, null, null)));
+        when(request.getScheme()).thenReturn("http");
+
+        // Resolve the input command
+        soapCommandProcessor.process(command);
+        assertEquals(CommandStatus.Complete, command.getStatus());
+        assertSoapyEquals(buildSoapMessage(null, null, invalidInputFault, null), testOut.getOutput());
+        verify(response).setContentType(MediaType.TEXT_XML);
+        verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        verify(logger).logAccess(eq(command), any(ExecutionContext.class), anyLong(), anyLong(),
+                any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        //verifyTracerCalls(); // todo: #81: put this back
+    }
+
+    @Test
+    public void validationDisabled() throws Exception {
+        when(request.getInputStream()).thenReturn(
+                new TestServletInputStream(buildSoapMessage(null, firstOpInDuplicate, null, null)));
+        when(request.getScheme()).thenReturn("http");
+
+        soapCommandProcessor.setSchemaValidationEnabled(false);
+        soapCommandProcessor.process(command);
+        ev.getObserver().onResult(new ExecutionResult("goodbye"));
+        assertEquals(CommandStatus.Complete, command.getStatus());
+        // note we don't check we got the right result
+        // cougar is just non-deterministic if you have validation disabled
+        assertSoapyEquals(buildSoapMessage(null, firstOpOut, null, null), testOut.getOutput());
+        verify(response).setContentType(MediaType.TEXT_XML);
+        verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
+                any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        verifyTracerCalls(firstOpKey);
+    }
+
+    @Test
+    public void validationEnabledValidInput() throws Exception {
+        // verify the schema is actually valid before we continue
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        schemaFactory.newSchema(new StreamSource(getClass().getClassLoader().getResourceAsStream("xsd/foo.xsd")));
+
+        soapCommandProcessor.setSchemaValidationEnabled(true);
+
+        testProcess();
+    }
+
+    @Test
+    public void validationEnabledInvalidInput() throws Exception {
+        // verify the schema is actually valid before we continue
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        schemaFactory.newSchema(new StreamSource(getClass().getClassLoader().getResourceAsStream("xsd/foo.xsd")));
+
+        when(request.getInputStream()).thenReturn(
+                new TestServletInputStream(buildSoapMessage(null, firstOpInDuplicate, null, null)));
+        when(request.getScheme()).thenReturn("http");
+
+        soapCommandProcessor.setSchemaValidationEnabled(true);
+        soapCommandProcessor.process(command);
+
+        assertEquals(CommandStatus.Complete, command.getStatus());
+        assertSoapyEquals(buildSoapMessage(null, null, invalidInputFault, null), testOut.getOutput());
+        verify(response).setContentType(MediaType.TEXT_XML);
+        verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        verify(logger).logAccess(eq(command), any(ExecutionContext.class), anyLong(), anyLong(),
+                any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        //verifyTracerCalls(); // todo: #81: put this back
+    }
+
+
+    /**
+     * Tests a client error response is sent for invalid input
+     * @throws Exception
+     */
+    @Test
+    public void testProcess_IOException() throws Exception {
+        when(request.getScheme()).thenReturn("http");
+        ServletInputStream is = mock(ServletInputStream.class);
+        when(request.getInputStream()).thenReturn(is);
+        when(is.read()).thenThrow(new IOException("i/o error"));
+        when(is.read((byte[])any())).thenThrow(new IOException("i/o error"));
+        when(is.read((byte[])any(),anyInt(),anyInt())).thenThrow(new IOException("i/o error"));
+
+        // Resolve the input command
+        soapCommandProcessor.process(command);
+        assertEquals(CommandStatus.Complete, command.getStatus());
+        assertSoapyEquals(buildSoapMessage(null, null, invalidOpError, null), testOut.getOutput());
+        verify(response).setContentType(MediaType.TEXT_XML);
+        verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
+                any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        //verifyTracerCalls(); // todo: #81: put this back
+    }
+
+
+    /**
+     * Tests a client error response is sent for invalid input
+     * @throws Exception
+     */
+    @Test
+    public void testProcess_TooMuchData() throws Exception {
+        when(request.getInputStream()).thenReturn(
+                new TestServletInputStream(buildSoapMessage(null, firstOpIn, null, null)));
+        when(request.getScheme()).thenReturn("http");
+        soapCommandProcessor.setMaxPostBodyLength(10L);
+
+        // Resolve the input command
+        soapCommandProcessor.process(command);
+        assertEquals(CommandStatus.Complete, command.getStatus());
+        assertSoapyEquals(buildSoapMessage(null, null, invalidOpError, null), testOut.getOutput());
+        verify(response).setContentType(MediaType.TEXT_XML);
+        verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
+                any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+
+        //verifyTracerCalls(); // todo: #81: put this back
+    }
+
+    @Test
+    public void createCommandResolver_NoTimeout() throws IOException {
+
+        // Set up the input
+        when(request.getInputStream()).thenReturn(
+                new TestServletInputStream(buildSoapMessage(null, firstOpIn, null, null)));
+        when(request.getScheme()).thenReturn("http");
+
+        // resolve the command
+        CommandResolver<HttpCommand> cr = soapCommandProcessor.createCommandResolver(command, tracer);
+        Iterable<ExecutionCommand> executionCommands = cr.resolveExecutionCommands();
+
+        // check the output
+        ExecutionCommand executionCommand = executionCommands.iterator().next();
+        TimeConstraints constraints = executionCommand.getTimeConstraints();
+        assertNull(constraints.getExpiryTime());
+    }
+
+    @Test
+    public void createCommandResolver_WithTimeout() throws IOException {
+
+        // Set up the input
+        when(request.getInputStream()).thenReturn(
+                new TestServletInputStream(buildSoapMessage(null, firstOpIn, null, null)));
+        when(request.getScheme()).thenReturn("http");
+
+        // resolve the command
+        when(request.getHeader("X-RequestTimeout")).thenReturn("10000");
+        when(context.getRequestTime()).thenReturn(new Date());
+        CommandResolver<HttpCommand> cr = soapCommandProcessor.createCommandResolver(command, tracer);
+        Iterable<ExecutionCommand> executionCommands = cr.resolveExecutionCommands();
+
+        // check the output
+        ExecutionCommand executionCommand = executionCommands.iterator().next();
+        TimeConstraints constraints = executionCommand.getTimeConstraints();
+        assertNotNull(constraints.getExpiryTime());
+    }
+
+    @Test
+    public void createCommandResolver_WithTimeoutAndOldRequestTime() throws IOException {
+
+        // Set up the input
+        when(request.getInputStream()).thenReturn(
+                new TestServletInputStream(buildSoapMessage(null, firstOpIn, null, null)));
+        when(request.getScheme()).thenReturn("http");
+
+        // resolve the command
+        when(request.getHeader("X-RequestTimeout")).thenReturn("10000");
+        when(context.getRequestTime()).thenReturn(new Date(System.currentTimeMillis() - 10001));
+        CommandResolver<HttpCommand> cr = soapCommandProcessor.createCommandResolver(command, tracer);
+        Iterable<ExecutionCommand> executionCommands = cr.resolveExecutionCommands();
+
+        // check the output
+        ExecutionCommand executionCommand = executionCommands.iterator().next();
+        TimeConstraints constraints = executionCommand.getTimeConstraints();
+        assertTrue(constraints.getExpiryTime() < System.currentTimeMillis());
+    }
 
     /**
      * DE5417
@@ -515,7 +760,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 
         // Set up the input
         when(request.getInputStream()).thenReturn(
-                new TestServletInputStream("<soapenv:Envelope xmlns:a=\"http://www.w3.org/2005/08/addressing\" xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:sec=\"http://www.betfair.com/security/\" xmlns:usac=\"http://www.betfair.com/servicetypes/v1/USAccount/\">\n" +
+                new AbstractHttpCommandProcessorTest.TestServletInputStream("<soapenv:Envelope xmlns:a=\"http://www.w3.org/2005/08/addressing\" xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:sec=\"http://www.betfair.com/security/\" xmlns:usac=\"http://www.betfair.com/servicetypes/v1/USAccount/\">\n" +
                         "   <soapenv:Header>\n" +
                         "      <a:Action>retrieveAccount</a:Action>\n" +
                         "      <sec:Credentials>\n" +
@@ -565,7 +810,6 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
         // Resolve the input command
         soapCommandProcessor.process(command);
         assertEquals(1, ev.getInvokedCount());
-        verify(identityTokenResolver).resolve(argThat(credsMatcher), Matchers.<X509Certificate[]>any(X509Certificate[].class));
 
 
         // Assert that we resolved the expected arguments
@@ -577,151 +821,13 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
         // Assert that the expected result is sent
         assertNotNull(ev.getObserver());
         ev.getObserver().onResult(new ExecutionResult("goodbye"));
-        assertEquals(CommandStatus.Complete, command.getStatus());
-        assertSoapyEquals(buildSoapMessage(null, firstOpOut, null, null), testOut.getOutput());
-        verify(response).setContentType(MediaType.TEXT_XML);
-        verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
-                                            any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
-    }
-
-
-    /**
-     * US53541
-     * Test for attempted XML Entity Injection
-     * @throws Exception
-     */
-    @Test
-    public void xmlEntityInjection() throws Exception {
-
-        when(request.getInputStream()).thenReturn(
-                new TestServletInputStream(buildSoapMessage(null, externalEntityIn, null, null)));
-        when(request.getScheme()).thenReturn("http");
-
-        // Resolve the input command
-        soapCommandProcessor.process(command);
-        assertEquals(CommandStatus.Complete, command.getStatus());
-        assertSoapyEquals(buildSoapMessage(null, null, invalidInputFault, null), testOut.getOutput());
-        verify(response).setContentType(MediaType.TEXT_XML);
-        verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        verify(logger).logAccess(eq(command), any(ExecutionContext.class), anyLong(), anyLong(),
-                any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
-    }
-    /**
-     * US53541
-     * Test for attempted XML Entity Injection
-     * @throws Exception
-     */
-    @Test
-    public void xmlEntityInjectionWithBody() throws Exception {
-
-        when(request.getInputStream()).thenReturn(
-                new TestServletInputStream(buildSoapMessage(null, externalEntityInWithBody, null, null)));
-        when(request.getScheme()).thenReturn("http");
-
-        // Resolve the input command
-        soapCommandProcessor.process(command);
-        assertEquals(CommandStatus.Complete, command.getStatus());
-        assertSoapyEquals(buildSoapMessage(null, null, invalidInputFault, null), testOut.getOutput());
-        verify(response).setContentType(MediaType.TEXT_XML);
-        verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        verify(logger).logAccess(eq(command), any(ExecutionContext.class), anyLong(), anyLong(),
-                any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
-    }
-
-    @Test
-    public void validationDisabled() throws Exception {
-        when(request.getInputStream()).thenReturn(
-                new TestServletInputStream(buildSoapMessage(null, firstOpInDuplicate, null, null)));
-        when(request.getScheme()).thenReturn("http");
-
-        soapCommandProcessor.setSchemaValidationEnabled(false);
-        soapCommandProcessor.process(command);
-        ev.getObserver().onResult(new ExecutionResult("goodbye"));
-        assertEquals(CommandStatus.Complete, command.getStatus());
-        // note we don't check we got the right result
-        // cougar is just non-deterministic if you have validation disabled
+        assertEquals(TransportCommand.CommandStatus.Complete, command.getStatus());
         assertSoapyEquals(buildSoapMessage(null, firstOpOut, null, null), testOut.getOutput());
         verify(response).setContentType(MediaType.TEXT_XML);
         verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
                 any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
-    }
 
-    @Test
-    public void validationEnabledValidInput() throws Exception {
-        // verify the schema is actually valid before we continue
-        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        schemaFactory.newSchema(new StreamSource(getClass().getClassLoader().getResourceAsStream("xsd/foo.xsd")));
-
-        soapCommandProcessor.setSchemaValidationEnabled(true);
-
-        testProcess();
-    }
-
-    @Test
-    public void validationEnabledInvalidInput() throws Exception {
-        // verify the schema is actually valid before we continue
-        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        schemaFactory.newSchema(new StreamSource(getClass().getClassLoader().getResourceAsStream("xsd/foo.xsd")));
-
-        when(request.getInputStream()).thenReturn(
-                new TestServletInputStream(buildSoapMessage(null, firstOpInDuplicate, null, null)));
-        when(request.getScheme()).thenReturn("http");
-
-        soapCommandProcessor.setSchemaValidationEnabled(true);
-        soapCommandProcessor.process(command);
-
-        assertEquals(CommandStatus.Complete, command.getStatus());
-        assertSoapyEquals(buildSoapMessage(null, null, invalidInputFault, null), testOut.getOutput());
-        verify(response).setContentType(MediaType.TEXT_XML);
-        verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        verify(logger).logAccess(eq(command), any(ExecutionContext.class), anyLong(), anyLong(),
-                any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
-    }
-
-
-    /**
-     * Tests a client error response is sent for invalid input
-     * @throws Exception
-     */
-    @Test
-    public void testProcess_IOException() throws Exception {
-        when(request.getScheme()).thenReturn("http");
-        ServletInputStream is = mock(ServletInputStream.class);
-        when(request.getInputStream()).thenReturn(is);
-        when(is.read()).thenThrow(new IOException("i/o error"));
-        when(is.read((byte[])any())).thenThrow(new IOException("i/o error"));
-        when(is.read((byte[])any(),anyInt(),anyInt())).thenThrow(new IOException("i/o error"));
-
-        // Resolve the input command
-        soapCommandProcessor.process(command);
-        assertEquals(CommandStatus.Complete, command.getStatus());
-        assertSoapyEquals(buildSoapMessage(null, null, invalidOpError, null), testOut.getOutput());
-        verify(response).setContentType(MediaType.TEXT_XML);
-        verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
-                any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
-    }
-
-
-    /**
-     * Tests a client error response is sent for invalid input
-     * @throws Exception
-     */
-    @Test
-    public void testProcess_TooMuchData() throws Exception {
-        when(request.getInputStream()).thenReturn(
-                new TestServletInputStream(buildSoapMessage(null, firstOpIn, null, null)));
-        when(request.getScheme()).thenReturn("http");
-        soapCommandProcessor.setMaxPostBodyLength(10L);
-
-        // Resolve the input command
-        soapCommandProcessor.process(command);
-        assertEquals(CommandStatus.Complete, command.getStatus());
-        assertSoapyEquals(buildSoapMessage(null, null, invalidOpError, null), testOut.getOutput());
-        verify(response).setContentType(MediaType.TEXT_XML);
-        verify(response).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),
-                any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
+        verifyTracerCalls(firstOpKey);
     }
 
     private String buildSoapMessage(String header, String body, String fault, String faultDetail) {
@@ -746,7 +852,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 		result.append(soapEnvFinish);
 		return result.toString();
 	}
-	
+
 	private void assertSoapyEquals(String expected, String actual) throws Exception{
 		XMLStreamReader expectedParser = XMLInputFactory.newInstance()
 			.createXMLStreamReader(
@@ -769,7 +875,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
             throw new AssertionFailedError(sb.toString());
         }
 	}
-	
+
 	private void assertHeaders(SOAPHeader expectedHeader, SOAPHeader actualHeader) {
 		if (expectedHeader == null) {
 			assertNull(actualHeader);
@@ -777,7 +883,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 			assertElement(expectedHeader, actualHeader);
 		}
 	}
-	
+
 	private void assertBody(SOAPBody expectedBody, SOAPBody actualBody) {
 		if (expectedBody == null) {
 			assertNull(actualBody);
@@ -785,7 +891,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 			assertElement(expectedBody, actualBody);
 		}
 	}
-	
+
 	private void assertElement(OMElement expectedElement, OMElement actualElement) {
 		Iterator expectedIt = expectedElement.getChildElements();
 		Iterator actualIt = actualElement.getChildElements();
@@ -804,9 +910,9 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 			OMElement actualChildElement = (OMElement)actualIt.next();
 			assertElement(expectedChildElement, actualChildElement);
 		}
-		assertFalse(actualIt.hasNext());		
+		assertFalse(actualIt.hasNext());
 	}
-	
+
 	private void assertAttributes(OMElement expectedElement, OMElement actualElement) {
 		Iterator expectedIt = expectedElement.getAllAttributes();
 		Iterator actualIt = actualElement.getAllAttributes();
@@ -822,9 +928,9 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 				assertEquals(expectedAttribute.getNamespace().getNamespaceURI(), actualAttribute.getNamespace().getNamespaceURI());
 			}
 		}
-		assertFalse(actualIt.hasNext());		
+		assertFalse(actualIt.hasNext());
 	}
-	
+
 
 }
 

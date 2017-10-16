@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import com.betfair.cougar.core.api.ServiceVersion;
 import com.betfair.cougar.core.api.ev.OperationDefinition;
 import com.betfair.cougar.core.api.ev.OperationKey;
 import com.betfair.cougar.core.api.ev.SimpleOperationDefinition;
+import com.betfair.cougar.core.api.exception.CougarMarshallingException;
 import com.betfair.cougar.core.api.exception.CougarValidationException;
 import com.betfair.cougar.core.api.transcription.EnumDerialisationException;
 import com.betfair.cougar.core.api.transcription.EnumUtils;
@@ -161,11 +162,11 @@ public class RescriptOperationBindingTest extends TestCase {
         try {
             Object[] resolvedArguments = operationSimpleGetBinding.resolveArgs(mockedRequest, null, MediaType.APPLICATION_JSON_TYPE, "utf-8");
             fail("A validation exception should have occurred due to an invalid float argument");
-        } catch (CougarValidationException expected) {
+        } catch (CougarMarshallingException expected) {
         }
     }
 
-    @Test(expected=CougarValidationException.class)
+    @Test(expected=CougarMarshallingException.class)
     public void testResolveBodyWithGetMethod() {
         when(mockedRequest.getMethod()).thenReturn("GET");
         operationBodyParamBinding.resolveArgs(mockedRequest, new ByteArrayInputStream("".getBytes()), null, "utf-8");
@@ -199,7 +200,7 @@ public class RescriptOperationBindingTest extends TestCase {
         assertEquals(null, resolvedArgs[0]);
     }
 
-    @Test(expected = EnumDerialisationException.class)
+    @Test(expected = CougarMarshallingException.class)
     public void testResolveUnrecognizedOptionalBodyEnumWithHardFailure() {
         Boolean originalHardFailureValue = EnumUtils.getHardFailureForThisThread();
         EnumUtils.setHardFailureForThisThread(true);
@@ -252,7 +253,7 @@ public class RescriptOperationBindingTest extends TestCase {
             if (name.equals("enumBodyParam")) {
                 return enumBodyParamValue;
             }
-            return theString; 
+            return theString;
         }
     }
 

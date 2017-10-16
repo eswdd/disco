@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,8 +36,8 @@ import com.betfair.cougar.core.api.transports.AbstractRegisterableTransport;
 import com.betfair.cougar.core.api.transports.EventTransport;
 import com.betfair.cougar.core.api.transports.EventTransportMode;
 import com.betfair.cougar.core.impl.ev.DefaultSubscription;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.transport.api.protocol.events.EventBindingDescriptor;
 import com.betfair.cougar.transport.api.protocol.events.EventErrorHandler;
 import com.betfair.cougar.transport.api.protocol.events.EventServiceBindingDescriptor;
@@ -103,7 +103,7 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
 
     private SessionManager sessionManager = new SessionManager();
 
-    private static final CougarLogger logger = CougarLoggingUtils.getLogger(JmsEventTransportImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JmsEventTransportImpl.class);
     private EventTransportMode transportMode;
 
     //Connection arguments, spring injected
@@ -234,6 +234,9 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
                 public Date getReceivedTime() { return null; }
 
                 @Override
+                public Date getRequestTime() { return null; }
+
+                @Override
                 public boolean traceLoggingEnabled() { return false;}
 
                 @Override
@@ -294,6 +297,8 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
                     @Override
                     public Date getReceivedTime() { return delegateExecutionContext.getReceivedTime(); }
                     @Override
+                    public Date getRequestTime() { return delegateExecutionContext.getRequestTime(); }
+                    @Override
                     public boolean traceLoggingEnabled() { return delegateExecutionContext.traceLoggingEnabled(); }
                     @Override
                     public GeoLocationDetails getLocation() { return delegateExecutionContext.getLocation(); }
@@ -347,11 +352,11 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
 
             if (!publisherRunnable.isSuccess()) { // If publication failed for any reason pass out the exception thrown
                 Exception e = publisherRunnable.getError();
-                logger.log(Level.SEVERE, "Publication exception:", e);
+                LOGGER.error("Publication exception:", e);
                 throw new CougarFrameworkException("Sonic JMS publication exception", e);
             }
         } catch (InterruptedException ex) { // Interrupted while waiting for event to be published
-            logger.log(Level.SEVERE, "Publication exception:", ex);
+            LOGGER.error("Publication exception:", ex);
             throw new CougarFrameworkException("Sonic JMS publication exception", ex);
         }
     }
@@ -411,7 +416,7 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
                     try {
                         messageProducer.close();
                     } catch (JMSException e) {
-                        logger.log(Level.WARNING, "Failed to close message producer", e);
+                        LOGGER.warn("Failed to close message producer", e);
                     }
                 }
                 unlock();
@@ -482,7 +487,7 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
                     getConnection();
                     ok = true;
                 } catch (JMSException e) {
-                    logger.log(Level.WARNING, "Error connecting to JMS", e);
+                    LOGGER.warn("Error connecting to JMS", e);
                 }
                 return ok;
             }
@@ -582,7 +587,7 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
                         }
                         session.close();
                     } catch (JMSException ex) {
-                        logger.log(Level.SEVERE, "Exception occurred when trying to close JMSConnection", ex);
+                        LOGGER.error("Exception occurred when trying to close JMSConnection", ex);
                     }
                 }
             }));
@@ -649,9 +654,9 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
                         new ClassCastException(
                                 "Could not convert received message from type [" + type + "] to TextMessage"))));
             } catch (Exception e) {
-                logger.log(e);
+                LOGGER.error("",e);
             }
-            logger.log(Level.SEVERE, "Class of message unsupported by this container [" + type + "]");
+            LOGGER.error("Class of message unsupported by this container [" + type + "]");
         }
     }//SubscriptionMessageListener
 

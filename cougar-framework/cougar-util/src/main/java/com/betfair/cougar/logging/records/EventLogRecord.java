@@ -1,5 +1,6 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
+ * Copyright 2015, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,15 +22,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.logging.Level;
 
 import com.betfair.cougar.api.LoggableEvent;
 
 public final class EventLogRecord extends CougarLogRecord {
-	
+
 	private static final String fieldSeperator = ",";
 	private static final String collectionStart = "[";
-    private static String collectionSeperator = ",";
+    private static String collectionSeperator = "|";
 	private static final String collectionEnd = "]";
 	private static final String TAB = "\t";
 
@@ -43,7 +45,7 @@ public final class EventLogRecord extends CougarLogRecord {
     private static String[] NON_LOGGABLE_STRINGS = new String[]{
     	LINE_SEPARATOR, TAB, fieldSeperator, collectionSeperator
 	};
-    
+
     private String messageString;
     private final LoggableEvent event;
     private final Object[] xFields;
@@ -93,7 +95,9 @@ public final class EventLogRecord extends CougarLogRecord {
 
     private DateFormat getDateFormatter() {
         if (dateFormatter.get() == null) {
-            dateFormatter.set(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            dateFormatter.set(dateFormat);
         }
         return dateFormatter.get();
     }
@@ -138,11 +142,11 @@ public final class EventLogRecord extends CougarLogRecord {
 
         sb.append(cleanse(o));
     }
-    
+
     private String cleanse(Object obj) {
     	if(obj == null)
     		return "";
-    	
+
     	String stringToLog = obj.toString();
     	for (String string : NON_LOGGABLE_STRINGS) {
     		stringToLog = stringToLog.replace(string, " ");

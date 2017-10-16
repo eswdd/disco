@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,10 @@
 package com.betfair.cougar.marshalling.impl.util;
 
 import com.betfair.cougar.core.api.exception.CougarFrameworkException;
+import com.betfair.cougar.core.api.exception.CougarMarshallingException;
 import com.betfair.cougar.core.api.exception.CougarValidationException;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import com.betfair.cougar.core.api.transcription.EnumDerialisationException;
 import com.betfair.cougar.core.api.transcription.EnumUtils;
 import com.betfair.cougar.util.dates.DateTimeUtility;
 
@@ -35,15 +37,15 @@ public final class BindingUtils {
 
 	private static final Pattern csv = Pattern.compile(",");
 
-	
-	public static Object convertToSimpleType(Class<?> clazz, Class<?> genericClass, String name, String value, boolean unescapeStrings, boolean hardFailEnums) throws IllegalArgumentException {
+
+	public static Object convertToSimpleType(Class<?> clazz, Class<?> genericClass, String name, String value, boolean unescapeStrings, boolean hardFailEnums, String format, boolean client) throws IllegalArgumentException {
         Object result = null;
         if (value != null) {
         	try {
 	        	if (clazz == String.class) {
 		            try {
 		            	if (unescapeStrings) {
-		            		result = URLDecoder.decode(value, "UTF-8"); 
+		            		result = URLDecoder.decode(value, "UTF-8");
 		            	} else {
 		            		result = value;
 		            	}
@@ -84,7 +86,7 @@ public final class BindingUtils {
 		        	} else if (value.equalsIgnoreCase("false")) {
 		        		result = Boolean.FALSE;
 		        	} else {
-	        			throw newValidationException(name, value, clazz, null);
+	        			throw newValidationException(name, value, clazz, null, format, client);
 		        	}
 		        } else if (clazz == Character.class) {
 		            result = value.charAt(0);
@@ -102,40 +104,40 @@ public final class BindingUtils {
 		            for (String val: csv.split(value.substring(start,end))) {
 		            	val = val.trim();
 		            	if (genericClass == String.class || val.length() > 0) {
-		            		collection.add(convertToSimpleType(genericClass, null, name + "[member]",  val.trim(), unescapeStrings, hardFailEnums));
+		            		collection.add(convertToSimpleType(genericClass, null, name + "[member]",  val.trim(), unescapeStrings, hardFailEnums, format, client));
 		            	}
 		            }
 		            if (collection.size() > 0) {
 		            	result = collection ;
 		            }
-		         
-		        } else if(clazz == java.util.Date.class) { 
+
+		        } else if(clazz == java.util.Date.class) {
 						result = DateTimeUtility.parse(value);
-		        } else {		        
-		        	throw newValidationException(name, value, clazz, null);
+		        } else {
+		        	throw newValidationException(name, value, clazz, null, format, client);
 		        }
         	} catch (RuntimeException ex) {
-        		if (ex instanceof CougarValidationException) {
+        		if (ex instanceof CougarMarshallingException || ex instanceof EnumDerialisationException) {
         			throw ex;
         		} else {
-        			throw newValidationException(name, value, clazz, ex);
+        			throw newValidationException(name, value, clazz, ex, format, client);
         		}
         	}
-        	
+
         }
         return result;
     }
-	
-	
-	private final static CougarValidationException newValidationException(String name, String value, Class clazz, Exception originalException) {
+
+
+	private final static CougarMarshallingException newValidationException(String name, String value, Class clazz, Exception originalException, String format, boolean client) {
 		final StringBuilder msg = new StringBuilder("Unable to convert '");
 		msg.append(value).append("' to ").append(clazz.getName()).append(" for parameter: " + name);
-		
-		return new CougarValidationException(ServerFaultCode.ClassConversionFailure, msg.toString(), originalException);		
+
+        return CougarMarshallingException.unmarshallingException(format, msg.toString(), originalException, client);
 	}
 
-   
-    
+
+
     private static final Object checkXMLInfinity(Class<?> clazz, String value) {
     	boolean returnFloat = Float.class.equals(clazz);
     	if (value.equals("INF")) {
@@ -152,6 +154,6 @@ public final class BindingUtils {
     		}
     	}
 		return null;
-    	
+
     }
 }

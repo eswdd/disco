@@ -1,5 +1,6 @@
 /*
  * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,9 +44,9 @@ public class SOAPRequestTypesDateTime24HourTest {
         CougarManager cougarManager2 = CougarManager.getInstance();
         HttpCallBean getNewHttpCallBean2 = cougarManager2.getNewHttpCallBean("87.248.113.14");
         cougarManager2 = cougarManager2;
-        
+
         getNewHttpCallBean2.setServiceName("Baseline");
-        
+
         getNewHttpCallBean2.setVersion("v2");
         // Set the created SOAP request as the PostObject
         getNewHttpCallBean2.setPostObjectForRequestType(createAsDocument1, "SOAP");
@@ -56,16 +57,16 @@ public class SOAPRequestTypesDateTime24HourTest {
         cougarManager2.makeSoapCougarHTTPCalls(getNewHttpCallBean2);
         // Create the expected response object as an XML document (fault)
         XMLHelpers xMLHelpers4 = new XMLHelpers();
-        Document createAsDocument9 = xMLHelpers4.getXMLObjectFromString("<soapenv:Fault><faultcode>soapenv:Client</faultcode><faultstring>DSC-0006</faultstring><detail/></soapenv:Fault>");
+        Document createAsDocument9 = xMLHelpers4.getXMLObjectFromString("<soapenv:Fault><faultcode>soapenv:Client</faultcode><faultstring>DSC-0044</faultstring><detail/></soapenv:Fault>");
         // Convert the expected response to SOAP for comparison with actual response
-        Map<String, Object> convertResponseToSOAP10 = cougarManager2.convertResponseToSOAP(createAsDocument9, getNewHttpCallBean2);
+
         // Check the response is as expected (fault)
         HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
-        AssertionUtils.multiAssertEquals(convertResponseToSOAP10.get("SOAP"), response5.getResponseObject());
-        
+        AssertionUtils.multiAssertEquals(createAsDocument9, response5.getResponseObject());
+
         // generalHelpers.pauseTest(3000L);
         // Check the log entries are as expected
-        
+
         CougarManager cougarManager8 = CougarManager.getInstance();
         cougarManager8.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp7, new AccessLogRequirement("87.248.113.14", "/BaselineService/v2", "BadRequest") );
     }

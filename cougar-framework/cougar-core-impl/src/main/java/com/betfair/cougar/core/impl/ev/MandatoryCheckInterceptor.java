@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 package com.betfair.cougar.core.impl.ev;
 
 import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.Validatable;
 import com.betfair.cougar.core.api.ev.ExecutionPreProcessor;
+import com.betfair.cougar.core.api.ev.ExecutionRequirement;
 import com.betfair.cougar.core.api.ev.ExecutionVenue;
 import com.betfair.cougar.core.api.ev.InterceptorResult;
 import com.betfair.cougar.core.api.ev.InterceptorState;
@@ -34,7 +34,7 @@ public class MandatoryCheckInterceptor implements ExecutionPreProcessor {
 	private ExecutionVenue bev;
 	private static final InterceptorResult SUCCESS = new InterceptorResult(InterceptorState.CONTINUE, null);
 	private static final String NAME = "Mandatory Parameter Check Interceptor";
-	
+
 	public MandatoryCheckInterceptor(ExecutionVenue bev) {
 		this.bev = bev;
 	}
@@ -45,11 +45,11 @@ public class MandatoryCheckInterceptor implements ExecutionPreProcessor {
 		Parameter[] parms = operationDefinition.getParameters();
 
 		for (int i = 0 ; i < args.length; i++) {
-			
+
 		    if (args[i] == null) {
 	            if (parms[i].isMandatory()) {
-	            	return new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION, 
-	            			new CougarValidationException(ServerFaultCode.MandatoryNotDefined, 
+	            	return new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION,
+	            			new CougarValidationException(ServerFaultCode.MandatoryNotDefined,
 	            					"Mandatory attributes not defined for parameter '"+parms[i].getName() + "'"));
 	            }
 	        } else {
@@ -64,8 +64,13 @@ public class MandatoryCheckInterceptor implements ExecutionPreProcessor {
 		}
 		return SUCCESS;
 	}
-	
+
 	public String getName() {
 		return NAME;
 	}
+
+    @Override
+    public ExecutionRequirement getExecutionRequirement() {
+        return ExecutionRequirement.EXACTLY_ONCE;
+    }
 }

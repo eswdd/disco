@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.betfair.cougar.core.api.ev;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executor;
 
 import com.betfair.cougar.api.ExecutionContext;
 
@@ -31,11 +32,13 @@ public interface ExecutionVenue {
 
 	/**
 	 * Registers an OperationDefinition against an actual Executable implementation
-	 * @param def defines the Operation and its parameters
-	 * @param executable the executable implementation of the operation
-	 * @param recorder Provides methods for recording execution statistics
-	 */
-	public void registerOperation(String namespace, OperationDefinition def, Executable executable, ExecutionTimingRecorder recorder);
+     * @param def defines the Operation and its parameters
+     * @param executable the executable implementation of the operation
+     * @param recorder Provides methods for recording execution statistics
+     * @param maxExecutionTime The max amount of time (in ms) that this operation should be allowed to execute before
+     *                         returning a timeout. A value of zero means there will be no timeout.
+     */
+	public void registerOperation(String namespace, OperationDefinition def, Executable executable, ExecutionTimingRecorder recorder, long maxExecutionTime);
 
 	/**
 	 * Gets the OperationDefinition that has been registered with the EV for the provided key
@@ -51,16 +54,34 @@ public interface ExecutionVenue {
 	public Set<OperationKey> getOperationKeys();
 
 	/**
-	 * Execute the Executable registered for the provided OperationKey.
+	 * Execute the Executable registered for the provided OperationKey on the current thread.
 	 * @param ctx Provides contextual information for execution, such as channel id, user identity, geographical location etc.
 	 * @param key Defines the operation to be executed
 	 * @param args The arguments to be provided to the operation
 	 * @param observer The ExecutionObserver is notified of either the result of the execution, or of an exception thrown during execution.
+     * @param timeConstraints External constraints on the execution time of this call. These constraints may specify a
+     *                        time that this execution request expires, after which point the call may be timed out. The client
+     *                        doesn't guarantee to hang around waiting for the timeout response. A value of zero indicates no timeout
+     *                        has been specified by the client.
 	 */
-	public void execute(ExecutionContext ctx, OperationKey key, Object[] args, ExecutionObserver observer);
+	public void execute(ExecutionContext ctx, OperationKey key, Object[] args, ExecutionObserver observer, TimeConstraints timeConstraints);
+
+	/**
+	 * Execute the Executable registered for the provided OperationKey in the provided executor
+	 * @param ctx Provides contextual information for execution, such as channel id, user identity, geographical location etc.
+	 * @param key Defines the operation to be executed
+	 * @param args The arguments to be provided to the operation
+	 * @param observer The ExecutionObserver is notified of either the result of the execution, or of an exception thrown during execution.
+     * @param executor An executor to perform this request on.
+     * @param timeConstraints External constraints on the execution time of this call. These constraints may specify a
+     *                        time that this execution request expires, after which point the call may be timed out. The client
+     *                        doesn't guarantee to hang around waiting for the timeout response. A value of zero indicates no timeout
+     *                        has been specified by the client.
+	 */
+	public void execute(ExecutionContext ctx, OperationKey key, Object[] args, ExecutionObserver observer, Executor executor, TimeConstraints timeConstraints);
 
 	public void setPreProcessors(List<ExecutionPreProcessor> preProcessorList);
-	
+
 	public void setPostProcessors(List<ExecutionPostProcessor> preProcessorList);
-	
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,19 @@
 
 package com.betfair.cougar;
 
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import com.betfair.cougar.core.api.exception.CougarFrameworkException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CougarVersion {
 
-    private final static CougarLogger logger = CougarLoggingUtils.getLogger(CougarVersion.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(CougarVersion.class);
 
     private static String VERSION;
     private static String MAJOR_MINOR_VERSION;
@@ -46,15 +46,15 @@ public class CougarVersion {
             Properties prop = new Properties();
             prop.load(is);
             VERSION = prop.getProperty("version");
-            logger.log(Level.INFO, "Labeled Cougar version is "+VERSION);
+            LOGGER.info("Labeled Cougar version is "+VERSION);
         } catch (Exception e) {
-            logger.log(Level.WARNING, "Failed to read Cougar version", e);
+            LOGGER.warn("Failed to read Cougar version", e);
         } finally {
             if (is != null) {
                 try {
                     is.close();
                 } catch (IOException e) {
-                    logger.log(Level.WARNING, "Exception closing version stream", e);
+                    LOGGER.warn("Exception closing version stream", e);
                 }
             }
         }
@@ -67,7 +67,7 @@ public class CougarVersion {
             MAJOR_MINOR_VERSION = matcher.group();
         }
         else {
-            MAJOR_MINOR_VERSION = null;
+            throw new CougarFrameworkException("Cannot resolve Cougar's version, something is seriously amiss");
         }
     }
 
@@ -78,7 +78,7 @@ public class CougarVersion {
     /**
      * Returns the version in the format &lt;major>.&lt;minor>. It will always strip snapshot strings and will also
      * strip anything after the minor version.
-     * @return The version in the correct format, or <code>null</code> if it can't be converted.
+     * @return The version in the correct format
      */
     public static String getMajorMinorVersion() {
         return MAJOR_MINOR_VERSION;

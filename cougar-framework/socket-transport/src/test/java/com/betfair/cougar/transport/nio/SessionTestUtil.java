@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,14 +38,14 @@ public class SessionTestUtil {
     }
 
     public static IoSession newV1Session() {
-        return newSession(CougarProtocol.APPLICATION_PROTOCOL_VERSION_CLIENT_ONLY_RPC);
+        return newSession(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC);
     }
 
     public static IoSession newV2Session() {
-        return newSession(CougarProtocol.APPLICATION_PROTOCOL_VERSION_BIDIRECTION_RPC);
+        return newSession(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC);
     }
 
     public static IoSession newV3Session() {
-        return newSession(CougarProtocol.APPLICATION_PROTOCOL_VERSION_START_TLS);
+        return newSession(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS);
     }
 }

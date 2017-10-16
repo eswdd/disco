@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.betfair.cougar.core.api.ev.processors;
 
 import com.betfair.cougar.api.ExecutionContext;
 import com.betfair.cougar.core.api.ev.ExecutionPreProcessor;
+import com.betfair.cougar.core.api.ev.ExecutionRequirement;
 import com.betfair.cougar.core.api.ev.InterceptorResult;
 import com.betfair.cougar.core.api.ev.InterceptorState;
 import com.betfair.cougar.core.api.ev.OperationKey;
@@ -58,4 +59,8 @@ public class PreMatchingInterceptor implements ExecutionPreProcessor {
         this.matcher = matcher;
     }
 
+    @Override
+    public ExecutionRequirement getExecutionRequirement() {
+        return preProcessor.getExecutionRequirement();
+    }
 }

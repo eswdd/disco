@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ public class CougarValidationException extends CougarException {
 	public CougarValidationException(ServerFaultCode fault) {
 		super(LOG_LEVEL, fault);
 	}
-	
+
 	public CougarValidationException(ServerFaultCode fault, Throwable t) {
 		super(LOG_LEVEL, fault, t);
 	}
@@ -39,5 +39,5 @@ public class CougarValidationException extends CougarException {
     public CougarValidationException(ServerFaultCode fault, String message,Throwable t) {
 		super(LOG_LEVEL, fault, message,t);
 	}
-	
+
 }

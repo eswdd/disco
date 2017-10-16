@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,9 @@ public class EnumUtils {
 
     public static <T extends Enum<T>> T readEnum(Class<T> cls, String name, boolean hardFail) throws IllegalArgumentException, NullPointerException {
         try {
+            if (MISS_VALUE.equals(name)) {
+                throw new EnumDerialisationException("It is invalid to pass in an enum with (special) value: "+MISS_VALUE);
+            }
             return Enum.valueOf(cls, name);
         }
         catch (IllegalArgumentException iae) {

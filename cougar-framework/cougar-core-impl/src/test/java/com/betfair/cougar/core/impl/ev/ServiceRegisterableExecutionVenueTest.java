@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,14 @@ import com.betfair.cougar.core.api.ServiceDefinition;
 import com.betfair.cougar.core.api.ServiceVersion;
 import com.betfair.cougar.core.api.ev.*;
 import com.betfair.cougar.core.api.security.IdentityResolverFactory;
+import com.betfair.cougar.core.impl.CougarInternalOperations;
+import com.betfair.cougar.util.configuration.PropertyConfigurer;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 
+import static com.betfair.cougar.core.impl.ev.BaseExecutionVenue.DefinedExecutable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
@@ -49,6 +50,8 @@ public class ServiceRegisterableExecutionVenueTest {
     private OperationKey fooOp2Key = new OperationKey(op2Key, "foo");
     private OperationKey barOp1Key = new OperationKey(op1Key, "bar");
     private OperationKey barOp2Key = new OperationKey(op2Key, "bar");
+    private OperationKey internalOp1Key = new OperationKey(op1Key, CougarInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
+    private OperationKey internalOp2Key = new OperationKey(op2Key, CougarInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
 
     private OperationDefinition op1Def = new SimpleOperationDefinition(op1Key, null, null);
     private OperationDefinition op2Def = new SimpleOperationDefinition(op2Key, null, null);
@@ -99,6 +102,9 @@ public class ServiceRegisterableExecutionVenueTest {
         //Verify that the OperationDefinition has been registered with the EV
         assertEquals(op1Def, ev.getOperationDefinition(op1Key));
         assertEquals(op2Def, ev.getOperationDefinition(op2Key));
+        // verify that the internal in process namespace has also been registered
+        assertEquals(op1Def, ev.getOperationDefinition(internalOp1Key));
+        assertEquals(op2Def, ev.getOperationDefinition(internalOp2Key));
         assertNull(ev.getOperationDefinition(fooOp1Key));
         assertNull(ev.getOperationDefinition(fooOp2Key));
         assertNull(ev.getOperationDefinition(barOp1Key));
@@ -113,6 +119,9 @@ public class ServiceRegisterableExecutionVenueTest {
         //Verify that the OperationDefinition has been registered with the EV under the namespace
         assertNull(ev.getOperationDefinition(op1Key));
         assertNull(ev.getOperationDefinition(op2Key));
+        // internal in-process namespace should only be registered for a service with the default namespace
+        assertNull(ev.getOperationDefinition(internalOp1Key));
+        assertNull(ev.getOperationDefinition(internalOp2Key));
         assertEquals(op1Def, ev.getOperationDefinition(fooOp1Key));
         assertEquals(op2Def, ev.getOperationDefinition(fooOp2Key));
         assertNull(ev.getOperationDefinition(barOp1Key));
@@ -127,6 +136,9 @@ public class ServiceRegisterableExecutionVenueTest {
 
         assertNull(ev.getOperationDefinition(op1Key));
         assertNull(ev.getOperationDefinition(op2Key));
+        // internal in-process namespace should only be registered for a service with the default namespace
+        assertNull(ev.getOperationDefinition(internalOp1Key));
+        assertNull(ev.getOperationDefinition(internalOp2Key));
         assertEquals(op1Def, ev.getOperationDefinition(fooOp1Key));
         assertEquals(op2Def, ev.getOperationDefinition(fooOp2Key));
         assertEquals(op1Def, ev.getOperationDefinition(barOp1Key));
@@ -141,6 +153,9 @@ public class ServiceRegisterableExecutionVenueTest {
 
         assertEquals(op1Def, ev.getOperationDefinition(op1Key));
         assertEquals(op2Def, ev.getOperationDefinition(op2Key));
+        // verify that the internal in process namespace has also been registered
+        assertEquals(op1Def, ev.getOperationDefinition(internalOp1Key));
+        assertEquals(op2Def, ev.getOperationDefinition(internalOp2Key));
         assertEquals(op1Def, ev.getOperationDefinition(fooOp1Key));
         assertEquals(op2Def, ev.getOperationDefinition(fooOp2Key));
         assertNull(ev.getOperationDefinition(barOp1Key));
@@ -167,5 +182,17 @@ public class ServiceRegisterableExecutionVenueTest {
         ev.onApplicationEvent(new ContextRefreshedEvent(appContext));
 
         verify(service).init(any(ContainerContext.class));
+    }
+
+    @Test
+    public void timeoutSet() {
+        PropertyConfigurer.getAllLoadedProperties().put("timeout.foo:Service1/v1.0/Operation1","1000");
+        PropertyConfigurer.getAllLoadedProperties().put("timeout.Service1/v1.0/Operation2","100");
+        ev.registerService("foo", serviceDef, service, resolver);
+        ev.registerService(serviceDef, service, resolver);
+        DefinedExecutable fooOp1De = ev.getDefinedExecutable(fooOp1Key);
+        assertEquals(1000, fooOp1De.getMaxExecutionTime());
+        DefinedExecutable op2De = ev.getDefinedExecutable(op2Key);
+        assertEquals(100, op2De.getMaxExecutionTime());
     }
 }

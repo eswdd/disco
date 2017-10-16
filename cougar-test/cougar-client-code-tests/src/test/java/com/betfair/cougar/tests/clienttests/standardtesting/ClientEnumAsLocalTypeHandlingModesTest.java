@@ -20,7 +20,8 @@ import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.enumerations.EnumHandling3BodyParameterEnum;
 import com.betfair.baseline.v2.enumerations.EnumHandling3WrappedValueEnum;
 import com.betfair.cougar.core.api.client.EnumWrapper;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
+import com.betfair.cougar.core.api.exception.CougarClientException;
+import com.betfair.cougar.core.api.exception.CougarMarshallingException;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
 import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
 import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
@@ -31,7 +32,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
 import static org.testng.AssertJUnit.fail;
 
 /**
@@ -83,19 +83,8 @@ public class ClientEnumAsLocalTypeHandlingModesTest {
             client.enumHandling3(cougarClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientServer, true);
             fail("Expected an exception here");
         }
-        catch (CougarServiceException cfe) {
-            ServerFaultCode expected;
-            switch (tt.getUnderlyingTransport()) {
-                case HTTP:
-                    expected = ServerFaultCode.JSONDeserialisationParseFailure;
-                    break;
-                case Socket:
-                    expected = ServerFaultCode.BinDeserialisationParseFailure;
-                    break;
-                default:
-                    throw new IllegalStateException("Unrecognised transport "+tt.getUnderlyingTransport());
-            }
-            assertEquals(toString(cfe), expected, cfe.getServerFaultCode());
+        catch (CougarClientException cfe) {
+            assertEquals(toString(cfe), ServerFaultCode.ClientDeserialisationFailure, cfe.getServerFaultCode());
         }
     }
 
@@ -119,19 +108,19 @@ public class ClientEnumAsLocalTypeHandlingModesTest {
         try {
             client.enumHandling3(cougarClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientOnly, false);
         }
-        catch (CougarServiceException cfe) {
-            ServerFaultCode expected;
+        catch (CougarClientException cfe) {
+            String expected;
             switch (tt.getUnderlyingTransport()) {
                 case HTTP:
-                    expected = ServerFaultCode.JSONDeserialisationParseFailure;
+                    expected = "json";
                     break;
                 case Socket:
-                    expected = ServerFaultCode.BinDeserialisationParseFailure;
+                    expected = "binary";
                     break;
                 default:
                     throw new IllegalStateException("Unrecognised transport "+tt.getUnderlyingTransport());
             }
-            assertEquals(toString(cfe), expected, cfe.getServerFaultCode());
+            assertEquals(toString(cfe), ServerFaultCode.ServerDeserialisationFailure, cfe.getServerFaultCode());
         }
     }
 
@@ -139,7 +128,7 @@ public class ClientEnumAsLocalTypeHandlingModesTest {
     public Object[][] clients() {
         return ClientTestsHelper.clientsToTest();
     }
-    
+
     private String toString(Exception e) {
         StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));

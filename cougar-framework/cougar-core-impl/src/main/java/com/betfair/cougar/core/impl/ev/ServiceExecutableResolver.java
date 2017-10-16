@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
 
 import com.betfair.cougar.api.ExecutionContext;
 import com.betfair.cougar.api.LogExtension;
@@ -36,9 +35,10 @@ import com.betfair.cougar.core.api.exception.CougarFrameworkException;
 import com.betfair.cougar.core.api.exception.CougarServiceException;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
 import com.betfair.cougar.core.api.logging.EventLogger;
+import com.betfair.cougar.core.api.tracing.Tracer;
 import com.betfair.cougar.core.impl.logging.RequestLogEvent;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Resolves the operation key to a service Executable. The resolver will resolve the executable
@@ -48,7 +48,7 @@ import com.betfair.cougar.logging.CougarLoggingUtils;
  *
  */
 public class ServiceExecutableResolver extends CompoundExecutableResolverImpl {
-    private static final CougarLogger logger = CougarLoggingUtils.getLogger(ServiceExecutableResolver.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceExecutableResolver.class);
 
 	private EventLogger eventLogger;
 
@@ -56,7 +56,7 @@ public class ServiceExecutableResolver extends CompoundExecutableResolverImpl {
 	public void setEventLogger(EventLogger eventLogger) {
 		this.eventLogger = eventLogger;
 	}
-	
+
 	@Override
 	public Executable resolveExecutable(OperationKey operationKey, ExecutionVenue ev) {
         if (!(ev instanceof ServiceRegisterableExecutionVenue)) {
@@ -66,29 +66,32 @@ public class ServiceExecutableResolver extends CompoundExecutableResolverImpl {
         ServiceLogManager manager = srev.getServiceLogManager(operationKey.getNamespace(), operationKey.getServiceName(), operationKey.getVersion());
 		Executable executable = super.resolveExecutable(operationKey, ev);
 		if (executable != null) {
-			return new RequestContextExecutable(executable, manager);
+			return new RequestContextExecutable(executable, manager, srev.getTracer());
 		}
 		return null;
 	}
 
-	private class RequestContextExecutable implements Executable {
+	private class RequestContextExecutable implements ExecutableWrapper {
 		private final Executable executable;
 		private final ServiceLogManager manager;
-	
-		public RequestContextExecutable(Executable executable, ServiceLogManager manager) {
+        private Tracer tracer;
+
+        public RequestContextExecutable(Executable executable, ServiceLogManager manager, Tracer tracer) {
 			this.executable = executable;
 			this.manager = manager;
-		}
-	
+            this.tracer = tracer;
+        }
+
         @Override
         public void execute(final ExecutionContext ctx,
                             final OperationKey key,
                             final Object[] args,
                             final ExecutionObserver observer,
-                            final ExecutionVenue executionVenue) {
-            final ExecutionContextAdapter ctxAdapter = new ExecutionContextAdapter(key, ctx, observer, manager);
+                            final ExecutionVenue executionVenue,
+                            final TimeConstraints timeConstraints) {
+            final ExecutionContextAdapter ctxAdapter = new ExecutionContextAdapter(key, ctx, observer, manager, tracer);
             try {
-                executable.execute(ctxAdapter, key, args, ctxAdapter, executionVenue);
+                executable.execute(ctxAdapter, key, args, ctxAdapter, executionVenue, timeConstraints);
             } catch (CougarException e) {
                 ctxAdapter.onResult(new ExecutionResult(e));
             } catch (Exception e) {
@@ -98,10 +101,20 @@ public class ServiceExecutableResolver extends CompoundExecutableResolverImpl {
                                 e)));
             }
         }
+
+        @Override
+        public Executable getWrappedExecutable() {
+            return executable;
+        }
+
+        @Override
+        public <T extends Executable> T findChild(Class<T> clazz) {
+            return ExecutableWrapperUtils.findChild(clazz, this);
+        }
     }
 
 	private class ExecutionContextAdapter implements RequestContext, ExecutionObserver {
-		
+
 		private final ExecutionObserver observer;
 		private final OperationKey key;
 		private final ExecutionContext original;
@@ -113,10 +126,13 @@ public class ServiceExecutableResolver extends CompoundExecutableResolverImpl {
         private LogExtension connectedObjectLogExtension;
 		private AtomicBoolean complete = new AtomicBoolean(false);
         private RequestContext originalRequestContext;
+        private Tracer tracer;
 
-        public ExecutionContextAdapter(final OperationKey key, final ExecutionContext original, final ExecutionObserver observer, ServiceLogManager manager) {
+
+        public ExecutionContextAdapter(final OperationKey key, final ExecutionContext original, final ExecutionObserver observer, ServiceLogManager manager, Tracer tracer) {
 			this.key = key;
 			this.original = original;
+            this.tracer = tracer;
             if (original instanceof RequestContext) {
 			    this.originalRequestContext = (RequestContext) original;
             }
@@ -170,7 +186,12 @@ public class ServiceExecutableResolver extends CompoundExecutableResolverImpl {
 			return original.getReceivedTime();
 		}
 
-		@Override
+        @Override
+        public Date getRequestTime() {
+            return original.getRequestTime();
+        }
+
+        @Override
 		public RequestUUID getRequestUUID() {
 			return original.getRequestUUID();
 		}
@@ -226,20 +247,14 @@ public class ServiceExecutableResolver extends CompoundExecutableResolverImpl {
 
         @Override
 		public void trace(String msg, Object... args) {
-            if (original.traceLoggingEnabled()) {
-                if (original.getRequestUUID() == null) {
-                    logger.log(Level.SEVERE, "You need to set a RequestUUID on the ExecutionContext to see trace messages!");
-                } else {
-                    logger.forceTrace(original.getRequestUUID().toString(), msg, args);
-                }
-            }
+            tracer.trace(this, msg, args);
 		}
 
 		@Override
 		public IdentityChain getIdentity() {
 			return original.getIdentity();
 		}
-        
+
         public String toString() {
             StringBuilder sb = new StringBuilder("ExecutionContextAdaptor:");
 

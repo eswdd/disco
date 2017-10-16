@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import com.betfair.cougar.core.api.ev.TimeConstraints;
+import com.betfair.cougar.core.impl.DefaultTimeConstraints;
 import com.betfair.tornjak.monitor.service.InOutServiceMonitor;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedResource;
@@ -36,8 +38,8 @@ import com.betfair.cougar.health.service.v3.exception.HealthException;
 import com.betfair.cougar.health.service.v3.to.HealthDetailResponse;
 import com.betfair.cougar.health.service.v3.to.HealthSummaryResponse;
 import com.betfair.cougar.health.service.v3.to.SubComponentStatus;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.tornjak.monitor.Monitor;
 import com.betfair.tornjak.monitor.MonitorRegistry;
 import com.betfair.tornjak.monitor.Status;
@@ -46,7 +48,7 @@ import com.betfair.tornjak.monitor.StatusAggregator;
 
 @ManagedResource
 public class HealthServiceImpl implements HealthService {
-	final static CougarLogger logger = CougarLoggingUtils.getLogger(HealthServiceImpl.class);
+	final static Logger LOGGER = LoggerFactory.getLogger(HealthServiceImpl.class);
 
 	private MonitorRegistry monitorRegistry;
 
@@ -54,11 +56,11 @@ public class HealthServiceImpl implements HealthService {
 	public void init(ContainerContext cc) {
         this.monitorRegistry = cc.getMonitorRegistry();
 	}
-	
-	
-	public HealthSummaryResponse isHealthy(final RequestContext ctx) throws HealthException {
+
+	@Override
+	public HealthSummaryResponse isHealthy(final RequestContext ctx, TimeConstraints timeConstraints) throws HealthException {
 		HealthSummaryResponse response = new HealthSummaryResponse();
-		
+
 		if (isSystemInService()) {
 			response.setHealthy(getHealth());
 		} else {
@@ -67,33 +69,33 @@ public class HealthServiceImpl implements HealthService {
 		}
 		return response;
 	}
-	
+
 	private RestrictedHealthStatus getHealth() throws HealthException {
 		RestrictedHealthStatus currentState = RestrictedHealthStatus.OK;
 
         if (monitorRegistry == null) {
-            logger.log(Level.SEVERE, "MonitorRegistry is null");
+            LOGGER.error("MonitorRegistry is null");
             throw new HealthException(ResponseCode.InternalError, HealthExceptionErrorCodeEnum.NULL);
         }
         StatusAggregator agg = monitorRegistry.getStatusAggregator();
         if (agg == null) {
-            logger.log(Level.SEVERE, "StatusAggregator is null");
+            LOGGER.error("StatusAggregator is null");
             throw new HealthException(ResponseCode.InternalError, HealthExceptionErrorCodeEnum.NULL);
         }
         Status status = agg.getStatus();
         if (status == null) {
-            logger.log(Level.SEVERE, "Status is null");
+            LOGGER.error("Status is null");
             throw new HealthException(ResponseCode.InternalError, HealthExceptionErrorCodeEnum.NULL);
         }
         if (status.equals(Status.FAIL)) {
             currentState = RestrictedHealthStatus.FAIL;
         }
 		return currentState;
-		
+
 	}
 
 	@Override
-	public HealthDetailResponse getDetailedHealthStatus(RequestContext reqCtx) throws HealthException {
+	public HealthDetailResponse getDetailedHealthStatus(RequestContext reqCtx, TimeConstraints timeConstraints) throws HealthException {
 		HealthDetailResponse detail = new HealthDetailResponse();
 
         List<SubComponentStatus> subStatuses = new ArrayList<>();
@@ -137,9 +139,9 @@ public class HealthServiceImpl implements HealthService {
 	@ManagedAttribute
 	public boolean isSystemHealthy() {
 		try {
-			HealthStatus status = getDetailedHealthStatus(null).getHealth();
+			HealthStatus status = getDetailedHealthStatus(null, DefaultTimeConstraints.NO_CONSTRAINTS).getHealth();
 			return status == HealthStatus.OK || status == HealthStatus.WARN;
-		
+
 		} catch (HealthException e) {
 			return false;
 		}

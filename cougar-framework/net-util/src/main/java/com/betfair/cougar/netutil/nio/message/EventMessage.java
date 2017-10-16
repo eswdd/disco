@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ public class EventMessage extends AbstractMessage implements ProtocolMessage {
     }
 
     private void serialise() {
-        for (byte b=CougarProtocol.APPLICATION_PROTOCOL_VERSION_MIN_SUPPORTED; b<=CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED; b++) {
+        for (byte b=CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED; b<=CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED; b++) {
             serialisedForms.put(b, CougarProtocolEncoder.encode(this, b));
         }
     }

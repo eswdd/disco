@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,15 +64,15 @@ public class DummyEventImpl extends AbstractEvent implements Transcribable {
     public static final Parameter[] PARAMETERS = new Parameter[] { _nameParam, _addressParam };
 
     @Override
-    public void transcribe(TranscriptionOutput out, Set<TranscribableParams> params) throws Exception {
-        out.writeObject(getName(), _nameParam);
-        out.writeObject(getAddress(), _addressParam);
+    public void transcribe(TranscriptionOutput out, Set<TranscribableParams> params, boolean client) throws Exception {
+        out.writeObject(getName(), _nameParam, client);
+        out.writeObject(getAddress(), _addressParam, client);
     }
 
     @Override
-    public void transcribe(TranscriptionInput in, Set<TranscribableParams> params) throws Exception {
-       setName((String)in.readObject(_nameParam));
-        setAddress((String)in.readObject(_addressParam));
+    public void transcribe(TranscriptionInput in, Set<TranscribableParams> params, boolean client) throws Exception {
+       setName((String)in.readObject(_nameParam, client));
+        setAddress((String)in.readObject(_addressParam, client));
     }
 
     @Override

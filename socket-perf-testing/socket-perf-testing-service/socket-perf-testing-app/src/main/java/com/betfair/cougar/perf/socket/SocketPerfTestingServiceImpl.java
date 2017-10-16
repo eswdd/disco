@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import com.betfair.cougar.core.api.ev.ConnectedResponse;
 import com.betfair.cougar.core.api.ev.Subscription;
 import com.betfair.cougar.core.impl.ev.ConnectedResponseImpl;
 import com.betfair.cougar.core.impl.ev.DefaultSubscription;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.platform.virtualheap.Heap;
 import com.betfair.platform.virtualheap.MutableHeap;
 import com.betfair.cougar.perf.socket.v1_0.SocketPerfTestingService;

@@ -19,6 +19,7 @@ package com.betfair.platform;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.betfair.cougar.logging.CougarLoggingUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -31,7 +32,7 @@ import org.testng.annotations.BeforeClass;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.cougar.client.socket.ExecutionVenueNioClient;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.LoggerFactory;
 
 public class BinaryProtocolIDDVersionTest extends TestSuite{
 
@@ -44,33 +45,35 @@ public class BinaryProtocolIDDVersionTest extends TestSuite{
         initSystemProperties();
 		httpClient = new DefaultHttpClient();
 		setServerHealth(OK);
-		CougarLoggingUtils.setTraceLogger(null); //because trace log is static and multiple spring contexts will try to set it		
+		CougarLoggingUtils.setTraceLogger(null); //because trace log is static and multiple spring contexts will try to set it
 		TestClientContextFactory context = new TestClientContextFactory();
 		springContext = (ClassPathXmlApplicationContext) context.create("conf/binary-client-spring.xml");
 		BaselineSyncClient baselineClient = (BaselineSyncClient) springContext.getBean("baselineClient");
+        //TODO get a better way to make sure there is an open session already before starting the test
+        Thread.sleep(5000);
 		super.setBaselineClient(baselineClient);
 	}
-	
-	
+
+
 	@AfterClass
 	public void stopCougarClient() {
 		((ExecutionVenueNioClient)springContext.getBean("socketTransport")).stop();
 		springContext.getBeanFactory().destroySingletons();
 		springContext.stop();
-	}	
-	
+	}
+
 	private void setServerHealth(String health) throws ClientProtocolException, IOException, InterruptedException {
 		HttpPost post = new HttpPost("http://localhost:8080/www/cougarBaseline/v2.0/setHealthStatusInfo");
 		post.setEntity(new StringEntity(health));
 		post.setHeader("Content-type", "application/json");
 		releaseConnection(httpClient.execute(post));
-		
+
 		HttpGet get = new HttpGet("http://localhost:8080/www/healthcheck/v2.0/detailed?&alt=xml");
 		releaseConnection(httpClient.execute(get));
 		Thread.sleep(1000);
-		
+
 	}
-	
+
 	private void releaseConnection(HttpResponse response) throws IllegalStateException, IOException {
 		response.getStatusLine();
 		InputStream is = response.getEntity().getContent();
@@ -80,7 +83,7 @@ public class BinaryProtocolIDDVersionTest extends TestSuite{
 
     @Override
     protected String getExpectedValidValueRemovedErrorCode() {
-        return "DSC-0020";
+        return "DSC-0044";
     }
 
     private static String OK = "{ \"message\" : " +
@@ -88,6 +91,6 @@ public class BinaryProtocolIDDVersionTest extends TestSuite{
 	"								  \"DBConnectionStatusDetail\" : \"OK\", " +
 	"								  \"cacheAccessStatusDetail\" : \"OK\", " +
 	"								  \"serviceStatusDetail\" : \"OK\" } }";
-	
+
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 
-import static com.betfair.cougar.netutil.nio.CougarProtocol.APPLICATION_PROTOCOL_VERSION_BIDIRECTION_RPC;
-import static com.betfair.cougar.netutil.nio.CougarProtocol.APPLICATION_PROTOCOL_VERSION_CLIENT_ONLY_RPC;
+import static com.betfair.cougar.netutil.nio.CougarProtocol.TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC;
+import static com.betfair.cougar.netutil.nio.CougarProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC;
 import static com.betfair.cougar.transport.nio.SessionTestUtil.newSession;
 import static java.util.Collections.singleton;
 import static org.mockito.Mockito.*;
@@ -39,8 +39,8 @@ import static org.mockito.Mockito.*;
  */
 public class IoSessionManagerTest {
 
-    public static final byte V1 = APPLICATION_PROTOCOL_VERSION_CLIENT_ONLY_RPC;
-    public static final byte V2 = APPLICATION_PROTOCOL_VERSION_BIDIRECTION_RPC;
+    public static final byte V1 = TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC;
+    public static final byte V2 = TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC;
     IoSessionManager sessionManager;
     private CougarProtocol cougarProtocol;
     private NioLogger nioLogger;

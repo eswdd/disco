@@ -1,5 +1,6 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
+ * Copyright 2015, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,12 +29,12 @@ import com.betfair.cougar.api.fault.CougarApplicationException;
 import com.betfair.cougar.core.api.fault.CougarFault;
 
 public class CougarServiceExceptionTest{
-	
+
 	@After
 	public void tearDown(){
-		
+
 	}
-	
+
 	@Test
 	public void testGetFault() {
 		CougarServiceException dse = new CougarServiceException(ServerFaultCode.ResponseContentTypeNotValid,"message");
@@ -49,7 +50,37 @@ public class CougarServiceExceptionTest{
 		assertEquals(ResponseCode.InternalError.getFaultCode(), fault.getFaultCode());
 		assertEquals(ResponseCode.InternalError, dse.getResponseCode());
 	}
-	
+
+    @Test(expected = IllegalArgumentException.class)
+    public void nullCheckedException() {
+        new CougarServiceException(ServerFaultCode.ServiceCheckedException, "wibble", null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void missingCheckedException() {
+        new CougarServiceException(ServerFaultCode.ServiceCheckedException, "wibble");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwableInsteadOfCheckedException() {
+        new CougarServiceException(ServerFaultCode.ServiceCheckedException, "wibble", new RuntimeException());
+    }
+
+    @Test
+    public void nullRuntimeException() {
+        new CougarServiceException(ServerFaultCode.ServiceRuntimeException, "wibble", null);
+    }
+
+    @Test
+    public void missingRuntimeException() {
+        new CougarServiceException(ServerFaultCode.ServiceRuntimeException, "wibble");
+    }
+
+    @Test
+    public void throwableInsteadOfRuntimeException() {
+        new CougarServiceException(ServerFaultCode.ServiceRuntimeException, "wibble", new RuntimeException());
+    }
+
 	private static class MockException extends CougarApplicationException {
 
 		public MockException() {

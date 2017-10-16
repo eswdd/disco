@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,18 +21,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
 
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import com.betfair.cougar.core.api.exception.CougarMarshallingException;
 import com.betfair.cougar.marshalling.api.databinding.FaultMarshaller;
 import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
 import com.betfair.cougar.core.api.fault.CougarFault;
 import com.betfair.cougar.core.api.fault.FaultController;
 import com.betfair.cougar.core.api.fault.FaultDetail;
@@ -50,24 +45,24 @@ public class JSONMarshaller implements Marshaller, FaultMarshaller {
 	}
 
 	@Override
-	public void marshall(OutputStream outputStream, Object result, String encoding) {
+	public void marshall(OutputStream outputStream, Object result, String encoding, boolean client) {
 		try {
 			objectMapper.writeValue(outputStream, result);
 		} catch (JsonProcessingException e) {
-            throw new CougarServiceException(ServerFaultCode.JSONSerialisationFailure, "Failed to marshall object of class "+result.getClass().getCanonicalName()+" to JSON", e);
+            throw CougarMarshallingException.marshallingException(getFormat(), "Failed to marshall object of class "+result.getClass().getCanonicalName()+" to JSON", e, client);
 		} catch (IOException e) {
-            throw new CougarServiceException(ServerFaultCode.OutputChannelClosedCantWrite, "Failed to write JSON object to stream", e);
+            throw CougarMarshallingException.marshallingException(getFormat(), "Failed to write JSON object to stream", e, client);
         }
 	}
 
 	@Override
 	public void marshallFault(OutputStream outputStream, CougarFault fault, String encoding) {
-		HashMap<String,Object> faultMap = new HashMap<String,Object>();
-		HashMap<String,Object> detailMap = new HashMap<String,Object>();
+		HashMap<String,Object> faultMap = new HashMap<>();
+		HashMap<String,Object> detailMap = new HashMap<>();
 		faultMap.put("faultcode", fault.getFaultCode().name());
 		faultMap.put("faultstring", fault.getErrorCode());
 		faultMap.put("detail", detailMap);
-		
+
 		FaultDetail detail = fault.getDetail();
     	if (FaultController.getInstance().isDetailedFaults()) {
     		detailMap.put("trace", detail.getStackTrace());
@@ -76,15 +71,15 @@ public class JSONMarshaller implements Marshaller, FaultMarshaller {
         List<String[]> faultMessages = detail.getFaultMessages();
         if (faultMessages != null) {
             detailMap.put("exceptionname", detail.getFaultName());
-        	HashMap<String,Object> paramMap = new HashMap<String,Object>();
+        	HashMap<String,Object> paramMap = new HashMap<>();
         	detailMap.put(detail.getFaultName(), paramMap);
         	for (String[] msg: faultMessages) {
     	        paramMap.put(msg[0], msg[1]);
-        	}	        	
+        	}
         }
 
-        marshall(outputStream, faultMap, encoding);
+        marshall(outputStream, faultMap, encoding, false);
 	}
-	
-	
+
+
 }

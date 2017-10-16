@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,25 +44,25 @@ public class  Cycle1 implements Result, Transcribable {
     public final void setCycle2(Cycle2 cycle2)  {
     	this.cycle2=cycle2;
     }
-    
 
-		    
-    	
+
+
+
 
 	private static final Parameter __cycle2Param = new Parameter("cycle2",new ParameterType(Cycle2.class, null ),true);
-    
+
     public static final Parameter[] PARAMETERS = new Parameter[] { __cycle2Param};
 
     public Parameter[] getParameters() {
         return PARAMETERS;
     }
-    
-	public void transcribe(TranscriptionOutput out, Set<TranscribableParams> params) throws Exception {
-	    out.writeObject(getCycle2(), __cycle2Param);
+
+	public void transcribe(TranscriptionOutput out, Set<TranscribableParams> params, boolean client) throws Exception {
+	    out.writeObject(getCycle2(), __cycle2Param, client);
 	}
-	
-	public void transcribe(TranscriptionInput in, Set<TranscribableParams> params) throws Exception {
-	    setCycle2((Cycle2)in.readObject(__cycle2Param));
+
+	public void transcribe(TranscriptionInput in, Set<TranscribableParams> params, boolean client) throws Exception {
+	    setCycle2((Cycle2)in.readObject(__cycle2Param, client));
 	}
 
     @Override

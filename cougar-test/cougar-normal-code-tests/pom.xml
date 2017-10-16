@@ -19,7 +19,7 @@
     <parent>
         <artifactId>cougar-test</artifactId>
         <groupId>com.betfair.cougar</groupId>
-        <version>3.0-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -52,6 +52,7 @@
                                 <configuration>
                                     <skipTests>true</skipTests>
                                     <failIfNoTests>false</failIfNoTests>
+                                    <!--<debugForkedProcess>true</debugForkedProcess>-->
                                 </configuration>
                             </execution>
                         </executions>
@@ -96,6 +97,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <argLine>-Xmx1024m -Xms1024m</argLine>
+                    <!--<debugForkedProcess>true</debugForkedProcess>-->
                 </configuration>
             </plugin>
         </plugins>

@@ -1,5 +1,6 @@
 /*
  * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2015, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +42,6 @@ import com.betfair.baseline.v2.enumerations.ReceivedEventEventNameEnum;
 import com.betfair.baseline.v2.enumerations.SimpleEnum;
 import com.betfair.baseline.v2.enumerations.SimpleExceptionErrorCodeEnum;
 import com.betfair.baseline.v2.enumerations.SimpleValidValue;
-import com.betfair.baseline.v2.enumerations.SupportedCaches;
 import com.betfair.baseline.v2.enumerations.TestConnectedObjectsProtocolEnum;
 import com.betfair.baseline.v2.enumerations.TestParameterStylesHeaderParamEnum;
 import com.betfair.baseline.v2.enumerations.TestParameterStylesQAHeaderParamEnum;
@@ -56,111 +56,38 @@ import com.betfair.baseline.v2.events.SetEvent;
 import com.betfair.baseline.v2.events.TimeTick;
 import com.betfair.baseline.v2.exception.SimpleException;
 import com.betfair.baseline.v2.exception.WotsitException;
-import com.betfair.baseline.v2.to.BodyParamBoolObject;
-import com.betfair.baseline.v2.to.BodyParamByteObject;
-import com.betfair.baseline.v2.to.BodyParamComplexMapObject;
-import com.betfair.baseline.v2.to.BodyParamComplexSetObject;
-import com.betfair.baseline.v2.to.BodyParamDateTimeListObject;
-import com.betfair.baseline.v2.to.BodyParamDateTimeMapObject;
-import com.betfair.baseline.v2.to.BodyParamDateTimeObject;
-import com.betfair.baseline.v2.to.BodyParamDateTimeSetObject;
-import com.betfair.baseline.v2.to.BodyParamDoubleObject;
-import com.betfair.baseline.v2.to.BodyParamEnumObject;
-import com.betfair.baseline.v2.to.BodyParamFloatObject;
-import com.betfair.baseline.v2.to.BodyParamI32Object;
-import com.betfair.baseline.v2.to.BodyParamI64Object;
-import com.betfair.baseline.v2.to.BodyParamMapDateTimeKeyObject;
-import com.betfair.baseline.v2.to.BodyParamSimpleMapObject;
-import com.betfair.baseline.v2.to.BodyParamSimpleSetObject;
-import com.betfair.baseline.v2.to.BoolOperationResponseObject;
-import com.betfair.baseline.v2.to.ByteOperationResponseObject;
-import com.betfair.baseline.v2.to.CallSecurity;
-import com.betfair.baseline.v2.to.ComplexMapOperationResponseObject;
-import com.betfair.baseline.v2.to.ComplexMapOperationResponseObjectDelegate;
-import com.betfair.baseline.v2.to.ComplexObject;
-import com.betfair.baseline.v2.to.ComplexSetOperationResponseObject;
-import com.betfair.baseline.v2.to.DateContainer;
-import com.betfair.baseline.v2.to.DateTimeListOperationResponseObject;
-import com.betfair.baseline.v2.to.DateTimeMapOperationResponseObject;
-import com.betfair.baseline.v2.to.DateTimeOperationResponseObject;
-import com.betfair.baseline.v2.to.DateTimeSetOperationResponseObject;
-import com.betfair.baseline.v2.to.DoubleContainer;
-import com.betfair.baseline.v2.to.DoubleOperationResponseObject;
-import com.betfair.baseline.v2.to.DoubleResponse;
-import com.betfair.baseline.v2.to.EnumHandling;
-import com.betfair.baseline.v2.to.EnumOperationResponseObject;
-import com.betfair.baseline.v2.to.EnumSimpleRequestObject;
-import com.betfair.baseline.v2.to.EnumSimpleResponseObject;
-import com.betfair.baseline.v2.to.FloatOperationResponseObject;
-import com.betfair.baseline.v2.to.HealthStatusInfoRequest;
-import com.betfair.baseline.v2.to.I32OperationResponseObject;
-import com.betfair.baseline.v2.to.I32SimpleOperationResponseObject;
-import com.betfair.baseline.v2.to.I32SimpleTypeRequestObject;
-import com.betfair.baseline.v2.to.I64OperationResponseObject;
-import com.betfair.baseline.v2.to.Ident;
-import com.betfair.baseline.v2.to.IdentChain;
-import com.betfair.baseline.v2.to.LargeRequest;
-import com.betfair.baseline.v2.to.LogMessageContainer;
-import com.betfair.baseline.v2.to.MandatoryParamsOperationResponseObject;
-import com.betfair.baseline.v2.to.MandatoryParamsRequest;
-import com.betfair.baseline.v2.to.MapDataType;
-import com.betfair.baseline.v2.to.MapDateTimeKeyOperationResponseObject;
-import com.betfair.baseline.v2.to.MarketStruct;
-import com.betfair.baseline.v2.to.MatchedBetContainer;
-import com.betfair.baseline.v2.to.MatchedBetStruct;
-import com.betfair.baseline.v2.to.NoParamsResponse;
-import com.betfair.baseline.v2.to.NonMandatoryParamsOperationResponseObject;
-import com.betfair.baseline.v2.to.NonMandatoryParamsRequest;
-import com.betfair.baseline.v2.to.PrimitiveLists;
-import com.betfair.baseline.v2.to.ReceivedEvent;
-import com.betfair.baseline.v2.to.SimpleConnectedObject;
-import com.betfair.baseline.v2.to.SimpleContainer;
-import com.betfair.baseline.v2.to.SimpleListContainer;
-import com.betfair.baseline.v2.to.SimpleMap;
-import com.betfair.baseline.v2.to.SimpleMapOperationResponseObject;
-import com.betfair.baseline.v2.to.SimpleResponse;
-import com.betfair.baseline.v2.to.SimpleResponseDelegate;
-import com.betfair.baseline.v2.to.SimpleResponseMap;
-import com.betfair.baseline.v2.to.SimpleSetOperationResponseObject;
-import com.betfair.baseline.v2.to.SomeComplexObject;
-import com.betfair.baseline.v2.to.TestResults;
-import com.betfair.baseline.v2.to.TestSimpleCacheGetResponseObject;
-import com.betfair.baseline.v2.to.TimeContainer;
-import com.betfair.baseline.v2.to.VeryComplexObject;
+import com.betfair.baseline.v2.to.*;
 import com.betfair.cougar.api.ContainerContext;
 import com.betfair.cougar.api.ExecutionContext;
 import com.betfair.cougar.api.RequestContext;
 import com.betfair.cougar.api.ResponseCode;
 import com.betfair.cougar.api.security.Identity;
-import com.betfair.cougar.baseline.domain.SimpleCache1DO;
-import com.betfair.cougar.baseline.domain.SimpleCache2DO;
-import com.betfair.cougar.baseline.domain.SimpleCacheDO;
-import com.betfair.cougar.baseline.domain.SimpleDO;
 import com.betfair.cougar.core.api.GateListener;
 import com.betfair.cougar.core.api.ev.ConnectedResponse;
 import com.betfair.cougar.core.api.ev.ExecutionObserver;
 import com.betfair.cougar.core.api.ev.ExecutionResult;
 import com.betfair.cougar.core.api.ev.Subscription;
+import com.betfair.cougar.core.api.ev.TimeConstraints;
 import com.betfair.cougar.core.api.events.EventTransportIdentity;
 import com.betfair.cougar.core.api.exception.CougarServiceException;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import com.betfair.cougar.core.api.builder.SetBuilder;
 import com.betfair.cougar.core.impl.ev.ConnectedResponseImpl;
 import com.betfair.cougar.core.impl.ev.DefaultSubscription;
 import com.betfair.cougar.core.impl.logging.AbstractLoggingControl;
 import com.betfair.cougar.core.impl.security.SSLAwareTokenResolver;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.apache.log4j.Level;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.util.configuration.PropertyConfigurer;
+import com.betfair.nonservice.v3.NonSyncClient;
 import com.betfair.tornjak.kpi.aop.KPITimedEvent;
 import com.betfair.platform.virtualheap.HListComplex;
 import com.betfair.platform.virtualheap.Heap;
 import com.betfair.platform.virtualheap.MutableHeap;
-import com.betfair.tornjak.monitor.DefaultMonitorRegistry;
 import com.betfair.tornjak.monitor.MonitorRegistry;
 import com.betfair.tornjak.monitor.OnDemandMonitor;
-import com.betfair.tornjak.monitor.OverallStatus;
 import com.betfair.tornjak.monitor.Status;
-import com.betfair.tornjak.monitor.StatusAggregator;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -184,7 +111,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Level;
 
 public class BaselineServiceImpl implements BaselineService, GateListener {
     public static final String SONIC_TRANSPORT_INSTANCE_ONE="SonicEventTransportImpl:firstSonicInstance";
@@ -202,12 +128,13 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     private BaselineClient baselineAsyncClient;
     private BaselineSyncClient inProcessSyncClient;
     private BaselineSyncClient socketSyncClient;
+    private NonSyncClient nonExistentServiceClient;
 
 	private MonitorRegistry monitorRegistry;
 
     private AbstractLoggingControl loggingControl;
 
-	final static CougarLogger LOGGER = CougarLoggingUtils.getLogger(BaselineServiceImpl.class);
+	final static Logger LOGGER = LoggerFactory.getLogger(BaselineServiceImpl.class);
 
     private List<TimeTick> timeTicks = new ArrayList<TimeTick>();
     private List<MatchedBet> matchedBets = new ArrayList<MatchedBet>();
@@ -242,6 +169,10 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
         this.inProcessSyncClient = inProcessSyncClient;
     }
 
+    public void setNonExistentServiceClient(NonSyncClient nonExistentServiceClient) {
+        this.nonExistentServiceClient = nonExistentServiceClient;
+    }
+
     public void setSocketSyncClient(BaselineSyncClient socketSyncClient) {
         this.socketSyncClient = socketSyncClient;
     }
@@ -259,7 +190,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 	}
 
     @Override
-    public String echoCougarPropertyValue(RequestContext ctx, String propertyName){
+    public String echoCougarPropertyValue(RequestContext ctx, String propertyName, TimeConstraints timeConstraints){
         ctx.setRequestLogExtension(new BaselineLogExtension(propertyName, null, null));
 
         final Map<String,String> props = PropertyConfigurer.getAllLoadedProperties();
@@ -267,47 +198,47 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public void interceptorCheckedExceptionOperation(RequestContext ctx, PreOrPostInterceptorException preOrPostException) throws SimpleException {
+    public void interceptorCheckedExceptionOperation(RequestContext ctx, PreOrPostInterceptorException preOrPostException, TimeConstraints timeConstraints) throws SimpleException {
         //Null implementation as this method is used as part of a test for pre/post checked service defined exception handling
         ctx.setRequestLogExtension(new BaselineLogExtension(preOrPostException, null, null));
     }
-    
+
 	@Override
-	public void listOfComplexOperation(RequestContext ctx, List<ComplexObject> inputList) throws SimpleException {
-		
+	public void listOfComplexOperation(RequestContext ctx, List<ComplexObject> inputList, TimeConstraints timeConstraints) throws SimpleException {
+
 		ctx.setRequestLogExtension(new BaselineLogExtension(inputList.toArray(), null, null));
 	}
 
 	@Override
-	public void setOfComplexOperation(RequestContext ctx, Set<ComplexObject> inputSet) throws SimpleException {
-		
-		ctx.setRequestLogExtension(new BaselineLogExtension(inputSet.toArray(), null, null));		
+	public void setOfComplexOperation(RequestContext ctx, Set<ComplexObject> inputSet, TimeConstraints timeConstraints) throws SimpleException {
+
+		ctx.setRequestLogExtension(new BaselineLogExtension(inputSet.toArray(), null, null));
 	}
 
 	@Override
-	public void mapOfComplexOperation(RequestContext ctx, Map<String, ComplexObject> inputMap) throws SimpleException {
-		
+	public void mapOfComplexOperation(RequestContext ctx, Map<String, ComplexObject> inputMap, TimeConstraints timeConstraints) throws SimpleException {
+
 		ctx.setRequestLogExtension(new BaselineLogExtension(inputMap.toString(), null, null));
 	}
 
     @Override
-    public void mandatoryCollectionElementTest ( RequestContext ctx , List<ComplexObject> inputList, Map<String, ComplexObject> inputMap)
+    public void mandatoryCollectionElementTest ( RequestContext ctx , List<ComplexObject> inputList, Map<String, ComplexObject> inputMap, TimeConstraints timeConstraints)
     throws SimpleException
     {
         ctx.setRequestLogExtension(new BaselineLogExtension(inputList.toArray(), inputMap.toString(), null));
     }
 
     @Override
-    public List<Date> testSimpleDateListGet ( RequestContext ctx , List<Date> inputList )
+    public List<Date> testSimpleDateListGet ( RequestContext ctx , List<Date> inputList, TimeConstraints timeConstraints)
             throws SimpleException
     {
         ctx.setRequestLogExtension(new BaselineLogExtension(inputList.toArray(), null, null));
 
         return new ArrayList<Date>(inputList);
     }
-    
+
     @Override
-     public Map<String,String> testSimpleMapGet ( RequestContext ctx , Map<String,String> inputMap )
+     public Map<String,String> testSimpleMapGet ( RequestContext ctx , Map<String,String> inputMap, TimeConstraints timeConstraints)
              throws SimpleException
      {
          ctx.setRequestLogExtension(new BaselineLogExtension(inputMap.entrySet(), null, null));
@@ -320,7 +251,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
      }
 
     @Override
-    public Set<String> testSimpleSetGet ( RequestContext ctx , Set<String> inputSet )
+    public Set<String> testSimpleSetGet ( RequestContext ctx , Set<String> inputSet, TimeConstraints timeConstraints)
             throws SimpleException
     {
         ctx.setRequestLogExtension(new BaselineLogExtension(inputSet.toArray(), null, null));
@@ -329,7 +260,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public List<String> testSimpleListGet ( RequestContext ctx , List<String> inputList )
+    public List<String> testSimpleListGet ( RequestContext ctx , List<String> inputList, TimeConstraints timeConstraints)
             throws SimpleException
     {
         ctx.setRequestLogExtension(new BaselineLogExtension(inputList.toArray(), null, null));
@@ -340,8 +271,8 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @KPITimedEvent(value = "Baseline.service.testSimpleGet", catchFailures = true)
     @Override
-    public SimpleResponse testSimpleGet(RequestContext ctx, String message) throws SimpleException {
-        ctx.trace("Starting simple get for %s", message);
+    public SimpleResponse testSimpleGet(RequestContext ctx, String message, TimeConstraints timeConstraints) throws SimpleException {
+        ctx.trace("Starting simple get for {}", message);
         ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
         if (message.startsWith("FORWARD:")) {
             return baselineAsClient.testSimpleGet(ctx, "FORWARDED:"+ message.substring(8));
@@ -351,12 +282,12 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
             return response;
         }
     }
-	
+
 	@KPITimedEvent(value = "Baseline.service.testSimpleGetQA", catchFailures = true)
 	@Override
-	public SimpleResponse testSimpleGetQA(RequestContext ctx, String message) throws SimpleException {
+	public SimpleResponse testSimpleGetQA(RequestContext ctx, String message, TimeConstraints timeConstraints) throws SimpleException {
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
-		ctx.trace("Starting simple get for %s", message);
+		ctx.trace("Starting simple get for {}", message);
 		if (message.equalsIgnoreCase("GET_CHANNEL_INFO")) {
 			SimpleResponse response = new SimpleResponse();
 			response.setMessage("ChannelId: " + ctx.getIdentity().toString());
@@ -364,7 +295,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 		}
 		else if (message.equalsIgnoreCase("DELEGATE")) {
 			SimpleResponseDelegate delegate = new SimpleResponseDelegateImpl();
-			return new SimpleResponse(delegate);			
+			return new SimpleResponse(delegate);
 		}
 		else {
 			SimpleResponse response = new SimpleResponse();
@@ -376,7 +307,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @KPITimedEvent(value = "Baseline.service.testLargeGet", catchFailures = true)
     @Override
-    public LargeRequest testLargeGet(RequestContext ctx, Integer size) throws SimpleException {
+    public LargeRequest testLargeGet(RequestContext ctx, Integer size, TimeConstraints timeConstraints) throws SimpleException {
         ctx.trace("Starting large get for array of size %d", size);
         ctx.setRequestLogExtension(new BaselineLogExtension(size, null, null));
         LargeRequest result = new LargeRequest();
@@ -396,7 +327,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     @KPITimedEvent(value = "Baseline.service.testSimpleTypeReplacement", catchFailures = true)
     @Override
     public SimpleContainer testSimpleTypeReplacement(RequestContext ctx, Integer simpleInt, Double simpleDouble, String simpleString,
-                                                     SimpleValidValue simpleEnum) throws SimpleException {
+                                                     SimpleValidValue simpleEnum, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(simpleInt, simpleDouble, simpleEnum));
         SimpleContainer cont = new SimpleContainer();
         cont.setSimpleInt(simpleInt);
@@ -409,7 +340,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     @KPITimedEvent(value = "Baseline.service.testStringableLists", catchFailures = true)
     @Override
     public SimpleListContainer testStringableLists(RequestContext ctx, Set<Integer> intList, List<String> stringList,
-                                                   List<SimpleValidValue> enumList) throws SimpleException {
+                                                   List<SimpleValidValue> enumList, TimeConstraints timeConstraints) throws SimpleException {
 
         ctx.setRequestLogExtension(new BaselineLogExtension(intList.size(), stringList.size(), enumList.size()));
         SimpleListContainer cont = new SimpleListContainer();
@@ -421,8 +352,8 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @KPITimedEvent(value = "Baseline.service.testParameterStyles", catchFailures = true)
     @Override
-    public List<String> testParameterStyles(RequestContext ctx, 
-                                            TestParameterStylesHeaderParamEnum headerParam, String secondHeaderParam, String queryParam, Date dateQueryParam, Float ok) {
+    public List<String> testParameterStyles(RequestContext ctx,
+                                            TestParameterStylesHeaderParamEnum headerParam, String secondHeaderParam, String queryParam, Date dateQueryParam, Float ok, TimeConstraints timeConstraints) {
 
         ctx.setRequestLogExtension(new BaselineLogExtension(queryParam, ok, null));
 
@@ -430,27 +361,34 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
         response.add("secondHeaderParam=" + secondHeaderParam);
         response.add("queryParam=" + queryParam);
         response.add("headerParam=" + headerParam);
-        response.add("dateQueryParam=" + dateQueryParam);
+        response.add("dateQueryParam=" + dateInUTC(dateQueryParam));
 
         response.add("ok=" + ok);
         return response;
     }
-	
+
 	@KPITimedEvent(value = "Baseline.service.testParameterStylesQA", catchFailures = true)
 	@Override
 	public SimpleResponse testParameterStylesQA(RequestContext ctx,
-			TestParameterStylesQAHeaderParamEnum headerParam, String queryParam, Date dateQueryParam) {
+			TestParameterStylesQAHeaderParamEnum headerParam, String queryParam, Date dateQueryParam, TimeConstraints timeConstraints) {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(queryParam, null, null));
 		SimpleResponse response = new SimpleResponse();
 		response.setMessage("headerParam=" + headerParam
-                + ",queryParam=" + queryParam + ",dateQueryParam=" + dateQueryParam);
+                + ",queryParam=" + queryParam + ",dateQueryParam=" + dateInUTC(dateQueryParam));
 		return response;
 	}
 
+    private String dateInUTC(Date date) {
+        if (date == null) {
+            return "null";
+        }
+        return date.toGMTString().replace("GMT","UTC");
+    }
+
     @KPITimedEvent(value = "Baseline.service.testDateRetrieval", catchFailures = true)
     @Override
-    public DateContainer testDateRetrieval(RequestContext ctx, DateContainer inputDates) throws SimpleException {
+    public DateContainer testDateRetrieval(RequestContext ctx, DateContainer inputDates, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(inputDates.getFirst(), inputDates.getLast(), inputDates.getDifference()));
         DateContainer response = new DateContainer();
         response.setFirst(inputDates.getFirst());
@@ -465,7 +403,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     @KPITimedEvent(value = "Baseline.service.testDoubleHandling", catchFailures = true)
     @Override
     public DoubleResponse testDoubleHandling(RequestContext ctx,
-                                             DoubleContainer doubleContainer, Double doubleVal)
+                                             DoubleContainer doubleContainer, Double doubleVal, TimeConstraints timeConstraints)
             throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(doubleContainer.getMap().size(), doubleContainer.getVal(), doubleVal));
         DoubleResponse resp = new DoubleResponse();
@@ -477,8 +415,8 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @KPITimedEvent(value = "Baseline.service.testComplexMutator", catchFailures = true)
     @Override
-    public SimpleResponse testComplexMutator(RequestContext ctx, ComplexObject message) throws SimpleException {
-        ctx.trace("Starting complex mutator for %s", message.getName());
+    public SimpleResponse testComplexMutator(RequestContext ctx, ComplexObject message, TimeConstraints timeConstraints) throws SimpleException {
+        ctx.trace("Starting complex mutator for {}", message.getName());
         ctx.setRequestLogExtension(new BaselineLogExtension(message, "mutate", null));
         SimpleResponse response = new SimpleResponse();
         Integer val2 = message.getValue2();
@@ -491,30 +429,30 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @KPITimedEvent(value = "Baseline.service.testLargePost", catchFailures = true)
     @Override
-    public SimpleResponse testLargePost(RequestContext ctx, LargeRequest message) throws SimpleException {
-        ctx.trace("Starting large post with array size %s", message.getSize());
+    public SimpleResponse testLargePost(RequestContext ctx, LargeRequest message, TimeConstraints timeConstraints) throws SimpleException {
+        ctx.trace("Starting large post with array size {}", message.getSize());
         ctx.setRequestLogExtension(new BaselineLogExtension(message.getOddOrEven(), "largepost", message.getSize()));
         SimpleResponse response = new SimpleResponse();
         response.setMessage("There were " + message.getSize() + " items specified in the list, " + message.getObjects().size()
                 + " actually");
         return response;
     }
-	
+
 	@KPITimedEvent(value = "Baseline.service.testLargePostQA", catchFailures = true)
 	@Override
-	public SimpleResponse testLargePostQA(RequestContext ctx, LargeRequest message)
+	public SimpleResponse testLargePostQA(RequestContext ctx, LargeRequest message, TimeConstraints timeConstraints)
 			throws SimpleException {
-		ctx.trace("Starting large post with array size %s", message.getSize());
+		ctx.trace("Starting large post with array size {}", message.getSize());
 		ctx.setRequestLogExtension(new BaselineLogExtension(message.getOddOrEven(), "largepostQA", message.getSize()));
 		SimpleResponse response = new SimpleResponse();
-		
+
 		Boolean returnList = message.getReturnList();
 		if ((returnList != null) && (returnList)) {
-			
+
 			List<ComplexObject> complexObjects = message.getObjects();
-			
+
 			StringBuffer namesBuff = new StringBuffer();
-			namesBuff.append("Names: ");			
+			namesBuff.append("Names: ");
 			StringBuffer value1sBuff = new StringBuffer();
 			value1sBuff.append("Value1s: ");
 			StringBuffer value2sBuff = new StringBuffer();
@@ -522,11 +460,11 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 			for (ComplexObject complexObject: complexObjects) {
 				if (complexObject == null) {
-					namesBuff.append("null");					
+					namesBuff.append("null");
 					value1sBuff.append("null");
 					value2sBuff.append("null");
 				} else {
-					namesBuff.append(complexObject.getName());					
+					namesBuff.append(complexObject.getName());
 					value1sBuff.append(complexObject.getValue1());
 					value2sBuff.append( complexObject.getValue2());
 				}
@@ -534,7 +472,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 			String names = namesBuff.toString();
 			String value1s = value1sBuff.toString();
 			String value2s = value2sBuff.toString();
-			
+
 			response.setMessage(names + " - " + value1s + " - " + value2s);
 		} else {
 			response.setMessage("There were " + message.getSize()
@@ -546,8 +484,8 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @KPITimedEvent(value = "Baseline.service.testException", catchFailures = true)
     @Override
-    public SimpleResponse testException(RequestContext ctx, String responseCode, String message) throws SimpleException, WotsitException {
-        ctx.trace("Starting exception thrower with message %s", message);
+    public SimpleResponse testException(RequestContext ctx, String responseCode, String message, TimeConstraints timeConstraints) throws SimpleException, WotsitException {
+        ctx.trace("Starting exception thrower with message {}", message);
         ResponseCode response;
         try {
             response = ResponseCode.valueOf(responseCode);
@@ -577,14 +515,14 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
             }
         }
     }
-	
+
 	 @KPITimedEvent(value = "Baseline.service.testExceptionQA", catchFailures = true)
 	@Override
-	public SimpleResponse testExceptionQA(RequestContext ctx, String message)
+	public SimpleResponse testExceptionQA(RequestContext ctx, String message, TimeConstraints timeConstraints)
 			throws SimpleException, WotsitException {
-		ctx.trace("Starting exception thrower with message %s", message);
+		ctx.trace("Starting exception thrower with message {}", message);
 		ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
-		
+
 		try {
 			SimpleExceptionErrorCodeEnum errCode = SimpleExceptionErrorCodeEnum
 					.valueOf(message);
@@ -609,13 +547,13 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @KPITimedEvent(value = "Baseline.service.testNamedCougarException", catchFailures = true)
     @Override
-    public SimpleResponse testNamedCougarException(RequestContext ctx, String errorCodeName) {
+    public SimpleResponse testNamedCougarException(RequestContext ctx, String errorCodeName, TimeConstraints timeConstraints) {
         throw new CougarServiceException(ServerFaultCode.valueOf(errorCodeName), "Test throwing an exception with error code: "+errorCodeName);
     }
 
     @KPITimedEvent(value = "Baseline.service.testSleep", catchFailures = true)
     @Override
-    public void testSleep(RequestContext ctx, Long sleep) throws SimpleException {
+    public void testSleep(RequestContext ctx, Long sleep, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(sleep, null, null));
 
         if (sleep <= 0) {
@@ -634,7 +572,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @KPITimedEvent(value = "Baseline.service.testSleep", catchFailures = true)
     @Override
-    public Integer cancelSleeps(RequestContext ctx) throws SimpleException {
+    public Integer cancelSleeps(RequestContext ctx, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
 
 
@@ -647,12 +585,12 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @KPITimedEvent(value = "Baseline.service.testSecureService", catchFailures = true)
-    public SimpleResponse testSecureService(RequestContext ctx, String message) throws SimpleException {
+    public SimpleResponse testSecureService(RequestContext ctx, String message, TimeConstraints timeConstraints) throws SimpleException {
        	throw new UnsupportedOperationException("implement me");
     }
 
     @Override
-    public IdentChain testIdentityChain(RequestContext ctx) throws SimpleException {
+    public IdentChain testIdentityChain(RequestContext ctx, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         if (ctx.getIdentity() == null) {
             return null;
@@ -671,7 +609,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @KPITimedEvent(value = "Baseline.service.testNoParams", catchFailures = true)
     @Override
-    public NoParamsResponse testNoParams(RequestContext ctx) throws SimpleException {
+    public NoParamsResponse testNoParams(RequestContext ctx, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         NoParamsResponse response = new NoParamsResponse();
         response.setStatus("hello");
@@ -681,7 +619,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @KPITimedEvent(value = "Baseline.service.testLargeMapGet", catchFailures = true)
     @Override
-    public MapDataType testLargeMapGet(RequestContext ctx, Integer size) throws SimpleException {
+    public MapDataType testLargeMapGet(RequestContext ctx, Integer size, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(size, null, null));
         MapDataType result = new MapDataType();
         result.setCache(new HashMap<Integer, ComplexObject>());
@@ -700,7 +638,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @KPITimedEvent(value = "Baseline.service.testMapsNameClash", catchFailures = true)
     @Override
-    public SimpleResponseMap testMapsNameClash(RequestContext ctx, SimpleMap mapParam) throws SimpleException {
+    public SimpleResponseMap testMapsNameClash(RequestContext ctx, SimpleMap mapParam, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(mapParam.getCache().size(), null, null));
         Set<Entry<String, String>> entry = mapParam.getCache().entrySet();
         SimpleResponseMap map = new SimpleResponseMap();
@@ -713,7 +651,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @KPITimedEvent(value = "Baseline.service.testListRetrieval", catchFailures = true)
     @Override
-    public PrimitiveLists testListRetrieval(RequestContext ctx, Integer seed) throws SimpleException {
+    public PrimitiveLists testListRetrieval(RequestContext ctx, Integer seed, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(seed, null, null));
         PrimitiveLists response = new PrimitiveLists();
         Random rnd = new Random(seed);
@@ -757,7 +695,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
     @Override
     public SimpleResponse testBodyParams(RequestContext ctx, String message, Integer value, ComplexObject complex, SimpleValidValue myEnum,
-                                         ComplexObject anotherComplex) throws SimpleException {
+                                         ComplexObject anotherComplex, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(message, value, complex));
 
         SimpleResponse response = new SimpleResponse();
@@ -767,7 +705,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public List<SimpleResponse> testDirectListReturn(RequestContext ctx, Integer seed, AsyncBehaviour async) throws SimpleException {
+    public List<SimpleResponse> testDirectListReturn(RequestContext ctx, Integer seed, AsyncBehaviour async, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(seed, "List", async));
         List<SimpleResponse> response = new ArrayList<SimpleResponse>();
         Random rnd = new Random(seed);
@@ -785,7 +723,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public Map<String, SimpleResponse> testDirectMapReturn(RequestContext ctx, Integer seed, AsyncBehaviour async) throws SimpleException {
+    public Map<String, SimpleResponse> testDirectMapReturn(RequestContext ctx, Integer seed, AsyncBehaviour async, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(seed, "Map", async));
         Map<String, SimpleResponse> response = new HashMap<String, SimpleResponse>();
         Random rnd = new Random(seed);
@@ -801,25 +739,25 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
         	throw new SimpleException(ResponseCode.ServiceUnavailable,SimpleExceptionErrorCodeEnum.FORBIDDEN ,"Suspend, is no longer supported");
         }
     }
-	
+
     @KPITimedEvent(value = "Baseline.service.kpiTesting", catchFailures = true)
 	@Override
-	public SimpleResponse kpiTesting(RequestContext ctx, String message)
+	public SimpleResponse kpiTesting(RequestContext ctx, String message, TimeConstraints timeConstraints)
 			throws SimpleException {
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
-		ctx.trace("Starting kpiTesting for %s", message);
-		
+		ctx.trace("Starting kpiTesting for {}", message);
+
 		SimpleResponse response = new SimpleResponse();
 		response.setMessage("This method uses KPI testing. Message received : " + message);
-		return response;		
-	}	
-	
+		return response;
+	}
+
 	@Override
-	public SimpleResponse waitSeconds(RequestContext ctx, String seconds)
+	public SimpleResponse waitSeconds(RequestContext ctx, String seconds, TimeConstraints timeConstraints)
 			throws SimpleException {
 		ctx.setRequestLogExtension(new BaselineLogExtension(seconds, null, null));
-		ctx.trace("Starting waitSeconds for %s", seconds);
-		
+		ctx.trace("Starting waitSeconds for {}", seconds);
+
 		try {
 			long sec = Long.parseLong(seconds);
 			Thread.currentThread().sleep(sec * 1000);
@@ -831,24 +769,41 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 		}
 		SimpleResponse response = new SimpleResponse();
 		response.setMessage("Waited for " + seconds + " seconds.");
-		return response;		
-	}	
+		return response;
+	}
 
 	@Override
-	public SimpleResponse logMessage(RequestContext ctx, String logString, String logLevel)
+	public SimpleResponse logMessage(RequestContext ctx, String logString, String logLevel, TimeConstraints timeConstraints)
 			throws SimpleException {
 		ctx.setRequestLogExtension(new BaselineLogExtension(logString, null, null));
-		ctx.trace("Starting logMessage for %s", logString);
-		
-		LOGGER.log(Level.parse(logLevel), logString);
-		
+		ctx.trace("Starting logMessage for {}", logString);
+
+        // todo: should change this to an enum..?? at least change to a shorter list of possible values..
+        Level level = Level.toLevel(logLevel);
+        if (level.equals(Level.ERROR)) {
+            LOGGER.error(logString);
+        }
+        else if (level.equals(Level.WARN)) {
+            LOGGER.warn(logString);
+        }
+        else if (level.equals(Level.INFO)) {
+            LOGGER.info(logString);
+        }
+        else if (level.equals(Level.DEBUG)) {
+            LOGGER.debug(logString);
+        }
+        else
+        {
+            throw new SimpleException(SimpleExceptionErrorCodeEnum.UNRECOGNIZED_VALUE, "Unsupported log level: "+logLevel);
+        }
+
 		SimpleResponse response = new SimpleResponse();
 		response.setMessage(logString + " logged at " + logLevel);
-		return response;		
+		return response;
 	}
 
     @Override
-    public Long bulkCaller(RequestContext ctx, Integer cycles, String logLevel) throws SimpleException {
+    public Long bulkCaller(RequestContext ctx, Integer cycles, String logLevel, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(cycles, null, null));
         final CountDownLatch latch = new CountDownLatch(cycles);
         ExecutionObserver obs = new ExecutionObserver() {
@@ -857,43 +812,43 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
                 latch.countDown();
             }
         };
-        LOGGER.log(Level.INFO, "Bulk calling testSimpleGet %d time", cycles);
+        LOGGER.info("Bulk calling testSimpleGet %d time", cycles);
         long startTime = System.nanoTime();
         for (int i = 0; i < cycles; ++i) {
             baselineAsyncClient.testSimpleGet(ctx, "message:"+i, obs);
         }
-        LOGGER.log(Level.INFO, "Bulk calls complete");
+        LOGGER.info("Bulk calls complete");
         try { latch.await(); } catch (InterruptedException e) {}
         long timeTaken = System.nanoTime() - startTime;
-        LOGGER.log(Level.INFO, "All Latches returned in %,d ms", timeTaken/1000000);
+        LOGGER.info("All Latches returned in %,d ms", timeTaken / 1000000);
         return timeTaken;
     }
 
     @Override
 	public SimpleResponse changeLogLevel(RequestContext ctx, String logName,
-			String level) throws SimpleException {
-	
+			String level, TimeConstraints timeConstraints) throws SimpleException {
+
 		ctx.setRequestLogExtension(new BaselineLogExtension(logName + ": " + level, null, null));
-		ctx.trace("Starting changeLogLevel to %s", level);
-		
+		ctx.trace("Starting changeLogLevel to {}", level);
+
 		SimpleResponse response = new SimpleResponse();
 		if ((logName==null) || (logName.equalsIgnoreCase("")) || (logName.equalsIgnoreCase("service"))) {
-            loggingControl.setLogLevel(LOGGER.getLogName(), level, false);
+            loggingControl.setLogLevel(BaselineServiceImpl.class.getName(), level, false);
 			response.setMessage("Service logging level set at " + level);
 		} else {
             loggingControl.setLogLevel(logName, level, false);
 			response.setMessage(logName + " logging level set at " + level);
 		}
 
-        LOGGER.log(Level.WARNING, "A warning message");
-        LOGGER.log(Level.INFO,  "A warning message");
+        LOGGER.warn("A warning message");
+        LOGGER.info("A warning message");
 
-		return response;		
-	}	
-	
+		return response;
+	}
+
 	@Override
 	public EnumOperationResponseObject enumOperation(RequestContext ctx,
-			EnumOperationHeaderParamEnum headerParam, EnumOperationQueryParamEnum queryParam, BodyParamEnumObject message)
+			EnumOperationHeaderParamEnum headerParam, EnumOperationQueryParamEnum queryParam, BodyParamEnumObject message, TimeConstraints timeConstraints)
 			throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
@@ -912,10 +867,10 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 		return responseObject;
 	}
-	
+
 	@Override
 	public I32OperationResponseObject i32Operation(RequestContext ctx, Integer headerParam, Integer queryParam,
-			BodyParamI32Object message) throws SimpleException {
+			BodyParamI32Object message, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
@@ -930,7 +885,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 	@Override
 	public I64OperationResponseObject i64Operation(RequestContext ctx, Long headerParam, Long queryParam,
-			BodyParamI64Object message) throws SimpleException {
+			BodyParamI64Object message, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
@@ -942,10 +897,10 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 		return returnObject;
 	}
-	
+
 	@Override
 	public ByteOperationResponseObject byteOperation(RequestContext ctx, Byte headerParam, Byte queryParam,
-			BodyParamByteObject message) throws SimpleException {
+			BodyParamByteObject message, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
@@ -958,10 +913,10 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 		return returnObject;
 
 	}
-	
+
 	@Override
 	public FloatOperationResponseObject floatOperation(RequestContext ctx, Float headerParam, Float queryParam,
-			BodyParamFloatObject message) throws SimpleException {
+			BodyParamFloatObject message, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
@@ -977,7 +932,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 	@Override
 	public DoubleOperationResponseObject doubleOperation(RequestContext ctx, Double headerParam, Double queryParam,
-			BodyParamDoubleObject message) throws SimpleException {
+			BodyParamDoubleObject message, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
@@ -992,7 +947,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 	@Override
 	public BoolOperationResponseObject boolOperation(RequestContext ctx, Boolean headerParam, Boolean queryParam,
-			BodyParamBoolObject message) throws SimpleException {
+			BodyParamBoolObject message, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
@@ -1007,14 +962,14 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 	@Override
 	public NonMandatoryParamsOperationResponseObject nonMandatoryParamsOperation(RequestContext ctx, String headerParam,
-			String queryParam, NonMandatoryParamsRequest message) throws SimpleException {
+			String queryParam, NonMandatoryParamsRequest message, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
 		NonMandatoryParamsOperationResponseObject returnObject = new NonMandatoryParamsOperationResponseObject();
 
 		/*
-		 * 
+		 *
 		 * Path paramters must always be passed regardless of mandatory flag in IDL so assume passed
 		 */
 		if (headerParam != null) {
@@ -1035,10 +990,10 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 		return returnObject;
 	}
-	
+
 	@Override
 	public MandatoryParamsOperationResponseObject mandatoryParamsOperation(RequestContext ctx, String headerParam,
-			String queryParam, MandatoryParamsRequest message) throws SimpleException {
+			String queryParam, MandatoryParamsRequest message, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
@@ -1062,13 +1017,13 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
         }
         return s;
     }
-	
+
 	@Override
 	public SimpleResponse setHealthStatusInfo(RequestContext ctx,
-			HealthStatusInfoRequest message) throws SimpleException {
+			HealthStatusInfoRequest message, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
-		
+
 		CougarComponentStatuses cacheAccessStatusDetail = message
 				.getCacheAccessStatusDetail();
 		CougarComponentStatuses dbConnectionStatusDetail = message
@@ -1101,9 +1056,9 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 		return response;
 
 	}
-	
+
 	@Override
-	public DateTimeOperationResponseObject dateTimeOperation(RequestContext ctx, BodyParamDateTimeObject message) throws SimpleException {
+	public DateTimeOperationResponseObject dateTimeOperation(RequestContext ctx, BodyParamDateTimeObject message, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
@@ -1118,9 +1073,9 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 		return responseObject;
 
 	}
-	
+
 	@Override
-	public SimpleMapOperationResponseObject simpleMapOperation(RequestContext ctx, BodyParamSimpleMapObject message) throws SimpleException {
+	public SimpleMapOperationResponseObject simpleMapOperation(RequestContext ctx, BodyParamSimpleMapObject message, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
@@ -1144,7 +1099,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 	}
 
 	@Override
-	public ComplexMapOperationResponseObject complexMapOperation(RequestContext ctx, BodyParamComplexMapObject message)
+	public ComplexMapOperationResponseObject complexMapOperation(RequestContext ctx, BodyParamComplexMapObject message, TimeConstraints timeConstraints)
 			throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
@@ -1178,7 +1133,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 	}
 
 	@Override
-	public SimpleSetOperationResponseObject simpleSetOperation(RequestContext ctx, BodyParamSimpleSetObject message) throws SimpleException {
+	public SimpleSetOperationResponseObject simpleSetOperation(RequestContext ctx, BodyParamSimpleSetObject message, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
@@ -1210,14 +1165,14 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 		response.setResponseSet(responseSet);
 		return response;
 	}
-	
+
 	@Override
-	public ComplexSetOperationResponseObject complexSetOperation(RequestContext ctx, BodyParamComplexSetObject message)
+	public ComplexSetOperationResponseObject complexSetOperation(RequestContext ctx, BodyParamComplexSetObject message, TimeConstraints timeConstraints)
 			throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 		Set<SomeComplexObject> requestSet = message.getComplexSet();
-		Set<SomeComplexObject> responseSet = new LinkedHashSet<SomeComplexObject>();
+		SetBuilder<SomeComplexObject> responseSet = new SetBuilder<SomeComplexObject>().toLinkedHashSet();
 
 		// Put object from set into a map with the value from the string field as the Key
 		// So we can order based on that.
@@ -1235,22 +1190,22 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 		for (String key : mapKeys) {
 			SomeComplexObject requestComplexObject = requestSetObjectMap.get(key);
-			SomeComplexObject responseComplexObject = new SomeComplexObject();
-			responseComplexObject.setDateTimeParameter(requestComplexObject.getDateTimeParameter());
-			responseComplexObject.setListParameter(requestComplexObject.getListParameter());
-			responseComplexObject.setEnumParameter(requestComplexObject.getEnumParameter());
-			responseComplexObject.setStringParameter(requestComplexObject.getStringParameter());
+			SomeComplexObjectBuilder responseComplexObject = new SomeComplexObjectBuilder()
+                .setDateTimeParameter(requestComplexObject.getDateTimeParameter())
+                .setListParameter(requestComplexObject.getListParameter())
+                .setEnumParameter(requestComplexObject.getEnumParameter())
+                .setStringParameter(requestComplexObject.getStringParameter());
 
 			responseSet.add(responseComplexObject);
 		}
 
-		ComplexSetOperationResponseObject response = new ComplexSetOperationResponseObject();
-		response.setResponseSet(responseSet);
+		ComplexSetOperationResponseObject response = new ComplexSetOperationResponseObjectBuilder()
+		    .setResponseSet(responseSet).build();
 		return response;
 	}
-	
+
 	@Override
-	public DateTimeSetOperationResponseObject dateTimeSetOperation(RequestContext ctx, BodyParamDateTimeSetObject message)
+	public DateTimeSetOperationResponseObject dateTimeSetOperation(RequestContext ctx, BodyParamDateTimeSetObject message, TimeConstraints timeConstraints)
 			throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
@@ -1270,7 +1225,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 	}
 
 	@Override
-	public DateTimeListOperationResponseObject dateTimeListOperation(RequestContext ctx, BodyParamDateTimeListObject message)
+	public DateTimeListOperationResponseObject dateTimeListOperation(RequestContext ctx, BodyParamDateTimeListObject message, TimeConstraints timeConstraints)
 			throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
@@ -1291,7 +1246,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 
 	@Override
-	public DateTimeMapOperationResponseObject dateTimeMapOperation(RequestContext ctx, BodyParamDateTimeMapObject message)
+	public DateTimeMapOperationResponseObject dateTimeMapOperation(RequestContext ctx, BodyParamDateTimeMapObject message, TimeConstraints timeConstraints)
 			throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
@@ -1309,11 +1264,11 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 		return responseObject;
 
 	}
-	
+
 	@Override
-	public MapDateTimeKeyOperationResponseObject mapDateTimeKeyOperation(RequestContext ctx, BodyParamMapDateTimeKeyObject message)
+	public MapDateTimeKeyOperationResponseObject mapDateTimeKeyOperation(RequestContext ctx, BodyParamMapDateTimeKeyObject message, TimeConstraints timeConstraints)
 			throws SimpleException{
-		
+
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
 		Map<Date,String> requestMap = message.getMapDateTimeKey();
@@ -1328,10 +1283,10 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 		return responseObject;
 	}
-	
+
 	@Override
-	public I32SimpleOperationResponseObject i32SimpleTypeOperation(RequestContext ctx, Integer headerParam, Integer queryParam, I32SimpleTypeRequestObject message) throws SimpleException {
-		
+	public I32SimpleOperationResponseObject i32SimpleTypeOperation(RequestContext ctx, Integer headerParam, Integer queryParam, I32SimpleTypeRequestObject message, TimeConstraints timeConstraints) throws SimpleException {
+
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
 
@@ -1343,10 +1298,10 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 		return response;
 	}
-	
+
 	@Override
-	public EnumSimpleResponseObject enumSimpleOperation(RequestContext ctx, SimpleEnum headerParam, SimpleEnum queryParam, EnumSimpleRequestObject message) throws SimpleException {
-		
+	public EnumSimpleResponseObject enumSimpleOperation(RequestContext ctx, SimpleEnum headerParam, SimpleEnum queryParam, EnumSimpleRequestObject message, TimeConstraints timeConstraints) throws SimpleException {
+
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
 
@@ -1359,10 +1314,10 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 		return response;
 
 	}
-	
+
 	@Override
 	public NonMandatoryParamsOperationResponseObject stringListOperation(RequestContext ctx,
-			List<String> headerParam, List<String> queryParam) throws SimpleException {
+			List<String> headerParam, List<String> queryParam, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
 
@@ -1388,10 +1343,10 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 		return responseObject;
 	}
-	
+
 	@Override
 	public NonMandatoryParamsOperationResponseObject stringSetOperation(RequestContext ctx, Set<String> headerParam,
-			Set<String> queryParam) throws SimpleException {
+			Set<String> queryParam, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
 
@@ -1404,7 +1359,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 			loopCounter++;
 		}
 		Arrays.sort(headerParamsArray, String.CASE_INSENSITIVE_ORDER);
-		
+
 		StringBuffer headerParamsBuff = new StringBuffer();
 		for (loopCounter = 0; loopCounter < headerParamsArray.length; loopCounter++) {
 			String entry = headerParamsArray[loopCounter] + ",";
@@ -1421,7 +1376,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 			loopCounter++;
 		}
 		Arrays.sort(queryParamsArray, String.CASE_INSENSITIVE_ORDER);
-		
+
 		StringBuffer queryParamsBuff = new StringBuffer();
 		for (loopCounter = 0; loopCounter < queryParamsArray.length; loopCounter++) {
 			String entry = queryParamsArray[loopCounter] + ",";
@@ -1439,15 +1394,15 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 	}
 
     @Override
-    public SimpleValidValue callWithEnumResponse(RequestContext ctx) throws SimpleException {
+    public SimpleValidValue callWithEnumResponse(RequestContext ctx, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
 
         return SimpleValidValue.WEASEL;
     }
-	
+
 	@Override
 	public NonMandatoryParamsOperationResponseObject simpleEnumListOperation(RequestContext ctx,
-			List<SimpleEnum> headerParam, List<SimpleEnum> queryParam) throws SimpleException {
+			List<SimpleEnum> headerParam, List<SimpleEnum> queryParam, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
 
@@ -1473,10 +1428,10 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 		return responseObject;
 	}
-	
+
 	@Override
 	public NonMandatoryParamsOperationResponseObject simpleEnumSetOperation(RequestContext ctx,
-			Set<SimpleEnum> headerParam, Set<SimpleEnum> queryParam) throws SimpleException {
+			Set<SimpleEnum> headerParam, Set<SimpleEnum> queryParam, TimeConstraints timeConstraints) throws SimpleException {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
 		int loopCounter;
@@ -1488,7 +1443,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 			loopCounter++;
 		}
 		Arrays.sort(headerParamsArray, String.CASE_INSENSITIVE_ORDER);
-		
+
 		StringBuffer headerParamsBuff = new StringBuffer();
 		for (loopCounter = 0; loopCounter < headerParamsArray.length; loopCounter++) {
 			String entry = headerParamsArray[loopCounter] + ",";
@@ -1505,7 +1460,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 			loopCounter++;
 		}
 		Arrays.sort(queryParamsArray, String.CASE_INSENSITIVE_ORDER);
-		
+
 		StringBuffer queryParamsBuff = new StringBuffer();
 		for (loopCounter = 0; loopCounter < queryParamsArray.length; loopCounter++) {
 			String entry = queryParamsArray[loopCounter] + ",";
@@ -1523,7 +1478,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 	}
 
     @Override
-    public CallSecurity checkSecurity(RequestContext ctx) {
+    public CallSecurity checkSecurity(RequestContext ctx, TimeConstraints timeConstraints) {
         ctx.setRequestLogExtension(new BaselineLogExtension("", null, null));
         CallSecurity ret = new CallSecurity();
         for (Identity id : ctx.getIdentity().getIdentities()) {
@@ -1536,14 +1491,14 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-	public void voidResponseOperation(RequestContext ctx, String message)
+	public void voidResponseOperation(RequestContext ctx, String message, TimeConstraints timeConstraints)
 			throws SimpleException {
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
-		
+
 	}
 
     @Override
-    public EnumHandling enumHandling(RequestContext ctx, EnumHandling bodyParameter, Boolean returnUnknown) throws SimpleException {
+    public EnumHandling enumHandling(RequestContext ctx, EnumHandling bodyParameter, Boolean returnUnknown, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         EnumHandling ret = new EnumHandling();
         if (returnUnknown) {
@@ -1558,21 +1513,38 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public ClientServerEnum enumHandling2(RequestContext ctx, ClientServerEnum bodyParameter, Boolean returnUnknown) throws SimpleException {
+    public ClientServerEnum enumHandling2(RequestContext ctx, ClientServerEnum bodyParameter, Boolean returnUnknown, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         return returnUnknown ? ClientServerEnum.ServerOnly : ClientServerEnum.ClientServer;
     }
 
     @Override
-    public EnumHandling3WrappedValueEnum enumHandling3(RequestContext ctx, EnumHandling3BodyParameterEnum bodyParameter, Boolean returnUnknown) throws SimpleException {
+    public EnumHandling3WrappedValueEnum enumHandling3(RequestContext ctx, EnumHandling3BodyParameterEnum bodyParameter, Boolean returnUnknown, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         return returnUnknown ? EnumHandling3WrappedValueEnum.ServerOnly : EnumHandling3WrappedValueEnum.ClientServer;
     }
 
     @Override
-    public Boolean simpleEventPublication(RequestContext ctx, TimeContainer time) throws SimpleException {
+    public void callUnknownOperation(RequestContext ctx, TimeConstraints timeConstraints) throws SimpleException {
+        try {
+            nonExistentServiceClient.someOperation(ctx);
+        }
+        // this won't hit as this call will return a not found..
+        catch (com.betfair.nonservice.v3.exception.SimpleException e) {
+            throw new SimpleException(SimpleExceptionErrorCodeEnum.valueOf(e.getErrorCode().name()),e.getReason());
+        }
+    }
+
+    @Override
+    public String echoRequestUuid(RequestContext ctx, TimeConstraints timeConstraints) throws SimpleException {
+        ctx.setRequestLogExtension(new BaselineLogExtension(null,null,null));
+        return ctx.getRequestUUID().toString();
+    }
+
+    @Override
+    public Boolean simpleEventPublication(RequestContext ctx, TimeContainer time, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(time, null, null));
-        
+
         TimeTick tte = new TimeTick();
         tte.setTime(time);
 
@@ -1582,13 +1554,13 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
             timeTickPublishingObserver.onResult(new ExecutionResult(tte));
             success = true;
         } catch (Throwable ex) {
-        	LOGGER.log(Level.SEVERE, "An exception occurred emitting the matched bet event:", ex);
+        	LOGGER.error("An exception occurred emitting the matched bet event:", ex);
         }
         return success;
     }
 
     @Override
-    public void emitMatchedBet(RequestContext ctx, MatchedBetStruct bet, MarketStruct market) throws SimpleException {
+    public void emitMatchedBet(RequestContext ctx, MatchedBetStruct bet, MarketStruct market, TimeConstraints timeConstraints) throws SimpleException {
         ctx.trace("Starting simple get for matched bet between accounts [ " + bet.getAccount1() + ", " + bet.getAccount2() + "]");
 
         ctx.setRequestLogExtension(new BaselineLogExtension(bet, null, null));
@@ -1602,12 +1574,12 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
         try {
             matchedBetObserver.onResult(new ExecutionResult(matchedBet));
         } catch (Throwable ex) {
-        	LOGGER.log(Level.SEVERE, "An exception occurred emitting the matched bet event:", ex);
+        	LOGGER.error("An exception occurred emitting the matched bet event:", ex);
         }
     }
-    
+
     @Override
-    public void emitLogMessage(RequestContext ctx, String logString, String logLevel, Long timeStamp) throws SimpleException {
+    public void emitLogMessage(RequestContext ctx, String logString, String logLevel, Long timeStamp, TimeConstraints timeConstraints) throws SimpleException {
         // Set the request log extension using the operation params
 	    ctx.setRequestLogExtension(new BaselineLogExtension(logString, null, null));
 	    // Construct an instance of the event to be emitted
@@ -1622,12 +1594,12 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
             // Create a new global execution observer variable for each event and call OnResult() passing the event instance just created
 	        logMessageObserver.onResult(new ExecutionResult(lm));
 	    } catch (Throwable ex) {
-	        LOGGER.log(Level.SEVERE, "An exception occurred emitting the inputted message event:", ex);
+	        LOGGER.error("An exception occurred emitting the inputted message event:", ex);
 	    }
 	}
 
     @Override
-    public void emitListEvent(RequestContext ctx, List<String> messageList) throws SimpleException {
+    public void emitListEvent(RequestContext ctx, List<String> messageList, TimeConstraints timeConstraints) throws SimpleException {
         StringBuilder builder = new StringBuilder();
         for(String message : messageList){
             builder.append(message);
@@ -1643,12 +1615,12 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
         try {
             listMessageObserver.onResult(new ExecutionResult(lEvent));
         } catch (Throwable ex) {
-        	LOGGER.log(Level.SEVERE, "An exception occurred emitting the message list event:", ex);
+        	LOGGER.error("An exception occurred emitting the message list event:", ex);
         }
     }
 
     @Override
-    public void emitSetEvent(RequestContext ctx, Set<String> messageSet) throws SimpleException {
+    public void emitSetEvent(RequestContext ctx, Set<String> messageSet, TimeConstraints timeConstraints) throws SimpleException {
         StringBuilder builder = new StringBuilder();
         for(String message : messageSet){
             builder.append(message);
@@ -1664,12 +1636,12 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
         try {
             setMessageObserver.onResult(new ExecutionResult(sEvent));
         } catch (Throwable ex) {
-        	LOGGER.log(Level.SEVERE, "An exception occurred emitting the message set event:", ex);
+        	LOGGER.error("An exception occurred emitting the message set event:", ex);
         }
     }
 
     @Override
-    public void emitMapEvent(RequestContext ctx, Map<String, String> messageMap) throws SimpleException {
+    public void emitMapEvent(RequestContext ctx, Map<String, String> messageMap, TimeConstraints timeConstraints) throws SimpleException {
         StringBuilder builder = new StringBuilder();
         for(String message : messageMap.values()){
             builder.append(message);
@@ -1685,85 +1657,85 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
         try {
             mapMessageObserver.onResult(new ExecutionResult(mEvent));
         } catch (Throwable ex) {
-        	LOGGER.log(Level.SEVERE, "An exception occurred emitting the message map event:", ex);
+        	LOGGER.error("An exception occurred emitting the message map event:", ex);
         }
 
     }
 
     @Override
-    public Boolean boolSimpleTypeEcho(RequestContext ctx, Boolean msg) throws SimpleException {
+    public Boolean boolSimpleTypeEcho(RequestContext ctx, Boolean msg, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(msg, null, null));
         return msg;
     }
 
     @Override
-    public Byte byteSimpleTypeEcho(RequestContext ctx, Byte msg) throws SimpleException {
+    public Byte byteSimpleTypeEcho(RequestContext ctx, Byte msg, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(msg, null, null));
         return msg;
     }
 
     @Override
-    public Integer i32SimpleTypeEcho(RequestContext ctx, Integer msg) throws SimpleException {
+    public Integer i32SimpleTypeEcho(RequestContext ctx, Integer msg, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(msg, null, null));
         return msg;
     }
 
     @Override
-    public Long i64SimpleTypeEcho(RequestContext ctx, Long msg) throws SimpleException {
+    public Long i64SimpleTypeEcho(RequestContext ctx, Long msg, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(msg, null, null));
         return msg;
     }
 
     @Override
-    public Float floatSimpleTypeEcho(RequestContext ctx, Float msg) throws SimpleException {
+    public Float floatSimpleTypeEcho(RequestContext ctx, Float msg, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(msg, null, null));
         return msg;
     }
 
     @Override
-    public Double doubleSimpleTypeEcho(RequestContext ctx, Double msg) throws SimpleException {
+    public Double doubleSimpleTypeEcho(RequestContext ctx, Double msg, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(msg, null, null));
         return msg;
     }
 
     @Override
-    public String stringSimpleTypeEcho(RequestContext ctx, String msg) throws SimpleException {
+    public String stringSimpleTypeEcho(RequestContext ctx, String msg, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(msg, null, null));
         return msg;
     }
 
     @Override
-    public Date dateTimeSimpleTypeEcho(RequestContext ctx, Date msg) throws SimpleException {
+    public Date dateTimeSimpleTypeEcho(RequestContext ctx, Date msg, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(msg, null, null));
         return msg;
     }
 
     @Override
-    public List<Integer> i32ListSimpleTypeEcho(RequestContext ctx, List<Integer> msg) throws SimpleException {
+    public List<Integer> i32ListSimpleTypeEcho(RequestContext ctx, List<Integer> msg, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(msg, null, null));
         return msg;
     }
 
     @Override
-    public Set<Integer> i32SetSimpleTypeEcho(RequestContext ctx, Set<Integer> msg) throws SimpleException {
+    public Set<Integer> i32SetSimpleTypeEcho(RequestContext ctx, Set<Integer> msg, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(msg, null, null));
         return msg;
     }
 
     @Override
-    public Map<Integer, Integer> i32MapSimpleTypeEcho(RequestContext ctx, Map<Integer, Integer> msg) throws SimpleException {
+    public Map<Integer, Integer> i32MapSimpleTypeEcho(RequestContext ctx, Map<Integer, Integer> msg, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(msg, null, null));
         return msg;
     }
 
     @Override
-    public String getInferredCountryCode(RequestContext ctx) throws SimpleException {
+    public String getInferredCountryCode(RequestContext ctx, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         return ctx.getLocation().getInferredCountry();
     }
 
     @Override
-    public void subscribeToOwnEvents(RequestContext ctx, List<String> events) throws SimpleException {
+    public void subscribeToOwnEvents(RequestContext ctx, List<String> events, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         for (final String s : events) {
             // ignore dup subs
@@ -1800,7 +1772,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public void emitLongEvent(RequestContext ctx, String eventNamespace, Long longArg) throws SimpleException {
+    public void emitLongEvent(RequestContext ctx, String eventNamespace, Long longArg, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(eventNamespace, longArg, null));
         ctx.getLocation().getRemoteAddr();
         ctx.getLocation().getResolvedAddresses();
@@ -1841,7 +1813,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public void unsubscribeFromOwnEvents(RequestContext ctx, List<String> events) throws SimpleException {
+    public void unsubscribeFromOwnEvents(RequestContext ctx, List<String> events, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         for (final String s : events) {
             synchronized (subscriptionsBeingCreated) {
@@ -1851,7 +1823,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public List<ReceivedEvent> getReceivedEvents(RequestContext ctx, GetReceivedEventsEventEnum event) throws SimpleException {
+    public List<ReceivedEvent> getReceivedEvents(RequestContext ctx, GetReceivedEventsEventEnum event, TimeConstraints timeConstraints) throws SimpleException {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         List<ReceivedEvent> ret = new ArrayList<ReceivedEvent>();
         if (event == GetReceivedEventsEventEnum.TimeTick) {
@@ -1933,7 +1905,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
      * Please note that this Service method is called by the Execution Venue to establish a communication
      * channel from the transport to the Application to publish events.  In essence, the transport subscribes
      * to the app, so this method is called once for each publisher.  The application should hold onto the
-     * passed in observer, and call onResult on that observer to emit an event. 
+     * passed in observer, and call onResult on that observer to emit an event.
      * @param ctx
      * @param args
      * @param executionObserver
@@ -1951,7 +1923,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
      * to the app, so this method is called once for each publisher at application initialisation.  You should
      * never be calling this directly.  The application should hold onto the passed in observer, and call
      * onResult on that observer to emit an event.
-     * @param ctx 
+     * @param ctx
      * @param args
      * @param executionObserver
      */
@@ -1961,7 +1933,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
             this.matchedBetObserver = executionObserver;
         }
     }
-    
+
     @Override
 	public void subscribeToLogMessage(ExecutionContext ctx, Object[] args, ExecutionObserver executionObserver) {
         if (getEventTransportIdentity(ctx).getPrincipal().getName().equals(SONIC_TRANSPORT_INSTANCE_ONE)) {
@@ -2034,14 +2006,14 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
         public Status checkStatus() {
             return status;
         }
-        
+
         public void setStatus(Status status) {
         	this.status = status;
         }
     }
 
     @Override
-    public void updateSimpleConnectedObject(RequestContext ctx, SimpleConnectedObject updatedObject) {
+    public void updateSimpleConnectedObject(RequestContext ctx, SimpleConnectedObject updatedObject, TimeConstraints timeConstraints) {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         simpleConnectedObjectHeap.beginUpdate();
         try {
@@ -2055,14 +2027,14 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public ConnectedResponse simpleConnectedObject(RequestContext ctx) {
+    public ConnectedResponse simpleConnectedObject(RequestContext ctx, TimeConstraints timeConstraints) {
         ctx.setConnectedObjectLogExtension(new BaselineLogExtension("a","b","c"));
         Subscription sub = createSub(simpleConnectedObjectHeap);
         return new ConnectedResponseImpl(simpleConnectedObjectHeap, sub);
     }
 
     @Override
-    public void updateSimpleConnectedList(RequestContext ctx, List<SimpleConnectedObject> updatedObject) {
+    public void updateSimpleConnectedList(RequestContext ctx, List<SimpleConnectedObject> updatedObject, TimeConstraints timeConstraints) {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         simpleConnectedListHeap.beginUpdate();
         try {
@@ -2074,7 +2046,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public void appendSimpleConnectedObject(RequestContext ctx, SimpleConnectedObject object) {
+    public void appendSimpleConnectedObject(RequestContext ctx, SimpleConnectedObject object, TimeConstraints timeConstraints) {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         simpleConnectedListHeap.beginUpdate();
         try {
@@ -2088,14 +2060,14 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public ConnectedResponse simpleConnectedList(RequestContext ctx) {
+    public ConnectedResponse simpleConnectedList(RequestContext ctx, TimeConstraints timeConstraints) {
         ctx.setConnectedObjectLogExtension(new BaselineLogExtension("d","e","f"));
         Subscription sub = createSub(simpleConnectedListHeap);
         return new ConnectedResponseImpl(simpleConnectedListHeap, sub);
     }
 
     @Override
-    public void updateComplexConnectedObject(RequestContext ctx, VeryComplexObject updatedObject) {
+    public void updateComplexConnectedObject(RequestContext ctx, VeryComplexObject updatedObject, TimeConstraints timeConstraints) {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         complexConnectedObjectHeap.beginUpdate();
         try {
@@ -2111,14 +2083,14 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public ConnectedResponse complexConnectedObject(RequestContext ctx) {
+    public ConnectedResponse complexConnectedObject(RequestContext ctx, TimeConstraints timeConstraints) {
         ctx.setConnectedObjectLogExtension(new BaselineLogExtension("g","h","i"));
         Subscription sub = createSub(complexConnectedObjectHeap);
         return new ConnectedResponseImpl(complexConnectedObjectHeap, sub);
     }
 
     @Override
-    public void closeAllSubscriptions(RequestContext ctx, String heapUri) {
+    public void closeAllSubscriptions(RequestContext ctx, String heapUri, TimeConstraints timeConstraints) {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         List<Subscription> heapSubs = heapSubscriptions.remove(heapUri);
         if (heapSubs != null) {
@@ -2129,7 +2101,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public Integer getNumSubscriptions(RequestContext ctx, String heapUri) {
+    public Integer getNumSubscriptions(RequestContext ctx, String heapUri, TimeConstraints timeConstraints) {
         ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         List<Subscription> heapSubs = heapSubscriptions.get(heapUri);
         if (heapSubs != null) {
@@ -2141,7 +2113,8 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 
     @Override
-    public TestResults testConnectedObjects(RequestContext ctx, TestConnectedObjectsProtocolEnum protocol) {ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
+    public TestResults testConnectedObjects(RequestContext ctx, TestConnectedObjectsProtocolEnum protocol, TimeConstraints timeConstraints) {
+        ctx.setRequestLogExtension(new BaselineLogExtension(null, null, null));
         BaselineSyncClient client = null;
         if (protocol == TestConnectedObjectsProtocolEnum.IN_PROCESS) {
             client = inProcessSyncClient;

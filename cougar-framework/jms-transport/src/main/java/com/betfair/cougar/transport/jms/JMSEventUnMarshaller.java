@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ package com.betfair.cougar.transport.jms;
 import com.betfair.cougar.core.api.events.Event;
 import com.betfair.cougar.core.api.exception.CougarException;
 import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
 import com.betfair.cougar.transport.api.protocol.events.AbstractEvent;
 import com.betfair.cougar.transport.api.protocol.events.EventUnMarshaller;
@@ -39,7 +39,7 @@ import java.util.logging.Level;
  * JSON based TextMessage, and marshall it to the IDL defined event object.
  */
 public class JMSEventUnMarshaller implements EventUnMarshaller<TextMessage> {
-    private final static CougarLogger logger = CougarLoggingUtils.getLogger(JMSEventUnMarshaller.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(JMSEventUnMarshaller.class);
 
     public static final String DEFAULT_ENCODING_TYPE = "utf-8";
 
@@ -53,7 +53,7 @@ public class JMSEventUnMarshaller implements EventUnMarshaller<TextMessage> {
         InputStream is = null;
         try {
             String messageText = ((TextMessage)transportEvent).getText();
-            logger.log(Level.FINE, "Received message with body [" + messageText + "]");
+            LOGGER.debug("Received message with body [" + messageText + "]");
             is = new ByteArrayInputStream(messageText.getBytes(encodingType));
 
             String eventNameFromMessage = transportEvent.getStringProperty(JMSPropertyConstants.EVENT_NAME_FIELD_NAME);
@@ -68,7 +68,7 @@ public class JMSEventUnMarshaller implements EventUnMarshaller<TextMessage> {
                 throw new CougarFrameworkException("Can't find event class for event named '"+eventNameFromMessage+"'");
             }
 
-            AbstractEvent event = (AbstractEvent) dataBindingFactory.getUnMarshaller().unmarshall(is, correctClass, encodingType);
+            AbstractEvent event = (AbstractEvent) dataBindingFactory.getUnMarshaller().unmarshall(is, correctClass, encodingType, true);
 
             event.setMessageId(transportEvent.getStringProperty(JMSPropertyConstants.MESSAGE_ID_FIELD_NAME));
             event.setCougarMessageRouteString(transportEvent.getStringProperty(JMSPropertyConstants.MESSAGE_ROUTING_FIELD_NAME));

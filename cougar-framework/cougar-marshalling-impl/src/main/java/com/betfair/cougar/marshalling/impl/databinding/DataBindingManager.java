@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,22 +28,22 @@ public class DataBindingManager {
 
     private static final DataBindingManager instance = new DataBindingManager();
     private final Map<String, DataBindingFactory> factories;
-    
+
     public static DataBindingManager getInstance() {
         return instance;
     }
-    
-    
+
+
     private DataBindingManager() {
-        factories = new HashMap<String, DataBindingFactory>();
+        factories = new HashMap<>();
     }
-    
+
     public void addBindingMap(DataBindingMap map) {
     	for (String contentType : map.getContentTypes()) {
 	        factories.put(contentType, map.getFactory());
     	}
     }
-    
+
     public DataBindingFactory getFactory(MediaType mediaType) {
     	return factories.get(mediaType.toString());
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2013, The Sporting Exchange Limited
+  ~ Copyright 2014, The Sporting Exchange Limited
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -26,11 +26,6 @@
         <property name="detailedFaults" value="$COUGAR-EV{cougar.fault.detailed}"/>
     </bean>
 
-    <bean id="loggingErrorManager" class="com.betfair.cougar.logging.CougarLogManager"
-        factory-method="getInstance">
-        <property name="baseLogDirectory" value="$COUGAR{cougar.log.dir}"/>
-    </bean>
-
     <bean id="serviceLogManagerFactory" class="com.betfair.cougar.core.impl.ev.DefaultServiceLogManagerFactory">
         <constructor-arg index="0" ref="cougar.core.EventLoggingRegistry"/>
     </bean>
@@ -42,11 +37,11 @@
     <bean id="executionVenue" class="com.betfair.cougar.core.impl.ev.ContainerAwareExecutionVenue">
         <property name="serviceLogManagerFactory" ref="serviceLogManagerFactory"/>
         <property name="stats" ref="kpiMonitor"/>
-        <property name="eventLogger" ref="cougar.core.EventLogger"/>
         <property name="preProcessors" ref="preProcessorInterceptors"/>
         <property name="postProcessors" ref="postProcessorInterceptors"/>
         <property name="identityResolverFactory" ref="cougar.core.IdentityResolverFactory"/>
         <property name="monitorRegistry" ref="cougar.core.MonitorRegistry"/>
+        <property name="tracer" ref="cougar.core.Tracer"/>
     </bean>
 
     <bean id="cougarIntroductionService" class="com.betfair.cougar.core.impl.CougarIntroductionService" lazy-init="false">
@@ -128,7 +123,6 @@
         <property name="beans">
             <map>
                 <entry key="CoUGAR:name=executionVenue" value-ref="executionVenue"/>
-                <entry key="CoUGAR:name=Logging" value-ref="loggingErrorManager"/>
                 <entry key="CoUGAR:name=eventLogging" value-ref="cougar.core.EventLogger"/>
                 <entry key="CoUGAR:name=faultController" value-ref="faultController"/>
                 <entry key="CoUGAR:name=LoggingControl" value-ref="cougar.core.LoggingControl"/>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 package com.betfair.cougar.transport.api;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ExecutionContextWithTokens;
-import com.betfair.cougar.transport.api.ExecutionCommand;
-import com.betfair.cougar.transport.api.TransportCommand;
+import com.betfair.cougar.api.DehydratedExecutionContext;
+
+import java.util.List;
 
 /**
  * Resolves a TransportCommand to ExecutionCommand (or batch of ExecutionCommands) and
@@ -27,7 +26,7 @@ import com.betfair.cougar.transport.api.TransportCommand;
  * @param <C> The type of Command that the CommandResolver implementation can resolve
  */
 public interface CommandResolver<C extends TransportCommand> {
-    public ExecutionContextWithTokens resolveExecutionContext();
-    public Iterable<ExecutionCommand> resolveExecutionCommands();
+    public DehydratedExecutionContext resolveExecutionContext();
+    public List<ExecutionCommand> resolveExecutionCommands();
 }
 

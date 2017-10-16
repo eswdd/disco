@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <!--
-  ~ Copyright 2013, The Sporting Exchange Limited
+  ~ Copyright 2014, The Sporting Exchange Limited
+  ~ Copyright 2015, Simon Matić Langford
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,7 +21,7 @@
   <parent>
     <artifactId>cougar-framework</artifactId>
     <groupId>com.betfair.cougar</groupId>
-    <version>3.0-SNAPSHOT</version>
+    <version>3.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>net-util</artifactId>
@@ -33,7 +34,6 @@
     <dependency>
       <groupId>com.betfair.cougar</groupId>
       <artifactId>cougar-util</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
@@ -45,12 +45,16 @@
     <dependency>
       <groupId>com.betfair.cougar</groupId>
       <artifactId>cougar-core-impl</artifactId>
-      <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>com.betfair.cougar</groupId>
       <artifactId>cougar-transport-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.betfair.cougar</groupId>
+      <artifactId>cougar-transport-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -86,8 +90,8 @@
     </dependency>
 
     <dependency>
-      <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -95,7 +99,7 @@
           <groupId>com.caucho</groupId>
           <artifactId>hessian</artifactId>
       </dependency>
-    
+
 
     <dependency>
       <groupId>org.mockito</groupId>

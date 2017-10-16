@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@ import com.betfair.cougar.core.api.transcription.TranscribableParams;
 import com.betfair.cougar.core.api.transcription.TranscriptionInput;
 import com.betfair.cougar.core.api.transcription.TranscriptionOutput;
 import com.betfair.cougar.transport.api.protocol.events.AbstractEvent;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Set;
@@ -57,12 +57,12 @@ public class PingEvent extends AbstractEvent {
         return PARAMETERS;
     }
 
-    public void transcribe(TranscriptionOutput out, Set<TranscribableParams> params) throws Exception {
-        out.writeObject(getEmissionTime(), __emissionTimeParam);
+    public void transcribe(TranscriptionOutput out, Set<TranscribableParams> params, boolean client) throws Exception {
+        out.writeObject(getEmissionTime(), __emissionTimeParam, client);
     }
 
-    public void transcribe(TranscriptionInput in, Set<TranscribableParams> params) throws Exception {
-        setEmissionTime((Long) in.readObject(__emissionTimeParam));
+    public void transcribe(TranscriptionInput in, Set<TranscribableParams> params, boolean client) throws Exception {
+        setEmissionTime((Long) in.readObject(__emissionTimeParam, client));
     }
 
     @XmlTransient

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,28 +23,30 @@ import com.betfair.cougar.api.ExecutionContext;
 import com.betfair.cougar.api.fault.CougarApplicationException;
 import com.betfair.cougar.core.api.ev.*;
 import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
+import com.betfair.cougar.core.api.exception.CougarFrameworkException;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PostProcessingInterceptorWrapper implements ExecutionObserver {
-	
+
 	private static final InterceptorResult CONTINUE = new InterceptorResult(InterceptorState.CONTINUE);
-	
-	private final static CougarLogger logger = CougarLoggingUtils.getLogger(PostProcessingInterceptorWrapper.class);
+
+	private final static Logger LOGGER = LoggerFactory.getLogger(PostProcessingInterceptorWrapper.class);
 	private ExecutionObserver observer;
 	private List<ExecutionPostProcessor> postProcessors;
 	private ExecutionContext ctx;
 	private OperationKey key;
 	private Object[] args;
 
-	public PostProcessingInterceptorWrapper(	ExecutionObserver observer, 
-									List<ExecutionPostProcessor> postProcessors, 
-									final ExecutionContext ctx, 
-									final OperationKey key, 
+	public PostProcessingInterceptorWrapper(	ExecutionObserver observer,
+									List<ExecutionPostProcessor> postProcessors,
+									final ExecutionContext ctx,
+									final OperationKey key,
 									final Object [] args) {//NOSONAR
-		
+
 		this.observer = observer;
 		this.postProcessors = postProcessors;
 		this.ctx = ctx;
@@ -64,54 +66,53 @@ public class PostProcessingInterceptorWrapper implements ExecutionObserver {
             observer.onResult(executionResult);
         }
     }
-	
+
 	private void forceOnException(InterceptorResult result) {
         Object interceptorResult = result.getResult();
         ExecutionResult executionResult;
 		if (interceptorResult instanceof CougarException) {
-			executionResult = new ExecutionResult((CougarException)interceptorResult);
+			executionResult = new ExecutionResult(interceptorResult);
         } else if (interceptorResult instanceof CougarApplicationException) {
-            executionResult = new ExecutionResult((CougarApplicationException)interceptorResult);
+            executionResult = new ExecutionResult(interceptorResult);
 		} else if (result.getResult() instanceof Exception) {
 			executionResult = new ExecutionResult(
-                    new CougarServiceException(ServerFaultCode.ServiceRuntimeException,
+                    new CougarFrameworkException(ServerFaultCode.ServiceRuntimeException,
                             "Interceptor forced exception", (Exception)result.getResult()));
 		} else {
 			// onException forced, but result is not an exception
             executionResult = new ExecutionResult(
-                    new CougarServiceException(ServerFaultCode.ServiceRuntimeException,
+                    new CougarFrameworkException(ServerFaultCode.ServiceRuntimeException,
                             "Interceptor forced exception, but result was not an exception - I found a " +
                                     result.getResult()));
 		}
 		observer.onResult(executionResult);
 	}
-	
+
 	private InterceptorResult invokePostProcessors(ExecutionResult executionResult) {
-		
+
 		InterceptorResult result = CONTINUE;
-		
+
 		for (ExecutionPostProcessor postProcessor : postProcessors) {
 			try {
 				result = postProcessor.invoke(ctx, key, args, executionResult);
 				if (result == null || result.getState() == null) {
 					// defensive
 					String detail = "Post Processor " + postProcessor.getName() + " did not return a valid InterceptorResult.";
-					logger.log(Level.SEVERE, detail);
+                    LOGGER.error(detail);
 					result = new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION, new IllegalStateException(detail));
 					break;
 				}
 				if (result.getState().shouldAbortInterceptorChain()) {
 					break;
 				}
-				
+
 			} catch (Exception e) {
-				logger.log(Level.SEVERE, "Post Processor " + postProcessor.getName() + " has failed.");
-				logger.log(e);
+				LOGGER.error("Post Processor " + postProcessor.getName() + " has failed.", e);
 				result = new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION, e);
 				break;
 			}
 		}
-		
+
 		return result;
 	}
 }

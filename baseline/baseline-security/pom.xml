@@ -1,5 +1,6 @@
 <!--
   ~ Copyright 2013, The Sporting Exchange Limited
+  ~ Copyright 2014, Simon Matić Langford
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,7 +21,7 @@
     <parent>
         <groupId>com.betfair.cougar</groupId>
         <artifactId>baseline</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>baseline-security</artifactId>
@@ -41,12 +42,10 @@
         <dependency>
             <groupId>com.betfair.cougar</groupId>
             <artifactId>cougar-util</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.betfair.cougar</groupId>
             <artifactId>cougar-transport-api</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -74,5 +73,10 @@
                   <artifactId>cougar-client</artifactId>
                   <version>${project.version}</version>
             </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-client</artifactId>
+        </dependency>
     </dependencies>
 </project>

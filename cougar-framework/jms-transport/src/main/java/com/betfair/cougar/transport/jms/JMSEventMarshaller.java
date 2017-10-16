@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ public class JMSEventMarshaller implements EventMarshaller<TextMessage> {
     public String marshallEventBody(Event event) throws CougarException {
         Marshaller marshaller = dataBindingFactory.getMarshaller();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        marshaller.marshall(outputStream, event, characterEncoding);
+        marshaller.marshall(outputStream, event, characterEncoding, false);
         return outputStream.toString();
     }
 

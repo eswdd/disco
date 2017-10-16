@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -171,6 +171,17 @@ public class IdlToDSMojo extends AbstractMojo {
     protected boolean isIddAsResource() {
         return iddAsResource;
     }
+
+
+    /**
+     * Legacy mode exception validation. Allows for an exception parameter to be called message. Note
+     * this is a nuisance as it obfuscates conventional exception class behaviour, so this method
+     * of operation should be phased out
+     * @parameter
+     */
+    private boolean legacyExceptionParamValidation = false;
+
+    protected boolean isLegacyExceptionParamValidation() { return legacyExceptionParamValidation; }
 
     // =============================================================================================
 	//	POJO stuff
@@ -535,7 +546,7 @@ public class IdlToDSMojo extends AbstractMojo {
 	}
 
     protected Transformations getTransformations() {
-        return new CougarTransformations();
+        return new CougarTransformations(legacyExceptionParamValidation);
     }
 
     @SuppressWarnings("unchecked")

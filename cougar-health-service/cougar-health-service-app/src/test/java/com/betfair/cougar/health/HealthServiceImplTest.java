@@ -24,6 +24,7 @@ import com.betfair.cougar.api.RequestUUID;
 import com.betfair.cougar.api.ServiceInfo;
 import com.betfair.cougar.api.geolocation.GeoLocationDetails;
 import com.betfair.cougar.api.security.IdentityChain;
+import com.betfair.cougar.core.impl.DefaultTimeConstraints;
 import com.betfair.cougar.health.service.v3.HealthService;
 import com.betfair.cougar.health.service.v3.enumerations.HealthStatus;
 import com.betfair.cougar.health.service.v3.enumerations.RestrictedHealthStatus;
@@ -32,6 +33,7 @@ import com.betfair.cougar.health.service.v3.to.HealthDetailResponse;
 import com.betfair.cougar.health.service.v3.to.HealthSummaryResponse;
 import com.betfair.cougar.health.service.v3.to.SubComponentStatus;
 import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.LoggerFactory;
 import com.betfair.tornjak.monitor.ActiveMethodMonitor;
 import com.betfair.tornjak.monitor.ErrorCountingPolicy;
 import com.betfair.tornjak.monitor.Monitor;
@@ -113,10 +115,10 @@ public class HealthServiceImplTest {
         when(containerContext.getRegisteredServices()).thenReturn(new ServiceInfo[] {
                 new ServiceInfo(null, service, "HealthService", "3.0", new ArrayList<String>())
         });
-      
+
         when(monitorRegistry.getStatusAggregator()).thenReturn(new DefaultStatusAggregator(Status.OK));
         inOutServiceMonitor.setInService(false);
-        HealthSummaryResponse response = service.isHealthy(requestContext);
+        HealthSummaryResponse response = service.isHealthy(requestContext, DefaultTimeConstraints.NO_CONSTRAINTS);
         response.validateMandatory();
         assertEquals(RestrictedHealthStatus.FAIL, response.getHealthy());
     }
@@ -158,7 +160,7 @@ public class HealthServiceImplTest {
         });
         when(monitorRegistry.getStatusAggregator()).thenReturn(new DefaultStatusAggregator(Status.OK));
         inOutServiceMonitor.setInService(false);
-        HealthDetailResponse response = service.getDetailedHealthStatus(requestContext);
+        HealthDetailResponse response = service.getDetailedHealthStatus(requestContext, DefaultTimeConstraints.NO_CONSTRAINTS);
         response.validateMandatory();
         assertEquals(HealthStatus.OUT_OF_SERVICE, response.getHealth());
         assertEquals(1, response.getSubComponentList().size());
@@ -170,7 +172,7 @@ public class HealthServiceImplTest {
                 new ServiceInfo(null, service, "HealthService", "3.0", new ArrayList<String>())
         });
         when(monitorRegistry.getStatusAggregator()).thenReturn(new DefaultStatusAggregator(Status.OK));
-        HealthDetailResponse response = service.getDetailedHealthStatus(requestContext);
+        HealthDetailResponse response = service.getDetailedHealthStatus(requestContext, DefaultTimeConstraints.NO_CONSTRAINTS);
         response.validateMandatory();
         assertEquals(HealthStatus.OK, response.getHealth());
         assertEquals(1, response.getSubComponentList().size());
@@ -187,7 +189,7 @@ public class HealthServiceImplTest {
         DefaultMonitor otherMonitor = new DefaultMonitor("Fred", Status.OK);
         when(monitorRegistry.getMonitorSet()).thenReturn(monitors(inOutServiceMonitor, otherMonitor));
 
-        HealthDetailResponse response = service.getDetailedHealthStatus(requestContext);
+        HealthDetailResponse response = service.getDetailedHealthStatus(requestContext, DefaultTimeConstraints.NO_CONSTRAINTS);
         response.validateMandatory();
         assertEquals(HealthStatus.OK, response.getHealth());
 
@@ -211,7 +213,7 @@ public class HealthServiceImplTest {
         DefaultMonitor otherMonitor = new DefaultMonitor("Fred", Status.OK);
         when(monitorRegistry.getMonitorSet()).thenReturn(monitors(inOutServiceMonitor, otherMonitor));
 
-        HealthDetailResponse response = service.getDetailedHealthStatus(requestContext);
+        HealthDetailResponse response = service.getDetailedHealthStatus(requestContext, DefaultTimeConstraints.NO_CONSTRAINTS);
         response.validateMandatory();
         assertEquals(HealthStatus.WARN, response.getHealth());
 
@@ -235,7 +237,7 @@ public class HealthServiceImplTest {
         DefaultMonitor otherMonitor = new DefaultMonitor("Fred", Status.OK);
         when(monitorRegistry.getMonitorSet()).thenReturn(monitors(inOutServiceMonitor, otherMonitor));
 
-        HealthDetailResponse response = service.getDetailedHealthStatus(requestContext);
+        HealthDetailResponse response = service.getDetailedHealthStatus(requestContext, DefaultTimeConstraints.NO_CONSTRAINTS);
         response.validateMandatory();
         assertEquals(HealthStatus.FAIL, response.getHealth());
 
@@ -249,7 +251,7 @@ public class HealthServiceImplTest {
     }
 
     private HealthSummaryResponse getResponse() throws HealthException {
-    	HealthSummaryResponse response = service.isHealthy(requestContext);
+    	HealthSummaryResponse response = service.isHealthy(requestContext, DefaultTimeConstraints.NO_CONSTRAINTS);
         response.validateMandatory();
         return response;
 
@@ -344,7 +346,7 @@ public class HealthServiceImplTest {
             return status;
         }
     }
-    
+
     private class SavingRequestContext implements RequestContext {
 		@Override
 		public void addEventLogRecord(LoggableEvent record) {
@@ -371,22 +373,27 @@ public class HealthServiceImplTest {
         @Override
 		public void trace(String msg, Object... args) {
 		}
-		
+
 		@Override
 		public GeoLocationDetails getLocation() {
 			return null;
 		}
-		
+
 		@Override
 		public IdentityChain getIdentity() {
 			return null;
 		}
-	
-	
+
+
 		@Override
 		public Date getReceivedTime() {
 			return null;
 		}
+
+        @Override
+        public Date getRequestTime() {
+            return null;
+        }
 
         @Override
         public boolean traceLoggingEnabled() {

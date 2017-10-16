@@ -20,7 +20,7 @@
 	<parent>
 		<groupId>com.betfair.cougar</groupId>
 		<artifactId>cougar-health-service</artifactId>
-		<version>3.0-SNAPSHOT</version>
+		<version>3.3-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>cougar-health-service-app</artifactId>
@@ -84,12 +84,10 @@
 		<dependency>
 			<groupId>com.betfair.cougar</groupId>
 			<artifactId>cougar-util</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.betfair.cougar</groupId>
 			<artifactId>cougar-core-impl</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.betfair.cougar</groupId>
@@ -110,7 +108,6 @@
         <dependency>
             <groupId>com.betfair.cougar</groupId>
             <artifactId>jetty-transport</artifactId>
-            <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>

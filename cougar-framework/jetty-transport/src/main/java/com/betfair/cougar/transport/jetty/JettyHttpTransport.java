@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import com.betfair.cougar.core.api.*;
 import com.betfair.cougar.core.api.exception.CougarFrameworkException;
 import com.betfair.cougar.core.api.exception.PanicInTheCougar;
 import com.betfair.cougar.core.api.transports.AbstractRegisterableTransport;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.transport.api.RequestLogger;
 import com.betfair.cougar.transport.api.TransportCommandProcessorFactory;
 import com.betfair.cougar.transport.api.protocol.ProtocolBinding;
@@ -47,11 +47,10 @@ import javax.servlet.ServletException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
-import java.util.logging.Level;
 
 @ManagedResource
 public class JettyHttpTransport extends AbstractRegisterableTransport implements GateListener {
-    private static final CougarLogger logger = CougarLoggingUtils.getLogger(JettyHttpTransport.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JettyHttpTransport.class);
 
     private JMXControl jmxControl;
 
@@ -66,6 +65,8 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
     private ProtocolBindingRegistry protocolBindingRegistry;
 
     private Map<String, JettyHandlerSpecification> handlerSpecificationMap = new HashMap<String, JettyHandlerSpecification>();
+
+    private Map<String, String> pathAliases = new HashMap<>();
 
     // created in setApplicationContext
     // set to empty initially so tests that don't set up channels and service binding descriptors will work OK
@@ -86,6 +87,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
 
     private GeoLocationDeserializer deserializer;
     private String uuidHeader;
+    private String uuidParentsHeader;
 
     private int timeoutInSeconds;
 
@@ -94,15 +96,53 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
     private RequestLogger requestLogger;
 
     private JettyEndpoints jettyEndPoints;
-    
+
     private boolean gzipEnabled;
     private int gzipMinSize;
     private int gzipBufferSize;
     private String gzipExcludedAgents;
 
+    // CORS
+    /**
+     * Is CORS Handler enabled?
+     */
+    private boolean corsEnabled;
+    /**
+     * Comma separated list of allowed cors origins
+     * @link <a href="http://www.w3.org/TR/cors/#access-control-allow-origin-response-header">CORS Allow Origins</a>
+     */
+    private String corsAllowedOrigins;
+    /**
+     * Comma separated list of allowed cors methods
+     * @link <a href="http://www.w3.org/TR/cors/#access-control-allow-methods-response-header">CORS Allow Methods</a>
+     */
+    private String corsAllowedMethods;
+    /**
+     * Comma separated list of allowed cors headers
+     * @see <a href="http://www.w3.org/TR/cors/#access-control-allow-headers-response-header">CORS Allow Headers</a>
+     */
+    private String corsAllowedHeaders;
+    /**
+     * String representation of the pre-flight request ttl
+     * @link <a href="http://www.w3.org/TR/cors/#access-control-max-age-response-header">CORS Max Age</a>
+     */
+    private String corsPreflightMaxAge;
+    /**
+     * String representation of a boolean indicating if the request can include user credentials
+     * @link <a href="http://www.w3.org/TR/cors/#access-control-allow-credentials-response-header">CORS Allow Credentials</a>
+     */
+    private String corsAllowCredentials;
+    /**
+     * Comma separated list of allowed cors exposed headers
+     * @link <a href="http://www.w3.org/TR/cors/#http-access-control-expose-headers">CORS Expose Headers</a>
+     */
+    private String corsExposedHeaders;
+    // End CORS
+
     private int unknownCipherKeyLength;
     private boolean suppressCommasInAccessLogForStaticHtml;
     private boolean suppressCommasInAccessLogForCalls;
+    private String corsMaxAge;
 
     public JettyHttpTransport() {
     }
@@ -125,7 +165,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
         try {
             server.start();
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Failed to startup jetty", ex);
+            LOGGER.error("Failed to startup jetty", ex);
             throw new PanicInTheCougar(ex);
         }
     }
@@ -158,11 +198,11 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
 
             @Override
             public void run() {
-                logger.log(Level.INFO, "Gracefully shutting down Jetty Server");
+                LOGGER.info("Gracefully shutting down Jetty Server");
                 try {
                     JettyHttpTransport.this.stop();
                 } catch (Exception e) {
-                    logger.log(Level.WARNING, "Failed to shutdown jetty", e);
+                    LOGGER.warn("Failed to shutdown jetty", e);
                 }
             }
         });
@@ -182,6 +222,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
                 wsdlRegex,
                 wsdlMediaType,
                 uuidHeader,
+                uuidParentsHeader,
                 deserializer,
                 geoIPLocator,
                 requestLogger,
@@ -193,6 +234,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
                 htmlRegex,
                 htmlMediaType,
                 uuidHeader,
+                uuidParentsHeader,
                 deserializer,
                 geoIPLocator,
                 requestLogger,
@@ -204,7 +246,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
 
         handlerCollection.setServer(server.getJettyServer());
 
-        JettyHandler defaultJettyServiceHandler = new JettyHandler(defaultCommandProcessor, suppressCommasInAccessLogForCalls);
+        JettyHandler defaultJettyServiceHandler = new AliasHandler(defaultCommandProcessor, suppressCommasInAccessLogForCalls, pathAliases);
         ContextHandler context = new ContextHandler();
         context.setContextPath("");
         context.setResourceBase(".");
@@ -213,6 +255,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
 
         handlerCollection.addHandler(wsdlStaticHandler);
         handlerCollection.addHandler(htmlStaticHandler);
+//        handlerCollection.addHandler(aliasHandler);
         statisticsHandler.setHandler(handlerCollection);
 
         // Register the errorhandler with the server itself
@@ -260,7 +303,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
         }
 
         if (serviceProtocol == Protocol.JSON_RPC && jsonRpcContextAlreadyBound(jettyContextRoot)) {
-            logger.log(Level.INFO, "Not binding Jetty Handler for protocol: JSON-RPC on context root [" +
+            LOGGER.info("Not binding Jetty Handler for protocol: JSON-RPC on context root [" +
                     jettyContextRoot + "] - context already bound");
         } else {
             StringBuilder sb = new StringBuilder("Adding a new Jetty Handler on url [").append(jettyContextRoot).append("] ");
@@ -274,7 +317,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
                 sb.append("] ");
             }
             sb.append("on protocol " + serviceProtocol);
-            logger.log(Level.INFO, sb.toString());
+            LOGGER.info(sb.toString());
 
             JettyHandler.IdentityTokenResolverLookup identityTokenResolverLookup = null;
 
@@ -294,6 +337,28 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
             context.setServer(server.getJettyServer());
             context.setContextPath(jettyContextRoot);
 
+            // CORS stuff
+            if (corsEnabled) {
+                final ContextHandler corsContext = new ContextHandler();
+                corsContext.setServer(server.getJettyServer());
+                corsContext.setContextPath(jettyContextRoot);
+                try {
+                    corsContext.setHandler(new CrossOriginHandler(corsAllowedOrigins, corsAllowedMethods, corsAllowedHeaders, corsPreflightMaxAge, corsAllowCredentials, corsExposedHeaders));
+                    handlerCollection.addHandler(corsContext);
+                    if (serviceProtocol == Protocol.SOAP || serviceProtocol == Protocol.JSON_RPC) {
+                        corsContext.setAllowNullPathInfo(true);
+                    }
+                    else {
+                        corsContext.setAllowNullPathInfo(false);
+                    }
+                    corsContext.setResourceBase(".");
+                }
+                catch (ServletException e) {
+                    throw new CougarFrameworkException("Failed to create CORS handler: [" + jettyContextRoot + "]", e);
+                }
+            }
+            //-- End CORS stuff
+
             // Rescript is not allowed null paths as the operation must be appended to the end of the URI
             if (serviceProtocol == Protocol.SOAP || serviceProtocol == Protocol.JSON_RPC) {
                 context.setAllowNullPathInfo(true);
@@ -301,9 +366,10 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
                 context.setAllowNullPathInfo(false);
             }
             context.setResourceBase(".");
+
             if (gzipEnabled) {
                 try {
-                    context.setHandler(new GzipHandler(gzipBufferSize,gzipMinSize,gzipExcludedAgents, jettyServiceHandler));
+                    context.setHandler(new GzipHandler(gzipBufferSize, gzipMinSize, gzipExcludedAgents, jettyServiceHandler));
                 }
                 catch (ServletException e) {
                     throw new CougarFrameworkException("Failed to create GZIP handler: [" + jettyContextRoot + "]", e);
@@ -379,7 +445,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
         try {
             boolean http = server.isHttpEnabled();
             return String.format(
-                    "%s://%s:%d",
+                    "%s://%s:%s",
                     http ? "http" : "https",
                     InetAddress.getLocalHost().getHostAddress(),
                     http ? server.getHttpPort() : server.getHttpsPort()
@@ -466,6 +532,10 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
         this.uuidHeader = uuidHeader;
     }
 
+    public void setUuidParentsHeader(String uuidParentsHeader) {
+        this.uuidParentsHeader = uuidParentsHeader;
+    }
+
     public void setGeoIPLocator(GeoIPLocator geoIPLocator) {
         this.geoIPLocator = geoIPLocator;
     }
@@ -476,6 +546,15 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
 
     public void setJmxControl(JMXControl jmxControl) {
         this.jmxControl = jmxControl;
+    }
+
+    public void setPathAliases(Map<String, String> pathAliases) {
+        this.pathAliases = pathAliases;
+    }
+
+    @ManagedAttribute
+    public Map<String, String> getPathAliases() {
+        return pathAliases;
     }
 
     @ManagedAttribute
@@ -537,53 +616,114 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
     public boolean isGzipEnabled() {
     	return gzipEnabled;
     }
-    
+
     public void setGzipEnabled(boolean gzipEnabled) {
     	this.gzipEnabled = gzipEnabled;
     }
-    
+
     @ManagedAttribute
     public String getExcludedAgents() {
     	return gzipExcludedAgents;
     }
-    
+
     public void setGzipExcludedAgents(String excludedAgents) {
     	if (excludedAgents != null && !excludedAgents.isEmpty()) {
     		this.gzipExcludedAgents = excludedAgents;
     	}
     }
-    
-    @ManagedAttribute 
+
+    @ManagedAttribute
     public int getGzipBufferSize() {
     	return gzipBufferSize;
     }
-    
+
     public void setGzipBufferSize(int bufferSize) {
     	this.gzipBufferSize = bufferSize;
     }
-    
+
     @ManagedAttribute
     public int getGzipMinSize() {
     	return gzipMinSize;
     }
-    
+
     public void setGzipMinSize(int minSize) {
     	this.gzipMinSize = minSize;
     }
 
+    @ManagedAttribute
+    public boolean isCorsEnabled() {
+        return corsEnabled;
+    }
+
+    public void setCorsEnabled(boolean corsEnabled) {
+        this.corsEnabled = corsEnabled;
+    }
 
     @ManagedAttribute
+    public String getCorsAllowedOrigins() {
+        return corsAllowedOrigins;
+    }
+
+    public void setCorsAllowedOrigins(String corsAllowedOrigins) {
+        this.corsAllowedOrigins = corsAllowedOrigins;
+    }
+
+    @ManagedAttribute
+    public String getCorsAllowedMethods() {
+        return corsAllowedMethods;
+    }
+
+    public void setCorsAllowedMethods(String corsAllowedMethods) {
+        this.corsAllowedMethods = corsAllowedMethods;
+    }
+
+    @ManagedAttribute
+    public String getCorsAllowedHeaders() {
+        return corsAllowedHeaders;
+    }
+
+    public void setCorsAllowedHeaders(String corsAllowedHeaders) {
+        this.corsAllowedHeaders = corsAllowedHeaders;
+    }
+
+    @ManagedAttribute
+    public String getCorsMaxAge() {
+        return corsMaxAge;
+    }
+
+    public void setCorsMaxAge(String corsMaxAge) {
+        this.corsMaxAge = corsMaxAge;
+    }
+
+    @ManagedAttribute
+    public String getCorsPreflightMaxAge() {
+        return corsPreflightMaxAge;
+    }
+
+    public void setCorsPreflightMaxAge(String corsPreflightMaxAge) {
+        this.corsPreflightMaxAge = corsPreflightMaxAge;
+    }
+
+    @ManagedAttribute
+    public String getCorsAllowCredentials() {
+        return corsAllowCredentials;
+    }
+
+    public void setCorsAllowCredentials(String corsAllowCredentials) {
+        this.corsAllowCredentials = corsAllowCredentials;
+    }
+
+    @ManagedAttribute
+    public String getCorsExposedHeaders() {
+        return corsExposedHeaders;
+    }
+
+    public void setCorsExposedHeaders(String corsExposedHeaders) {
+        this.corsExposedHeaders = corsExposedHeaders;
+    }
+
     public int getMaxFormContentSize() {
         return getServerWrapper().getMaxFormContentSize();
-    }
-
-    @ManagedAttribute
-    public int getUnknownCipherKeyLength() {
-        return unknownCipherKeyLength;
-    }
-
-    public void setUnknownCipherKeyLength(int unknownCipherKeyLength) {
-        this.unknownCipherKeyLength = unknownCipherKeyLength;
     }
 
     @ManagedAttribute
@@ -642,5 +782,9 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
 
     public void setSuppressCommasInAccessLogForCalls(boolean suppressCommasInAccessLogForCalls) {
         this.suppressCommasInAccessLogForCalls = suppressCommasInAccessLogForCalls;
+    }
+
+    public ContextHandlerCollection getHandlerCollection() {
+        return handlerCollection;
     }
 }

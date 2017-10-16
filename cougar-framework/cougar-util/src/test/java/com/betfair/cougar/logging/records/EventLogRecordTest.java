@@ -1,5 +1,6 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
+ * Copyright 2015, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.TimeZone;
 
 import com.betfair.cougar.api.LoggableEvent;
 import org.junit.Before;
@@ -38,6 +40,7 @@ public class EventLogRecordTest {
     public void setup() {
         mle = new MyLoggableEvent();
         elr = new EventLogRecord(mle, null);
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
     @Test
@@ -73,6 +76,7 @@ public class EventLogRecordTest {
     @Test
     public void testDate() throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         Object[] things = new Object[1];
         things[0] = sdf.parse("01/12/1970");
@@ -100,7 +104,7 @@ public class EventLogRecordTest {
         data.add(data2);
 
         mle.setFieldsToLog(new Object[]{data});
-        assertEquals("", "[one,2,[three,4]]", elr.getMessage().toString());
+        assertEquals("", "[one|2|[three|4]]", elr.getMessage().toString());
     }
 
     @Test
@@ -108,19 +112,19 @@ public class EventLogRecordTest {
         mle.setFieldsToLog(new Object[]{new SimpleDateFormat("")});
         assertEquals("", "java.text.SimpleDateFormat@0", elr.getMessage().toString());
     }
-    
+
     @Test
     public void testStringWithLineEndings() throws Exception {
     	mle.setFieldsToLog(new Object[]{"A string"+LS});
     	assertEquals("Line Endings should be removed", "A string ", elr.getMessage());
     }
-    
+
     @Test
     public void testStringWithTabs() throws Exception {
     	mle.setFieldsToLog(new Object[]{"A string\t"});
     	assertEquals("Tabs should be removed", "A string ", elr.getMessage());
     }
-    
+
     @Test
     public void testStringWithCommas() throws Exception {
     	mle.setFieldsToLog(new Object[]{"A string,"});

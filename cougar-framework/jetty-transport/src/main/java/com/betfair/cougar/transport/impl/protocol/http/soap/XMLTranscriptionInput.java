@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 package com.betfair.cougar.transport.impl.protocol.http.soap;
 
+import com.betfair.cougar.core.api.exception.CougarMarshallingException;
 import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
 import com.betfair.cougar.core.api.transcription.Parameter;
 import com.betfair.cougar.core.api.transcription.ParameterType;
 import com.betfair.cougar.core.api.transcription.Transcribable;
 import com.betfair.cougar.core.api.transcription.TranscribableParams;
 import com.betfair.cougar.core.api.transcription.TranscriptionInput;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.util.dates.DateTimeUtility;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.util.base64.Base64Utils;
@@ -45,7 +45,7 @@ import java.util.logging.Level;
 @SuppressWarnings("unchecked")
 public class XMLTranscriptionInput implements TranscriptionInput {
 
-    private static final CougarLogger logger = CougarLoggingUtils.getLogger(XMLTranscriptionInput.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(XMLTranscriptionInput.class);
 
     private static final QName keyAttName = new QName("key");
 
@@ -55,16 +55,16 @@ public class XMLTranscriptionInput implements TranscriptionInput {
         this.currentNode = currentNode;
     }
 
-    public Object readObject(Parameter param) throws Exception {
+    public Object readObject(Parameter param, boolean client) throws Exception {
         Iterator iterator = currentNode.getChildrenWithLocalName(param.getName());
         if (!iterator.hasNext()) {
             return null;
         }
 
-        return readObject(param.getParameterType(), (OMElement)iterator.next());
+        return readObject(param.getParameterType(), (OMElement)iterator.next(), client);
     }
 
-    private Object readObject(ParameterType paramType, OMElement node) throws Exception {
+    private Object readObject(ParameterType paramType, OMElement node, boolean client) throws Exception {
         switch (paramType.getType()) {
             case BOOLEAN:
             case DOUBLE:
@@ -75,14 +75,14 @@ public class XMLTranscriptionInput implements TranscriptionInput {
             case ENUM:
             case DATE:
             case BYTE:
-                return node == null ? null : readSimpleObject(paramType, node.getLocalName(), node.getText());
+                return node == null ? null : readSimpleObject(paramType, node.getLocalName(), node.getText(), client);
             case OBJECT:
                 //descend - note possibly two levels if inside a collection recursion
                 OMElement _copy = this.currentNode;
                 currentNode = node;
 
                 Transcribable t = (Transcribable)paramType.getImplementationClass().newInstance();
-                t.transcribe(this, TranscribableParams.getAll());
+                t.transcribe(this, TranscribableParams.getAll(), client);
 
                 //ascend
                 this.currentNode = _copy;
@@ -91,8 +91,8 @@ public class XMLTranscriptionInput implements TranscriptionInput {
                 Map map = new HashMap();
                 for (Iterator i = node.getChildElements(); i.hasNext();) {
                     OMElement element = (OMElement)i.next();
-                    Object key = readSimpleObject(paramType.getComponentTypes()[0],  node.getLocalName(), element.getAttributeValue(keyAttName));
-                    map.put(key, readObject(paramType.getComponentTypes()[1], (OMElement)element.getChildElements().next()));
+                    Object key = readSimpleObject(paramType.getComponentTypes()[0],  node.getLocalName(), element.getAttributeValue(keyAttName), client);
+                    map.put(key, readObject(paramType.getComponentTypes()[1], (OMElement)element.getChildElements().next(), client));
                 }
                 return map;
             case LIST:
@@ -101,28 +101,27 @@ public class XMLTranscriptionInput implements TranscriptionInput {
                         return Base64Utils.decode(node.getText());
                     } catch (Exception e) {
                         String message = "Unable to parse " + node.getText() + " as type " + paramType;
-                        logger.log(Level.FINER, message, e);
-                        throw new CougarValidationException(ServerFaultCode.SOAPDeserialisationFailure, message,e
-                        );
+                        LOGGER.debug(message, e);
+                        throw CougarMarshallingException.unmarshallingException("soap",message,e,client);
                     }
                 } else {
                     List list = new ArrayList();
                     for (Iterator i = node.getChildElements(); i.hasNext();) {
-                        list.add(readObject(paramType.getComponentTypes()[0], (OMElement)i.next()));
+                        list.add(readObject(paramType.getComponentTypes()[0], (OMElement)i.next(),client));
                     }
                     return list;
                 }
             case SET:
                 Set set = new HashSet();
                 for (Iterator i = node.getChildElements(); i.hasNext();) {
-                    set.add(readObject(paramType.getComponentTypes()[0], (OMElement)i.next()));
+                    set.add(readObject(paramType.getComponentTypes()[0], (OMElement)i.next(),client));
                 }
                 return set;
         }
         return null;
     }
 
-    private Object readSimpleObject(ParameterType paramType, String paramName, String textValue) {
+    private Object readSimpleObject(ParameterType paramType, String paramName, String textValue, boolean client) {
         try {
             switch (paramType.getType()) {
                 case BOOLEAN:
@@ -152,12 +151,12 @@ public class XMLTranscriptionInput implements TranscriptionInput {
                     return Byte.valueOf(textValue);
             }
         } catch (Exception e) {
-            throw exceptionDuringDeserialisation(paramType, paramName, e);
+            throw exceptionDuringDeserialisation(paramType, paramName, e, client);
         }
         throw new UnsupportedOperationException("Parameter Type " + paramType + " is not supported as a simple object type");
     }
 
-    public static CougarValidationException exceptionDuringDeserialisation(ParameterType paramType, String paramName, Exception e) {
+    public static CougarValidationException exceptionDuringDeserialisation(ParameterType paramType, String paramName, Exception e, boolean client) {
         StringBuilder logBuffer = new StringBuilder();
         logBuffer.append("Unable to convert data in request to ");
         logBuffer.append(paramType.getType().name());
@@ -165,8 +164,8 @@ public class XMLTranscriptionInput implements TranscriptionInput {
         logBuffer.append(paramName);
         String message = logBuffer.toString();
 
-        logger.log(Level.FINER, message , e);
-        return new CougarValidationException(ServerFaultCode.SOAPDeserialisationFailure, message,e);
+        LOGGER.debug(message , e);
+        throw CougarMarshallingException.unmarshallingException("xml", message, e, client);
 
     }
 }

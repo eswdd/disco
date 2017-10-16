@@ -27,9 +27,9 @@ import com.betfair.cougar.core.api.transcription.*;
 
 import java.util.*;
 import javax.xml.bind.annotation.*;
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 <#assign event=parseEvent(doc, interface)><#t>
@@ -110,32 +110,32 @@ public class ${className} extends AbstractEvent implements Transcribable {
         return PARAMETERS;
     }
 
-    public void transcribe(TranscriptionOutput out, Set<TranscribableParams> params) throws Exception {
+    public void transcribe(TranscriptionOutput out, Set<TranscribableParams> params, boolean client) throws Exception {
         <#list event.params as param>
             <#if param.isEnumType>
         if (params.contains(TranscribableParams.EnumsWrittenAsStrings)) {
-            out.writeObject(get${param.paramName?cap_first}() != null ? get${param.paramName?cap_first}().name() : null, __${param.paramName}Param);
+            out.writeObject(get${param.paramName?cap_first}() != null ? get${param.paramName?cap_first}().name() : null, __${param.paramName}Param, client);
         }
         else {
-            out.writeObject(get${param.paramName?cap_first}(), __${param.paramName}Param);
+            out.writeObject(get${param.paramName?cap_first}(), __${param.paramName}Param, client);
         }
             <#else>
-        out.writeObject(get${param.paramName?cap_first}(), __${param.paramName}Param);
+        out.writeObject(get${param.paramName?cap_first}(), __${param.paramName}Param, client);
             </#if>
         </#list>
     }
 
-    public void transcribe(TranscriptionInput in, Set<TranscribableParams> params) throws Exception {
+    public void transcribe(TranscriptionInput in, Set<TranscribableParams> params, boolean client) throws Exception {
         <#list event.params as param>
             <#if param.isEnumType>
         if (params.contains(TranscribableParams.EnumsWrittenAsStrings)) {
-            setRaw${param.paramName?cap_first}Value((String)in.readObject(__${param.paramName}Param));
+            setRaw${param.paramName?cap_first}Value((String)in.readObject(__${param.paramName}Param, client));
         }
         else {
-            set${param.paramName?cap_first}((<@createTypeDecl param.paramType/>)in.readObject(__${param.paramName}Param));
+            set${param.paramName?cap_first}((<@createTypeDecl param.paramType/>)in.readObject(__${param.paramName}Param, client));
         }
             <#else>
-        set${param.paramName?cap_first}((<@createTypeDecl param.paramType/>)in.readObject(__${param.paramName}Param));
+        set${param.paramName?cap_first}((<@createTypeDecl param.paramType/>)in.readObject(__${param.paramName}Param, client));
             </#if>
         </#list>
     }

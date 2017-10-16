@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 import com.betfair.baseline.v2.enumerations.EnumOperationResponseObjectBodyParameterEnum;
@@ -40,7 +41,6 @@ import com.betfair.cougar.api.security.IdentityChain;
 import com.betfair.cougar.core.api.ServiceVersion;
 import com.betfair.cougar.core.api.ev.Executable;
 import com.betfair.cougar.core.api.ev.ExecutionTimingRecorder;
-import com.betfair.cougar.core.api.ev.ServiceLogManager;
 import com.betfair.cougar.core.api.ev.ExecutionObserver;
 import com.betfair.cougar.core.api.ev.ExecutionPostProcessor;
 import com.betfair.cougar.core.api.ev.ExecutionPreProcessor;
@@ -49,9 +49,11 @@ import com.betfair.cougar.core.api.ev.ExecutionVenue;
 import com.betfair.cougar.core.api.ev.OperationDefinition;
 import com.betfair.cougar.core.api.ev.OperationKey;
 import com.betfair.cougar.core.api.ev.SimpleOperationDefinition;
+import com.betfair.cougar.core.api.ev.TimeConstraints;
 import com.betfair.cougar.core.api.exception.CougarException;
 import com.betfair.cougar.core.api.transcription.Parameter;
 import com.betfair.cougar.core.api.transcription.ParameterType;
+import com.betfair.cougar.core.impl.DefaultTimeConstraints;
 import com.betfair.cougar.util.RequestUUIDImpl;
 
 public class TestClient {
@@ -125,7 +127,7 @@ public class TestClient {
 				}
 				cl.countDown();
 				
-			}}, ev);
+			}}, ev, DefaultTimeConstraints.NO_CONSTRAINTS);
 	
 		cl.await();
 	}
@@ -186,7 +188,7 @@ public class TestClient {
 				}
 				cl.countDown();
 				
-			}}, ev);
+			}}, ev, DefaultTimeConstraints.NO_CONSTRAINTS);
 		
 		cl.await();
 	}
@@ -241,7 +243,7 @@ public class TestClient {
 				}
 				cl.countDown();
 				
-			}}, ev);
+			}}, ev, DefaultTimeConstraints.NO_CONSTRAINTS);
 		
 		if (!cl.await(2,TimeUnit.SECONDS)) {
 			System.out.println("FAIL");
@@ -303,7 +305,7 @@ public class TestClient {
 				}
 				cl.countDown();
 				
-			}}, ev);
+			}}, ev, DefaultTimeConstraints.NO_CONSTRAINTS);
 		
 		if (!cl.await(2,TimeUnit.SECONDS)) {
 			System.out.println("FAIL");
@@ -381,7 +383,7 @@ public class TestClient {
 				}
 				cl.countDown();
 				
-			}}, ev);
+			}}, ev, DefaultTimeConstraints.NO_CONSTRAINTS);
 		
 		if (!cl.await(2,TimeUnit.SECONDS)) {
 			System.out.println("FAIL");
@@ -450,7 +452,7 @@ public class TestClient {
 				}
 				cl.countDown();
 				
-			}}, ev);
+			}}, ev, DefaultTimeConstraints.NO_CONSTRAINTS);
 		
 		if (!cl.await(2,TimeUnit.SECONDS)) {
 			System.out.println("FAIL");
@@ -519,7 +521,7 @@ public class TestClient {
 				}
 				cl.countDown();
 				
-			}}, ev);
+			}}, ev, DefaultTimeConstraints.NO_CONSTRAINTS);
 		
 		if (!cl.await(2,TimeUnit.SECONDS)) {
 			System.out.println("FAIL");
@@ -540,12 +542,13 @@ public class TestClient {
 		
 		
 		return new ExecutionVenue() {
-			public void execute(ExecutionContext ctx, OperationKey key, Object[] args, ExecutionObserver observer) {}
+			public void execute(ExecutionContext ctx, OperationKey key, Object[] args, ExecutionObserver observer, TimeConstraints timeConstraints) {}
+			public void execute(ExecutionContext ctx, OperationKey key, Object[] args, ExecutionObserver observer, Executor executor, TimeConstraints timeConstraints) {}
 			public OperationDefinition getOperationDefinition(OperationKey key) {
 				return operationDef;
 			}
 			public Set<OperationKey> getOperationKeys() {return null;}
-            public void registerOperation(String namespace, OperationDefinition def, Executable executable, ExecutionTimingRecorder recorder) {}
+            public void registerOperation(String namespace, OperationDefinition def, Executable executable, ExecutionTimingRecorder recorder, long maxExecutionTime) {}
 			public void setPostProcessors(List<ExecutionPostProcessor> preProcessorList) {}
 			public void setPreProcessors(List<ExecutionPreProcessor> preProcessorList) {}
 			
@@ -570,8 +573,9 @@ public class TestClient {
                 public String getInferredCountry() { return "GBR";}
 				public boolean isLowConfidenceGeoLocation() {return false;}};
 		}
-		public Date getReceivedTime() {return new Date();};
-		public RequestUUID getRequestUUID() {return new RequestUUIDImpl();}
+		public Date getReceivedTime() {return new Date();}
+        public Date getRequestTime() {return new Date();}
+        public RequestUUID getRequestUUID() {return new RequestUUIDImpl();}
 		public boolean traceLoggingEnabled() {return false;}
 
         @Override

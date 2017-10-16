@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,15 @@
 
 package com.betfair.cougar.logging;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
 public class EventLoggingRegistry {
-	private final static CougarLogger logger = CougarLoggingUtils.getLogger(EventLoggingRegistry.class);
+	private final static Logger LOGGER = LoggerFactory.getLogger(EventLoggingRegistry.class);
 	private final Map<String, EventLogDefinition> loggerRegistry = new HashMap<String, EventLogDefinition>();
 	private EventLogDefinition abstractGlobalLogger;
 
@@ -29,7 +32,7 @@ public class EventLoggingRegistry {
 	}
 
 	public void register(EventLogDefinition logDef) {
-		logger.log(Level.INFO, "Registering %s logger %s", logDef.isAbstract() ? "abstract": "invokable", logDef.getLogName());
+		LOGGER.info("Registering {} logger {}", logDef.isAbstract() ? "abstract" : "invokable", logDef.getLogName());
 		if (logDef.isAbstract()) {
 			if (abstractGlobalLogger == null) {
 				abstractGlobalLogger = logDef;
@@ -43,7 +46,7 @@ public class EventLoggingRegistry {
 	public EventLogDefinition getInvokableLogger(String logName) {
 		return loggerRegistry.get(logName);
 	}
-	
+
 	public String registerConcreteLogger(String namespace, String serviceName) {
 		if (abstractGlobalLogger == null) {
 			throw new IllegalStateException("abstract logger not defined");
@@ -58,5 +61,5 @@ public class EventLoggingRegistry {
         }
         return concreteLogger.getLogName();
 	}
-	
+
 }

@@ -7,14 +7,14 @@ Authors
 * [Simon Matic Langford](http://eswdd.github.io)
 * Michael Funnell
 * Peter Lewin-Harris
-* Richard Mason	 
+* [Richard Mason](http://github.com/richardqd)
 * S.F.
 * Alexsei Makarenko 
 * Teresa Christianson
-* James Dodd 
-* Colin Pretorius
+* [James Dodd ](https://github.com/dodderish)
+* [Colin Pretorius](http://github.com/colinpretorius)
 * Gary Fry	
-* Manjunath Shivakumar
+* [Manjunath Shivakumar](https://github.com/ManjunathShivakumar)
 
 Contributors
 ============

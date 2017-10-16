@@ -20,7 +20,7 @@
 	<parent>
 		<groupId>com.betfair.cougar</groupId>
 		<artifactId>baseline</artifactId>
-		<version>3.0-SNAPSHOT</version>
+		<version>3.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>baseline-launch</artifactId>
 	<packaging>jar</packaging>
@@ -48,6 +48,10 @@
                     <systemProperties>
                         <systemProperty>
                             <key>user.timezone</key>
+                            <value>UTC</value>
+                        </systemProperty>
+                        <systemProperty>
+                            <key>system.timezone</key>
                             <value>UTC</value>
                         </systemProperty>
                         <systemProperty>
@@ -187,6 +191,11 @@
                             <key>jetty.request.timeoutInSeconds</key>
                             <value>1800</value> <!-- 30m -->
                         </systemProperty>
+                        <!-- allows us to work when a machine roaming - only useful in dev/test -->
+                        <systemProperty>
+                            <key>cougar.addressUtils.allowLoopBackIfNoOthers</key>
+                            <value>true</value>
+                        </systemProperty>
                         <!--<systemProperty>-->
                         <!--<key>javax.net.debug</key>-->
                         <!--<value>ssl</value>-->
@@ -210,13 +219,11 @@
 		<dependency>
 			<groupId>com.betfair.cougar</groupId>
 			<artifactId>cougar-util</artifactId>
-			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
         <dependency>
             <groupId>com.betfair.cougar</groupId>
             <artifactId>net-util</artifactId>
-            <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
 		<dependency>
@@ -234,7 +241,6 @@
 		<dependency>
 			<groupId>com.betfair.cougar</groupId>
 			<artifactId>cougar-core-impl</artifactId>
-			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -274,15 +280,14 @@
 			<scope>runtime</scope>
 		</dependency>
         <dependency>
-          <groupId>com.betfair.cougar</groupId>
-          <artifactId>activemq-transport</artifactId>
-          <version>${project.version}</version>
+            <groupId>com.betfair.cougar</groupId>
+            <artifactId>activemq-transport</artifactId>
+            <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-          <groupId>com.betfair.cougar</groupId>
-          <artifactId>jetty-transport</artifactId>
-          <version>${project.version}</version>
+            <groupId>com.betfair.cougar</groupId>
+            <artifactId>jetty-transport</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -314,9 +319,9 @@
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
-	     <dependency>
-	         <groupId>com.caucho</groupId>
-	         <artifactId>hessian</artifactId>
-	     </dependency>
+	    <dependency>
+	        <groupId>com.caucho</groupId>
+	        <artifactId>hessian</artifactId>
+	    </dependency>
 	 </dependencies>
 </project>

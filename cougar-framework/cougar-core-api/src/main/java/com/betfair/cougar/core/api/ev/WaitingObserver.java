@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,10 @@
 
 package com.betfair.cougar.core.api.ev;
 
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +31,7 @@ import java.util.logging.Level;
  * Useful for providing a synchronous adapter around an async service.
  */
 public class WaitingObserver implements ExecutionObserver {
-    private static final CougarLogger logger = CougarLoggingUtils.getLogger(WaitingObserver.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WaitingObserver.class);
 
     private CountDownLatch latch = new CountDownLatch(1);
 
@@ -58,6 +60,21 @@ public class WaitingObserver implements ExecutionObserver {
         } else {
             latch.await();
             return true;
+        }
+    }
+
+    public boolean await(TimeConstraints timeConstraints) throws InterruptedException {
+        Long waitTime = null;
+        if (timeConstraints.getTimeRemaining() != null) {
+            waitTime = timeConstraints.getTimeRemaining();
+        }
+        // if waitTime is null then that means no constraint
+        if (waitTime == null) {
+            latch.await();
+            return true;
+        }
+        else {
+            return latch.await(waitTime, TimeUnit.MILLISECONDS);
         }
     }
 }

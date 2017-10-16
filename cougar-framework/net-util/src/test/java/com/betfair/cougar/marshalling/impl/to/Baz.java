@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import com.betfair.cougar.core.api.transcription.TranscriptionInput;
 import com.betfair.cougar.core.api.transcription.TranscriptionOutput;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Set;
@@ -40,14 +40,14 @@ public class  Baz implements Result, Transcribable {
     }
 
 
-		
-		    
+
+
     /**
      * The selection id
      */
-    	
+
     private Long bazId;
-    
+
     public final Long getBazId()  {
         if (delegate != null) {
             return delegate.getBazId();
@@ -65,20 +65,20 @@ public class  Baz implements Result, Transcribable {
             this.bazId=bazId;
         }
     }
-    
 
-    
 
-    
+
+
+
     public String toString() {
     	return "{"+""+"bazId="+getBazId()+"}";
     }
     public Baz () {}
-    
-    
+
+
 
 	private static final Parameter __bazIdParam = new Parameter("bazId",new ParameterType(Long.class, null ),true);
-    
+
     @XmlTransient
     @JsonIgnore
     public static final Parameter[] PARAMETERS = new Parameter[] { __bazIdParam };
@@ -88,13 +88,13 @@ public class  Baz implements Result, Transcribable {
     public Parameter[] getParameters() {
         return PARAMETERS;
     }
-    
-	public void transcribe(TranscriptionOutput out, Set<TranscribableParams> params) throws Exception {
-	    out.writeObject(getBazId(), __bazIdParam);
+
+	public void transcribe(TranscriptionOutput out, Set<TranscribableParams> params, boolean client) throws Exception {
+	    out.writeObject(getBazId(), __bazIdParam, client);
 	}
-	
-	public void transcribe(TranscriptionInput in, Set<TranscribableParams> params) throws Exception {
-	    setBazId((Long)in.readObject(__bazIdParam));
+
+	public void transcribe(TranscriptionInput in, Set<TranscribableParams> params, boolean client) throws Exception {
+	    setBazId((Long)in.readObject(__bazIdParam, client));
 	}
 
     @Override

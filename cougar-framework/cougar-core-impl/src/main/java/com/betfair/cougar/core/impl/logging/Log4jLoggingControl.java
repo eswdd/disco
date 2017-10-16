@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,13 @@
 
 package com.betfair.cougar.core.impl.logging;
 
-import com.betfair.cougar.logging.CougarLogger;
 import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.LoggerFactory;
 
 import com.sun.org.apache.xpath.internal.jaxp.JAXPVariableStack;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.slf4j.impl.Log4jLoggerAdapter;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
@@ -31,7 +32,7 @@ import org.springframework.jmx.export.annotation.ManagedResource;
  */
 @ManagedResource
 public class Log4jLoggingControl extends AbstractLoggingControl {
-    private static final CougarLogger logger = CougarLoggingUtils.getLogger(AbstractLoggingControl.class);
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(AbstractLoggingControl.class);
 
     public void setLogLevel(String loggerName, String level, boolean recursive) {
         //This implementation does not support recursive loglevel changes
@@ -42,41 +43,17 @@ public class Log4jLoggingControl extends AbstractLoggingControl {
     public void setLogLevel(String loggerName, String level) {
         Logger l = loggerName == null? Logger.getRootLogger() : Logger.getLogger(loggerName);
 
-        logger.log(java.util.logging.Level.INFO, "Logger %s: level customised to %s", l.getName(), level);
+        logger.info("Logger {}: level customised to {}", l.getName(), level);
 
-        l.setLevel(convertJdkLevelToLog4jLevel(level));
+
+        l.setLevel(Level.toLevel(level));
     }
 
     @ManagedOperation
     public String getLogLevel(String loggerName) {
-    	if (loggerName == null) {
-    		return CougarLoggingUtils.getLogger("").getLevel().getName();
-    	} else {
-    		return CougarLoggingUtils.getLogger(loggerName).getLevel().getName();
-    	}
-    }
+        Logger l = loggerName == null? Logger.getRootLogger() : Logger.getLogger(loggerName);
 
-    public Level convertJdkLevelToLog4jLevel(String inputLevel) {
-        java.util.logging.Level jdkLogLevel = java.util.logging.Level.parse(inputLevel);
-
-        if (java.util.logging.Level.ALL.equals(jdkLogLevel)) {
-            return Level.ALL;
-        } else if (java.util.logging.Level.FINE.equals(jdkLogLevel) || java.util.logging.Level.FINER.equals(jdkLogLevel)) {
-            //No log4j level exists to differentiate between these levels
-            return Level.DEBUG;
-        } else if (java.util.logging.Level.FINEST.equals(jdkLogLevel)) {
-            return Level.TRACE;
-        } else if (java.util.logging.Level.INFO.equals(jdkLogLevel) || java.util.logging.Level.CONFIG.equals(jdkLogLevel)) {
-            //Ditto for config
-            return Level.INFO;
-        } else if (java.util.logging.Level.WARNING.equals(jdkLogLevel)) {
-            return Level.WARN;
-        } else if (java.util.logging.Level.SEVERE.equals(jdkLogLevel)) {
-            return Level.ERROR;
-        } else if (java.util.logging.Level.OFF.equals(jdkLogLevel)) {
-            return Level.OFF;
-        }
-        throw new IllegalArgumentException("Unable to find a match for level: " + inputLevel);
+        return l.getLevel().toString();
     }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,11 +30,19 @@ public class CougarFrameworkException extends CougarException {
 	public CougarFrameworkException(String cause) {
 		super(LOG_LEVEL, ServerFaultCode.FrameworkError, cause);
 	}
-	
+
 	public CougarFrameworkException(String cause, Throwable t) {
-		super(LOG_LEVEL, ServerFaultCode.FrameworkError, cause, t);
+		this(ServerFaultCode.FrameworkError, cause, t);
+	}
+
+	public CougarFrameworkException(ServerFaultCode faultCode, String cause) {
+		super(LOG_LEVEL, faultCode, cause);
+	}
+
+	public CougarFrameworkException(ServerFaultCode faultCode, String cause, Throwable t) {
+		super(LOG_LEVEL, faultCode, cause, t);
 	}
 
 
-	
+
 }

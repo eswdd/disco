@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,7 @@
 
 package com.betfair.cougar.transport.socket;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ExecutionContextWithTokens;
+import com.betfair.cougar.api.DehydratedExecutionContext;
 import com.betfair.cougar.api.LogExtension;
 import com.betfair.cougar.api.LoggableEvent;
 import com.betfair.cougar.api.RequestContext;
@@ -31,11 +30,11 @@ import java.util.List;
 
 /**
  */
-public class SocketRequestContextImpl implements RequestContext, ExecutionContextWithTokens {
-    private ExecutionContextWithTokens wrapped;
+public class SocketRequestContextImpl implements RequestContext, DehydratedExecutionContext {
+    private DehydratedExecutionContext wrapped;
     private LogExtension connectedObjectLogExtension;
 
-    public SocketRequestContextImpl(ExecutionContextWithTokens wrapped) {
+    public SocketRequestContextImpl(DehydratedExecutionContext wrapped) {
         this.wrapped = wrapped;
     }
 
@@ -82,6 +81,11 @@ public class SocketRequestContextImpl implements RequestContext, ExecutionContex
     @Override
     public Date getReceivedTime() {
         return wrapped.getReceivedTime();
+    }
+
+    @Override
+    public Date getRequestTime() {
+        return wrapped.getRequestTime();
     }
 
     @Override

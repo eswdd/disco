@@ -1,5 +1,6 @@
 /*
  * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2015, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +26,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.betfair.cougar.core.api.exception.CougarClientException;
 import org.testng.annotations.Test;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
@@ -40,7 +42,6 @@ import com.betfair.cougar.api.ExecutionContext;
 import com.betfair.cougar.api.RequestUUID;
 import com.betfair.cougar.api.geolocation.GeoLocationDetails;
 import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
 import com.betfair.cougar.util.RequestUUIDImpl;
 
 public abstract class TestSuite {
@@ -65,7 +66,8 @@ public abstract class TestSuite {
                                         public String getInferredCountry() {return "GBR";}
 					public boolean isLowConfidenceGeoLocation() {return false;}};
 			}
-			public Date getReceivedTime() {return new Date();};
+			public Date getReceivedTime() {return new Date();}
+			public Date getRequestTime() {return new Date();}
 			public RequestUUID getRequestUUID() {return new RequestUUIDImpl();}
 			public boolean traceLoggingEnabled() {return false;}
 
@@ -81,7 +83,7 @@ public abstract class TestSuite {
         };
 
 	}
-	
+
 	void setBaselineClient(BaselineSyncClient client) {
 		this.baselineClient = client;
 	}
@@ -98,17 +100,17 @@ public abstract class TestSuite {
         System.setProperty("cougar.client.socket.ssl.supportsTls","false");
         System.setProperty("cougar.client.socket.ssl.requiresTls","false");
     }
-	
-	
+
+
 	/**
 	 * simulate
-	 * <li> the server adding non mandatory parameters to an operation 
+	 * <li> the server adding non mandatory parameters to an operation
 	 * <li> the server adding non mandatory fields to a dataType
 	 * <li> the server removing fields from the response dataType
 	 * <p>
 	 * In this case the client's IDD has removed 'headerParameter' operation,  bodyParameter2 from NonMandatoryParamsRequest and 'queryParameter'
 	 * from the NonMandatoryParamsOperationResponse
-	 * dataType. 
+	 * dataType.
 	 * @throws SimpleException
 	 */
 	@Test
@@ -120,7 +122,7 @@ public abstract class TestSuite {
 		assertNull(response.getBodyParameter2());
 		assertNull(response.getHeaderParameter());
 	}
-	
+
 	/**
 	 * simulate the server adding a mandatory parameter to an operation
 	 * @throws SimpleException
@@ -131,11 +133,11 @@ public abstract class TestSuite {
 			SimpleResponse response = baselineClient.testSimpleGet(ec);
 			fail("expected cougar service exception");
 		}
-		catch (CougarServiceException e) {
+		catch (CougarClientException e) {
 			assertEquals("DSC-0018", e.getFault().getErrorCode());
 		}
 	}
-	
+
 	/**
 	 * Simulate the server adding a mandatory field to the params dataType, in this case value1
 	 * @throws SimpleException
@@ -150,14 +152,14 @@ public abstract class TestSuite {
 			SimpleResponse response = baselineClient.testComplexMutator(ec, co);
 			fail("expected cougar service exception");
 		}
-		catch (CougarServiceException e) {
+		catch (CougarClientException e) {
 			assertEquals("DSC-0018", e.getFault().getErrorCode());
 		}
 	}
-	
+
 	/**
 	 * Simulate the server adding an additional valid value to a parameter. In this case foobar
-	 * @throws SimpleException 
+	 * @throws SimpleException
 	 */
 	@Test
 	public void testValidValueAdded() throws SimpleException {
@@ -165,7 +167,7 @@ public abstract class TestSuite {
 		assertEquals("secondHeaderParam=foo", results.get(0));
 		assertEquals("queryParam=bar", results.get(1));
 		assertEquals("headerParam=Bar", results.get(2));
-		assertTrue(results.get(3).startsWith("dateQueryParam=Thu Jan 01"));
+		assertTrue(results.get(3).startsWith("dateQueryParam=1 Jan 1970"));
 		assertEquals("ok=1.0", results.get(4));
 	}
 
@@ -179,7 +181,7 @@ public abstract class TestSuite {
 			baselineClient.testParameterStylesQA(ec, TestParameterStylesQAHeaderParamEnum.Baz, "foo", new Date(0));
 			fail("expected cougar service exception");
 		}
-		catch (CougarServiceException e) {
+		catch (CougarClientException e) {
 			assertEquals(getExpectedValidValueRemovedErrorCode(), e.getFault().getErrorCode());
 		}
 	}
@@ -191,7 +193,7 @@ public abstract class TestSuite {
 		baselineClient.testException(ec, "BadRequest", "CLOSED");
 	}
 
-	
-	
+
+
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@ package com.betfair.cougar.transport.impl.protocol.http.rescript;
 
 import com.betfair.cougar.core.api.ev.OperationDefinition;
 import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.PanicInTheCougar;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import com.betfair.cougar.core.api.exception.*;
+import com.betfair.cougar.core.api.transcription.EnumDerialisationException;
 import com.betfair.cougar.core.api.transcription.EnumUtils;
 import com.betfair.cougar.core.api.transcription.Parameter;
 import com.betfair.cougar.core.api.transcription.ParameterType;
@@ -45,7 +43,7 @@ import java.util.Set;
  * This class represents the binding between a rescript operation and an operation definition
  */
 public class RescriptOperationBinding {
-		
+
     private final OperationKey operationKey;
     private final OperationDefinition operationDefinition;
     private final String method;
@@ -85,11 +83,12 @@ public class RescriptOperationBinding {
 	public Object[] resolveArgs(HttpServletRequest request, InputStream inputStream, MediaType mediaType, String encoding) {
         Object[] args = new Object[paramBindings.length];
 
+        String format = mediaType == null || mediaType.getSubtype() == null ? "unknown" : mediaType.getSubtype();
         RescriptBody body = null;
         if (bindingDescriptor.containsBodyData()) {
             //If the request contains body data, then it must be a post request
             if (!request.getMethod().equals("POST")) {
-                throw new CougarValidationException(ServerFaultCode.RescriptDeserialisationFailure, "Bad body data");
+                throw CougarMarshallingException.unmarshallingException(format, "Bad body data", false);
             }
             body = resolveBody(inputStream, mediaType, encoding);
         }
@@ -104,37 +103,42 @@ public class RescriptOperationBinding {
                 headersWithNullValues.add(header.toLowerCase());
             }
         }
-        for (int i = 0; i < args.length; ++i) {
-            RescriptParamBindingDescriptor descriptor = paramBindings[i];
-            Parameter param = operationDefinition.getParameters()[i];
-            switch (descriptor.getSource()) {
-                case HEADER :
-                    String key = descriptor.getName();
-                    args[i] = resolveArgument(headersWithNullValues.contains(key.toLowerCase()) ? "" : request.getHeader(key), param, descriptor);
-                    break;
-                case QUERY :
-                    args[i] = resolveArgument(request.getParameter(descriptor.getName()), param, descriptor);
-                    break;
-                case BODY :
-                    if (body != null) {
-                        args[i] = body.getValue(descriptor.getName());
-                        // non-null enums get stored as their raw string value so need converting to the true enum value
-                        if (param.getParameterType().getType() == ParameterType.Type.ENUM) {
-                            if (args[i] != null) {
-                                args[i] = EnumUtils.readEnum(param.getParameterType().getImplementationClass(), (String) args[i]);
+        try {
+            for (int i = 0; i < args.length; ++i) {
+                RescriptParamBindingDescriptor descriptor = paramBindings[i];
+                Parameter param = operationDefinition.getParameters()[i];
+                switch (descriptor.getSource()) {
+                    case HEADER :
+                        String key = descriptor.getName();
+                        args[i] = resolveArgument(headersWithNullValues.contains(key.toLowerCase()) ? "" : request.getHeader(key), param, descriptor, format);
+                        break;
+                    case QUERY :
+                        args[i] = resolveArgument(request.getParameter(descriptor.getName()), param, descriptor, format);
+                        break;
+                    case BODY :
+                        if (body != null) {
+                            args[i] = body.getValue(descriptor.getName());
+                            // non-null enums get stored as their raw string value so need converting to the true enum value
+                            if (param.getParameterType().getType() == ParameterType.Type.ENUM) {
+                                if (args[i] != null) {
+                                    args[i] = EnumUtils.readEnum(param.getParameterType().getImplementationClass(), (String) args[i]);
+                                }
                             }
                         }
-                    }
-                	break;
-                default :
-                    throw new PanicInTheCougar("Unsupported argument annotation "+ descriptor.getSource());
+                        break;
+                    default :
+                        throw new PanicInTheCougar("Unsupported argument annotation "+ descriptor.getSource());
+                }
+                //request.trace("Deserialised argument {} from {} to value {}", i, param.getSource(), args[i]);
             }
-            //request.trace("Deserialised argument %d from %s to value %s", i, param.getSource(), args[i]);
+        }
+        catch (EnumDerialisationException ede) {
+            throw CougarMarshallingException.unmarshallingException(format, ede.getMessage(), ede.getCause(), false);
         }
         return args;
     }
 
-    public Object resolveArgument(String value, Parameter param, RescriptParamBindingDescriptor descriptor) {
+    public Object resolveArgument(String value, Parameter param, RescriptParamBindingDescriptor descriptor, String format) {
         if (value != null) {
             //We only support one generic type - no maps etc.
             Class<?> genericClass = null;
@@ -144,7 +148,7 @@ public class RescriptOperationBinding {
             }
             return BindingUtils.convertToSimpleType(
                     param.getParameterType().getImplementationClass(),
-                    genericClass, param.getName(),  value, false, hardFailEnums);
+                    genericClass, param.getName(),  value, false, hardFailEnums, format, false);
         }
         return null;
     }
@@ -159,7 +163,7 @@ public class RescriptOperationBinding {
             UnMarshaller unMarshaller = factory.getUnMarshaller();
             return (RescriptBody)unMarshaller.unmarshall(inputStream,
                         bindingDescriptor.getBodyClass(),
-                        encoding);
+                        encoding, false);
         }
         return null;
     }

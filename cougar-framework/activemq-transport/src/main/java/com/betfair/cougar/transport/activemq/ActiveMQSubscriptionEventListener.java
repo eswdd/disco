@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.betfair.cougar.transport.activemq;
 
 import com.betfair.cougar.core.api.ev.ExecutionObserver;
 import com.betfair.cougar.core.api.ev.ExecutionResult;
+import com.betfair.cougar.core.api.exception.CougarFrameworkException;
 import com.betfair.cougar.core.api.exception.CougarServiceException;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
 //import org.apache.activemq.transport.TransportListener;
@@ -64,7 +65,7 @@ public class ActiveMQSubscriptionEventListener  {
             for (WeakReference<ExecutionObserver> ref : executionObservers) {
                 ExecutionObserver obs = ref.get();
                 if (obs != null) {
-                    obs.onResult(new ExecutionResult(new CougarServiceException(ServerFaultCode.JMSTransportCommunicationFailure, "Connection to Sonic has been lost")));
+                    obs.onResult(new ExecutionResult(new CougarFrameworkException(ServerFaultCode.JMSTransportCommunicationFailure, "Connection to ActiveMQ has been lost")));
                 }
             }
             executionObservers = new HashSet<WeakReference<ExecutionObserver>>();

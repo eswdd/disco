@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ public class ExecutionContextImplTest {
     public static final String GEO = "GeoLocationDetailsTest";
     public static final String ID = "IdentityChainTest";
     public static final String UUID = "UUIDTest";
-    
+
 
     @Test
     public void testToString() {
@@ -75,7 +75,7 @@ public class ExecutionContextImplTest {
             public String getInferredCountry() {
                 return null;  //To change body of implemented methods use File | Settings | File Templates.
             }
-            
+
             public String toString() {
                 return GEO;
             }
@@ -95,7 +95,7 @@ public class ExecutionContextImplTest {
             public <T extends Identity> List<T> getIdentities(Class<T> clazz) {
                 return null;  //To change body of implemented methods use File | Settings | File Templates.
             }
-            
+
             public String toString() {
                 return ID;
             }
@@ -108,17 +108,32 @@ public class ExecutionContextImplTest {
             }
 
             @Override
-            public void writeExternal(ObjectOutput objectOutput) throws IOException {
-                //To change body of implemented methods use File | Settings | File Templates.
+            public String toCougarLogString() {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            public String toString() {
+                return UUID;
             }
 
             @Override
-            public void readExternal(ObjectInput objectInput) throws IOException, ClassNotFoundException {
-                //To change body of implemented methods use File | Settings | File Templates.
+            public String getRootUUIDComponent() {
+                return null;
             }
-            
-            public String toString() {
+
+            @Override
+            public String getParentUUIDComponent() {
+                return null;
+            }
+
+            @Override
+            public String getLocalUUIDComponent() {
                 return UUID;
+            }
+
+            @Override
+            public RequestUUID getNewSubUUID() {
+                return null;
             }
         });
         ec.setTraceLoggingEnabled(false);

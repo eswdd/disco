@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import com.betfair.cougar.core.api.*;
 import com.betfair.cougar.core.api.ev.*;
 import com.betfair.cougar.core.api.events.Event;
 import com.betfair.cougar.core.api.transports.EventTransport;
+import com.betfair.cougar.core.impl.DefaultTimeConstraints;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -44,7 +45,7 @@ public class ServiceRegistration extends AbstractServiceRegistration {
                         public void onResult(ExecutionResult result) {
                             eventTransport.publish((Event)result.getResult());
                         }
-                    });
+                    }, DefaultTimeConstraints.NO_CONSTRAINTS);
                 }
             }
         }

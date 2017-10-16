@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package com.betfair.cougar.transport.jms;
 
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.transport.api.protocol.events.EventErrorHandler;
 
 import javax.jms.JMSException;
@@ -31,15 +31,15 @@ import java.util.logging.Level;
  */
 public class DefaultErrorHandlerImpl implements EventErrorHandler<Message> {
 
-    private final static CougarLogger logger = CougarLoggingUtils.getLogger(DefaultErrorHandlerImpl.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(DefaultErrorHandlerImpl.class);
 
     @Override
     public void handleEventProcessingError(Message errorEvent, Throwable exception) {
-        logger.log(Level.SEVERE, "An error occurred processing event: [" + errorEvent + "]", exception);
+        LOGGER.error("An error occurred processing event: [" + errorEvent + "]", exception);
         try {
             errorEvent.acknowledge();
         } catch (JMSException ex) {
-            logger.log(Level.SEVERE, "An error occured acknowledging bad JMS message [" + errorEvent  + "]", ex);
+            LOGGER.error("An error occured acknowledging bad JMS message [" + errorEvent  + "]", ex);
         }
     }
 }

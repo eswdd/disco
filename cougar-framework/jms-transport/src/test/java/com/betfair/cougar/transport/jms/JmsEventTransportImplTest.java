@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import com.betfair.cougar.core.api.exception.CougarException;
 import com.betfair.cougar.core.api.exception.CougarFrameworkException;
 import com.betfair.cougar.core.api.exception.CougarValidationException;
 import com.betfair.cougar.core.api.transports.EventTransportMode;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.transport.api.protocol.events.EventBindingDescriptor;
 import com.betfair.cougar.transport.api.protocol.events.EventErrorHandler;
 import com.betfair.cougar.transport.api.protocol.events.EventServiceBindingDescriptor;
@@ -88,11 +88,6 @@ public class JmsEventTransportImplTest {
     private MessageConsumer mockedConsumer;
     private MonitorRegistry monitorRegistry;
     private Connection mockedConnection;
-
-    @BeforeClass
-    public static void suppressLogs() {
-        CougarLoggingUtils.suppressAllRootLoggerOutput();
-    }
 
     private ExecutionObserver inbredExecutionObserver = new ExecutionObserver() {
 
@@ -381,6 +376,7 @@ public class JmsEventTransportImplTest {
             public GeoLocationDetails getLocation() { return null; }
             public RequestUUID getRequestUUID() { return null; }
             public Date getReceivedTime() { return null; }
+            public Date getRequestTime() { return null; }
             public boolean traceLoggingEnabled() { return false; }
             public int getTransportSecurityStrengthFactor() { return 0; }
             public boolean isTransportSecure() { return false; }

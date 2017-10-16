@@ -1,5 +1,6 @@
 /*
  * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +42,7 @@ public class SOAPRequestTypesBooleanNullTest {
         CougarHelpers helpers = new CougarHelpers();
         try {
             CougarManager cougarManager = CougarManager.getInstance();
-            helpers.setJMXMBeanAttributeValue("com.betfair.cougar.transport:type=soapCommandProcessor", "SchemaValidationEnabled", schemaValidationEnabled);
+            helpers.setSOAPSchemaValidationEnabled(schemaValidationEnabled);
             // Create the HttpCallBean
             CougarManager cougarManager1 = CougarManager.getInstance();
             HttpCallBean httpCallBeanBaseline = cougarManager1.getNewHttpCallBean();
@@ -73,12 +74,11 @@ public class SOAPRequestTypesBooleanNullTest {
             cougarManager3.makeSoapCougarHTTPCalls(getNewHttpCallBean3);
             // Create the expected response object as an XML document (fault)
             XMLHelpers xMLHelpers5 = new XMLHelpers();
-            Document createAsDocument11 = xMLHelpers5.getXMLObjectFromString("<soapenv:Fault><faultcode>soapenv:Client</faultcode><faultstring>DSC-0006</faultstring><detail/></soapenv:Fault>");
-            // Convert the expected response to SOAP for comparison with the actual response
-            Map<String, Object> convertResponseToSOAP12 = cougarManager3.convertResponseToSOAP(createAsDocument11, getNewHttpCallBean3);
+            Document createAsDocument11 = xMLHelpers5.getXMLObjectFromString("<soapenv:Fault><faultcode>soapenv:Client</faultcode><faultstring>DSC-0044</faultstring><detail/></soapenv:Fault>");
+
             // Check the response is as expected
             HttpResponseBean response6 = getNewHttpCallBean3.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
-            AssertionUtils.multiAssertEquals(convertResponseToSOAP12.get("SOAP"), response6.getResponseObject());
+            AssertionUtils.multiAssertEquals(createAsDocument11, response6.getResponseObject());
 
             // generalHelpers.pauseTest(500L);
             // Check the log entries are as expected
@@ -90,7 +90,7 @@ public class SOAPRequestTypesBooleanNullTest {
             CougarManager cougarManager11 = CougarManager.getInstance();
             cougarManager11.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9, new AccessLogRequirement("87.248.113.14", "/BaselineService/v2", "BadRequest"));
         } finally {
-            helpers.setJMXMBeanAttributeValue("com.betfair.cougar.transport:type=soapCommandProcessor", "SchemaValidationEnabled", true);
+            helpers.setSOAPSchemaValidationEnabled(true);
         }
     }
 

@@ -1,5 +1,6 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
+ * Copyright 2015, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,20 +25,29 @@ import com.betfair.cougar.core.api.fault.Fault;
 
 public class CougarServiceException extends CougarException {
 	private CougarApplicationException dae;
-	
+
 	public CougarServiceException(ServerFaultCode fault, String message) {
 		super(Level.FINE, fault, message);
+        if (fault.getResponseCode() == null) {
+            throw new IllegalArgumentException("Exception required for fault codes with a null response code");
+        }
 	}
 
 	public CougarServiceException(ServerFaultCode fault, String message, CougarApplicationException dae) {
 		super(Level.FINE, fault, message, dae);
+        if (dae == null && fault.getResponseCode() == null) {
+            throw new IllegalArgumentException("Exception required for fault codes with a null response code");
+        }
 		this.dae = dae;
 	}
 
 	public CougarServiceException(ServerFaultCode fault, String message, Throwable t) {
 		super(Level.FINE, fault, message, t);
+        if (fault.getResponseCode() == null) {
+            throw new IllegalArgumentException("Exception required for fault codes with a null response code");
+        }
 	}
-	
+
 	@Override
 	public Fault getFault() {
 		Fault fault = null;
@@ -48,7 +58,7 @@ public class CougarServiceException extends CougarException {
     	}
     	return fault;
 	}
-	
+
 	@Override
 	public ResponseCode getResponseCode() {
     	if (dae != null) {

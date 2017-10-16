@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,20 +20,20 @@ import com.betfair.cougar.core.api.RequestTimer;
 
 /**
  * An invocation from the Transport to process a unit of work.
- * The interface is intended to be extended to provide transport specific 
+ * The interface is intended to be extended to provide transport specific
  * information that can be resolved to an ExecutionCommand.
  */
 public interface TransportCommand {
-	
-	enum CommandStatus { InProcess, TimedOut, Complete };
-	
+
+	enum CommandStatus {InProgress, TimedOut, Complete };
+
 	/**
 	 * Notify that the unit of work has been completed
 	 */
 	public void onComplete();
-	
+
 	/**
-	 * Returns the current status of this command 
+	 * Returns the current status of this command
 	 * @return
 	 */
 	public CommandStatus getStatus();

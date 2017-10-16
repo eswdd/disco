@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,11 +30,19 @@ import com.betfair.cougar.core.api.exception.CougarException;
 import com.betfair.cougar.core.api.exception.CougarServiceException;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
 import com.betfair.cougar.core.api.security.IdentityResolverFactory;
+import com.betfair.cougar.core.api.tracing.Tracer;
 import com.betfair.cougar.core.api.transcription.Parameter;
 import com.betfair.cougar.core.api.transcription.ParameterType;
+import com.betfair.cougar.core.impl.DefaultTimeConstraints;
 import com.betfair.cougar.core.impl.security.CommonNameCertInfoExtractor;
+import com.betfair.cougar.core.impl.tracing.CompoundTracer;
 import com.betfair.cougar.core.impl.transports.TransportRegistryImpl;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import com.betfair.cougar.netutil.nio.marshalling.DefaultExecutionContextResolverFactory;
+import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
+import com.betfair.cougar.transport.api.RequestTimeResolver;
+import com.betfair.cougar.transport.impl.DehydratedExecutionContextResolutionImpl;
+import org.slf4j.LoggerFactory;
+import com.betfair.cougar.netutil.nio.marshalling.DefaultSocketTimeResolver;
 import com.betfair.cougar.netutil.nio.marshalling.SocketRMIMarshaller;
 import com.betfair.cougar.netutil.nio.CougarProtocol;
 import com.betfair.cougar.netutil.nio.NioLogger;
@@ -68,6 +76,8 @@ import java.util.concurrent.Executors;
 
 import static com.betfair.cougar.netutil.nio.message.ProtocolMessage.ProtocolMessageType;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+
 @RunWith(value = Parameterized.class)
 public class ExecutionVenueNioServerTest {
 
@@ -97,7 +107,7 @@ public class ExecutionVenueNioServerTest {
 	public static Collection<Object[]> data() {
         String[] addresses = new String[] { "127.0.0.1" /*, "::1" */};
         Set<ByteArrayWrapper> versionCombinations = new HashSet<ByteArrayWrapper>();
-        addVersions(versionCombinations, new byte[] {}, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MIN_SUPPORTED);
+        addVersions(versionCombinations, new byte[] {}, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED);
         for (ByteArrayWrapper b : versionCombinations) {
             System.out.println("Version combo: "+Arrays.toString(b.getArray()));
         }
@@ -116,13 +126,13 @@ public class ExecutionVenueNioServerTest {
 	}
 
     private static void addVersions(Set<ByteArrayWrapper> versionCombinations, byte[] prefix, byte nextVersion) {
-        if (nextVersion > CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED) {
+        if (nextVersion > CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED) {
             return;
         }
         versionCombinations.add(new ByteArrayWrapper(new byte[] { nextVersion }));
         byte[] newPrefix = addToEnd(prefix, nextVersion);
         versionCombinations.add(new ByteArrayWrapper(newPrefix));
-        for (byte b=(byte) (nextVersion+1); b<=CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED; b++) {
+        for (byte b=(byte) (nextVersion+1); b<=CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED; b++) {
             addVersions(versionCombinations, newPrefix, b);
         }
     }
@@ -135,7 +145,7 @@ public class ExecutionVenueNioServerTest {
     }
 
     public static final String THE_ITALIAN_JOB = "you were only supposed to blow the ruddy doors off";
-	
+
 	private static final OperationKey KEY = new OperationKey(new ServiceVersion("v1.0"), "UnitTestService",
 	        "myUnitTestMethod");
 
@@ -144,8 +154,9 @@ public class ExecutionVenueNioServerTest {
 	        new Parameter("echoMe", new ParameterType(String.class, null), true) };
 
     private static final ParameterType RETURN_PARAM_TYPE = new ParameterType(String.class, null);
-	
-    
+
+    private static final TimeConstraints TIME_CONSTRAINTS = DefaultTimeConstraints.NO_CONSTRAINTS;
+
 	public static final OperationDefinition OPERATION_DEFINITION = new OperationDefinition() {
 		@Override
 		public OperationKey getOperationKey() {
@@ -161,11 +172,12 @@ public class ExecutionVenueNioServerTest {
 		}
 	};
 
-	
+
     private String address;
     TlsNioConfig cfg;
     private ExecutionVenueNioServer server;
     private Executor executor;
+    private Tracer tracer;
     private SocketRMIMarshaller marshaller;
     private ExecutionVenue ev;
     private SocketTransportCommandProcessor cmdProcessor;
@@ -182,18 +194,19 @@ public class ExecutionVenueNioServerTest {
     @BeforeClass
     public static void setupStatic() {
         RequestUUIDImpl.setGenerator(new UUIDGeneratorImpl());
-        CougarLoggingUtils.suppressAllRootLoggerOutput();
     }
 
     @Before
     public void startDummyEchoSocketServer() throws IOException {
-    	
-    	ioFactory = new HessianObjectIOFactory();
-    	
+
+    	ioFactory = new HessianObjectIOFactory(false);
+
+        tracer = new CompoundTracer();
+
 		cfg = new TlsNioConfig();
         final NioLogger logger = new NioLogger("ALL");
         cfg.setNioLogger(logger);
-		
+
 		cfg.setListenAddress(address);
 		cfg.setListenPort(0);
 		cfg.setReuseAddress(true);
@@ -203,7 +216,7 @@ public class ExecutionVenueNioServerTest {
 
 		server = new ExecutionVenueNioServer();
 		server.setNioConfig(cfg);
-    	
+
 
         cmdProcessor = new SocketTransportCommandProcessor();
         cmdProcessor.setIdentityResolverFactory(new IdentityResolverFactory());
@@ -216,15 +229,17 @@ public class ExecutionVenueNioServerTest {
             }
         };
 
-        GeoIPLocator geo = Mockito.mock(GeoIPLocator.class);
-        marshaller = new SocketRMIMarshaller(geo, new CommonNameCertInfoExtractor());
+        DehydratedExecutionContextResolutionImpl contextResolution = new DehydratedExecutionContextResolutionImpl();
+        contextResolution.registerFactory(new DefaultExecutionContextResolverFactory(mock(GeoIPLocator.class), mock(RequestTimeResolver.class)));
+        contextResolution.init(false);
+        marshaller = new SocketRMIMarshaller(new CommonNameCertInfoExtractor(), contextResolution);
         IdentityResolverFactory identityResolverFactory = new IdentityResolverFactory();
-        identityResolverFactory.setIdentityResolver(Mockito.mock(IdentityResolver.class));
+        identityResolverFactory.setIdentityResolver(mock(IdentityResolver.class));
 
 
         ev = new ExecutionVenue() {
             @Override
-            public void registerOperation(String ns, OperationDefinition def, Executable executable, ExecutionTimingRecorder recorder) {
+            public void registerOperation(String ns, OperationDefinition def, Executable executable, ExecutionTimingRecorder recorder, long maxExecutionTime) {
             }
 
             @Override
@@ -238,12 +253,22 @@ public class ExecutionVenueNioServerTest {
             }
 
             @Override
-            public void execute(ExecutionContext ctx, OperationKey key, Object[] args, ExecutionObserver observer) {
+            public void execute(ExecutionContext ctx, OperationKey key, Object[] args, ExecutionObserver observer, TimeConstraints clientExpiryTime) {
                 if ((Boolean)args[0]) {
                     observer.onResult(new ExecutionResult(args[1]));
                 } else {
                     observer.onResult(new ExecutionResult(new CougarServiceException(ServerFaultCode.FrameworkError, THE_ITALIAN_JOB)));
                 }
+            }
+
+            @Override
+            public void execute(final ExecutionContext ctx, final OperationKey key, final Object[] args, final ExecutionObserver observer, final Executor executor, final TimeConstraints clientExpiryTime) {
+                executor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        execute(ctx, key, args, observer, clientExpiryTime);
+                    }
+                });
             }
 
             @Override
@@ -258,6 +283,7 @@ public class ExecutionVenueNioServerTest {
         cmdProcessor.setExecutor(executor);
         cmdProcessor.setMarshaller(marshaller);
         cmdProcessor.setExecutionVenue(ev);
+        cmdProcessor.setTracer(tracer);
         ServiceBindingDescriptor desc = new SocketBindingDescriptor() {
             @Override
             public OperationBindingDescriptor[] getOperationBindings() {
@@ -282,8 +308,8 @@ public class ExecutionVenueNioServerTest {
         cmdProcessor.bind(desc);
         cmdProcessor.onCougarStart();
 
-        
-        ExecutionVenueServerHandler handler = new ExecutionVenueServerHandler(new NioLogger("NONE"), cmdProcessor, new HessianObjectIOFactory());
+
+        ExecutionVenueServerHandler handler = new ExecutionVenueServerHandler(new NioLogger("NONE"), cmdProcessor, new HessianObjectIOFactory(false));
         server.setServerHandler(handler);
         server.setSocketAcceptorProcessors(1);
         server.setServerExecutor(Executors.newCachedThreadPool());
@@ -300,8 +326,8 @@ public class ExecutionVenueNioServerTest {
     public void stopDummyEchoSocketServer() throws IOException {
         server.stop();
     }
-    
-    
+
+
 
     @Test
     public void testSocketRequest()  throws Exception {
@@ -314,8 +340,8 @@ public class ExecutionVenueNioServerTest {
         assertTrue(response.isSuccess());
         assertEquals(expectedResult, response.getResult());
     }
-    
-    
+
+
     @Test
     public void testSocketRequestThrowingException() throws IOException {
         InvocationResponse response = makeSocketRequest(2, false, "");
@@ -335,7 +361,7 @@ public class ExecutionVenueNioServerTest {
 
         //Read the message type
         ProtocolMessageType pm = ProtocolMessageType.getMessageByMessageType(dis.readByte());
-        
+
         switch (pm) {
             case  CONNECT:
                 int len = dis.readInt();
@@ -364,11 +390,11 @@ public class ExecutionVenueNioServerTest {
     private void writeMessageToOutputStream(Object message, OutputStream stream, byte communicationVersion) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream s = new DataOutputStream(baos);
-        
+
         if (message instanceof RequestMessage) {
             RequestMessage messageBody = (RequestMessage) message;
             s.writeInt(messageBody.getPayload().length + 9);
-            if (communicationVersion == CougarProtocol.APPLICATION_PROTOCOL_VERSION_CLIENT_ONLY_RPC) {
+            if (communicationVersion == CougarProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC) {
                 s.writeByte(ProtocolMessageType.MESSAGE.getMessageType());
             }
             else {
@@ -387,7 +413,7 @@ public class ExecutionVenueNioServerTest {
         s.flush();
         stream.write(baos.toByteArray());
         stream.flush();
-        
+
     }
 
     @Test
@@ -396,7 +422,7 @@ public class ExecutionVenueNioServerTest {
         OutputStream output = connectedClient.getOutputStream();
         InputStream input = connectedClient.getInputStream();
 
-        byte communicationVersion = CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED + 1;
+        byte communicationVersion = CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED + 1;
 
         //We, a nonsense client, only support version 3 of the protocol
         writeMessageToOutputStream(new ConnectMessage(new byte[] {communicationVersion } ), output, communicationVersion);
@@ -410,7 +436,7 @@ public class ExecutionVenueNioServerTest {
         OutputStream output = connectedClient.getOutputStream();
         InputStream input = connectedClient.getInputStream();
 
-        byte communicationVersion = CougarProtocol.APPLICATION_PROTOCOL_VERSION_MIN_SUPPORTED; // handshake is set in stone
+        byte communicationVersion = CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED; // handshake is set in stone
 
         //start with handshake
         writeMessageToOutputStream(new ConnectMessage(clientConnectVersions ), output, communicationVersion);
@@ -427,7 +453,7 @@ public class ExecutionVenueNioServerTest {
 
         Object[] args = { pass, echoMe};
 
-        marshaller.writeInvocationRequest(createRequest(args), out,null, communicationVersion);
+        marshaller.writeInvocationRequest(createRequest(args), out,null, null,communicationVersion);
         out.flush();
 
         final byte[] bytes = baos.toByteArray();
@@ -442,8 +468,8 @@ public class ExecutionVenueNioServerTest {
 		return marshaller.readInvocationResponse(RETURN_PARAM_TYPE, dis);
     }
 
-    
-    
+
+
     public InvocationRequest createRequest(final Object[] args) {
         return new InvocationRequest() {
             @Override
@@ -505,6 +531,11 @@ public class ExecutionVenueNioServerTest {
                     }
 
                     @Override
+                    public Date getRequestTime() {
+                        return null;  //To change body of implemented methods use File | Settings | File Templates.
+                    }
+
+                    @Override
                     public boolean traceLoggingEnabled() {
                         return false;  //To change body of implemented methods use File | Settings | File Templates.
                     }
@@ -530,6 +561,11 @@ public class ExecutionVenueNioServerTest {
             public Parameter[] getParameters() {
                 return OP_PARAMS;
             }
+
+            @Override
+            public TimeConstraints getTimeConstraints() {
+                return TIME_CONSTRAINTS;
+            }
         };
-    }    
+    }
 }

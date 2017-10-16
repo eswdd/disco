@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,14 @@ package com.betfair.cougar.core.impl;
 
 /**
  * Hello world!
- * 
+ *
  */
 public class Main {
 	public static void main(String[] args) {
 	    CougarSpringCtxFactoryImpl ctx = new CougarSpringCtxFactoryImpl();
 	    if (args.length == 1) {
-	        System.out.println("Reading configuration from "+args[0]+" directory");
-	        ctx.setConfigDir(args[0]);
+            // this used to be supported, but would be catastrophic now.
+            throw new IllegalArgumentException("Setting configuration path is no longer supported");
 	    }
 		ctx.create(null);
 	}

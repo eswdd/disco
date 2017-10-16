@@ -44,8 +44,6 @@ public class RestPostRequestTypesDateTime60SecondsTest {
         HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
         try {
             cougarManager1.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
-            // Get logging attribute for getting log entries later
-            String getCougarLogManagerJMXAttributeValue2 = cougarManager1.getCougarLogManagerJMXAttributeValue("BaseLogDirectory");
 
             getNewHttpCallBean1.setOperationName("dateTimeOperation");
 
@@ -63,7 +61,7 @@ public class RestPostRequestTypesDateTime60SecondsTest {
             cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
             // Create the expected response as an XML document (Fault)
             XMLHelpers xMLHelpers3 = new XMLHelpers();
-            Document expectedXML = xMLHelpers3.getXMLObjectFromString("<fault><faultcode>Client</faultcode><faultstring>DSC-0008</faultstring><detail/></fault>");
+            Document expectedXML = xMLHelpers3.getXMLObjectFromString("<fault><faultcode>Client</faultcode><faultstring>DSC-0044</faultstring><detail/></fault>");
             // Convert the expected response to a JSON object for comparison with the actual response
             JSONHelpers jSONHelpers4 = new JSONHelpers();
             JSONObject expectedJSON = jSONHelpers4.convertXMLDocumentToJSONObjectRemoveRootElement(expectedXML);

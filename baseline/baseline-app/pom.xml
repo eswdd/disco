@@ -14,13 +14,14 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>com.betfair.cougar</groupId>
         <artifactId>baseline</artifactId>
-        <version>3.0-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>baseline-app</artifactId>
@@ -35,22 +36,39 @@
                 <version>${project.version}</version>
                 <executions>
                     <execution>
+                        <id>baseline</id>
                         <goals>
                             <goal>process</goal>
                         </goals>
+                        <configuration>
+                            <services>
+                                <service>
+                                    <serviceName>BaselineService</serviceName>
+                                </service>
+                            </services>
+                            <iddAsResource>true</iddAsResource>
+                            <!-- run as both a client and a server -->
+                            <client>true</client>
+                            <server>true</server>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>non</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <configuration>
+                            <services>
+                                <service>
+                                    <serviceName>NonService</serviceName>
+                                </service>
+                            </services>
+                            <iddAsResource>true</iddAsResource>
+                            <!-- client only -->
+                            <client>true</client>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <services>
-                        <service>
-                            <serviceName>BaselineService</serviceName>
-                        </service>
-                    </services>
-                    <iddAsResource>true</iddAsResource>
-                    <!-- run as both a client and a server -->
-                    <client>true</client>
-                    <server>true</server>
-                </configuration>
             </plugin>
         </plugins>
         <resources>
@@ -97,12 +115,10 @@
         <dependency>
             <groupId>com.betfair.cougar</groupId>
             <artifactId>cougar-util</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.betfair.cougar</groupId>
             <artifactId>cougar-transport-api</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

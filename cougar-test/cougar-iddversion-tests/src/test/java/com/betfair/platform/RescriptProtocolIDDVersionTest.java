@@ -1,5 +1,6 @@
 /*
  * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2015, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +17,15 @@
 
 package com.betfair.platform;
 
+import com.betfair.cougar.logging.CougarLoggingUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.LoggerFactory;
 
-public class RescriptProtocolIDDVersionTest extends TestSuite{
+public class RescriptProtocolIDDVersionTest extends TestSuite {
 
 	private ClassPathXmlApplicationContext springContext;
 
@@ -37,8 +39,8 @@ public class RescriptProtocolIDDVersionTest extends TestSuite{
 		BaselineSyncClient baselineClient = (BaselineSyncClient) springContext.getBean("baselineClient");
 		super.setBaselineClient(baselineClient);
 	}
-	
-	
+
+
 	@AfterClass
 	public void stopCougarClient() {
 		springContext.getBeanFactory().destroySingletons();
@@ -47,10 +49,10 @@ public class RescriptProtocolIDDVersionTest extends TestSuite{
 
     @Override
     protected String getExpectedValidValueRemovedErrorCode() {
-        return "DSC-0009";
+        return "DSC-0044";
     }
 
-	
+
 	public static void main(String[] args) {
 		new RescriptProtocolIDDVersionTest().startCougarClient();
 	}

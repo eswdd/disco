@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2013, The Sporting Exchange Limited
+  ~ Copyright 2014, The Sporting Exchange Limited
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
 
     <bean class="com.betfair.cougar.util.configuration.PropertyConfigurer">
         <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
-        <property name="defaultConfig" value="conf/socket-transport-defaults.properties"/>
+        <property name="defaultConfig" value="classpath:conf/socket-transport-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
         <property name="placeholderPrefix" value="$COUGAR-SOCKET-TRANSPORT{"/>
     </bean>
@@ -39,9 +39,22 @@
     <bean id="defaultSocketCertInfoExtractor" class="com.betfair.cougar.core.impl.security.CommonNameCertInfoExtractor"/>
 
     <bean id="socketMarshaller" class="com.betfair.cougar.netutil.nio.marshalling.SocketRMIMarshaller">
-        <constructor-arg ref="cougar.core.GeoIPLocator"/>
-        <constructor-arg ref="$COUGAR-SOCKET-TRANSPORT{cougar.socket.tokenResolver.certInfoExtractor}"/>
+        <constructor-arg index="0" ref="$COUGAR-SOCKET-TRANSPORT{cougar.socket.tokenResolver.certInfoExtractor}"/>
+        <constructor-arg index="1" ref="cougar.transport.ContextResolution"/>
         <property name="hardFailEnumDeserialisation" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.enums.hardFailure}"/>
+    </bean>
+
+    <bean id="socketExecutionContextResolverFactory" class="com.betfair.cougar.netutil.nio.marshalling.DefaultExecutionContextResolverFactory">
+        <constructor-arg index="0" ref="cougar.core.GeoIPLocator"/>
+        <constructor-arg index="1">
+            <bean class="com.betfair.cougar.netutil.nio.marshalling.DefaultSocketTimeResolver">
+                <constructor-arg index="0" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.timeResolver.clientSynchronized}"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <bean parent="cougar.transport.ContextRegisterer" lazy-init="false">
+        <constructor-arg index="1" ref="socketExecutionContextResolverFactory"/>
     </bean>
 
     <bean id="socketCommandProcessor" class="com.betfair.cougar.transport.socket.SocketTransportCommandProcessor" lazy-init="false" scope="singleton">
@@ -53,6 +66,7 @@
         <property name="connectedObjectManager" ref="pooledConnectedObjectManager"/>
         <property name="nioLogger" ref="nioLogger"/>
         <property name="unknownCipherKeyLength" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.ssl.unknownCipherKeyLength}"/>
+        <property name="tracer" ref="cougar.core.Tracer"/>
     </bean>
 
     <bean name="pooledConnectedObjectManager" class="com.betfair.cougar.transport.socket.PooledServerConnectedObjectManager" init-method="start" destroy-method="stop">
@@ -84,7 +98,9 @@
         <constructor-arg ref="serverHessianObjectFactory"/>
     </bean>
 
-    <bean name="serverHessianObjectFactory" class="com.betfair.cougar.netutil.nio.hessian.HessianObjectIOFactory"/>
+    <bean name="serverHessianObjectFactory" class="com.betfair.cougar.netutil.nio.hessian.HessianObjectIOFactory">
+        <constructor-arg index="0" value="true"/>
+    </bean>
 
     <bean name="serverSessionManager" class="com.betfair.cougar.transport.nio.IoSessionManager">
         <property name="maxTimeToWaitForRequestCompletion" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.maxTimeToWaitForRequestCompletion}"/>
@@ -161,20 +177,20 @@
 
     <bean class="com.betfair.cougar.logging.LogDefinition" init-method="register">
         <property name="logName" value="SOCKET_TRANSPORT-LOG" />
-        <property name="handler">
-            <bean factory-bean="cougar.core.logHandlerFactory" factory-method="createLogHandler">
-                <constructor-arg type="java.util.Map">
-                    <util:map map-class="java.util.HashMap">
-                       <entry key="logName" value="SOCKET_TRANSPORT-LOG"/>
-                       <entry key="fileName" value="$COUGAR{cougar.log.dir}/socket/$COUGAR{system.hostname}-$COUGAR{cougar.app.name}-socket-session.log"/>
-                       <entry key="flush" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.SESSION-LOG.flush}"/>
-                       <entry key="append" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.SESSION-LOG.append}"/>
-                       <entry key="rotation" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.SESSION-LOG.rotation}"/>
-                       <entry key="abstractLogger" value="false"/>
-                       <entry key="format" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.SESSION-LOG.format}"/>
-                    </util:map>
-                </constructor-arg>
-            </bean>
+    </bean>
+
+    <bean class="com.betfair.cougar.logging.HandlerCreator" init-method="create">
+        <property name="factory" ref="cougar.core.logHandlerFactory"/>
+        <property name="properties">
+            <util:map map-class="java.util.HashMap">
+                <entry key="logName" value="SOCKET_TRANSPORT-LOG"/>
+                <entry key="fileName" value="$COUGAR{cougar.log.dir}/socket/$COUGAR{system.hostname}-$COUGAR{cougar.app.name}-socket-session.log"/>
+                <entry key="flush" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.SESSION-LOG.flush}"/>
+                <entry key="append" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.SESSION-LOG.append}"/>
+                <entry key="rotation" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.SESSION-LOG.rotation}"/>
+                <entry key="abstractLogger" value="false"/>
+                <entry key="format" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.SESSION-LOG.format}"/>
+            </util:map>
         </property>
     </bean>
 
@@ -186,21 +202,21 @@
 
     <bean class="com.betfair.cougar.logging.LogDefinition" init-method="register">
         <property name="logName" value="PUSH_SUBSCRIPTION-LOG" />
-        <property name="handler">
-            <bean factory-bean="cougar.core.logHandlerFactory" factory-method="createLogHandler">
-                <constructor-arg type="java.util.Map">
-                    <util:map map-class="java.util.HashMap">
-                        <entry key="logName" value="PUSH_SUBSCRIPTION-LOG"/>
-                        <entry key="fileName" value="$COUGAR{cougar.log.dir}/dw/$COUGAR{system.hostname}-$COUGAR{cougar.app.name}-push-subscription.log"/>
-                        <entry key="flush" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.PUSH_SUBSCRIPTION-LOG.flush}"/>
-                        <entry key="append" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.PUSH_SUBSCRIPTION-LOG.append}"/>
-                        <entry key="rotation" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.PUSH_SUBSCRIPTION-LOG.rotation}"/>
-                        <entry key="abstractLogger" value="false"/>
-                        <entry key="format" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.PUSH_SUBSCRIPTION-LOG.format}"/>
-                        <entry key="immediateFlush" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.PUSH_SUBSCRIPTION-LOG.immediateFlush}"/>
-                    </util:map>
-                </constructor-arg>
-            </bean>
+    </bean>
+
+    <bean class="com.betfair.cougar.logging.HandlerCreator" init-method="create">
+        <property name="factory" ref="cougar.core.logHandlerFactory"/>
+        <property name="properties">
+            <util:map map-class="java.util.HashMap">
+                <entry key="logName" value="PUSH_SUBSCRIPTION-LOG"/>
+                <entry key="fileName" value="$COUGAR{cougar.log.dir}/dw/$COUGAR{system.hostname}-$COUGAR{cougar.app.name}-push-subscription.log"/>
+                <entry key="flush" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.PUSH_SUBSCRIPTION-LOG.flush}"/>
+                <entry key="append" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.PUSH_SUBSCRIPTION-LOG.append}"/>
+                <entry key="rotation" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.PUSH_SUBSCRIPTION-LOG.rotation}"/>
+                <entry key="abstractLogger" value="false"/>
+                <entry key="format" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.PUSH_SUBSCRIPTION-LOG.format}"/>
+                <entry key="immediateFlush" value="$COUGAR-SOCKET-TRANSPORT{cougar.socket.log.PUSH_SUBSCRIPTION-LOG.immediateFlush}"/>
+            </util:map>
         </property>
     </bean>
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,37 +16,35 @@
 
 package com.betfair.cougar.transport.impl.protocol.http.soap;
 
-import com.betfair.cougar.api.ExecutionContextWithTokens;
+import com.betfair.cougar.api.DehydratedExecutionContext;
 import com.betfair.cougar.api.ResponseCode;
+import com.betfair.cougar.api.export.Protocol;
 import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.api.security.InferredCountryResolver;
 import com.betfair.cougar.core.api.OperationBindingDescriptor;
 import com.betfair.cougar.core.api.ServiceBindingDescriptor;
 import com.betfair.cougar.core.api.ev.ExecutionResult;
 import com.betfair.cougar.core.api.ev.OperationDefinition;
 import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import com.betfair.cougar.core.api.ev.TimeConstraints;
+import com.betfair.cougar.core.api.exception.*;
 import com.betfair.cougar.core.api.fault.CougarFault;
 import com.betfair.cougar.core.api.fault.FaultController;
 import com.betfair.cougar.core.api.fault.FaultDetail;
+import com.betfair.cougar.core.api.tracing.Tracer;
 import com.betfair.cougar.core.api.transcription.*;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
-import com.betfair.cougar.marshalling.impl.databinding.xml.JdkEmbeddedXercesSchemaValidationFailureParser;
+import com.betfair.cougar.core.impl.DefaultTimeConstraints;
+import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.marshalling.impl.databinding.xml.SchemaValidationFailureParser;
 import com.betfair.cougar.transport.api.CommandResolver;
 import com.betfair.cougar.transport.api.ExecutionCommand;
 import com.betfair.cougar.transport.api.TransportCommand.CommandStatus;
-import com.betfair.cougar.transport.api.protocol.http.GeoLocationDeserializer;
 import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
 import com.betfair.cougar.transport.api.protocol.http.soap.SoapIdentityTokenResolver;
 import com.betfair.cougar.transport.api.protocol.http.soap.SoapOperationBindingDescriptor;
 import com.betfair.cougar.transport.api.protocol.http.soap.SoapServiceBindingDescriptor;
 import com.betfair.cougar.transport.impl.protocol.http.AbstractTerminateableHttpCommandProcessor;
-import com.betfair.cougar.util.geolocation.GeoIPLocator;
 import com.betfair.cougar.util.stream.ByteCountingInputStream;
 import com.betfair.cougar.util.stream.ByteCountingOutputStream;
 import org.apache.axiom.om.OMAbstractFactory;
@@ -62,7 +60,6 @@ import org.springframework.util.StreamUtils;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 import javax.xml.XMLConstants;
@@ -81,7 +78,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.util.*;
-import java.util.logging.Level;
 
 /**
  * TransportCommandProcessor for the SOAP protocol.
@@ -89,27 +85,20 @@ import java.util.logging.Level;
  * and for writing the result or exception from the operation to the response.
  */
 @ManagedResource
-public class SoapTransportCommandProcessor extends AbstractTerminateableHttpCommandProcessor {
+public class SoapTransportCommandProcessor extends AbstractTerminateableHttpCommandProcessor<OMElement> {
     private static final String SECURITY_PREFIX = "sec";
     private static final String SECURITY_NAMESPACE = "http://www.betfair.com/security/";
     private static final String SECURITY_CREDENTIALS = "Credentials";
 
-    private static final CougarLogger logger = CougarLoggingUtils.getLogger(SoapTransportCommandProcessor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SoapTransportCommandProcessor.class);
 
     private Map<String, SoapOperationBinding> bindings = new HashMap<String, SoapOperationBinding>();
 
     private boolean schemaValidationEnabled;
     private SchemaValidationFailureParser schemaValidationFailureParser;
 
-    public SoapTransportCommandProcessor(GeoIPLocator geoIPLocator,
-                                         GeoLocationDeserializer deserializer, String uuidHeader, SchemaValidationFailureParser schemaValidationFailureParser) {
-        this(geoIPLocator, deserializer, uuidHeader, null, new JdkEmbeddedXercesSchemaValidationFailureParser());
-    }
-
-    // for testing only
-    SoapTransportCommandProcessor(GeoIPLocator geoIPLocator, GeoLocationDeserializer deserializer, String uuidHeader,
-                                         InferredCountryResolver<HttpServletRequest> countryResolver, SchemaValidationFailureParser schemaValidationFailureParser) {
-        super(geoIPLocator, deserializer, uuidHeader, countryResolver);
+    public SoapTransportCommandProcessor(DehydratedExecutionContextResolution contextResolution, String requestTimeoutHeader, SchemaValidationFailureParser schemaValidationFailureParser) {
+        super(Protocol.SOAP, contextResolution, requestTimeoutHeader);
         setName("SoapTransportCommandProcessor");
         this.schemaValidationFailureParser = schemaValidationFailureParser;
     }
@@ -156,7 +145,7 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
 
     @Override
     protected CommandResolver<HttpCommand> createCommandResolver(
-            final HttpCommand command) {
+            final HttpCommand command, final Tracer tracer) {
         String operationName = null;
         ByteCountingInputStream in = null;
         try {
@@ -182,24 +171,24 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
                 }
 
                 final ByteCountingInputStream finalIn = in;
-                return new SingleExecutionCommandResolver<HttpCommand>() {
+                return new SingleExecutionCommandResolver<HttpCommand>(tracer) {
 
-                    private ExecutionContextWithTokens context;
+                    private DehydratedExecutionContext context;
                     private ExecutionCommand exec;
 
                     @Override
-                    public ExecutionContextWithTokens resolveExecutionContext() {
+                    public DehydratedExecutionContext resolveExecutionContext() {
                         if (context == null) {
-                            context = SoapTransportCommandProcessor.this.resolveExecutionContext(command, credentialElement, command.getClientX509CertificateChain());
+                            context = SoapTransportCommandProcessor.this.resolveExecutionContext(command, credentialElement);
                         }
                         return context;
                     }
 
                     @Override
-                    public ExecutionCommand resolveExecutionCommand() {
+                    public ExecutionCommand resolveExecutionCommand(Tracer tracer) {
                         if (exec == null) {
                             exec = SoapTransportCommandProcessor.this.resolveExecutionCommand(binding, command,
-                                    context, requestNode, finalIn);
+                                    resolveExecutionContext(), requestNode, finalIn, tracer);
                         }
                         return exec;
                     }
@@ -214,21 +203,21 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
                     XMLStreamException se = (XMLStreamException) te.getException();
                     if (se.getCause() instanceof SAXParseException) {
                         SAXParseException spe = (SAXParseException) se.getCause();
-                        CougarValidationException cve = schemaValidationFailureParser.parse(spe, SchemaValidationFailureParser.XmlSource.SOAP);
-                        if (cve != null) {
-                            throw cve;
+                        CougarException ce = schemaValidationFailureParser.parse(spe, "soap", false);
+                        if (ce != null) {
+                            throw ce;
                         }
                     }
                 }
             }
-            throw new CougarValidationException(ServerFaultCode.SOAPDeserialisationFailure, e);
+            throw CougarMarshallingException.unmarshallingException("soap", e, false);
         } catch (Exception e) {
-            throw new CougarValidationException(ServerFaultCode.SOAPDeserialisationFailure, e);
+            throw CougarMarshallingException.unmarshallingException("soap", e, false);
         } finally {
             try {
                 if (in != null) in.close();
             } catch (IOException ie) {
-                throw new CougarValidationException(ServerFaultCode.SOAPDeserialisationFailure, ie);
+                throw CougarMarshallingException.unmarshallingException("soap", ie, false);
             }
         }
 
@@ -236,13 +225,13 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
                 "The SOAP request could not be resolved to an operation");
     }
 
-
     private ExecutionCommand resolveExecutionCommand(
             final SoapOperationBinding operationBinding,
-            final HttpCommand command, final ExecutionContextWithTokens context,
-            OMElement requestNode, ByteCountingInputStream in) {
+            final HttpCommand command, final DehydratedExecutionContext context,
+            OMElement requestNode, ByteCountingInputStream in, final Tracer tracer) {
         final Object[] args = readArgs(operationBinding, requestNode);
         final long bytesRead = in.getCount();
+        final TimeConstraints realTimeConstraints = DefaultTimeConstraints.rebaseFromNewStartTime(context.getRequestTime(), readRawTimeConstraints(command.getRequest()));
         return new ExecutionCommand() {
             public Object[] getArgs() {
                 return args;
@@ -252,8 +241,13 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
                 return operationBinding.getOperationKey();
             }
 
+            @Override
+            public TimeConstraints getTimeConstraints() {
+                return realTimeConstraints;
+            }
+
             public void onResult(ExecutionResult result) {
-                if (command.getStatus() == CommandStatus.InProcess) {
+                if (command.getStatus() == CommandStatus.InProgress) {
                     try {
                         if (result.getResultType() == ExecutionResult.ResultType.Fault) {
                             command.getResponse().setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -270,9 +264,9 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
     }
 
     @Override
-    protected void writeErrorResponse(HttpCommand command, ExecutionContextWithTokens context, CougarException e) {
+    protected void writeErrorResponse(HttpCommand command, DehydratedExecutionContext context, CougarException e, boolean traceStarted) {
         incrementErrorsWritten();
-        if (command.getStatus() == CommandStatus.InProcess) {
+        if (command.getStatus() == CommandStatus.InProgress) {
             try {
                 // if we have a fault, then for SOAP we must return a 500: http://www.w3.org/TR/2000/NOTE-SOAP-20000508/#_Toc478383529
                 command.getResponse().setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -292,8 +286,10 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
         TranscriptionInput in = new XMLTranscriptionInput(requestNode);
         try {
             for (int i = 0; i < params.length; i++) {
-                args[i] = readArg(in.readObject(params[i]), params[i]);
+                args[i] = readArg(in.readObject(params[i], false), params[i]);
             }
+        } catch (EnumDerialisationException ce) {
+            throw CougarMarshallingException.unmarshallingException("soap", ce.getMessage(), ce.getCause(), false);
         } catch (CougarException ce) {
             throw ce;
         } catch (Exception e) {
@@ -331,12 +327,12 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
         try {
             return EnumUtils.readEnum(parameterType.getImplementationClass(), enumTextValue, hardFailEnumDeserialisation);
         } catch (Exception e) {
-            throw XMLTranscriptionInput.exceptionDuringDeserialisation(parameterType, paramName, e);
+            throw XMLTranscriptionInput.exceptionDuringDeserialisation(parameterType, paramName, e, false);
         }
     }
 
     private void writeResponse(HttpCommand command, SoapOperationBinding binding, Object result, CougarException error,
-                               ExecutionContextWithTokens context, long bytesRead) {
+                               DehydratedExecutionContext context, long bytesRead) {
         MediaType mediaType = MediaType.TEXT_XML_TYPE;
         ByteCountingOutputStream out = null;
         long bytesWritten = 0;
@@ -361,25 +357,28 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
                 error = ce;
             } else if (error == null) {
                 // It was a normal response, so write an error instead
-                writeErrorResponse(command, context, ce);
+                writeErrorResponse(command, context, ce, true);
                 logAccess = false; // We're coming back in here, so log the access then.
             } else {
                 // Not much to do here - it's already an error and it's failed to send
-                logger.log(Level.WARNING, "Failed to write SOAP error", e);
+                LOGGER.warn("Failed to write SOAP error", e);
             }
         } finally {
             closeStream(out);
-        }
-        if (logAccess) {
-            logAccess(command,
-                    context, bytesRead,
-                    bytesWritten, mediaType,
-                    mediaType,
-                    error != null ? error.getResponseCode() : ResponseCode.Ok);
+            if (logAccess) {
+                logAccess(command,
+                        context, bytesRead,
+                        bytesWritten, mediaType,
+                        mediaType,
+                        error != null ? error.getResponseCode() : ResponseCode.Ok);
+                if (context != null) {
+                    tracer.end(context.getRequestUUID());
+                }
+            }
         }
     }
 
-    private void writeHeaders(final SOAPFactory factory, final SOAPHeader header, HttpCommand command, ExecutionContextWithTokens context)
+    private void writeHeaders(final SOAPFactory factory, final SOAPHeader header, HttpCommand command, DehydratedExecutionContext context)
             throws Exception {
         final SoapIdentityTokenResolver identityTokenResolver = (SoapIdentityTokenResolver) command.getIdentityTokenResolver();
         if (context != null && context.getIdentity() != null && identityTokenResolver != null) {
@@ -411,7 +410,7 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
                 if (element.getLocalName().equalsIgnoreCase(SECURITY_CREDENTIALS)) {
                     return element;
                 } else {
-                    logger.log(Level.FINE, "Unexpected security header arrived: %s", element.getLocalName());
+                    LOGGER.debug("Unexpected security header arrived: {}", element.getLocalName());
                 }
             }
         }
@@ -428,7 +427,7 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
                     .getBindingDescriptor().getResponseName(), ns);
             TranscriptionOutput out = new XMLTranscriptionOutput(resultNode, ns, factory);
             out.writeObject(result, new Parameter("response", binding.getOperationDefinition()
-                    .getReturnType(), true));
+                    .getReturnType(), true), false);
             body.addChild(resultNode);
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,8 +34,8 @@ import com.betfair.cougar.core.api.ServiceVersion;
 import com.betfair.cougar.core.api.exception.CougarException;
 import com.betfair.cougar.core.api.exception.CougarValidationException;
 import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.transport.api.TransportCommandProcessor;
 import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
 import com.betfair.cougar.transport.api.protocol.http.ResponseCodeMapper;
@@ -49,12 +48,12 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 public class JettyHandler extends AbstractHandler {
 
-	private final static CougarLogger logger = CougarLoggingUtils.getLogger(JettyHandler.class);
-	private final TransportCommandProcessor<HttpCommand> commandProcessor;
+	private final static Logger LOGGER = LoggerFactory.getLogger(JettyHandler.class);
+    private final TransportCommandProcessor<HttpCommand> commandProcessor;
     private final long MILLI=1000;
     private String protocolBindingRoot;
     private IdentityTokenResolverLookup identityTokenResolverLookup;
-	
+
 	private int timeoutInSeconds;
     private boolean suppressCommasInAccessLog;
     private static final String VERSION_HEADER = "Cougar 2 - "+CougarVersion.getVersion();
@@ -91,17 +90,17 @@ public class JettyHandler extends AbstractHandler {
 			JettyTransportCommand command = new JettyTransportCommand(request, response, itr);
 
 			if (!command.getContinuation().isExpired()) {
-				logger.log(Level.FINE, "Message Received at Jetty Handler for path %s", target);
+				LOGGER.debug("Message Received at Jetty Handler for path {}", target);
 				commandProcessor.process(command);
 			} else {
-				logger.log(Level.FINE, "Message Timeout at Jetty Handler for path %s", target);
+				LOGGER.debug("Message Timeout at Jetty Handler for path {}", target);
 				response.sendError(HttpServletResponse.SC_GATEWAY_TIMEOUT);
 			}
 		} catch (CougarException ce) {
-			logger.log(Level.WARNING, "Cougar Exception thrown processing request", ce);
+			LOGGER.warn("Cougar Exception thrown processing request", ce);
 			response.sendError(ResponseCodeMapper.getHttpResponseCode(ce.getResponseCode()));
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Unexpected Exception thrown processing request", e);
+			LOGGER.error("Unexpected Exception thrown processing request", e);
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		} finally {
 			// The request has been handled, whether or not the handling was a suspension.
@@ -112,7 +111,7 @@ public class JettyHandler extends AbstractHandler {
 	public void setTimeoutInSeconds(int timeoutInSeconds) {
 		this.timeoutInSeconds = timeoutInSeconds;
 	}
-	
+
 	protected class JettyTransportCommand implements HttpCommand, ContinuationListener {
         private static final String CERTIFICATE_ATTRIBUTE_NAME = "javax.servlet.request.X509Certificate";
 
@@ -126,22 +125,16 @@ public class JettyHandler extends AbstractHandler {
 		private final Continuation continuation;
 		private AtomicReference<CommandStatus> status;
 		private RequestTimer timer = new RequestTimer();
-        private X509Certificate[] clientX509CertificateChain;
 
 		public JettyTransportCommand(final HttpServletRequest request, final HttpServletResponse response) {
             this(request, response, null);
         }
 
 		public JettyTransportCommand(final HttpServletRequest request, final HttpServletResponse response, IdentityTokenResolver identityTokenResolver) {
-			status = new AtomicReference<CommandStatus>(CommandStatus.InProcess);
+			status = new AtomicReference<CommandStatus>(CommandStatus.InProgress);
 			this.request = request;
 			this.response = response;
             this.identityTokenResolver = identityTokenResolver;
-
-            Object o = request.getAttribute(CERTIFICATE_ATTRIBUTE_NAME);
-            if (o != null && o instanceof X509Certificate[]) {
-                clientX509CertificateChain = (X509Certificate[])o;
-            }
 
 			HeaderUtils.setNoCache(response);
 			continuation = ContinuationSupport.getContinuation(request);
@@ -150,17 +143,9 @@ public class JettyHandler extends AbstractHandler {
 				continuation.suspend(response);
 				continuation.addContinuationListener(this);
 			}
-			
+
 			buildPathInfo(request);
 		}
-
-        @Override
-        public X509Certificate[] getClientX509CertificateChain() {
-            return clientX509CertificateChain;
-        }
-
-
-
 
 		/**
 		 * @see HttpCommand
@@ -168,7 +153,7 @@ public class JettyHandler extends AbstractHandler {
 		public Continuation getContinuation() {
 			return continuation;
 		}
-		
+
 		/**
 		 * @see HttpCommand
 		 */
@@ -195,11 +180,11 @@ public class JettyHandler extends AbstractHandler {
 		 */
 		@Override
 		public void onComplete() {
-			if (status.compareAndSet(CommandStatus.InProcess, CommandStatus.Complete)) {
+			if (status.compareAndSet(CommandStatus.InProgress, CommandStatus.Complete)) {
 				continuation.complete();
 			}
 		}
-		
+
 		/**
 		 * @see HttpCommand
 		 */
@@ -226,11 +211,11 @@ public class JettyHandler extends AbstractHandler {
 		@Override
 		public RequestTimer getTimer() {
 			return timer;
-		}		
+		}
 
 		/**
 		 * @see HttpCommand
-		 */		
+		 */
 		@Override
 		public String getFullPath() {
             String ret = fullPath;
@@ -245,7 +230,7 @@ public class JettyHandler extends AbstractHandler {
             }
 	        return fullPath;
         }
-		
+
 		/**
 		 * @see HttpCommand
 		 */

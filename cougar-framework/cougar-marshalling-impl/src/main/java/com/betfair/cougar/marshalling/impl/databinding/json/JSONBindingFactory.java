@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,39 +19,50 @@ package com.betfair.cougar.marshalling.impl.databinding.json;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import com.betfair.cougar.CougarVersion;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.core.io.NumberInput;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.marshalling.api.databinding.*;
-import org.codehaus.jackson.*;
-import org.codehaus.jackson.io.NumberInput;
-import org.codehaus.jackson.map.DeserializationContext;
-import org.codehaus.jackson.map.JsonDeserializer;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.deser.StdDeserializer;
-import org.codehaus.jackson.map.module.SimpleModule;
 
 public class JSONBindingFactory implements DataBindingFactory {
-	private final static CougarLogger logger = CougarLoggingUtils.getLogger(JSONBindingFactory.class);
+	private final static Logger LOGGER = LoggerFactory.getLogger(JSONBindingFactory.class);
 
 	private final ObjectMapper objectMapper;
     private final JSONMarshaller marshaller;
     private final JSONUnMarshaller unMarshaller;
+    private boolean enableAfterburner = true;
+    private boolean useOptimizedBeanDeserializer = true;
+    private boolean useValueClassLoader = true;
 
-	public JSONBindingFactory() {
-		logger.log(Level.INFO, "Initialising JSONBindingFactory");
+    public JSONBindingFactory() {
+		LOGGER.info("Initialising JSONBindingFactory");
 		objectMapper = createBaseObjectMapper();
 		marshaller = new JSONMarshaller(objectMapper);
         unMarshaller = new JSONUnMarshaller(objectMapper);
 	}
-	
-	public static ObjectMapper createBaseObjectMapper() {
+
+	public ObjectMapper createBaseObjectMapper() {
 		ObjectMapper mapper = new ObjectMapper();
 		JSONDateFormat jdf=new JSONDateFormat();
-		mapper.getSerializationConfig().setDateFormat(jdf);
-		mapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
-		mapper.getDeserializationConfig().setDateFormat(jdf);
+
+		mapper.setDateFormat(jdf);
+		mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        if (enableAfterburner) {
+            AfterburnerModule module = new AfterburnerModule();
+            module.setUseOptimizedBeanDeserializer(useOptimizedBeanDeserializer);
+            module.setUseValueClassLoader(useValueClassLoader);
+            mapper.registerModule(module);
+        }
 
         applyNumericRangeBugfixes(mapper);
 		return mapper;
@@ -65,7 +76,7 @@ public class JSONBindingFactory implements DataBindingFactory {
      */
     private static void applyNumericRangeBugfixes(ObjectMapper mapper) {
         // Create a custom module
-        SimpleModule customModule = new SimpleModule("CustomModule", new Version(1, 0, 0, null));
+        SimpleModule customModule = new SimpleModule("CustomModule", new Version(1, 0, 0, null, null, null));
         // Register a deserializer for Integer that overrides default buggy version
         customModule.addDeserializer(Integer.class, new IntegerDeserializer());
         customModule.addDeserializer(int.class, new IntegerDeserializer());
@@ -97,6 +108,18 @@ public class JSONBindingFactory implements DataBindingFactory {
     @Override
     public FaultUnMarshaller getFaultUnMarshaller() {
         return unMarshaller;
+    }
+
+    public void setEnableAfterburner(boolean enableAfterburner) {
+        this.enableAfterburner = enableAfterburner;
+    }
+
+    public void setUseOptimizedBeanDeserializer(boolean useOptimizedBeanDeserializer) {
+        this.useOptimizedBeanDeserializer = useOptimizedBeanDeserializer;
+    }
+
+    public void setUseValueClassLoader(boolean useValueClassLoader) {
+        this.useValueClassLoader = useValueClassLoader;
     }
 
     /**

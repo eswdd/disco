@@ -19,7 +19,7 @@
     <parent>
         <artifactId>cougar-test</artifactId>
         <groupId>com.betfair.cougar</groupId>
-        <version>3.0-SNAPSHOT</version>
+        <version>3.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -124,7 +124,7 @@
             <groupId>com.sun</groupId>
             <artifactId>tools</artifactId>
             <scope>system</scope>
-            <systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
+            <systemPath>${java.home}/../lib/tools.jar</systemPath>
             <version>${java.version}</version>
         </dependency>
 

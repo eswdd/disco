@@ -1,5 +1,6 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
+ * Copyright 2015, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,7 +133,8 @@ public class JettyHttpTransportTest {
         transport.setUuidHeader("X-UUid");
 
         transport.getServerWrapper().setMinThreads(5);
-        transport.getServerWrapper().setMaxThreads(5);
+        // jetty now frustratingly checks we have enough max threads on startup
+        transport.getServerWrapper().setMaxThreads(33);
 
         // default is 9001, but going to use something odd so we don't clash if people have something running
         transport.getServerWrapper().setHttpPort(TEST_HTTP_PORT);
@@ -150,6 +152,11 @@ public class JettyHttpTransportTest {
         transport.getServerWrapper().setHttpsTruststore(new FileSystemResource("MUST_BE_OVERRIDDEN"));
         transport.getServerWrapper().setHttpsTruststoreType("MUST_BE_OVERRIDDEN");
         transport.getServerWrapper().setHttpsTrustPassword("MUST_BE_OVERRIDDEN");
+    }
+
+    private void populateTransportWithCORSEnabled(JettyHttpTransport transport) throws Exception {
+        populateTransport(transport);
+        transport.setCorsEnabled(true);
     }
 
     @Test
@@ -196,6 +203,78 @@ public class JettyHttpTransportTest {
         JettyHandlerSpecification spec = transport.getHandlerSpecificationMap().values().iterator().next();
         assertNotNull("Jetty handler spec should not be null", spec);
         assertTrue("There should be one identityTokenResolver plugged in here", spec.getVersionToIdentityTokenResolverMap().size() == 1);
+    }
+
+    @Test
+    public void testCORSEnabledAddNewHandlerToContextHandlerCollection() throws Exception {
+        ProtocolBinding pb = new ProtocolBinding("/", null, Protocol.RESCRIPT);
+        ProtocolBinding pb2 = new ProtocolBinding("/api", null, Protocol.RESCRIPT);
+        ProtocolBinding pb3 = new ProtocolBinding("/", null, Protocol.JSON_RPC);
+        Set<ProtocolBinding> bindingSet = new HashSet<ProtocolBinding>();
+        bindingSet.add(pb);
+        bindingSet.add(pb2);
+        bindingSet.add(pb3);
+        ProtocolBindingRegistry bindingReg = Mockito.mock(ProtocolBindingRegistry.class);
+        when(bindingReg.getProtocolBindings()).thenReturn(bindingSet);
+
+
+        JettyHttpTransport transport = new JettyHttpTransport();
+        populateTransport(transport);
+        transport.setProtocolBindingRegistry(bindingReg);
+        transport.setCommandProcessorFactory(factory);
+
+        JettyEndpoints endpoints = Mockito.mock(JettyEndpoints.class);
+        transport.setJettyEndPoints(endpoints);
+
+        transport.notify(rescriptServiceBindingDescriptor);
+        transport.notify(jsonRpcBindingDescriptor);
+
+        transport.initialiseStaticJettyConfig();
+        populateTransportWithCORSEnabled(transport);
+
+        transport.onCougarStart();
+
+        assertEquals(3, transport.getHandlerCollection().getChildHandlersByClass(CrossOriginHandler.class).length);
+
+        // Instruct Jetty not to wait for Handlers to terminate
+        transport.getServerWrapper().getJettyServer().setStopTimeout(0);
+        transport.stop();
+    }
+
+    @Test
+    public void testCORSDisabledDoesNotAddHandlersToContextHandlerCollection() throws Exception {
+        ProtocolBinding pb = new ProtocolBinding("/", null, Protocol.RESCRIPT);
+        ProtocolBinding pb2 = new ProtocolBinding("/api", null, Protocol.RESCRIPT);
+        ProtocolBinding pb3 = new ProtocolBinding("/", null, Protocol.JSON_RPC);
+        Set<ProtocolBinding> bindingSet = new HashSet<ProtocolBinding>();
+        bindingSet.add(pb);
+        bindingSet.add(pb2);
+        bindingSet.add(pb3);
+        ProtocolBindingRegistry bindingReg = Mockito.mock(ProtocolBindingRegistry.class);
+        when(bindingReg.getProtocolBindings()).thenReturn(bindingSet);
+
+
+        JettyHttpTransport transport = new JettyHttpTransport();
+        populateTransport(transport);
+        transport.setProtocolBindingRegistry(bindingReg);
+        transport.setCommandProcessorFactory(factory);
+
+        JettyEndpoints endpoints = Mockito.mock(JettyEndpoints.class);
+        transport.setJettyEndPoints(endpoints);
+
+        transport.notify(rescriptServiceBindingDescriptor);
+        transport.notify(jsonRpcBindingDescriptor);
+
+        transport.initialiseStaticJettyConfig();
+
+        populateTransport(transport);
+        transport.onCougarStart();
+
+        assertEquals(0, transport.getHandlerCollection().getChildHandlersByClass(CrossOriginHandler.class).length);
+
+        // Instruct Jetty not to wait for Handlers to terminate
+        transport.getServerWrapper().getJettyServer().setStopTimeout(0);
+        transport.stop();
     }
 
     @Test

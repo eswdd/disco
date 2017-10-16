@@ -1,5 +1,6 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
+ * Copyright 2015, Simon Matić Langford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,5 +20,10 @@ package com.betfair.cougar.core.api;
 import com.betfair.cougar.core.api.ev.OperationKey;
 
 public interface OperationBindingDescriptor {
+
+    /**
+     * Get the key values of the Operation (service name, service version and operation name)
+     * @return
+     */
 	OperationKey getOperationKey();
 }

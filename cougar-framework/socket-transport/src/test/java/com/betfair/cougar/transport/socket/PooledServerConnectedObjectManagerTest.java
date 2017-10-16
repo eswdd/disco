@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package com.betfair.cougar.transport.socket;
 
-import com.betfair.cougar.api.ExecutionContextWithTokens;
+import com.betfair.cougar.api.DehydratedExecutionContext;
 import com.betfair.cougar.api.LoggableEvent;
 import com.betfair.cougar.core.api.ev.ConnectedResponse;
 import com.betfair.cougar.core.api.ev.ExecutionResult;
@@ -26,8 +26,8 @@ import com.betfair.cougar.core.api.exception.CougarFrameworkException;
 import com.betfair.cougar.core.api.logging.EventLogger;
 import com.betfair.cougar.core.impl.ev.ConnectedResponseImpl;
 import com.betfair.cougar.core.impl.ev.DefaultSubscription;
-import com.betfair.cougar.logging.CougarLogger;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.betfair.cougar.netutil.nio.CougarProtocol;
 import com.betfair.cougar.netutil.nio.NioLogger;
 import com.betfair.cougar.netutil.nio.TerminateSubscription;
@@ -55,7 +55,6 @@ import java.util.*;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
-import java.util.logging.Level;
 
 import static com.betfair.platform.virtualheap.projection.ProjectorFactory.objectProjector;
 import static junit.framework.Assert.*;
@@ -65,7 +64,7 @@ import static org.mockito.Mockito.*;
 @RunWith(value = ParameterizedMultiRunner.class)
 public class PooledServerConnectedObjectManagerTest {
 
-    private static CougarLogger logger = CougarLoggingUtils.getLogger(PooledServerConnectedObjectManagerTest.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(PooledServerConnectedObjectManagerTest.class);
 
     private PooledServerConnectedObjectManager subject;
     private ExpectingOutput cougarOutput;
@@ -116,14 +115,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void firstSubscription() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         IoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("firstSubscription");
         Subscription sub = mock(Subscription.class);
@@ -133,7 +132,7 @@ public class PooledServerConnectedObjectManagerTest {
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
         ArgumentCaptor<ExecutionResult> resultCaptor = ArgumentCaptor.forClass(ExecutionResult.class);
-        verify(commandProcessor).writeSuccessResponse(any(SocketTransportRPCCommand.class), resultCaptor.capture());
+        verify(commandProcessor).writeSuccessResponse(any(SocketTransportRPCCommand.class), resultCaptor.capture(), any(DehydratedExecutionContext.class));
 
         ExecutionResult executionResult = resultCaptor.getValue();
 
@@ -146,14 +145,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void secondSubscriptionToSameHeap() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("secondSubscription");
         Subscription sub = mock(Subscription.class);
@@ -170,7 +169,7 @@ public class PooledServerConnectedObjectManagerTest {
         subject.addSubscription(commandProcessor, command, subscriptionResult2, operationDefinition, requestContext, null);
 
         ArgumentCaptor<ExecutionResult> resultCaptor = ArgumentCaptor.forClass(ExecutionResult.class);
-        verify(commandProcessor, times(2)).writeSuccessResponse(any(SocketTransportRPCCommand.class), resultCaptor.capture());
+        verify(commandProcessor, times(2)).writeSuccessResponse(any(SocketTransportRPCCommand.class), resultCaptor.capture(), any(DehydratedExecutionContext.class));
 
         ExecutionResult executionResult = resultCaptor.getAllValues().get(1);
 
@@ -190,14 +189,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void twoSubscriptionsToDifferentHeaps() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         IoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         OperationDefinition operationDefinition = mock(OperationDefinition.class);
 
@@ -207,7 +206,7 @@ public class PooledServerConnectedObjectManagerTest {
         subject.addSubscription(commandProcessor, command, new ConnectedResponseImpl(new MutableHeap("secondHeap"), sub), operationDefinition, requestContext, null);
 
         ArgumentCaptor<ExecutionResult> resultCaptor = ArgumentCaptor.forClass(ExecutionResult.class);
-        verify(commandProcessor, times(2)).writeSuccessResponse(any(SocketTransportRPCCommand.class), resultCaptor.capture());
+        verify(commandProcessor, times(2)).writeSuccessResponse(any(SocketTransportRPCCommand.class), resultCaptor.capture(), any(DehydratedExecutionContext.class));
 
         ExecutionResult executionResult0 = resultCaptor.getAllValues().get(0);
         assertTrue(executionResult0.getResult() instanceof NewHeapSubscription);
@@ -225,14 +224,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void subscribeToTerminatedHeap() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         IoSession session = new MyIoSession("1");
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("subscribeToTerminatedHeap");
         heap.beginUpdate();
@@ -244,7 +243,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
-        verify(commandProcessor).writeErrorResponse(any(SocketTransportCommand.class), any(ExecutionContextWithTokens.class), any(CougarFrameworkException.class));
+        verify(commandProcessor).writeErrorResponse(any(SocketTransportCommand.class), any(DehydratedExecutionContext.class), any(CougarFrameworkException.class), eq(true));
 
         assertNull(subject.getHeapsByClient().get(session));
         assertEquals(0, subject.getHeapStates().size());
@@ -256,14 +255,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void secondSubscribeToTerminatedHeap() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         IoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("subscribeToTerminatedHeap");
         Subscription sub1 = mock(Subscription.class);
@@ -271,7 +270,7 @@ public class PooledServerConnectedObjectManagerTest {
         OperationDefinition operationDefinition = mock(OperationDefinition.class);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
-        verify(commandProcessor).writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class));
+        verify(commandProcessor).writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class));
 
         heap.beginUpdate();
         heap.terminateHeap();
@@ -281,7 +280,7 @@ public class PooledServerConnectedObjectManagerTest {
         subscriptionResult = new ConnectedResponseImpl(heap, sub2);
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
-        verify(commandProcessor).writeErrorResponse(any(SocketTransportCommand.class), any(ExecutionContextWithTokens.class), any(CougarFrameworkException.class));
+        verify(commandProcessor).writeErrorResponse(any(SocketTransportCommand.class), any(DehydratedExecutionContext.class), any(CougarFrameworkException.class), eq(true));
 
         assertNull(subject.getHeapsByClient().get(session));
         assertEquals(0, subject.getHeapStates().size());
@@ -295,14 +294,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void basicUpdate() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("basicUpdate");
         Subscription sub = mock(Subscription.class);
@@ -336,14 +335,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void basicMultiUpdate() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("basicMultiUpdate");
         Subscription sub = mock(Subscription.class);
@@ -385,14 +384,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void basicUpdateToTwoSessions() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("basicUpdateToTwoSessions");
         Subscription sub = mock(Subscription.class);
@@ -407,7 +406,7 @@ public class PooledServerConnectedObjectManagerTest {
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
         MyIoSession session2 = new MyIoSession(String.valueOf(ioSessionId++));
-        session2.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session2.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session2);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
@@ -432,14 +431,14 @@ public class PooledServerConnectedObjectManagerTest {
     public void basicMultiUpdateToTwoSessions() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
         ArgumentCaptor<ExecutionResult> resultCaptor = ArgumentCaptor.forClass(ExecutionResult.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), resultCaptor.capture())).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), resultCaptor.capture(), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("basicMultiUpdateToTwoSessions");
         Subscription sub = mock(Subscription.class);
@@ -455,7 +454,7 @@ public class PooledServerConnectedObjectManagerTest {
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
         MyIoSession session2 = new MyIoSession(String.valueOf(ioSessionId++));
-        session2.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session2.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session2);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
@@ -491,14 +490,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void addSubscriptionMidStream() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("addSubscriptionMidStream");
         Subscription sub = mock(Subscription.class);
@@ -542,11 +541,11 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void addSecondSubscriptionMidStream() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("addSecondSubscriptionMidStream");
         Subscription sub = mock(Subscription.class);
@@ -568,7 +567,7 @@ public class PooledServerConnectedObjectManagerTest {
         heap.endUpdate();
 
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
@@ -579,7 +578,7 @@ public class PooledServerConnectedObjectManagerTest {
         heap.endUpdate();
 
         MyIoSession session2 = new MyIoSession(String.valueOf(ioSessionId++));
-        session2.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session2.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session2);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
@@ -605,14 +604,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void heapTerminationMidStream() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("heapTerminationMidStream");
         Subscription sub = mock(Subscription.class);
@@ -668,7 +667,7 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void sessionClosed() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++)) {
@@ -681,10 +680,10 @@ public class PooledServerConnectedObjectManagerTest {
                 return super.close();
             }
         };
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("sessionClosed");
         Subscription subscription = mock(Subscription.class);
@@ -723,11 +722,11 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void oneOfTwoSessionsClosed() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("oneOfTwoSessionsClosed");
         Subscription subscription1 = mock(Subscription.class);
@@ -742,12 +741,12 @@ public class PooledServerConnectedObjectManagerTest {
         cougarOutput.setExpectedUpdates(expectedUpdates);
 
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
         subject.addSubscription(commandProcessor, command, subscriptionResult1, operationDefinition, requestContext, null);
 
         MyIoSession session2 = new MyIoSession(String.valueOf(ioSessionId++));
-        session2.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session2.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session2);
         subject.addSubscription(commandProcessor, command, subscriptionResult2, operationDefinition, requestContext, null);
 
@@ -803,14 +802,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void exceptionInPusher() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("exceptionInPusher");
         Subscription sub = mock(Subscription.class);
@@ -867,14 +866,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void secondSubscriptionClosedByPublisher() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
@@ -916,14 +915,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void lastSubscriptionClosedByPublisher() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("lastSubscriptionClosedByPublisher");
         Subscription sub = new DefaultSubscription();
@@ -958,14 +957,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void subscriptionCloseNotificationFails() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("subscriptionCloseNotificationFails");
         Subscription sub = new DefaultSubscription();
@@ -1002,14 +1001,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void secondSubscriptionClosedBySubscriber() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
@@ -1054,14 +1053,14 @@ public class PooledServerConnectedObjectManagerTest {
     @Test
     public void lastSubscriptionClosedBySubscriber() throws Exception {
         SocketTransportCommandProcessor commandProcessor = mock(SocketTransportCommandProcessor.class);
-        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class))).thenReturn(true);
+        when(commandProcessor.writeSuccessResponse(any(SocketTransportRPCCommand.class), any(ExecutionResult.class), any(DehydratedExecutionContext.class))).thenReturn(true);
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.APPLICATION_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        ExecutionContextWithTokens requestContext = mock(ExecutionContextWithTokens.class);
+        DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
 
         MutableHeap heap = new MutableHeap("lastSubscriptionClosedBySubscriber");
         Subscription sub = mock(Subscription.class);
@@ -1124,8 +1123,8 @@ public class PooledServerConnectedObjectManagerTest {
             }
         });
 
-        if (logger.isLoggable(Level.FINE)) {
-            logger.log(Level.FINE, "Starting wait for expected updates");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Starting wait for expected updates");
         }
 
         cougarOutput.start();
@@ -1153,10 +1152,10 @@ public class PooledServerConnectedObjectManagerTest {
             }
         }
 
-        if (logger.isLoggable(Level.FINE)) {
-            logger.log(Level.FINE, "CougarObjectOutput.writeObject():");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("CougarObjectOutput.writeObject():");
             for (Object o : new ArrayList<Object>(cougarOutput.getAllValues())) {
-                logger.log(Level.FINE, String.valueOf(o));
+                LOGGER.debug(String.valueOf(o));
             }
         }
 
@@ -1180,10 +1179,10 @@ public class PooledServerConnectedObjectManagerTest {
         }
 
         if (ie != null || afe != null || writes != session.getWritten().size()) {
-            if (logger.isLoggable(Level.FINE)) {
-                logger.log(Level.FINE, "session(" + session.getSessionId() + ").write():");
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("session(" + session.getSessionId() + ").write():");
                 for (Object o : session.getWritten()) {
-                    logger.log(Level.FINE, String.valueOf(o));
+                    LOGGER.debug(String.valueOf(o));
                 }
             }
 

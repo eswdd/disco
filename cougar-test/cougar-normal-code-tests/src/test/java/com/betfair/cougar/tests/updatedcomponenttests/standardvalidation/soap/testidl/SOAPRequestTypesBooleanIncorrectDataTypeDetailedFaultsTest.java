@@ -43,7 +43,7 @@ public class SOAPRequestTypesBooleanIncorrectDataTypeDetailedFaultsTest {
         CougarHelpers helpers = new CougarHelpers();
         try {
             CougarManager cougarManager = CougarManager.getInstance();
-            helpers.setJMXMBeanAttributeValue("com.betfair.cougar.transport:type=soapCommandProcessor", "SchemaValidationEnabled", schemaValidationEnabled);
+            helpers.setSOAPSchemaValidationEnabled(schemaValidationEnabled);
             // Create the SOAP request as an XML Document (with an object with a different data type passed in a boolean parameter)
             XMLHelpers xMLHelpers1 = new XMLHelpers();
             Document createAsDocument2 = xMLHelpers1.getXMLObjectFromString("<BoolOperationRequest><headerParam>true</headerParam><queryParam>foo</queryParam><message><bodyParameter>true</bodyParameter></message></BoolOperationRequest>");
@@ -70,13 +70,13 @@ public class SOAPRequestTypesBooleanIncorrectDataTypeDetailedFaultsTest {
             CougarHelpers cougarHelpers4 = new CougarHelpers();
             Map<String, String> map5 = cougarHelpers4.convertFaultObjectToMap(actualResponse);
             AssertionUtils.multiAssertEquals("soapenv:Client", map5.get("faultCode"));
-            AssertionUtils.multiAssertEquals("DSC-0006", map5.get("faultString"));
+            AssertionUtils.multiAssertEquals("DSC-0044", map5.get("faultString"));
             if (schemaValidationEnabled) {
-                AssertionUtils.multiAssertEquals("org.xml.sax.SAXParseException; cvc-datatype-valid.1.2.1: 'foo' is not a valid value for 'boolean'.", map5.get("faultMessage"));
+                AssertionUtils.multiAssertEquals("soap: cvc-datatype-valid.1.2.1: 'foo' is not a valid value for 'boolean'.", map5.get("faultMessage"));
                 assertTrue(map5.get("faultTrace"),map5.get("faultTrace").startsWith("org.xml.sax.SAXParseException"));
             }
             else {
-                AssertionUtils.multiAssertEquals("Unable to convert data in request to BOOLEAN for parameter: queryParam", map5.get("faultMessage"));
+                AssertionUtils.multiAssertEquals("xml: Unable to convert data in request to BOOLEAN for parameter: queryParam", map5.get("faultMessage"));
                 assertTrue(map5.get("faultTrace"),map5.get("faultTrace").startsWith("java.lang.IllegalArgumentException"));
             }
 
@@ -92,7 +92,7 @@ public class SOAPRequestTypesBooleanIncorrectDataTypeDetailedFaultsTest {
             // Reset the Detailed Faults attribute for other tests
             cougarManager3.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         } finally {
-            helpers.setJMXMBeanAttributeValue("com.betfair.cougar.transport:type=soapCommandProcessor", "SchemaValidationEnabled", true);
+            helpers.setSOAPSchemaValidationEnabled(true);
         }
     }
 

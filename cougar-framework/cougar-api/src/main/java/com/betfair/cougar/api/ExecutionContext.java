@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, The Sporting Exchange Limited
+ * Copyright 2014, The Sporting Exchange Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 /**
- * 
+ *
  */
 package com.betfair.cougar.api;
 
@@ -31,11 +31,11 @@ import com.betfair.cougar.api.security.IdentityChain;
 public interface ExecutionContext {
 
 	/**
-	 * Get the physical location details from which the user is accessing the service 
+	 * Get the physical location details from which the user is accessing the service
 	 * @return the user's physical location
 	 */
 	public GeoLocationDetails getLocation();
-	
+
 	/**
 	 * Get the identity of the user. The multiple principals represent each
 	 * link in the identity chain, e.g. User X (Principal 0) is using a third party
@@ -45,8 +45,15 @@ public interface ExecutionContext {
 	public IdentityChain getIdentity();
 
 	public RequestUUID getRequestUUID();
-	
+
 	public Date getReceivedTime();
+
+    /**
+     * The time this request was emitted by the client. Is the earliest time we're certain of. This means that
+     * if a server is uncertain as to whether it's time is synchronized with the client, then this will be the
+     * time the request was receive on the server.
+     */
+	public Date getRequestTime();
 
     public boolean traceLoggingEnabled();
 

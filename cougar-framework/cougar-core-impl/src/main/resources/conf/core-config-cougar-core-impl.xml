@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2013, The Sporting Exchange Limited
+  ~ Copyright 2014, The Sporting Exchange Limited
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
-	
+
 	<bean class="com.betfair.cougar.util.configuration.PropertyConfigurer">
         <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
-		<property name="defaultConfig" value="conf/cougar-core-defaults.properties"/>
+		<property name="defaultConfig" value="classpath:conf/cougar-core-defaults.properties"/>
 		<property name="configOverride" value="overrides.properties"/>
 		<property name="placeholderPrefix" value="$COUGAR{"/>
 	</bean>
@@ -133,6 +133,25 @@
         <property name="localLoopbackRanges" value="$COUGAR{cougar.network.ipv4.localLoopbackRanges}"/>
     </bean>
 
+    <bean name="compoundTracer" class="com.betfair.cougar.core.impl.tracing.CompoundTracer">
+    </bean>
+
+    <bean name="compoundTracerRegistrationHelper" class="com.betfair.cougar.core.impl.tracing.CompoundTracerRegistrationHelper" abstract="true" init-method="init" lazy-init="false">
+        <constructor-arg index="0" ref="compoundTracer"/>
+    </bean>
+
+    <bean name="loggingTracerInitialisation" parent="compoundTracerRegistrationHelper">
+        <constructor-arg index="1">
+            <bean class="com.betfair.cougar.core.impl.tracing.LoggingTracer"/>
+        </constructor-arg>
+        <constructor-arg index="2" value="$COUGAR{cougar.trace.enableLoggingTracer}"/>
+    </bean>
+
+    <bean name="optionalGateRegisterer" class="com.betfair.cougar.core.impl.OptionalGateRegisterer"
+          abstract="true">
+        <constructor-arg index="0" value="cougar.core.StartingGate"/>
+    </bean>
+
     <!-- Now set up the core set of loggers, server, trace and console -->
     <import resource="classpath:conf/remote/logging-handlers.xml"/>
 	<alias name="identityResolverRegistry"           alias="cougar.core.IdentityResolverRegistry"/>
@@ -146,4 +165,8 @@
     <alias name="commandProcessorExecutor" alias="cougar.core.CommandProcessorExecutor"/>
     <alias name="applicationChecksums" alias="cougar.core.ApplicationChecksums"/>
     <alias name="addressClassifier" alias="cougar.core.AddressClassifier"/>
+
+    <alias name="compoundTracer" alias="cougar.core.Tracer"/>
+    <alias name="compoundTracerRegistrationHelper" alias="cougar.core.TracerRegistrationHelper"/>
+    <alias name="optionalGateRegisterer" alias="cougar.core.OptionalGateRegisterer"/>
 </beans>
