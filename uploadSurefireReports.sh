@@ -66,8 +66,4 @@ travis-artifacts upload --target-path $TRAVIS_REPO_SLUG/$TRAVIS_BRANCH/$TRAVIS_B
 travis-artifacts upload --target-path $TRAVIS_REPO_SLUG/$TRAVIS_BRANCH/$TRAVIS_BUILD_ID/$TRAVIS_JOB_ID --path logs.tar
 travis-artifacts upload --target-path $TRAVIS_REPO_SLUG/$TRAVIS_BRANCH/$TRAVIS_BUILD_ID/$TRAVIS_JOB_ID --path TEST-xml.tar
 
-<<<<<<< HEAD
-echo "Artifacts uploaded to $ARTIFACTS_S3_BUCKET_URL/$TRAVIS_REPO_SLUG/$TRAVIS_BRANCH/$TRAVIS_BUILD_ID"
-=======
 echo "Artifacts uploaded to $ARTIFACTS_S3_BUCKET_URL/$TRAVIS_REPO_SLUG/$TRAVIS_BRANCH/$TRAVIS_BUILD_ID/$TRAVIS_JOB_ID"
->>>>>>> upstream/master
