@@ -29,10 +29,10 @@ import java.util.logging.Level;
 
 public class HtmlAdaptor implements InitializingBean, JMXHttpParserReader {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HtmlAdaptor.class);
-    private static final String PARSER_NAME = "CoUGAR.internal:name=HtmlAdaptorParser";
+    private static final String PARSER_NAME = "DiSCO.internal:name=HtmlAdaptorParser";
 
     private final TlsHtmlAdaptorServer htmlAdaptor;
-	private String name = "CoUGAR:name=HtmlAdaptor";
+	private String name = "DiSCO:name=HtmlAdaptor";
     private String username;
 	private String password;
 	private boolean httpExport = true;

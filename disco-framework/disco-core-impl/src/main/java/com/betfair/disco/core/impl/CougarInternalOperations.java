@@ -25,9 +25,9 @@ import uk.co.exemel.disco.core.api.ev.OperationKey;
  *
  */
 public class DiscoInternalOperations {
-    private static ServiceVersion COUGAR_VERSION = new ServiceVersion("v"+DiscoVersion.getMajorMinorVersion());
-    public static String COUGAR_INTERNAL_INTERFACE_NAME = "_DiscoInternal";
-    public static OperationKey RESOLVE_IDENTITIES = new OperationKey(COUGAR_VERSION, COUGAR_INTERNAL_INTERFACE_NAME,"resolveIdentities", OperationKey.Type.Request);
-    public static OperationKey BATCH_CALL = new OperationKey(COUGAR_VERSION, COUGAR_INTERNAL_INTERFACE_NAME,"batchCall", OperationKey.Type.Request);
-    public static String COUGAR_IN_PROCESS_NAMESPACE = "_IN_PROCESS";
+    private static ServiceVersion DISCO_VERSION = new ServiceVersion("v"+DiscoVersion.getMajorMinorVersion());
+    public static String DISCO_INTERNAL_INTERFACE_NAME = "_DiscoInternal";
+    public static OperationKey RESOLVE_IDENTITIES = new OperationKey(DISCO_VERSION, DISCO_INTERNAL_INTERFACE_NAME,"resolveIdentities", OperationKey.Type.Request);
+    public static OperationKey BATCH_CALL = new OperationKey(DISCO_VERSION, DISCO_INTERNAL_INTERFACE_NAME,"batchCall", OperationKey.Type.Request);
+    public static String DISCO_IN_PROCESS_NAMESPACE = "_IN_PROCESS";
 }

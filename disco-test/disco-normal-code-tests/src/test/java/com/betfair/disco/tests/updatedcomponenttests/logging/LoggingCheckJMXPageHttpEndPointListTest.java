@@ -47,13 +47,13 @@ public class LoggingCheckJMXPageHttpEndPointListTest {
         HttpPageBean response3 = Bean.getMe();
         AssertionUtils.multiAssertEquals(true, response3.getPageLoaded());
         // Click on the Disco end points link
-        boolean result = pageManager.clickOnLink(Bean, "CoUGAR", "EndPoints");
+        boolean result = pageManager.clickOnLink(Bean, "DiSCO", "EndPoints");
         AssertionUtils.multiAssertEquals(true, result);
         // Check the clicked link is loaded
         HttpPageBean response4 = Bean.getMe();
         AssertionUtils.multiAssertEquals(true, response4.getPageLoaded());
         // Set the bean to perform the list http end points action
-        Bean.setLink("/InvokeAction//CoUGAR%3Aname%3DEndPoints/action=listEndPoints?action=listEndPoints");
+        Bean.setLink("/InvokeAction//DiSCO%3Aname%3DEndPoints/action=listEndPoints?action=listEndPoints");
         // Perform the action (get the http end points page)
         status = pageManager.getPage(Bean);
         AssertionUtils.multiAssertEquals((int) 200, status);

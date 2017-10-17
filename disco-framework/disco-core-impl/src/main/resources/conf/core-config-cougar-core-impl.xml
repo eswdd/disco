@@ -24,14 +24,14 @@
         <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
 		<property name="defaultConfig" value="classpath:conf/disco-core-defaults.properties"/>
 		<property name="configOverride" value="overrides.properties"/>
-		<property name="placeholderPrefix" value="$COUGAR{"/>
+		<property name="placeholderPrefix" value="$DISCO{"/>
 	</bean>
 
     <bean name="commandProcessorExecutor" class="uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor">
-        <constructor-arg index="0" value="$COUGAR{disco.commandProcessor.corePoolSize}"/>
-        <constructor-arg index="1" value="$COUGAR{disco.commandProcessor.maximumPoolSize}"/>
-        <constructor-arg index="2" value="$COUGAR{disco.commandProcessor.keepAliveTime}"/>
-        <constructor-arg index="3" value="$COUGAR{disco.commandProcessor.timeUnit}"/>
+        <constructor-arg index="0" value="$DISCO{disco.commandProcessor.corePoolSize}"/>
+        <constructor-arg index="1" value="$DISCO{disco.commandProcessor.maximumPoolSize}"/>
+        <constructor-arg index="2" value="$DISCO{disco.commandProcessor.keepAliveTime}"/>
+        <constructor-arg index="3" value="$DISCO{disco.commandProcessor.timeUnit}"/>
         <constructor-arg index="4">
             <bean class="java.util.concurrent.LinkedBlockingQueue"/>
         </constructor-arg>
@@ -44,7 +44,7 @@
 
     <!-- make sure disco.app.name is specified and valid -->
     <bean class="uk.co.exemel.disco.core.impl.AppNameValidation" lazy-init="false">
-        <constructor-arg value="$COUGAR{disco.app.name}"/>
+        <constructor-arg value="$DISCO{disco.app.name}"/>
     </bean>
 
 
@@ -103,16 +103,16 @@
 
 		<property name="beans">
 			<map>
-				<entry key="CoUGAR:name=ApplicationProperties" value-ref="applicationProperties" />
-				<entry key="CoUGAR:name=LibraryVersions" value-ref="libraryVersions" />
-				<entry key="CoUGAR:name=ApplicationChecksums" value-ref="applicationChecksums" />
+				<entry key="DiSCO:name=ApplicationProperties" value-ref="applicationProperties" />
+				<entry key="DiSCO:name=LibraryVersions" value-ref="libraryVersions" />
+				<entry key="DiSCO:name=ApplicationChecksums" value-ref="applicationChecksums" />
 			</map>
 		</property>
 	</bean>
 
     <bean name="libraryVersions" class="uk.co.exemel.disco.util.jmx.LibraryVersions"/>
     <bean name="applicationChecksums" class="uk.co.exemel.disco.util.jmx.ApplicationChecksums">
-        <property name="algorithms" value="$COUGAR{disco.applicationChecksums.algorithms}"/>
+        <property name="algorithms" value="$DISCO{disco.applicationChecksums.algorithms}"/>
     </bean>
 
     <bean id="eventLogRecordSetup" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -122,15 +122,15 @@
         <property name="arguments">
             <list>
                 <bean class="java.lang.String">
-                    <constructor-arg value="$COUGAR{disco.eventLogRecord.collectionSeperator}"/>
+                    <constructor-arg value="$DISCO{disco.eventLogRecord.collectionSeperator}"/>
                 </bean>
             </list>
         </property>
     </bean>
 
     <bean name="addressClassifier" class="uk.co.exemel.disco.core.impl.AddressClassifier">
-        <property name="privateAddressRanges" value="$COUGAR{disco.network.ipv4.privateAddressRanges}"/>
-        <property name="localLoopbackRanges" value="$COUGAR{disco.network.ipv4.localLoopbackRanges}"/>
+        <property name="privateAddressRanges" value="$DISCO{disco.network.ipv4.privateAddressRanges}"/>
+        <property name="localLoopbackRanges" value="$DISCO{disco.network.ipv4.localLoopbackRanges}"/>
     </bean>
 
     <bean name="compoundTracer" class="uk.co.exemel.disco.core.impl.tracing.CompoundTracer">
@@ -144,7 +144,7 @@
         <constructor-arg index="1">
             <bean class="uk.co.exemel.disco.core.impl.tracing.LoggingTracer"/>
         </constructor-arg>
-        <constructor-arg index="2" value="$COUGAR{disco.trace.enableLoggingTracer}"/>
+        <constructor-arg index="2" value="$DISCO{disco.trace.enableLoggingTracer}"/>
     </bean>
 
     <bean name="optionalGateRegisterer" class="uk.co.exemel.disco.core.impl.OptionalGateRegisterer"

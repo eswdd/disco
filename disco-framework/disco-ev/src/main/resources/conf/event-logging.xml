@@ -25,25 +25,25 @@
 
     <bean id="eventLogger" class="uk.co.exemel.disco.core.impl.logging.EventLoggerImpl">
         <property name="registry" ref="eventLoggingRegistry"/>
-        <property name="enabled" value="$COUGAR{disco.log.request}"/>
+        <property name="enabled" value="$DISCO{disco.log.request}"/>
     </bean>
 
     <bean id="eventLoggingRegistry" class="uk.co.exemel.disco.logging.EventLoggingRegistry"/>
 
     <bean class="uk.co.exemel.disco.logging.EventLogDefinition" init-method="register">
-        <property name="logName" value="COUGAR-SERVICE-LOG-" />
+        <property name="logName" value="DISCO-SERVICE-LOG-" />
         <property name="registry" ref="eventLoggingRegistry"/>
         <property name="abstract" value="true"/>
         <property name="handler">
             <bean factory-bean="disco.core.logHandlerFactory" factory-method="registerLogHandler">
                 <constructor-arg type="java.util.Map">
                     <util:map map-class="java.util.HashMap">
-                        <entry key="fileName" value="$COUGAR{disco.log.dir}/dw/$COUGAR{system.hostname}-$COUGAR{disco.app.name}-request-##NAME####NAMESPACE##.log"/>
-                        <entry key="flush" value="$COUGAR{disco.log.COUGAR-SERVICE-LOG.flush}"/>
-                        <entry key="append" value="$COUGAR{disco.log.COUGAR-SERVICE-LOG.append}"/>
-                        <entry key="rotation" value="$COUGAR{disco.log.COUGAR-SERVICE-LOG.rotation}"/>
+                        <entry key="fileName" value="$DISCO{disco.log.dir}/dw/$DISCO{system.hostname}-$DISCO{disco.app.name}-request-##NAME####NAMESPACE##.log"/>
+                        <entry key="flush" value="$DISCO{disco.log.DISCO-SERVICE-LOG.flush}"/>
+                        <entry key="append" value="$DISCO{disco.log.DISCO-SERVICE-LOG.append}"/>
+                        <entry key="rotation" value="$DISCO{disco.log.DISCO-SERVICE-LOG.rotation}"/>
                         <entry key="abstractLogger" value="true"/>
-                        <entry key="immediateFlush" value="$COUGAR{disco.log.COUGAR-SERVICE-LOG.immediateFlush}"/>
+                        <entry key="immediateFlush" value="$DISCO{disco.log.DISCO-SERVICE-LOG.immediateFlush}"/>
                     </util:map>
                 </constructor-arg>
             </bean>

@@ -50,7 +50,7 @@ for SERVER_THREADS in `echo $SERVER_THREAD_VARIATIONS`; do
     SERVER_PARAMS="1 1 1 1 $SERVER_THREADS"
     cd /tmp/socket-perf-testing-server/bin
     ./socketTestServer.sh $SERVER_PARAMS > logs/stdout.log &
-    while ( ! grep -q "COUGAR HAS STARTED" logs/stdout.log ); do
+    while ( ! grep -q "DISCO HAS STARTED" logs/stdout.log ); do
       echo "Waiting for server to start"
       sleep 1
     done

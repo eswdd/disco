@@ -26,12 +26,12 @@
         <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
 		<property name="defaultConfig" value="classpath:conf/disco-transport-defaults.properties"/>
 		<property name="configOverride" value="overrides.properties"/>
-		<property name="placeholderPrefix" value="$COUGAR-TRANSPORT{"/>
+		<property name="placeholderPrefix" value="$DISCO-TRANSPORT{"/>
 	</bean>
 
     <!-- Initialise the RequestUUID Generator -->
     <bean class="uk.co.exemel.disco.util.RequestUUIDImpl">
-        <constructor-arg index="0" ref="$COUGAR-TRANSPORT{disco.transport.uuidgenerator}"/>
+        <constructor-arg index="0" ref="$DISCO-TRANSPORT{disco.transport.uuidgenerator}"/>
     </bean>
 
     <bean id="defaultServerRequestUuidGenerator" class="uk.co.exemel.disco.util.UUIDGeneratorImpl"/>

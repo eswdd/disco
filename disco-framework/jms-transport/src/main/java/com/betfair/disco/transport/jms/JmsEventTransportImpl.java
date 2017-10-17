@@ -695,7 +695,7 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
                     monitorRegistry.addMonitor(ret);
                 }
                 if (jmxControl != null) {
-                    String name = "CoUGAR."+getTransportShortName()+".transport.monitoring:type=subscriber,serviceName="+eventServiceBindingDescriptor.getServiceName()+",serviceVersion="+eventServiceBindingDescriptor.getServiceVersion()+",eventName="+eventName+",destination="+destinationName;
+                    String name = "DiSCO."+getTransportShortName()+".transport.monitoring:type=subscriber,serviceName="+eventServiceBindingDescriptor.getServiceName()+",serviceVersion="+eventServiceBindingDescriptor.getServiceVersion()+",eventName="+eventName+",destination="+destinationName;
                     if (transportIdentifier != null) {
                         name += ",transportIdentifier="+transportIdentifier;
                     }
@@ -720,7 +720,7 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
                         monitorRegistry.addMonitor(monitor);
                     }
                     if (jmxControl != null) {
-                        String name = "CoUGAR."+getTransportShortName()+".transport.monitoring:type=publisher,serviceName="+eventServiceBindingDescriptor.getServiceName()+",serviceVersion="+eventServiceBindingDescriptor.getServiceVersion()+",eventName="+descriptor.getEventName()+",destination="+destination;
+                        String name = "DiSCO."+getTransportShortName()+".transport.monitoring:type=publisher,serviceName="+eventServiceBindingDescriptor.getServiceName()+",serviceVersion="+eventServiceBindingDescriptor.getServiceVersion()+",eventName="+descriptor.getEventName()+",destination="+destination;
                         if (transportIdentifier != null) {
                             name += ",transportIdentifier="+transportIdentifier;
                         }
@@ -837,12 +837,12 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
             if (monitorRegistry != null) {
                 monitorRegistry.addMonitor(connectionMonitor);
                 if (jmxControl != null) {
-                    jmxControl.registerMBean("CoUGAR."+getTransportShortName()+".transport.monitoring:type=connection,serviceName=" + eventServiceBindingDescriptor.getServiceName() + ",serviceVersion=" + eventServiceBindingDescriptor.getServiceVersion()+transportIdentifierSuffix, connectionMonitor);
+                    jmxControl.registerMBean("DiSCO."+getTransportShortName()+".transport.monitoring:type=connection,serviceName=" + eventServiceBindingDescriptor.getServiceName() + ",serviceVersion=" + eventServiceBindingDescriptor.getServiceVersion()+transportIdentifierSuffix, connectionMonitor);
                 }
             }
             if (jmxControl != null) {
                 registerMBeans(jmxControl, eventServiceBindingDescriptor, transportIdentifierSuffix);
-                jmxControl.registerMBean("CoUGAR."+getTransportShortName()+".transport:type=threadPool,serviceName="+eventServiceBindingDescriptor.getServiceName()+",serviceVersion="+eventServiceBindingDescriptor.getServiceVersion()+transportIdentifierSuffix, threadPool);
+                jmxControl.registerMBean("DiSCO."+getTransportShortName()+".transport:type=threadPool,serviceName="+eventServiceBindingDescriptor.getServiceName()+",serviceVersion="+eventServiceBindingDescriptor.getServiceVersion()+transportIdentifierSuffix, threadPool);
             }
         }
     }

@@ -444,8 +444,8 @@ public class ExecutionVenueNioClient extends AbstractClientTransport implements 
             if (control != null) {
                 final String[] instances = addressList.replaceAll(":", "_").split(",");
                 for (String instance : instances) {
-                    control.registerMBean("CoUGAR.socket.transport.client:name=socketSessionFactory,instance=" + instance, sessionFactory);
-                    control.registerMBean("CoUGAR.socket.transport.client:name=socketSessionRecycler,instance=" + instance, sessionFactory.getSessionRecycler());
+                    control.registerMBean("DiSCO.socket.transport.client:name=socketSessionFactory,instance=" + instance, sessionFactory);
+                    control.registerMBean("DiSCO.socket.transport.client:name=socketSessionRecycler,instance=" + instance, sessionFactory.getSessionRecycler());
                 }
             }
         } catch (Exception ex) {

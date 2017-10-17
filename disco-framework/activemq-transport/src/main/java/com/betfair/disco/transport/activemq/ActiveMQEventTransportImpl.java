@@ -125,7 +125,7 @@ public class ActiveMQEventTransportImpl extends JmsEventTransportImpl {
     }
 
     protected void registerMBeans(JMXControl jmxControl, EventServiceBindingDescriptor eventServiceBindingDescriptor, String transportIdentifierSuffix) {
-        jmxControl.registerMBean("CoUGAR.activemq.transport:type=connection,serviceName="+eventServiceBindingDescriptor.getServiceName()+",serviceVersion="+eventServiceBindingDescriptor.getServiceVersion()+transportIdentifierSuffix, managedSonicConnection);
+        jmxControl.registerMBean("DiSCO.activemq.transport:type=connection,serviceName="+eventServiceBindingDescriptor.getServiceName()+",serviceVersion="+eventServiceBindingDescriptor.getServiceVersion()+transportIdentifierSuffix, managedSonicConnection);
     }
 
     @Override

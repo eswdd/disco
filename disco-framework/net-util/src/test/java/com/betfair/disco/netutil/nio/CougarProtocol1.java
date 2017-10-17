@@ -213,7 +213,7 @@ public class DiscoProtocol1 extends IoFilterAdapter implements Exportable, IDisc
     @Override
     public void export(JMXControl jmxControl) {
         if (jmxControl != null) {
-            jmxControl.registerMBean("CoUGAR.socket.transport:name=wireProtocol", this);
+            jmxControl.registerMBean("DiSCO.socket.transport:name=wireProtocol", this);
         }
     }
 

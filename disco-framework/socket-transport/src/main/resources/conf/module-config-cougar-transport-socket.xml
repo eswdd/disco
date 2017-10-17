@@ -26,7 +26,7 @@
         <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
         <property name="defaultConfig" value="classpath:conf/socket-transport-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
-        <property name="placeholderPrefix" value="$COUGAR-SOCKET-TRANSPORT{"/>
+        <property name="placeholderPrefix" value="$DISCO-SOCKET-TRANSPORT{"/>
     </bean>
 
     <!-- Socket transport command processing components -->
@@ -39,16 +39,16 @@
     <bean id="defaultSocketCertInfoExtractor" class="uk.co.exemel.disco.core.impl.security.CommonNameCertInfoExtractor"/>
 
     <bean id="socketMarshaller" class="uk.co.exemel.disco.netutil.nio.marshalling.SocketRMIMarshaller">
-        <constructor-arg index="0" ref="$COUGAR-SOCKET-TRANSPORT{disco.socket.tokenResolver.certInfoExtractor}"/>
+        <constructor-arg index="0" ref="$DISCO-SOCKET-TRANSPORT{disco.socket.tokenResolver.certInfoExtractor}"/>
         <constructor-arg index="1" ref="disco.transport.ContextResolution"/>
-        <property name="hardFailEnumDeserialisation" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.enums.hardFailure}"/>
+        <property name="hardFailEnumDeserialisation" value="$DISCO-SOCKET-TRANSPORT{disco.socket.enums.hardFailure}"/>
     </bean>
 
     <bean id="socketExecutionContextResolverFactory" class="uk.co.exemel.disco.netutil.nio.marshalling.DefaultExecutionContextResolverFactory">
         <constructor-arg index="0" ref="disco.core.GeoIPLocator"/>
         <constructor-arg index="1">
             <bean class="uk.co.exemel.disco.netutil.nio.marshalling.DefaultSocketTimeResolver">
-                <constructor-arg index="0" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.timeResolver.clientSynchronized}"/>
+                <constructor-arg index="0" value="$DISCO-SOCKET-TRANSPORT{disco.socket.timeResolver.clientSynchronized}"/>
             </bean>
         </constructor-arg>
     </bean>
@@ -65,23 +65,23 @@
         <property name="registry" ref="eventLoggingRegistry"/>
         <property name="connectedObjectManager" ref="pooledConnectedObjectManager"/>
         <property name="nioLogger" ref="nioLogger"/>
-        <property name="unknownCipherKeyLength" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.ssl.unknownCipherKeyLength}"/>
+        <property name="unknownCipherKeyLength" value="$DISCO-SOCKET-TRANSPORT{disco.socket.ssl.unknownCipherKeyLength}"/>
         <property name="tracer" ref="disco.core.Tracer"/>
     </bean>
 
     <bean name="pooledConnectedObjectManager" class="uk.co.exemel.disco.transport.socket.PooledServerConnectedObjectManager" init-method="start" destroy-method="stop">
-        <property name="numProcessingThreads" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.push.processingThreads}"/>
-        <property name="maxUpdateActionsPerMessage" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.push.maxUpdateActionsPerMessage}"/>
+        <property name="numProcessingThreads" value="$DISCO-SOCKET-TRANSPORT{disco.socket.push.processingThreads}"/>
+        <property name="maxUpdateActionsPerMessage" value="$DISCO-SOCKET-TRANSPORT{disco.socket.push.maxUpdateActionsPerMessage}"/>
         <property name="objectIOFactory" ref="serverHessianObjectFactory"/>
         <property name="nioLogger" ref="nioLogger"/>
         <property name="eventLogger" ref="disco.core.EventLogger"/>
     </bean>
 
     <bean name="serverSocketExecutor" class="uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor">
-        <constructor-arg index="0" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.serverExecutor.corePoolSize}"/>
-        <constructor-arg index="1" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.serverExecutor.maximumPoolSize}"/>
-        <constructor-arg index="2" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.serverExecutor.keepAliveTime}"/>
-        <constructor-arg index="3" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.serverExecutor.timeUnit}"/>
+        <constructor-arg index="0" value="$DISCO-SOCKET-TRANSPORT{disco.socket.serverExecutor.corePoolSize}"/>
+        <constructor-arg index="1" value="$DISCO-SOCKET-TRANSPORT{disco.socket.serverExecutor.maximumPoolSize}"/>
+        <constructor-arg index="2" value="$DISCO-SOCKET-TRANSPORT{disco.socket.serverExecutor.keepAliveTime}"/>
+        <constructor-arg index="3" value="$DISCO-SOCKET-TRANSPORT{disco.socket.serverExecutor.timeUnit}"/>
         <constructor-arg index="4">
             <bean class="java.util.concurrent.SynchronousQueue"/>
         </constructor-arg>
@@ -103,7 +103,7 @@
     </bean>
 
     <bean name="serverSessionManager" class="uk.co.exemel.disco.transport.nio.IoSessionManager">
-        <property name="maxTimeToWaitForRequestCompletion" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.maxTimeToWaitForRequestCompletion}"/>
+        <property name="maxTimeToWaitForRequestCompletion" value="$DISCO-SOCKET-TRANSPORT{disco.socket.maxTimeToWaitForRequestCompletion}"/>
         <property name="nioLogger" ref="nioLogger"/>
     </bean>
 
@@ -113,7 +113,7 @@
         <property name="serverExecutor" ref="serverSocketExecutor"/>
         <property name="transportRegistry" ref="disco.core.TransportRegistry"/>
         <property name="sessionManager" ref="serverSessionManager"/>
-        <property name="socketAcceptorProcessors" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.serverExecutor.processorThreads}"/>
+        <property name="socketAcceptorProcessors" value="$DISCO-SOCKET-TRANSPORT{disco.socket.serverExecutor.processorThreads}"/>
     </bean>
 
     <!-- Register handler listeners with EVSH, to get notified of session close events -->
@@ -128,29 +128,29 @@
     </bean>
 
     <bean id="nioLogger" class="uk.co.exemel.disco.netutil.nio.NioLogger">
-        <constructor-arg value="$COUGAR-SOCKET-TRANSPORT{disco.socket.logLevel}"/>
+        <constructor-arg value="$DISCO-SOCKET-TRANSPORT{disco.socket.logLevel}"/>
         <property name="jmxControl" ref="disco.core.JmxControl"/>
     </bean>
 
     <bean id="socketConfig" class="uk.co.exemel.disco.netutil.nio.TlsNioConfig">
-        <property name="listenAddress" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.bindaddress}"/>
-        <property name="listenPort" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.serverport}"/>
-        <property name="reuseAddress" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.reuseAddress}"/>
-        <property name="maxWriteQueueSize" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.maxWriteQueueSize}"/>
-        <property name="recvBufferSize" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.receiveBufferSize}"/>
-        <property name="sendBufferSize" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.sendBufferSize}"/>
-        <property name="useDirectBuffersInMina" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.useDirectBuffers}"/>
+        <property name="listenAddress" value="$DISCO-SOCKET-TRANSPORT{disco.socket.bindaddress}"/>
+        <property name="listenPort" value="$DISCO-SOCKET-TRANSPORT{disco.socket.serverport}"/>
+        <property name="reuseAddress" value="$DISCO-SOCKET-TRANSPORT{disco.socket.reuseAddress}"/>
+        <property name="maxWriteQueueSize" value="$DISCO-SOCKET-TRANSPORT{disco.socket.maxWriteQueueSize}"/>
+        <property name="recvBufferSize" value="$DISCO-SOCKET-TRANSPORT{disco.socket.receiveBufferSize}"/>
+        <property name="sendBufferSize" value="$DISCO-SOCKET-TRANSPORT{disco.socket.sendBufferSize}"/>
+        <property name="useDirectBuffersInMina" value="$DISCO-SOCKET-TRANSPORT{disco.socket.useDirectBuffers}"/>
         <property name="nioLogger" ref="nioLogger"/>
-        <property name="supportsTls" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.ssl.supportsTls}"/>
-        <property name="requiresTls" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.ssl.requiresTls}"/>
-        <property name="needClientAuth" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.ssl.needClientAuth}"/>
-        <property name="wantClientAuth" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.ssl.wantClientAuth}"/>
-        <property name="keystore" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.ssl.keystore}"/>
-        <property name="keystoreType" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.ssl.keystoreType}"/>
-        <property name="keystorePassword" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.ssl.keystorePassword}"/>
-        <property name="truststore" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.ssl.truststore}"/>
-        <property name="truststoreType" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.ssl.truststoreType}"/>
-        <property name="truststorePassword" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.ssl.truststorePassword}"/>
+        <property name="supportsTls" value="$DISCO-SOCKET-TRANSPORT{disco.socket.ssl.supportsTls}"/>
+        <property name="requiresTls" value="$DISCO-SOCKET-TRANSPORT{disco.socket.ssl.requiresTls}"/>
+        <property name="needClientAuth" value="$DISCO-SOCKET-TRANSPORT{disco.socket.ssl.needClientAuth}"/>
+        <property name="wantClientAuth" value="$DISCO-SOCKET-TRANSPORT{disco.socket.ssl.wantClientAuth}"/>
+        <property name="keystore" value="$DISCO-SOCKET-TRANSPORT{disco.socket.ssl.keystore}"/>
+        <property name="keystoreType" value="$DISCO-SOCKET-TRANSPORT{disco.socket.ssl.keystoreType}"/>
+        <property name="keystorePassword" value="$DISCO-SOCKET-TRANSPORT{disco.socket.ssl.keystorePassword}"/>
+        <property name="truststore" value="$DISCO-SOCKET-TRANSPORT{disco.socket.ssl.truststore}"/>
+        <property name="truststoreType" value="$DISCO-SOCKET-TRANSPORT{disco.socket.ssl.truststoreType}"/>
+        <property name="truststorePassword" value="$DISCO-SOCKET-TRANSPORT{disco.socket.ssl.truststorePassword}"/>
         <property name="mbeanServer" ref="mbeanServer"/>
     </bean>
 
@@ -158,20 +158,20 @@
     	suitable strategy if using active monitoring (disco.socket.healthMonitorInterval > 0)
      -->
     <bean id="activeMonitoringStrategy" class="uk.co.exemel.disco.transport.nio.CountingHealthMonitorStrategy">
-    	<constructor-arg value="$COUGAR-SOCKET-TRANSPORT{disco.socket.healthStateRepeatsBeforeUpdate}"/>
+    	<constructor-arg value="$DISCO-SOCKET-TRANSPORT{disco.socket.healthStateRepeatsBeforeUpdate}"/>
     </bean>
 
     <!--
     	suitable strategy if using passive monitoring (disco.socket.healthMonitorInterval = 0)
      -->
     <bean id="passiveMonitoringStrategy" class="uk.co.exemel.disco.transport.nio.DebounceHealthMonitorStrategy">
-    	<constructor-arg value="$COUGAR-SOCKET-TRANSPORT{disco.socket.healthStateDebouncePeriod}"/>
+    	<constructor-arg value="$DISCO-SOCKET-TRANSPORT{disco.socket.healthStateDebouncePeriod}"/>
     </bean>
 
     <bean id="applicationHealthMonitor" class="uk.co.exemel.disco.transport.nio.ApplicationHealthMonitor">
         <constructor-arg ref="socketServer"/>
-        <constructor-arg ref="$COUGAR-SOCKET-TRANSPORT{disco.socket.healthMonitorStrategy}MonitoringStrategy"/>
-        <constructor-arg value="$COUGAR-SOCKET-TRANSPORT{disco.socket.healthMonitorInterval}"/>
+        <constructor-arg ref="$DISCO-SOCKET-TRANSPORT{disco.socket.healthMonitorStrategy}MonitoringStrategy"/>
+        <constructor-arg value="$DISCO-SOCKET-TRANSPORT{disco.socket.healthMonitorInterval}"/>
         <constructor-arg ref="disco.core.MonitorRegistry"/>
     </bean>
 
@@ -184,12 +184,12 @@
         <property name="properties">
             <util:map map-class="java.util.HashMap">
                 <entry key="logName" value="SOCKET_TRANSPORT-LOG"/>
-                <entry key="fileName" value="$COUGAR{disco.log.dir}/socket/$COUGAR{system.hostname}-$COUGAR{disco.app.name}-socket-session.log"/>
-                <entry key="flush" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.log.SESSION-LOG.flush}"/>
-                <entry key="append" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.log.SESSION-LOG.append}"/>
-                <entry key="rotation" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.log.SESSION-LOG.rotation}"/>
+                <entry key="fileName" value="$DISCO{disco.log.dir}/socket/$DISCO{system.hostname}-$DISCO{disco.app.name}-socket-session.log"/>
+                <entry key="flush" value="$DISCO-SOCKET-TRANSPORT{disco.socket.log.SESSION-LOG.flush}"/>
+                <entry key="append" value="$DISCO-SOCKET-TRANSPORT{disco.socket.log.SESSION-LOG.append}"/>
+                <entry key="rotation" value="$DISCO-SOCKET-TRANSPORT{disco.socket.log.SESSION-LOG.rotation}"/>
                 <entry key="abstractLogger" value="false"/>
-                <entry key="format" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.log.SESSION-LOG.format}"/>
+                <entry key="format" value="$DISCO-SOCKET-TRANSPORT{disco.socket.log.SESSION-LOG.format}"/>
             </util:map>
         </property>
     </bean>
@@ -209,13 +209,13 @@
         <property name="properties">
             <util:map map-class="java.util.HashMap">
                 <entry key="logName" value="PUSH_SUBSCRIPTION-LOG"/>
-                <entry key="fileName" value="$COUGAR{disco.log.dir}/dw/$COUGAR{system.hostname}-$COUGAR{disco.app.name}-push-subscription.log"/>
-                <entry key="flush" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.log.PUSH_SUBSCRIPTION-LOG.flush}"/>
-                <entry key="append" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.log.PUSH_SUBSCRIPTION-LOG.append}"/>
-                <entry key="rotation" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.log.PUSH_SUBSCRIPTION-LOG.rotation}"/>
+                <entry key="fileName" value="$DISCO{disco.log.dir}/dw/$DISCO{system.hostname}-$DISCO{disco.app.name}-push-subscription.log"/>
+                <entry key="flush" value="$DISCO-SOCKET-TRANSPORT{disco.socket.log.PUSH_SUBSCRIPTION-LOG.flush}"/>
+                <entry key="append" value="$DISCO-SOCKET-TRANSPORT{disco.socket.log.PUSH_SUBSCRIPTION-LOG.append}"/>
+                <entry key="rotation" value="$DISCO-SOCKET-TRANSPORT{disco.socket.log.PUSH_SUBSCRIPTION-LOG.rotation}"/>
                 <entry key="abstractLogger" value="false"/>
-                <entry key="format" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.log.PUSH_SUBSCRIPTION-LOG.format}"/>
-                <entry key="immediateFlush" value="$COUGAR-SOCKET-TRANSPORT{disco.socket.log.PUSH_SUBSCRIPTION-LOG.immediateFlush}"/>
+                <entry key="format" value="$DISCO-SOCKET-TRANSPORT{disco.socket.log.PUSH_SUBSCRIPTION-LOG.format}"/>
+                <entry key="immediateFlush" value="$DISCO-SOCKET-TRANSPORT{disco.socket.log.PUSH_SUBSCRIPTION-LOG.immediateFlush}"/>
             </util:map>
         </property>
     </bean>
@@ -237,11 +237,11 @@
 		</property>
 		<property name="beans">
 			<map>
-				<entry key="CoUGAR.socket.transport:name=socketConfig" value-ref="socketConfig" />
-                <entry key="CoUGAR.socket.transport:name=server" value-ref="socketServer" />
-                <entry key="CoUGAR.socket.transport:name=serverExecutor" value-ref="serverSocketExecutor" />
-                <entry key="CoUGAR.socket.transport:name=nioLogger" value-ref="nioLogger" />
-                <entry key="CoUGAR.socket.transport:name=pooledConnectedObjectManager" value-ref="pooledConnectedObjectManager" />
+				<entry key="DiSCO.socket.transport:name=socketConfig" value-ref="socketConfig" />
+                <entry key="DiSCO.socket.transport:name=server" value-ref="socketServer" />
+                <entry key="DiSCO.socket.transport:name=serverExecutor" value-ref="serverSocketExecutor" />
+                <entry key="DiSCO.socket.transport:name=nioLogger" value-ref="nioLogger" />
+                <entry key="DiSCO.socket.transport:name=pooledConnectedObjectManager" value-ref="pooledConnectedObjectManager" />
                 <entry key="uk.co.exemel.disco.transport:type=socketCommandProcessor" value-ref="socketCommandProcessor"/>
 			</map>
 		</property>

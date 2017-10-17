@@ -77,7 +77,7 @@
                                             <id>baseline</id>
                                             <command>${mavenCommand} -Ddisco.log.echoToStdout=true exec:java -B</command>
                                             <workingDir>baseline/baseline-launch</workingDir>
-                                            <startWatchString>COUGAR HAS STARTED</startWatchString>
+                                            <startWatchString>DISCO HAS STARTED</startWatchString>
                                             <failureWatchString>PanicInTheDisco</failureWatchString>
                                             <environmentProperties>
                                                 <JAVA_HOME>${java.home}</JAVA_HOME>

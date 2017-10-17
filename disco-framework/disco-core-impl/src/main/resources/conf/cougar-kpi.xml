@@ -30,8 +30,8 @@
     <bean id="kpiMonitor" class="uk.co.exemel.disco.core.impl.kpi.ConfigurableKPIRepeater">
         <property name="kpiMonitors">
             <map key-type="java.lang.String" value-type="java.lang.Boolean">
-                <entry key="simpleKPIMonitor" value="$COUGAR{disco.kpis.simple.enabled}"/>
-                <entry key="statsEMonitor" value="$COUGAR{disco.kpis.statse.enabled}"/>
+                <entry key="simpleKPIMonitor" value="$DISCO{disco.kpis.simple.enabled}"/>
+                <entry key="statsEMonitor" value="$DISCO{disco.kpis.statse.enabled}"/>
             </map>
         </property>
     </bean>
@@ -44,10 +44,10 @@
     </bean>
 
     <bean id="statsESender" class="com.betfair.sre.statse.client.StatsESender" init-method="start" destroy-method="stop">
-        <property name="enabled" value="$COUGAR{disco.kpis.statse.enabled}"/>
-        <property name="queueSize" value="$COUGAR{disco.kpi.eventQueueSize}"/>
-        <property name="agentAddress" value="$COUGAR{disco.kpi.statsEAgent}"/>
-        <property name="cleaner" ref="$COUGAR{disco.kpi.tsdbCleanerBean}"/>
+        <property name="enabled" value="$DISCO{disco.kpis.statse.enabled}"/>
+        <property name="queueSize" value="$DISCO{disco.kpi.eventQueueSize}"/>
+        <property name="agentAddress" value="$DISCO{disco.kpi.statsEAgent}"/>
+        <property name="cleaner" ref="$DISCO{disco.kpi.tsdbCleanerBean}"/>
     </bean>
 
     <bean id="defaultTsdbCleaner" class="com.betfair.sre.statse.client.NoOpTsdbCleaner"/>
@@ -62,7 +62,7 @@
 
     <!-- JMX hookup for StatsE-->
     <bean class="uk.co.exemel.disco.core.impl.jmx.ToggledAnnotationMBeanExporter" lazy-init="false">
-        <property name="enabled" value="$COUGAR{disco.kpis.statse.enabled}"/>
+        <property name="enabled" value="$DISCO{disco.kpis.statse.enabled}"/>
         <property name="autodetectModeName" value="AUTODETECT_NONE"/>
 		<property name="registrationBehavior">
 		  <bean class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">

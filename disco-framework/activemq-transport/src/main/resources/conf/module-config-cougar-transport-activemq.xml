@@ -24,7 +24,7 @@
         <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
         <property name="defaultConfig" value="classpath:conf/disco-transport-activemq-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
-        <property name="placeholderPrefix" value="$COUGAR_TRANSPORT_ACTIVEMQ{"/>
+        <property name="placeholderPrefix" value="$DISCO_TRANSPORT_ACTIVEMQ{"/>
     </bean>
 
     <bean id="activeMQSubscriptionEventListener" class="uk.co.exemel.disco.transport.activemq.ActiveMQSubscriptionEventListener">
@@ -36,10 +36,10 @@
 
     <bean id="abstractActiveMQTransport" class="uk.co.exemel.disco.transport.activemq.ActiveMQEventTransportImpl" parent="disco.jms.AbstractJmsTransport"
         abstract="true" init-method="init" destroy-method="destroy">
-        <constructor-arg index="0" ref="$COUGAR_TRANSPORT_ACTIVEMQ{activemqTransport.connectionFactory.beanName}"/>
+        <constructor-arg index="0" ref="$DISCO_TRANSPORT_ACTIVEMQ{activemqTransport.connectionFactory.beanName}"/>
         <property name="activeMQSubscriptionEventListener" ref="activeMQSubscriptionEventListener"/>
         <property name="connectionMonitor">
-            <bean factory-bean="$COUGAR_TRANSPORT_ACTIVEMQ{activemqTransport.connectionMonitorFactory.beanName}" factory-method="getConnectionMonitor"/>
+            <bean factory-bean="$DISCO_TRANSPORT_ACTIVEMQ{activemqTransport.connectionMonitorFactory.beanName}" factory-method="getConnectionMonitor"/>
         </property>
     </bean>
 

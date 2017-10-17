@@ -57,7 +57,7 @@ public class ${service}ClientImpl implements ${service}Client {<#t>
 	private static final ServiceVersion serviceVersion = new ServiceVersion("${dotMajorMinorVersion}");
 
 	public ${service}ClientImpl(ExecutionVenue ev, Executor executor) {
-		this(ev, executor, DiscoInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
+		this(ev, executor, DiscoInternalOperations.DISCO_IN_PROCESS_NAMESPACE);
     }<#t>
 
     public ${service}ClientImpl(ExecutionVenue ev, Executor executor, String namespace) {

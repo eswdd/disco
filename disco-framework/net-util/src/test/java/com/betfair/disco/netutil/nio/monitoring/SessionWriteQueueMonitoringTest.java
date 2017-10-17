@@ -66,7 +66,7 @@ public class SessionWriteQueueMonitoringTest {
 
     @Test
     public void canGetUpToLimit() throws Exception {
-        when(session1.getAttribute("COUGAR_SESSION_ID")).thenReturn("00001");
+        when(session1.getAttribute("DISCO_SESSION_ID")).thenReturn("00001");
         when(session1.getRemoteAddress()).thenReturn(new InetSocketAddress("localhost", 1234));
 
         subject.sessionOpened(nextFilter, session1);
@@ -85,7 +85,7 @@ public class SessionWriteQueueMonitoringTest {
 
     @Test
     public void overLimitTerminates() throws Exception {
-        when(session1.getAttribute("COUGAR_SESSION_ID")).thenReturn("00001");
+        when(session1.getAttribute("DISCO_SESSION_ID")).thenReturn("00001");
         when(session1.getRemoteAddress()).thenReturn(new InetSocketAddress("localhost", 1234));
 
         subject.sessionOpened(nextFilter, session1);
@@ -105,7 +105,7 @@ public class SessionWriteQueueMonitoringTest {
 
     @Test
     public void countBackDown() throws Exception {
-        when(session1.getAttribute("COUGAR_SESSION_ID")).thenReturn("00001");
+        when(session1.getAttribute("DISCO_SESSION_ID")).thenReturn("00001");
         when(session1.getRemoteAddress()).thenReturn(new InetSocketAddress("localhost", 1234));
 
         ArgumentCaptor<SessionWriteQueueMonitor> monitorCaptor = ArgumentCaptor.forClass(SessionWriteQueueMonitor.class);
@@ -123,7 +123,7 @@ public class SessionWriteQueueMonitoringTest {
 
         verify(mBeanServer, atLeastOnce()).registerMBean(monitorCaptor.capture(), objectNameCaptor.capture());
         assertEquals(0, monitorCaptor.getAllValues().get(0).getQueueDepth());
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1234"), objectNameCaptor.getAllValues().get(0));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1234"), objectNameCaptor.getAllValues().get(0));
 
         verify(nextFilter, times(1)).sessionOpened(session1);
         verify(nextFilter, times(3)).filterWrite(session1, writeRequest);
@@ -133,10 +133,10 @@ public class SessionWriteQueueMonitoringTest {
 
     @Test
     public void twoSessionsIndependent() throws Exception {
-        when(session1.getAttribute("COUGAR_SESSION_ID")).thenReturn("00001");
+        when(session1.getAttribute("DISCO_SESSION_ID")).thenReturn("00001");
         when(session1.getRemoteAddress()).thenReturn(new InetSocketAddress("localhost", 1234));
 
-        when(session2.getAttribute("COUGAR_SESSION_ID")).thenReturn("00002");
+        when(session2.getAttribute("DISCO_SESSION_ID")).thenReturn("00002");
         when(session2.getRemoteAddress()).thenReturn(new InetSocketAddress("localhost", 1235));
 
         subject.sessionOpened(nextFilter, session1);
@@ -161,10 +161,10 @@ public class SessionWriteQueueMonitoringTest {
 
     @Test
     public void twoSessionsSameHostMonitoring() throws Exception {
-        when(session1.getAttribute("COUGAR_SESSION_ID")).thenReturn("00001");
+        when(session1.getAttribute("DISCO_SESSION_ID")).thenReturn("00001");
         when(session1.getRemoteAddress()).thenReturn(new InetSocketAddress("localhost", 1234));
 
-        when(session2.getAttribute("COUGAR_SESSION_ID")).thenReturn("00002");
+        when(session2.getAttribute("DISCO_SESSION_ID")).thenReturn("00002");
         when(session2.getRemoteAddress()).thenReturn(new InetSocketAddress("localhost", 1235));
 
         ArgumentCaptor monitorCaptor = ArgumentCaptor.forClass(Object.class);
@@ -186,12 +186,12 @@ public class SessionWriteQueueMonitoringTest {
 
         verify(mBeanServer, times(3)).registerMBean(monitorCaptor.capture(), objectNameCaptor.capture());
 
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1234"), objectNameCaptor.getAllValues().get(0));
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1235"), objectNameCaptor.getAllValues().get(2));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1234"), objectNameCaptor.getAllValues().get(0));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1235"), objectNameCaptor.getAllValues().get(2));
         assertEquals(4, ((SessionWriteQueueMonitor)monitorCaptor.getAllValues().get(0)).getQueueDepth());
         assertEquals(2, ((SessionWriteQueueMonitor)monitorCaptor.getAllValues().get(2)).getQueueDepth());
 
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=hostWriteQueueMonitor,remoteHost=localhost"), objectNameCaptor.getAllValues().get(1));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=hostWriteQueueMonitor,remoteHost=localhost"), objectNameCaptor.getAllValues().get(1));
         assertEquals(6, ((HostWriteQueueMonitor)monitorCaptor.getAllValues().get(1)).getTotalWriteQueueDepth());
         assertEquals(2, ((HostWriteQueueMonitor)monitorCaptor.getAllValues().get(1)).getNumSessions());
         assertEquals(4, ((HostWriteQueueMonitor)monitorCaptor.getAllValues().get(1)).getMaxWriteQueueDepth());
@@ -216,17 +216,17 @@ public class SessionWriteQueueMonitoringTest {
 
         verify(mBeanServer, times(3)).unregisterMBean(objectNameCaptor.capture());
 
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1234"), objectNameCaptor.getAllValues().get(3));
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1235"), objectNameCaptor.getAllValues().get(4));
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=hostWriteQueueMonitor,remoteHost=localhost"), objectNameCaptor.getAllValues().get(5));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1234"), objectNameCaptor.getAllValues().get(3));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1235"), objectNameCaptor.getAllValues().get(4));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=hostWriteQueueMonitor,remoteHost=localhost"), objectNameCaptor.getAllValues().get(5));
     }
 
     @Test
     public void twoSessionsDifferentHostMonitoring() throws Exception {
-        when(session1.getAttribute("COUGAR_SESSION_ID")).thenReturn("00001");
+        when(session1.getAttribute("DISCO_SESSION_ID")).thenReturn("00001");
         when(session1.getRemoteAddress()).thenReturn(new InetSocketAddress("localhost", 1234));
 
-        when(session2.getAttribute("COUGAR_SESSION_ID")).thenReturn("00002");
+        when(session2.getAttribute("DISCO_SESSION_ID")).thenReturn("00002");
         when(session2.getRemoteAddress()).thenReturn(new InetSocketAddress("localhost2", 1235));
 
         ArgumentCaptor monitorCaptor = ArgumentCaptor.forClass(Object.class);
@@ -248,19 +248,19 @@ public class SessionWriteQueueMonitoringTest {
 
         verify(mBeanServer, times(4)).registerMBean(monitorCaptor.capture(), objectNameCaptor.capture());
 
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1234"), objectNameCaptor.getAllValues().get(0));
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost2_1235"), objectNameCaptor.getAllValues().get(2));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1234"), objectNameCaptor.getAllValues().get(0));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost2_1235"), objectNameCaptor.getAllValues().get(2));
         assertEquals(4, ((SessionWriteQueueMonitor)monitorCaptor.getAllValues().get(0)).getQueueDepth());
         assertEquals(2, ((SessionWriteQueueMonitor)monitorCaptor.getAllValues().get(2)).getQueueDepth());
 
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=hostWriteQueueMonitor,remoteHost=localhost"), objectNameCaptor.getAllValues().get(1));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=hostWriteQueueMonitor,remoteHost=localhost"), objectNameCaptor.getAllValues().get(1));
         assertEquals(4, ((HostWriteQueueMonitor)monitorCaptor.getAllValues().get(1)).getTotalWriteQueueDepth());
         assertEquals(1, ((HostWriteQueueMonitor)monitorCaptor.getAllValues().get(1)).getNumSessions());
         assertEquals(4, ((HostWriteQueueMonitor)monitorCaptor.getAllValues().get(1)).getMaxWriteQueueDepth());
         assertEquals(4, ((HostWriteQueueMonitor)monitorCaptor.getAllValues().get(1)).getMinWriteQueueDepth());
         assertEquals(4, ((HostWriteQueueMonitor)monitorCaptor.getAllValues().get(1)).getMeanWriteQueueDepth());
         assertEquals(4, ((HostWriteQueueMonitor)monitorCaptor.getAllValues().get(1)).getTotalWriteQueueDepth());
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=hostWriteQueueMonitor,remoteHost=localhost2"), objectNameCaptor.getAllValues().get(3));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=hostWriteQueueMonitor,remoteHost=localhost2"), objectNameCaptor.getAllValues().get(3));
         assertEquals(2, ((HostWriteQueueMonitor)monitorCaptor.getAllValues().get(3)).getTotalWriteQueueDepth());
         assertEquals(1, ((HostWriteQueueMonitor)monitorCaptor.getAllValues().get(3)).getNumSessions());
         assertEquals(2, ((HostWriteQueueMonitor)monitorCaptor.getAllValues().get(3)).getMaxWriteQueueDepth());
@@ -285,10 +285,10 @@ public class SessionWriteQueueMonitoringTest {
 
         verify(mBeanServer, times(4)).unregisterMBean(objectNameCaptor.capture());
 
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1234"), objectNameCaptor.getAllValues().get(4));
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=hostWriteQueueMonitor,remoteHost=localhost"), objectNameCaptor.getAllValues().get(5));
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost2_1235"), objectNameCaptor.getAllValues().get(6));
-        assertEquals(new ObjectName("CoUGAR.socket.transport:name=hostWriteQueueMonitor,remoteHost=localhost2"), objectNameCaptor.getAllValues().get(7));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost_1234"), objectNameCaptor.getAllValues().get(4));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=hostWriteQueueMonitor,remoteHost=localhost"), objectNameCaptor.getAllValues().get(5));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=sessionWriteQueueMonitor,remoteAddress=localhost2_1235"), objectNameCaptor.getAllValues().get(6));
+        assertEquals(new ObjectName("DiSCO.socket.transport:name=hostWriteQueueMonitor,remoteHost=localhost2"), objectNameCaptor.getAllValues().get(7));
     }
 
 

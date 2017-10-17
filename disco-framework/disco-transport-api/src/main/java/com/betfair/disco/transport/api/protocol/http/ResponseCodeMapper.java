@@ -25,7 +25,7 @@ import uk.co.exemel.disco.api.ResponseCode;
 import uk.co.exemel.disco.core.api.fault.DiscoFault;
 
 public class ResponseCodeMapper {
-    private static final String COUGAR_FAULT_PREFIX = "DSC-";
+    private static final String DISCO_FAULT_PREFIX = "DSC-";
 	private static final Map<ResponseCode, Integer> RESPONSE_CODES = new HashMap<ResponseCode, Integer>();
 	static {
 		RESPONSE_CODES.put(ResponseCode.InternalError, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -57,7 +57,7 @@ public class ResponseCodeMapper {
 
     public static ResponseCode getResponseCodeFromHttpCode(int httpResponseStatus, DiscoFault fault) {
         if(httpResponseStatus == HttpServletResponse.SC_INTERNAL_SERVER_ERROR){
-            if(fault.getErrorCode().startsWith(COUGAR_FAULT_PREFIX)){
+            if(fault.getErrorCode().startsWith(DISCO_FAULT_PREFIX)){
                 return ResponseCode.InternalError;
             }
             else{

@@ -218,7 +218,7 @@ public class DiscoProtocolEncoder extends ProtocolEncoderAdapter implements Expo
     @Override
     public void export(JMXControl jmxControl) {
         if (jmxControl != null) {
-            jmxControl.registerMBean("CoUGAR.socket.transport:name=encoder", this);
+            jmxControl.registerMBean("DiSCO.socket.transport:name=encoder", this);
         }
     }
 

@@ -567,7 +567,7 @@ public class DiscoHelpers {
     }
 
 	/*
-	 * Find the VM instance running Disco based on COUGARVMNAME1 and COUGARVMNAME2
+	 * Find the VM instance running Disco based on DISCOVMNAME1 and DISCOVMNAME2
 	 * fields, and attach, setting the JmxConnector to be used by other methods.
 	 *
 	 */
@@ -665,7 +665,7 @@ public class DiscoHelpers {
 		AttributeNotFoundException, InstanceNotFoundException, ReflectionException, MalformedObjectNameException{
 
 		MBeanServerConnection mBeanServerConnection = jmxConnector.getMBeanServerConnection();
-        Set<ObjectName> mbeans = mBeanServerConnection.queryNames(new ObjectName("CoUGAR:name=healthChecker,*"), null);
+        Set<ObjectName> mbeans = mBeanServerConnection.queryNames(new ObjectName("DiSCO:name=healthChecker,*"), null);
         if (!mbeans.isEmpty()) {
             mBeanServerConnection.getAttribute(mbeans.iterator().next(), "SystemInService");
             return true;
@@ -732,7 +732,7 @@ public class DiscoHelpers {
 
 	public void setJMXFaultControllerAttribute(String attributeName,
 			String value) {
-		String mBeanName = "CoUGAR:name=faultController";
+		String mBeanName = "DiSCO:name=faultController";
 		setJMXMBeanAttribute(mBeanName, attributeName, value);
 	}
 
@@ -925,12 +925,12 @@ public class DiscoHelpers {
 	}
 
 	public String getJMXLoggingManagerAttributeValue(String attributeName) {
-		String mBeanName = "CoUGAR:name=Logging";
+		String mBeanName = "DiSCO:name=Logging";
 		return getJMXMBeanAttributeValue(mBeanName, attributeName).toString();
 	}
 
 	public String getJMXApplicationPropertyValue(String key) {
-		String mBeanName = "CoUGAR:name=ApplicationProperties";
+		String mBeanName = "DiSCO:name=ApplicationProperties";
         return (String) invokeJMXMBeanOperation(mBeanName, "getProperty",
                 new Object[]{key},
                 new String[]{"java.lang.String"});

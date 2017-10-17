@@ -75,7 +75,7 @@ public class LoggingCheckForStartupMessageTestTest {
 //        LogFileBean log = manager.getServerLogContainingDiscoStart(discoManager1.getBaseLogDirectory(), upTime);
         // Get the log contains the statup success message
 //        DiscoHelpers discoHelpers6 = new DiscoHelpers();
-//        boolean presentInLog = discoHelpers6.checkLogContainsEntryHeaderValue(log, "uk.co.exemel.disco.core.impl.ev.ContainerAwareExecutionVenue INFO - **** COUGAR HAS STARTED *****");
+//        boolean presentInLog = discoHelpers6.checkLogContainsEntryHeaderValue(log, "uk.co.exemel.disco.core.impl.ev.ContainerAwareExecutionVenue INFO - **** DISCO HAS STARTED *****");
 //        AssertionUtils.multiAssertEquals(true, presentInLog);
     }
 

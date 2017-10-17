@@ -27,7 +27,7 @@ public final class MessageConstants {
     public static final String FORMAT_PARAMETER = "alt";
 
     // Attributes
-	public static final String COUGAR_REQUEST_ATTR = PLATFORM + "request";
-	public static final String COUGAR_RESPONSE_ATTR = PLATFORM + "response";
+	public static final String DISCO_REQUEST_ATTR = PLATFORM + "request";
+	public static final String DISCO_RESPONSE_ATTR = PLATFORM + "response";
 
 }

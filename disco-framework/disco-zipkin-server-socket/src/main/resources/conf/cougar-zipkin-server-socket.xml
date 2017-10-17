@@ -25,7 +25,7 @@
           class="uk.co.exemel.disco.modules.zipkin.impl.socket.ZipkinSocketRequestUuidResolver">
         <constructor-arg ref="zipkinExecutionContextResolverFactory"/>
         <constructor-arg ref="zipkinManager"/>
-        <constructor-arg value="$COUGAR-SOCKET-TRANSPORT{disco.socket.serverport}"/>
+        <constructor-arg value="$DISCO-SOCKET-TRANSPORT{disco.socket.serverport}"/>
     </bean>
 
 </beans>

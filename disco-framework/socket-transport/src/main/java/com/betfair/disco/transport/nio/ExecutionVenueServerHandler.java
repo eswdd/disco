@@ -176,7 +176,7 @@ public class ExecutionVenueServerHandler extends IoHandlerAdapter implements Exp
     @Override
     public void export(JMXControl jmxControl) {
         if (jmxControl != null) {
-            jmxControl.registerMBean("CoUGAR.socket.transport:name=handler", this);
+            jmxControl.registerMBean("DiSCO.socket.transport:name=handler", this);
         }
     }
 

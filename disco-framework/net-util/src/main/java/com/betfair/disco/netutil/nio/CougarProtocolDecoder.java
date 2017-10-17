@@ -189,7 +189,7 @@ public class DiscoProtocolDecoder extends CumulativeProtocolDecoder implements E
     @Override
     public void export(JMXControl jmxControl) {
         if (jmxControl != null) {
-            jmxControl.registerMBean("CoUGAR.socket.transport:name=decoder", this);
+            jmxControl.registerMBean("DiSCO.socket.transport:name=decoder", this);
         }
     }
 

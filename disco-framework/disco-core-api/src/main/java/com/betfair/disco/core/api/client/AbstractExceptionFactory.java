@@ -48,7 +48,7 @@ public abstract class AbstractExceptionFactory implements ExceptionFactory {
 
     public AbstractExceptionFactory() {
         //Registers the DiscoException exception instantiator...
-        registerExceptionInstantiator(ServerFaultCode.COUGAR_EXCEPTION_PREFIX, new ExceptionInstantiator() {
+        registerExceptionInstantiator(ServerFaultCode.DISCO_EXCEPTION_PREFIX, new ExceptionInstantiator() {
             @Override
             public Exception createException(ResponseCode responseCode, String prefix, String reason, Map<String,String> exceptionParams) {
                 ServerFaultCode sfc = ServerFaultCode.getByDetailCode(prefix);

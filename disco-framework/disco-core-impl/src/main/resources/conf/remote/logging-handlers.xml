@@ -37,18 +37,18 @@
         <property name="properties">
             <util:map map-class="java.util.HashMap">
                 <entry key="logName" value="TRACE-LOG"/>
-                <entry key="fileName" value="$COUGAR{disco.log.dir}/$COUGAR{system.hostname}-$COUGAR{disco.app.name}-trace.log"/>
+                <entry key="fileName" value="$DISCO{disco.log.dir}/$DISCO{system.hostname}-$DISCO{disco.app.name}-trace.log"/>
                 <entry key="flush" value="true"/>
-                <entry key="append" value="$COUGAR{disco.log.TRACE.append}"/>
-                <entry key="rotation" value="$COUGAR{disco.log.TRACE.rotation}"/>
+                <entry key="append" value="$DISCO{disco.log.TRACE.append}"/>
+                <entry key="rotation" value="$DISCO{disco.log.TRACE.rotation}"/>
                 <entry key="abstractLogger" value="false"/>
-                <entry key="format" value="$COUGAR{disco.log.traceFormatter.pattern}"/>
+                <entry key="format" value="$DISCO{disco.log.traceFormatter.pattern}"/>
                 <entry key="isTraceLogger" value="true"/>
             </util:map>
         </property>
     </bean>
 
 
-    <alias name="$COUGAR{disco.events.logHandlerFactory}" alias="disco.core.logHandlerFactory"/>
+    <alias name="$DISCO{disco.events.logHandlerFactory}" alias="disco.core.logHandlerFactory"/>
 
 </beans>

@@ -21,15 +21,15 @@
 
 
     <bean id="insecureClientNioConfig" class="uk.co.exemel.disco.netutil.nio.TlsNioConfig">
-        <property name="workerTimeout" value="$COUGAR_CLIENT{disco.client.socket.worker.timeout}"/>
-        <property name="maxWriteQueueSize" value="$COUGAR_CLIENT{disco.client.socket.maxWriteQueueSize}"/>
-        <property name="recvBufferSize" value="$COUGAR_CLIENT{disco.client.socket.receiveBufferSize}"/>
-        <property name="sendBufferSize" value="$COUGAR_CLIENT{disco.client.socket.sendBufferSize}"/>
-        <property name="useDirectBuffersInMina" value="$COUGAR_CLIENT{disco.client.socket.useDirectBuffers}"/>
+        <property name="workerTimeout" value="$DISCO_CLIENT{disco.client.socket.worker.timeout}"/>
+        <property name="maxWriteQueueSize" value="$DISCO_CLIENT{disco.client.socket.maxWriteQueueSize}"/>
+        <property name="recvBufferSize" value="$DISCO_CLIENT{disco.client.socket.receiveBufferSize}"/>
+        <property name="sendBufferSize" value="$DISCO_CLIENT{disco.client.socket.sendBufferSize}"/>
+        <property name="useDirectBuffersInMina" value="$DISCO_CLIENT{disco.client.socket.useDirectBuffers}"/>
         <property name="nioLogger" ref="clientNioLogger"/>
         <property name="supportsTls" value="false"/>
         <property name="requiresTls" value="false"/>
-        <property name="rpcTimeoutMillis" value="$COUGAR_CLIENT{disco.client.socket.rpc.timeout}"/>
+        <property name="rpcTimeoutMillis" value="$DISCO_CLIENT{disco.client.socket.rpc.timeout}"/>
         <property name="mbeanServer">
             <bean class="org.springframework.jmx.support.MBeanServerFactoryBean">
                 <property name="locateExistingServerIfPossible" value="true"/>
@@ -38,18 +38,18 @@
     </bean>
 
     <bean id="secureNioConfig" class="uk.co.exemel.disco.netutil.nio.TlsNioConfig">
-        <property name="workerTimeout" value="$COUGAR_CLIENT{disco.client.socket.worker.timeout}"/>
-        <property name="maxWriteQueueSize" value="$COUGAR_CLIENT{disco.client.socket.maxWriteQueueSize}"/>
-        <property name="recvBufferSize" value="$COUGAR_CLIENT{disco.client.socket.receiveBufferSize}"/>
-        <property name="sendBufferSize" value="$COUGAR_CLIENT{disco.client.socket.sendBufferSize}"/>
-        <property name="useDirectBuffersInMina" value="$COUGAR_CLIENT{disco.client.socket.useDirectBuffers}"/>
+        <property name="workerTimeout" value="$DISCO_CLIENT{disco.client.socket.worker.timeout}"/>
+        <property name="maxWriteQueueSize" value="$DISCO_CLIENT{disco.client.socket.maxWriteQueueSize}"/>
+        <property name="recvBufferSize" value="$DISCO_CLIENT{disco.client.socket.receiveBufferSize}"/>
+        <property name="sendBufferSize" value="$DISCO_CLIENT{disco.client.socket.sendBufferSize}"/>
+        <property name="useDirectBuffersInMina" value="$DISCO_CLIENT{disco.client.socket.useDirectBuffers}"/>
         <property name="nioLogger" ref="clientNioLogger"/>
         <property name="supportsTls" value="true"/>
         <property name="requiresTls" value="true"/>
         <property name="truststore" value="classpath:disco_server_ca.jks"/>
         <property name="truststoreType" value="JKS"/>
         <property name="truststorePassword" value="password"/>
-        <property name="rpcTimeoutMillis" value="$COUGAR_CLIENT{disco.client.socket.rpc.timeout}"/>
+        <property name="rpcTimeoutMillis" value="$DISCO_CLIENT{disco.client.socket.rpc.timeout}"/>
         <property name="mbeanServer">
             <bean class="org.springframework.jmx.support.MBeanServerFactoryBean">
                 <property name="locateExistingServerIfPossible" value="true"/>
@@ -58,11 +58,11 @@
     </bean>
 
     <bean id="secureNioConfigWithClientAuth" class="uk.co.exemel.disco.netutil.nio.TlsNioConfig">
-        <property name="workerTimeout" value="$COUGAR_CLIENT{disco.client.socket.worker.timeout}"/>
-        <property name="maxWriteQueueSize" value="$COUGAR_CLIENT{disco.client.socket.maxWriteQueueSize}"/>
-        <property name="recvBufferSize" value="$COUGAR_CLIENT{disco.client.socket.receiveBufferSize}"/>
-        <property name="sendBufferSize" value="$COUGAR_CLIENT{disco.client.socket.sendBufferSize}"/>
-        <property name="useDirectBuffersInMina" value="$COUGAR_CLIENT{disco.client.socket.useDirectBuffers}"/>
+        <property name="workerTimeout" value="$DISCO_CLIENT{disco.client.socket.worker.timeout}"/>
+        <property name="maxWriteQueueSize" value="$DISCO_CLIENT{disco.client.socket.maxWriteQueueSize}"/>
+        <property name="recvBufferSize" value="$DISCO_CLIENT{disco.client.socket.receiveBufferSize}"/>
+        <property name="sendBufferSize" value="$DISCO_CLIENT{disco.client.socket.sendBufferSize}"/>
+        <property name="useDirectBuffersInMina" value="$DISCO_CLIENT{disco.client.socket.useDirectBuffers}"/>
         <property name="nioLogger" ref="clientNioLogger"/>
         <property name="supportsTls" value="true"/>
         <property name="requiresTls" value="true"/>
@@ -74,7 +74,7 @@
         <property name="truststorePassword" value="password"/>
         <property name="wantClientAuth" value="true"/>
         <property name="needClientAuth" value="true"/>
-        <property name="rpcTimeoutMillis" value="$COUGAR_CLIENT{disco.client.socket.rpc.timeout}"/>
+        <property name="rpcTimeoutMillis" value="$DISCO_CLIENT{disco.client.socket.rpc.timeout}"/>
         <property name="mbeanServer">
             <bean class="org.springframework.jmx.support.MBeanServerFactoryBean">
                 <property name="locateExistingServerIfPossible" value="true"/>

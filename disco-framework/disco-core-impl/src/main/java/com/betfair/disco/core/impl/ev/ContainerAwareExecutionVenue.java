@@ -127,7 +127,7 @@ public class ContainerAwareExecutionVenue extends ServiceRegisterableExecutionVe
 
 	private void logSuccessfulDiscoStartup() {
         // Logging facade removes the ability for custom log levels, so just INFO
-        LOGGER.info("**** COUGAR HAS STARTED *****");
+        LOGGER.info("**** DISCO HAS STARTED *****");
     }
 
 	@Override

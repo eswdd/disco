@@ -52,10 +52,10 @@ public class NioUtils {
     }
 
     public static String getSessionId(IoSession session) {
-        String sessionId = (String) session.getAttribute("COUGAR_SESSION_ID");
+        String sessionId = (String) session.getAttribute("DISCO_SESSION_ID");
         if (sessionId == null) {
             sessionId = String.format("%07d", sessionIdent.incrementAndGet());
-            session.setAttribute("COUGAR_SESSION_ID", sessionId);
+            session.setAttribute("DISCO_SESSION_ID", sessionId);
         }
         return sessionId;
     }

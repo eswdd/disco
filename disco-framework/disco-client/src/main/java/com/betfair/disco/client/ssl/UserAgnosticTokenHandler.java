@@ -21,7 +21,7 @@ import org.apache.http.protocol.HttpContext;
 
 /**
  * Usually you will need this when you use SSL connections with client authentication (2-way SSL).
- * Connections to CoUGAR data services are stateless even if a certificate is used for client
+ * Connections to DiSCO data services are stateless even if a certificate is used for client
  * authentication (the server which acts as a client is authenticated not the end-user).
  */
 public class UserAgnosticTokenHandler implements UserTokenHandler {

@@ -71,7 +71,7 @@ public class TlsNioConfig extends NioConfig implements BeanNameAware {
             keystoreChains = KeyStoreManagement.getKeyStoreManagement(keystoreType, keystore, keystorePassword);
             if (keystoreChains != null) {
                 try {
-                    mbeanServer.registerMBean(keystoreChains, new ObjectName("CoUGAR.socket.ssl:name=keyStore,nioConfig="+beanName));
+                    mbeanServer.registerMBean(keystoreChains, new ObjectName("DiSCO.socket.ssl:name=keyStore,nioConfig="+beanName));
                 }
                 catch (InstanceAlreadyExistsException iaee) {
                     logger.warn("You appear to have loaded the same TlsNioConfig more than once in the same JVM", iaee);
@@ -86,7 +86,7 @@ public class TlsNioConfig extends NioConfig implements BeanNameAware {
             truststoreChains = KeyStoreManagement.getKeyStoreManagement(truststoreType, truststore, truststorePassword);
             if (truststoreChains != null) {
                 try {
-                    mbeanServer.registerMBean(truststoreChains, new ObjectName("CoUGAR.socket.ssl:name=trustStore,nioConfig="+beanName));
+                    mbeanServer.registerMBean(truststoreChains, new ObjectName("DiSCO.socket.ssl:name=trustStore,nioConfig="+beanName));
                 }
                 catch (InstanceAlreadyExistsException iaee) {
                     logger.warn("You appear to have loaded the same TlsNioConfig more than once in the same JVM", iaee);

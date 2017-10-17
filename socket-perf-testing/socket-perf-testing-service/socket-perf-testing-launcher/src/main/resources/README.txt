@@ -5,7 +5,7 @@ To run server:
 
 Server will startup on port 9003 and initialise the heaps. Once disco has started:
 
-**** COUGAR HAS STARTED ****
+**** DISCO HAS STARTED ****
 
 then it is ready to accept client connections.
 

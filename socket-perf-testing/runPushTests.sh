@@ -60,7 +60,7 @@ for NUM_HEAPS in `echo $NUM_HEAP_VARIATIONS`; do
             SERVER_PARAMS="$SERVER_THREADS $NUM_HEAPS $HEAP_UPDATES_PER_TEST $PUSHER_PULLER_THREADS $EV_POOL_SIZE"
             cd /tmp/socket-perf-testing-server/bin
             ./socketTestServer.sh $SERVER_PARAMS > logs/stdout.log &
-            while ( ! grep -q "COUGAR HAS STARTED" logs/stdout.log ); do
+            while ( ! grep -q "DISCO HAS STARTED" logs/stdout.log ); do
               echo "Waiting for server to start"
               sleep 1
             done

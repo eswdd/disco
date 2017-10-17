@@ -70,7 +70,7 @@ public class JMSEventMarshaller implements EventMarshaller<TextMessage> {
         sb.append(new SimpleDateFormat(dateFormatPattern).format(new Date()));
 
         if (event.getDiscoMessageRouteString() != null) {
-            sb.append(JMSPropertyConstants.COUGAR_ROUTING_SEPARATOR);
+            sb.append(JMSPropertyConstants.DISCO_ROUTING_SEPARATOR);
             sb.append(event.getDiscoMessageRouteString());
         }
         return sb.toString();

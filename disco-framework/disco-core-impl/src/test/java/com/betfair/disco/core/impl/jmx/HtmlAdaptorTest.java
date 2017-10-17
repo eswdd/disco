@@ -36,10 +36,10 @@ public class HtmlAdaptorTest  {
     @After
     public void tearDown() throws Exception {
         try {
-            mBeanServer.unregisterMBean(new ObjectName("CoUGAR:name=HtmlAdaptor"));
+            mBeanServer.unregisterMBean(new ObjectName("DiSCO:name=HtmlAdaptor"));
         } catch (Exception e) { /* Don't care */ }
         try {
-            mBeanServer.unregisterMBean(new ObjectName("CoUGAR.internal:name=HtmlAdaptorParser"));
+            mBeanServer.unregisterMBean(new ObjectName("DiSCO.internal:name=HtmlAdaptorParser"));
         } catch (Exception e) { /* Don't care */ }
     }
 

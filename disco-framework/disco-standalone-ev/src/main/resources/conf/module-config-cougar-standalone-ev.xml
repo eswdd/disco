@@ -24,7 +24,7 @@
         <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
         <property name="defaultConfig" value="classpath:conf/disco-standalone-ev-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
-        <property name="placeholderPrefix" value="$COUGAR_STANDALONE_EV{"/>
+        <property name="placeholderPrefix" value="$DISCO_STANDALONE_EV{"/>
     </bean>
 
     <bean id="executionVenue" class="uk.co.exemel.disco.core.impl.ev.ServiceRegisterableExecutionVenue">
@@ -52,14 +52,14 @@
 
     <bean id="eventLogger" class="uk.co.exemel.disco.core.impl.logging.EventLoggerImpl">
         <property name="registry" ref="eventLoggingRegistry"/>
-        <property name="enabled" value="$COUGAR{disco.log.request}"/>
+        <property name="enabled" value="$DISCO{disco.log.request}"/>
     </bean>
 
     <bean id="eventLoggingRegistry" class="uk.co.exemel.disco.logging.EventLoggingRegistry"/>
 
 
     <bean id="serviceLogManagerFactory" class="uk.co.exemel.disco.core.impl.ev.NamedLoggerServiceLogManagerFactory">
-        <constructor-arg index="0" value="$COUGAR{disco.app.name}-"/>
+        <constructor-arg index="0" value="$DISCO{disco.app.name}-"/>
     </bean>
 
     <alias name="executionVenue" alias="disco.core.ExecutionVenue"/>

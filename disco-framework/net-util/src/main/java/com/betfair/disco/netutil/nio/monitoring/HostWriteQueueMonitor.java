@@ -33,7 +33,7 @@ public class HostWriteQueueMonitor implements HostWriteQueueMonitorMBean {
     }
 
     ObjectName getObjectName() throws MalformedObjectNameException {
-        return new ObjectName("CoUGAR.socket.transport:name=hostWriteQueueMonitor,remoteHost="+hostname);
+        return new ObjectName("DiSCO.socket.transport:name=hostWriteQueueMonitor,remoteHost="+hostname);
     }
 
     public long getTotalWriteQueueDepth() {

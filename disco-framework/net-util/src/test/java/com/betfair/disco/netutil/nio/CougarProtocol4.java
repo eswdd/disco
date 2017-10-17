@@ -503,7 +503,7 @@ public class DiscoProtocol4 extends DiscoProtocol implements IDiscoProtocol {
     @Override
     public void export(JMXControl jmxControl) {
         if (jmxControl != null) {
-            jmxControl.registerMBean("CoUGAR.socket.transport:name=wireProtocol", this);
+            jmxControl.registerMBean("DiSCO.socket.transport:name=wireProtocol", this);
         }
     }
 

@@ -23,7 +23,7 @@
 
 
     <bean id="faultController" class="uk.co.exemel.disco.core.api.fault.FaultController" factory-method="getInstance">
-        <property name="detailedFaults" value="$COUGAR-EV{disco.fault.detailed}"/>
+        <property name="detailedFaults" value="$DISCO-EV{disco.fault.detailed}"/>
     </bean>
 
     <bean id="serviceLogManagerFactory" class="uk.co.exemel.disco.core.impl.ev.DefaultServiceLogManagerFactory">
@@ -85,21 +85,21 @@
     </bean>
 
     <bean id="tlsHtmlAdaptorServer" class="uk.co.exemel.disco.core.impl.jmx.TlsHtmlAdaptorServer">
-		<constructor-arg value="$COUGAR-EV{jmx.html.keystore.filepath}"/>
-		<constructor-arg value="$COUGAR-EV{jmx.html.keystore.password}"/>
-		<constructor-arg value="$COUGAR-EV{jmx.html.keystore.certpassword}"/>
-		<constructor-arg value="$COUGAR-EV{jmx.html.port}"/>
-		<constructor-arg value="$COUGAR-EV{jmx.html.keystore.type}"/>
-		<constructor-arg value="$COUGAR-EV{jmx.html.tls.enabled}"/>
-        <constructor-arg value="$COUGAR-EV{jmx.html.reuseAddress}"/>
+		<constructor-arg value="$DISCO-EV{jmx.html.keystore.filepath}"/>
+		<constructor-arg value="$DISCO-EV{jmx.html.keystore.password}"/>
+		<constructor-arg value="$DISCO-EV{jmx.html.keystore.certpassword}"/>
+		<constructor-arg value="$DISCO-EV{jmx.html.port}"/>
+		<constructor-arg value="$DISCO-EV{jmx.html.keystore.type}"/>
+		<constructor-arg value="$DISCO-EV{jmx.html.tls.enabled}"/>
+        <constructor-arg value="$DISCO-EV{jmx.html.reuseAddress}"/>
 	</bean>
 
 	<bean id="htmlAdapter" class="uk.co.exemel.disco.core.impl.jmx.HtmlAdaptor">
         <constructor-arg ref="tlsHtmlAdaptorServer"/>
 		<property name="MBeanServer" ref="mbeanServer"/>
-		<property name="username" value="$COUGAR-EV{jmx.html.username}"/>
-		<property name="password" value="$COUGAR-EV{jmx.html.password}"/>
-        <property name="httpExport" value="$COUGAR-EV{jmx.html.export}"/>
+		<property name="username" value="$DISCO-EV{jmx.html.username}"/>
+		<property name="password" value="$DISCO-EV{jmx.html.password}"/>
+        <property name="httpExport" value="$DISCO-EV{jmx.html.export}"/>
 	</bean>
 
     <bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
@@ -109,7 +109,7 @@
     <bean id="log4jLoggingControl" class="uk.co.exemel.disco.core.impl.logging.Log4jLoggingControl">
         <property name="logLevels">
             <map>
-                <entry key="" value="$COUGAR{disco.log.level}"/>
+                <entry key="" value="$DISCO{disco.log.level}"/>
                 <!-- ROOT LEVEL LOGGER -->
             </map>
         </property>
@@ -122,12 +122,12 @@
 
         <property name="beans">
             <map>
-                <entry key="CoUGAR:name=executionVenue" value-ref="executionVenue"/>
-                <entry key="CoUGAR:name=eventLogging" value-ref="disco.core.EventLogger"/>
-                <entry key="CoUGAR:name=faultController" value-ref="faultController"/>
-                <entry key="CoUGAR:name=LoggingControl" value-ref="disco.core.LoggingControl"/>
-                <entry key="CoUGAR:name=GeoIPLocator" value-ref="disco.core.GeoIPLocator"/>
-                <entry key="CoUGAR:name=serviceStatusController" value-ref="inOutServiceMonitor"/>
+                <entry key="DiSCO:name=executionVenue" value-ref="executionVenue"/>
+                <entry key="DiSCO:name=eventLogging" value-ref="disco.core.EventLogger"/>
+                <entry key="DiSCO:name=faultController" value-ref="faultController"/>
+                <entry key="DiSCO:name=LoggingControl" value-ref="disco.core.LoggingControl"/>
+                <entry key="DiSCO:name=GeoIPLocator" value-ref="disco.core.GeoIPLocator"/>
+                <entry key="DiSCO:name=serviceStatusController" value-ref="inOutServiceMonitor"/>
             </map>
         </property>
 
@@ -171,15 +171,15 @@
     </bean>
 
     <bean id="freeSpaceMonitor" class="com.betfair.tornjak.monitor.FreeSpaceMonitor">
-        <constructor-arg index="0" value="$COUGAR{disco.log.dir}"/>
-        <constructor-arg index="1" type="long" value="$COUGAR{disco.log.bytes.required}"/>
+        <constructor-arg index="0" value="$DISCO{disco.log.dir}"/>
+        <constructor-arg index="1" type="long" value="$DISCO{disco.log.bytes.required}"/>
     </bean>
 
     <bean id="inOutServiceMonitor" class="com.betfair.tornjak.monitor.service.InOutServiceMonitor">
         <constructor-arg index="0" value="Disco Service Status Monitor"/>
         <constructor-arg index="1">
             <bean class="java.io.File">
-                <constructor-arg value="$COUGAR-EV{disco.service.status.file}"/>
+                <constructor-arg value="$DISCO-EV{disco.service.status.file}"/>
             </bean>
         </constructor-arg>
     </bean>
@@ -189,7 +189,7 @@
     <alias name="monitorRegistry"                       alias="disco.core.MonitorRegistry"/>
     <alias name="htmlAdapter"                           alias="disco.core.JmxHtmlAdapter"/>
     <alias name="jmxControl"                            alias="disco.core.JmxControl"/>
-    <alias name="$COUGAR-EV{disco.log.loggingControl}" alias="disco.core.LoggingControl"/>
+    <alias name="$DISCO-EV{disco.log.loggingControl}" alias="disco.core.LoggingControl"/>
     <alias name="baseGateRegisterer"                    alias="disco.core.GateRegisterer"/>
     <alias name="baseGateListenerAdapter"               alias="disco.core.GateListener"/>
     <alias name="executionVenue"                        alias="disco.core.ExecutionVenue"/>

@@ -24,7 +24,7 @@
         <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
         <property name="defaultConfig" value="classpath:conf/disco-ev-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
-        <property name="placeholderPrefix" value="$COUGAR-EV{"/>
+        <property name="placeholderPrefix" value="$DISCO-EV{"/>
     </bean>
 
     <import resource="classpath:conf/event-logging.xml"/>

@@ -36,7 +36,7 @@ public class DiscoSpringCtxFactoryImplTest {
 
         Class logInitialisationClass = classUnderTest.establishLogInitialisationClass(null);
         assertNotNull(logInitialisationClass);
-        assertEquals(DiscoSpringCtxFactoryImpl.DEFAULT_COUGAR_LOG_INIT_CLASS, logInitialisationClass);
+        assertEquals(DiscoSpringCtxFactoryImpl.DEFAULT_DISCO_LOG_INIT_CLASS, logInitialisationClass);
 
         //Now check that we can chose one of our own doing
         logInitialisationClass = classUnderTest.establishLogInitialisationClass("uk.co.exemel.disco.core.impl.TestLogBootstrap");
@@ -51,6 +51,6 @@ public class DiscoSpringCtxFactoryImplTest {
         //Finally ensure we get something sensible when nonsense is supplied
         logInitialisationClass = classUnderTest.establishLogInitialisationClass("wibble");
         assertNotNull(logInitialisationClass);
-        assertEquals(DiscoSpringCtxFactoryImpl.DEFAULT_COUGAR_LOG_INIT_CLASS, logInitialisationClass);
+        assertEquals(DiscoSpringCtxFactoryImpl.DEFAULT_DISCO_LOG_INIT_CLASS, logInitialisationClass);
     }
 }

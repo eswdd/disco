@@ -21,7 +21,7 @@ public class JMSPropertyConstants {
 
     public static final String MESSAGE_ROUTING_FIELD_NAME = "__disco_message_route";
 
-    public static final String COUGAR_ROUTING_SEPARATOR="|";
+    public static final String DISCO_ROUTING_SEPARATOR="|";
     public static final String TIMESTAMP_SEPARATOR="@";
 
     public static final String EVENT_VERSION_FIELD_NAME = "__disco_event_version";

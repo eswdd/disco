@@ -32,7 +32,7 @@
 	
     <bean id="uk.co.exemel.disco.testing.testingService" class="uk.co.exemel.disco.testing.TestingServiceImpl">
             <property name="cacheFrameworkRegistry" ref="disco.caching.CacheFrameworkRegistry"/>
-			<property name="baseLogDirectory" value="$COUGAR{disco.log.dir}"/>
+			<property name="baseLogDirectory" value="$DISCO{disco.log.dir}"/>
 			<property name="doSkipLogLines" value="$TESTINGSERVICE{disco.testingservice.skiploglines}"/>
 			<property name="maxMessageSize" value="$TESTINGSERVICE{disco.testingservice.maxlogmessagesize}"/>
 			<property name="defaultMaxNumberOfResults" value="$TESTINGSERVICE{disco.testingservice.defaultmaxlogmessages}"/>

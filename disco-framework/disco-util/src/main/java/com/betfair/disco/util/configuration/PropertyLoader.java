@@ -33,7 +33,7 @@ import java.util.logging.Level;
 public class PropertyLoader {
     private static final String DEFAULT_CONFIG_HOST_PROPERTY = "betfair.config.host";
     private static final String DEFAULT_CONFIG_HOST_PROPERTY_VALUE = "/conf/";
-    private static final String COUGAR_APPLICATION_PROPERTIES_FILE = "disco-application.properties";
+    private static final String DISCO_APPLICATION_PROPERTIES_FILE = "disco-application.properties";
 
     private Logger logger;
 
@@ -47,7 +47,7 @@ public class PropertyLoader {
 
     public PropertyLoader(Resource defaultConfig, String configOverride, Logger logger) {
         this.defaultConfig = defaultConfig;
-        this.appProperties = new ClassPathResource(COUGAR_APPLICATION_PROPERTIES_FILE);
+        this.appProperties = new ClassPathResource(DISCO_APPLICATION_PROPERTIES_FILE);
         this.configOverride = configOverride;
         this.logger = logger;
     }

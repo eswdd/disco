@@ -103,7 +103,7 @@ public class  ${service}SyncClientImpl implements ${service}SyncClient {<#t>
     }
 
     public ${service}SyncClientImpl(ExecutionVenue ev) {
-        this(ev, DiscoInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
+        this(ev, DiscoInternalOperations.DISCO_IN_PROCESS_NAMESPACE);
     }
 
     public ${service}SyncClientImpl(ExecutionVenue ev, String namespace) {

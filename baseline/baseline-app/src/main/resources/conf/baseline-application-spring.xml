@@ -38,7 +38,7 @@
                 <constructor-arg type="java.util.Map">
                     <util:map map-class="java.util.HashMap">
                         <entry key="logName" value="BASELINE-ASYNC-LOG"/>
-                        <entry key="fileName" value="$COUGAR{disco.log.dir}/$COUGAR{system.hostname}-$COUGAR{disco.app.name}-async-request.log"/>
+                        <entry key="fileName" value="$DISCO{disco.log.dir}/$DISCO{system.hostname}-$DISCO{disco.app.name}-async-request.log"/>
                         <entry key="flush" value="$BASELINE{disco.log.BASELINE-ASYNC-LOG.flush}"/>
                         <entry key="append" value="$BASELINE{disco.log.BASELINE-ASYNC-LOG.append}"/>
                         <entry key="rotation" value="$BASELINE{disco.log.BASELINE-ASYNC-LOG.rotation}"/>

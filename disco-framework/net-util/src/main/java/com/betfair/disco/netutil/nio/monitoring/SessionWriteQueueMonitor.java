@@ -50,7 +50,7 @@ public class SessionWriteQueueMonitor implements SessionWriteQueueMonitorMBean {
     ObjectName getObjectName() throws MalformedObjectNameException {
         InetSocketAddress socketAddress = (InetSocketAddress) session.getRemoteAddress();
         String host = getRemoteHost();
-        return new ObjectName("CoUGAR.socket.transport:name=sessionWriteQueueMonitor,remoteAddress="+host+"_"+socketAddress.getPort());
+        return new ObjectName("DiSCO.socket.transport:name=sessionWriteQueueMonitor,remoteAddress="+host+"_"+socketAddress.getPort());
     }
 
     public long countIn() {

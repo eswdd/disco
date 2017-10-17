@@ -259,7 +259,7 @@ public class BaselinePerformanceTester implements BaselineClientConstants {
         int randomiser = rnd.nextInt(50);
         avgRandomiser.addAndGet(randomiser);
         HttpUriRequest method = call.getMethod(contentType, new Object[] { randomiser }, randomiser, cle);
-        method.addHeader("Authority", "CoUGARUK");
+        method.addHeader("Authority", "DiSCOUK");
         CallLogCount loggedCount = null;
         // Execute the method.
         synchronized (LOG) {

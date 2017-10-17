@@ -109,11 +109,11 @@ public class AsyncHttpExecutable extends AbstractHttpExecutable<Request> impleme
             if (transportSSLEnabled) {
                 KeyStoreManagement keyStore = KeyStoreManagement.getKeyStoreManagement(httpsKeystoreType, httpsKeystore, httpsKeyPassword);
                 if (jmxControl != null && keyStore != null) {
-                    jmxControl.registerMBean("CoUGAR:name=AsyncHttpClientKeyStore,beanName="+beanName, keyStore);
+                    jmxControl.registerMBean("DiSCO:name=AsyncHttpClientKeyStore,beanName="+beanName, keyStore);
                 }
                 KeyStoreManagement trustStore = KeyStoreManagement.getKeyStoreManagement(httpsTruststoreType, httpsTruststore, httpsTrustPassword);
                 if (jmxControl != null) {
-                    jmxControl.registerMBean("CoUGAR:name=AsyncHttpClientTrustStore,beanName="+beanName, trustStore);
+                    jmxControl.registerMBean("DiSCO:name=AsyncHttpClientTrustStore,beanName="+beanName, trustStore);
                 }
                 if (trustStore == null) {
                     throw new IllegalStateException("This configuration ostensibly supports TLS, yet doesn't provide valid truststore configuration");
@@ -147,7 +147,7 @@ public class AsyncHttpExecutable extends AbstractHttpExecutable<Request> impleme
         metrics = new JettyTransportMetrics();
 
         if (jmxControl != null) {
-            jmxControl.registerMBean("CoUGAR:name=AsyncHttpClientExecutable,beanName=" + beanName, this);
+            jmxControl.registerMBean("DiSCO:name=AsyncHttpClientExecutable,beanName=" + beanName, this);
         }
     }
 
@@ -216,7 +216,7 @@ public class AsyncHttpExecutable extends AbstractHttpExecutable<Request> impleme
                             }, obs, operationDefinition);
                         }
                         catch (Exception e) {
-                            LOGGER.warn("COUGAR: HTTP internal ERROR - URL [" + url + "] time [" + elapsed(startTime) + "mS]", e);
+                            LOGGER.warn("DISCO: HTTP internal ERROR - URL [" + url + "] time [" + elapsed(startTime) + "mS]", e);
                             processException(obs, e, url);
                         }
                     }
@@ -231,13 +231,13 @@ public class AsyncHttpExecutable extends AbstractHttpExecutable<Request> impleme
                     failure = new DiscoFrameworkException("Read timed out", failure);
                     serverFaultCode = ServerFaultCode.Timeout;
                 }
-                LOGGER.warn("COUGAR: HTTP communication ERROR - URL [" + url + "] time [" + elapsed(startTime) + "mS]", failure);
+                LOGGER.warn("DISCO: HTTP communication ERROR - URL [" + url + "] time [" + elapsed(startTime) + "mS]", failure);
                 processException(obs, failure, url, serverFaultCode);
             }
         }).onRequestFailure(new Request.FailureListener() {
             @Override
             public void onFailure(Request request, Throwable failure) {
-                LOGGER.warn("COUGAR: HTTP connection FAILED - URL [" + url + "] time [" + elapsed(startTime) + " mS]", failure);
+                LOGGER.warn("DISCO: HTTP connection FAILED - URL [" + url + "] time [" + elapsed(startTime) + " mS]", failure);
                 processException(obs, failure, url);
             }
         }).send(listener);

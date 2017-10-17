@@ -50,8 +50,8 @@ public class ServiceRegisterableExecutionVenueTest {
     private OperationKey fooOp2Key = new OperationKey(op2Key, "foo");
     private OperationKey barOp1Key = new OperationKey(op1Key, "bar");
     private OperationKey barOp2Key = new OperationKey(op2Key, "bar");
-    private OperationKey internalOp1Key = new OperationKey(op1Key, DiscoInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
-    private OperationKey internalOp2Key = new OperationKey(op2Key, DiscoInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
+    private OperationKey internalOp1Key = new OperationKey(op1Key, DiscoInternalOperations.DISCO_IN_PROCESS_NAMESPACE);
+    private OperationKey internalOp2Key = new OperationKey(op2Key, DiscoInternalOperations.DISCO_IN_PROCESS_NAMESPACE);
 
     private OperationDefinition op1Def = new SimpleOperationDefinition(op1Key, null, null);
     private OperationDefinition op2Def = new SimpleOperationDefinition(op2Key, null, null);

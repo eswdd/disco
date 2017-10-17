@@ -26,7 +26,7 @@
         <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
         <property name="defaultConfig" value="classpath:conf/disco-marshalling-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
-        <property name="placeholderPrefix" value="$COUGAR_MARSHALLING{"/>
+        <property name="placeholderPrefix" value="$DISCO_MARSHALLING{"/>
     </bean>
 
     <!-- JSON configuration -->
@@ -49,9 +49,9 @@
 
 
     <bean id="rawJsonBindingFactory" class="uk.co.exemel.disco.marshalling.impl.databinding.json.JSONBindingFactory">
-        <property name="enableAfterburner" value="$COUGAR_MARSHALLING{disco.marshalling.json.afterburner.enabled}"/>
-        <property name="useOptimizedBeanDeserializer" value="$COUGAR_MARSHALLING{disco.marshalling.json.afterburner.useOptimizedBeanDeserializer}"/>
-        <property name="useValueClassLoader" value="$COUGAR_MARSHALLING{disco.marshalling.json.afterburner.useValueClassLoader}"/>
+        <property name="enableAfterburner" value="$DISCO_MARSHALLING{disco.marshalling.json.afterburner.enabled}"/>
+        <property name="useOptimizedBeanDeserializer" value="$DISCO_MARSHALLING{disco.marshalling.json.afterburner.useOptimizedBeanDeserializer}"/>
+        <property name="useValueClassLoader" value="$DISCO_MARSHALLING{disco.marshalling.json.afterburner.useValueClassLoader}"/>
     </bean>
 
     <!-- XML Configuration -->
@@ -75,7 +75,7 @@
         <constructor-arg value="xml"/>
         <constructor-arg>
             <bean class="uk.co.exemel.disco.marshalling.impl.databinding.xml.XMLDataBindingFactory">
-                <constructor-arg index="0" ref="$COUGAR_MARSHALLING{disco.marshalling.xml.schemaValidationFailureParserBean}"/>
+                <constructor-arg index="0" ref="$DISCO_MARSHALLING{disco.marshalling.xml.schemaValidationFailureParserBean}"/>
             </bean>
         </constructor-arg>
     </bean>

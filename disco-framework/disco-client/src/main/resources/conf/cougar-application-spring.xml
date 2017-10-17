@@ -23,14 +23,14 @@
         <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
         <property name="defaultConfig" value="classpath:conf/disco-client-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
-        <property name="placeholderPrefix" value="$COUGAR_CLIENT{"/>
+        <property name="placeholderPrefix" value="$DISCO_CLIENT{"/>
     </bean>
 
     <bean id="defaultGeoLocationSerializer" class="uk.co.exemel.disco.client.DefaultGeoLocationSerializer"/>
 
     <!-- Initialise the RequestUUID Generator -->
     <bean id="requestUuidInitialisation" class="uk.co.exemel.disco.util.RequestUUIDImpl">
-        <constructor-arg index="0" ref="$COUGAR_CLIENT{disco.client.uuidgenerator}"/>
+        <constructor-arg index="0" ref="$DISCO_CLIENT{disco.client.uuidgenerator}"/>
     </bean>
 
     <bean id="defaultClientRequestUuidGenerator" class="uk.co.exemel.disco.util.UUIDGeneratorImpl"/>
@@ -51,9 +51,9 @@
     </bean>
 
     <bean id="defaultHttpContextEmitter" class="uk.co.exemel.disco.client.HttpContextEmitter">
-        <constructor-arg index="0" ref="$COUGAR_CLIENT{disco.client.geoLocationSerializerBean}"/>
-        <constructor-arg index="1" value="$COUGAR_CLIENT{disco.client.http.uuidheader}"/>
-        <constructor-arg index="2" value="$COUGAR_CLIENT{disco.client.http.uuidparentsheader}"/>
+        <constructor-arg index="0" ref="$DISCO_CLIENT{disco.client.geoLocationSerializerBean}"/>
+        <constructor-arg index="1" value="$DISCO_CLIENT{disco.client.http.uuidheader}"/>
+        <constructor-arg index="2" value="$DISCO_CLIENT{disco.client.http.uuidparentsheader}"/>
     </bean>
 
     <bean id="defaultHttpContextEmission" class="uk.co.exemel.disco.client.api.CompoundContextEmitter">
@@ -77,24 +77,24 @@
 
         <property name="retryHandler" ref="defaultRetryHandler"/>
         <property name="dataBindingFactory" ref="disco.marshalling.JSONBindingFactory"/>
-        <property name="queryStringGeneratorFactory" ref="$COUGAR_CLIENT{disco.client.querystring.factoryBean}"/>
+        <property name="queryStringGeneratorFactory" ref="$DISCO_CLIENT{disco.client.querystring.factoryBean}"/>
         <property name="exceptionTransformer" ref="exceptionTransformer"/>
-        <property name="connectTimeout" value="$COUGAR_CLIENT{disco.client.http.clientTimeout}"/>
-        <property name="maxTotalConnections" value="$COUGAR_CLIENT{disco.client.http.maxConnectionsTotal}"/>
-        <property name="maxPerRouteConnections" value="$COUGAR_CLIENT{disco.client.http.maxConnectionsPerRoute}"/>
-        <property name="hostnameVerificationDisabled" value="$COUGAR_CLIENT{disco.client.http.hostnameVerificationDisabled}" />
+        <property name="connectTimeout" value="$DISCO_CLIENT{disco.client.http.clientTimeout}"/>
+        <property name="maxTotalConnections" value="$DISCO_CLIENT{disco.client.http.maxConnectionsTotal}"/>
+        <property name="maxPerRouteConnections" value="$DISCO_CLIENT{disco.client.http.maxConnectionsPerRoute}"/>
+        <property name="hostnameVerificationDisabled" value="$DISCO_CLIENT{disco.client.http.hostnameVerificationDisabled}" />
         <property name="jmxControl" ref="clientJMXControl"/>
-        <property name="hardFailEnumDeserialisation" value="$COUGAR_CLIENT{disco.client.http.enums.hardFailure}"/>
+        <property name="hardFailEnumDeserialisation" value="$DISCO_CLIENT{disco.client.http.enums.hardFailure}"/>
         <property name="userTokenHandler">
-            <bean class="$COUGAR_CLIENT{disco.client.https.userTokenHandlerClass}" />
+            <bean class="$DISCO_CLIENT{disco.client.https.userTokenHandlerClass}" />
         </property>
     </bean>
 
     <!-- asynchronous http transport -->
     <bean id="asyncHttpWorkerThreadPool" class="uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor">
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.http.async.worker.corePoolSize}"/>
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.http.async.worker.maxPoolSize}"/>
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.http.async.worker.timeout}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.http.async.worker.corePoolSize}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.http.async.worker.maxPoolSize}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.http.async.worker.timeout}"/>
         <constructor-arg value="SECONDS"/>
         <constructor-arg>
             <bean class="java.util.concurrent.SynchronousQueue"/>
@@ -108,9 +108,9 @@
 
     <!-- asynchronous http transport -->
     <bean id="asyncHttpResponseProcessorThreadPool" class="uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor">
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.http.async.response.corePoolSize}"/>
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.http.async.response.maxPoolSize}"/>
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.http.async.response.timeout}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.http.async.response.corePoolSize}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.http.async.response.maxPoolSize}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.http.async.response.timeout}"/>
         <constructor-arg value="SECONDS"/>
         <constructor-arg>
             <bean class="java.util.concurrent.SynchronousQueue"/>
@@ -132,14 +132,14 @@
         <property name="dataBindingFactory" ref="disco.marshalling.JSONBindingFactory"/>
         <property name="queryStringGeneratorFactory" ref="qsGeneratorFactory"/>
         <property name="exceptionTransformer" ref="exceptionTransformer"/>
-        <property name="connectTimeout" value="$COUGAR_CLIENT{disco.client.http.async.connectTimeout}"/>
-        <property name="idleTimeout" value="$COUGAR_CLIENT{disco.client.http.async.idleTimeout}"/>
+        <property name="connectTimeout" value="$DISCO_CLIENT{disco.client.http.async.connectTimeout}"/>
+        <property name="idleTimeout" value="$DISCO_CLIENT{disco.client.http.async.idleTimeout}"/>
 
-        <property name="maxRequestsQueuedPerDestination" value="$COUGAR_CLIENT{disco.client.http.async.maxRequestsQueuedPerRoute}"/>
-        <property name="maxConnectionsPerDestination" value="$COUGAR_CLIENT{disco.client.http.async.maxConnectionsPerRoute}"/>
-        <property name="hostnameVerificationDisabled" value="$COUGAR_CLIENT{disco.client.http.async.hostnameVerificationDisabled}" />
+        <property name="maxRequestsQueuedPerDestination" value="$DISCO_CLIENT{disco.client.http.async.maxRequestsQueuedPerRoute}"/>
+        <property name="maxConnectionsPerDestination" value="$DISCO_CLIENT{disco.client.http.async.maxConnectionsPerRoute}"/>
+        <property name="hostnameVerificationDisabled" value="$DISCO_CLIENT{disco.client.http.async.hostnameVerificationDisabled}" />
         <property name="jmxControl" ref="clientJMXControl"/>
-        <property name="hardFailEnumDeserialisation" value="$COUGAR_CLIENT{disco.client.http.async.enums.hardFailure}"/>
+        <property name="hardFailEnumDeserialisation" value="$DISCO_CLIENT{disco.client.http.async.enums.hardFailure}"/>
     </bean>
 
     <!-- synchronous http transport factory -->
@@ -148,23 +148,23 @@
         <property name="dataBindingFactory" ref="disco.marshalling.JSONBindingFactory"/>
         <property name="queryStringGeneratorFactory" ref="qsGeneratorFactory"/>
         <property name="exceptionTransformer" ref="exceptionTransformer"/>
-        <property name="httpTimeout" value="$COUGAR_CLIENT{disco.client.http.clientTimeout}"/>
-        <property name="maxTotalConnections" value="$COUGAR_CLIENT{disco.client.http.maxConnectionsTotal}"/>
-        <property name="maxPerRouteConnections" value="$COUGAR_CLIENT{disco.client.http.maxConnectionsPerRoute}"/>
-        <property name="hardFailEnumDeserialisation" value="$COUGAR_CLIENT{disco.client.http.enums.hardFailure}"/>
+        <property name="httpTimeout" value="$DISCO_CLIENT{disco.client.http.clientTimeout}"/>
+        <property name="maxTotalConnections" value="$DISCO_CLIENT{disco.client.http.maxConnectionsTotal}"/>
+        <property name="maxPerRouteConnections" value="$DISCO_CLIENT{disco.client.http.maxConnectionsPerRoute}"/>
+        <property name="hardFailEnumDeserialisation" value="$DISCO_CLIENT{disco.client.http.enums.hardFailure}"/>
         <property name="contextEmitter" ref="disco.client.DefaultHttpContextEmission"/>
         <property name="tracer" ref="disco.core.Tracer"/>
     </bean>
 
     <!-- binary transport -->
     <bean id="clientSocketMarshaller" class="uk.co.exemel.disco.netutil.nio.marshalling.SocketRMIMarshaller">
-        <property name="hardFailEnumDeserialisation" value="$COUGAR_CLIENT{disco.client.socket.enums.hardFailure}"/>
+        <property name="hardFailEnumDeserialisation" value="$DISCO_CLIENT{disco.client.socket.enums.hardFailure}"/>
     </bean>
 
     <bean id="workerThreadPool" class="uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor">
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.socket.worker.corePoolSize}"/>
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.socket.worker.maxPoolSize}"/>
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.socket.worker.timeout}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.socket.worker.corePoolSize}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.socket.worker.maxPoolSize}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.socket.worker.timeout}"/>
         <constructor-arg value="SECONDS"/>
         <constructor-arg>
             <bean class="java.util.concurrent.LinkedBlockingQueue"/>
@@ -177,9 +177,9 @@
     </bean>
 
     <bean id="reconnectThreadPool" class="uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor">
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.socket.connector.corePoolSize}"/>
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.socket.connector.maxPoolSize}"/>
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.socket.connector.timeout}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.socket.connector.corePoolSize}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.socket.connector.maxPoolSize}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.socket.connector.timeout}"/>
         <constructor-arg value="SECONDS"/>
         <constructor-arg>
             <bean class="java.util.concurrent.LinkedBlockingQueue"/>
@@ -196,15 +196,15 @@
         <property name="nioLogger" ref="clientNioLogger"/>
         <property name="objectIOFactory" ref="objectIOFactory"/>
         <property name="numProcessingThreads"
-                  value="$COUGAR_CLIENT{disco.client.socket.connectedObjectManager.processorThreads}"/>
+                  value="$DISCO_CLIENT{disco.client.socket.connectedObjectManager.processorThreads}"/>
         <property name="maxInitialPopulationWait"
-                  value="$COUGAR_CLIENT{disco.client.socket.connectedObjectManager.maxInitialPopulationWait}"/>
+                  value="$DISCO_CLIENT{disco.client.socket.connectedObjectManager.maxInitialPopulationWait}"/>
         <property name="maxDeltaQueue"
-                  value="$COUGAR_CLIENT{disco.client.socket.connectedObjectManager.maxDeltaQueue}"/>
+                  value="$DISCO_CLIENT{disco.client.socket.connectedObjectManager.maxDeltaQueue}"/>
         <property name="missingDeltaTimeout"
-                  value="$COUGAR_CLIENT{disco.client.socket.connectedObjectManager.missingDeltaTimeout}"/>
+                  value="$DISCO_CLIENT{disco.client.socket.connectedObjectManager.missingDeltaTimeout}"/>
         <property name="pullerAwaitTimeout"
-                  value="$COUGAR_CLIENT{disco.client.socket.connectedObjectManager.pullerAwaitTimeout}"/>
+                  value="$DISCO_CLIENT{disco.client.socket.connectedObjectManager.pullerAwaitTimeout}"/>
         <property name="newListenerConflater">
             <bean factory-bean="newListenerConflaterFactory" factory-method="getConflater"/>
         </property>
@@ -212,7 +212,7 @@
 
     <bean name="newListenerConflaterFactory" class="uk.co.exemel.disco.client.socket.ConflaterFactory">
         <constructor-arg index="0"
-                         value="$COUGAR_CLIENT{disco.client.socket.connectedObjectManager.newListenerConflater}"/>
+                         value="$DISCO_CLIENT{disco.client.socket.connectedObjectManager.newListenerConflater}"/>
     </bean>
 
     <bean id="DNSBasedNetworkAddressResolver"
@@ -220,12 +220,12 @@
 
     <bean id="FILEBasedNetworkAddressResolver"
           class="uk.co.exemel.disco.client.socket.resolver.FileBasedAddressResolver">
-        <constructor-arg index="0" value="$COUGAR_CLIENT{disco.client.socket.address.resolver.file.enabled}"/>
-        <constructor-arg index="1" value="$COUGAR_CLIENT{disco.client.socket.address.resolver.config.file}"/>
+        <constructor-arg index="0" value="$DISCO_CLIENT{disco.client.socket.address.resolver.file.enabled}"/>
+        <constructor-arg index="1" value="$DISCO_CLIENT{disco.client.socket.address.resolver.config.file}"/>
     </bean>
 
     <bean id="networkAddressResolver" class="uk.co.exemel.disco.client.socket.resolver.HotSwitchableAddressResolver">
-        <constructor-arg index="0" value="$COUGAR_CLIENT{disco.client.socket.address.resolver}"/>
+        <constructor-arg index="0" value="$DISCO_CLIENT{disco.client.socket.address.resolver}"/>
     </bean>
 
     <bean id="defaultSocketContextEmission" class="uk.co.exemel.disco.client.api.CompoundContextEmitter">
@@ -249,9 +249,9 @@
         <constructor-arg index="4" ref="clientSocketTransportInfo"/>
         <constructor-arg index="6" ref="workerThreadPool"/>
         <constructor-arg index="7" ref="reconnectThreadPool"/>
-        <constructor-arg index="8" value="$COUGAR_CLIENT{disco.client.socket.reconnectInterval}"/>
-        <constructor-arg index="9" value="$COUGAR_CLIENT{disco.client.socket.handshakeResponseTimeout}"/>
-        <constructor-arg index="10" value="$COUGAR_CLIENT{disco.client.socket.session.recycle.interval}"/>
+        <constructor-arg index="8" value="$DISCO_CLIENT{disco.client.socket.reconnectInterval}"/>
+        <constructor-arg index="9" value="$DISCO_CLIENT{disco.client.socket.handshakeResponseTimeout}"/>
+        <constructor-arg index="10" value="$DISCO_CLIENT{disco.client.socket.session.recycle.interval}"/>
         <constructor-arg index="11" ref="networkAddressResolver"/>
         <constructor-arg index="12" ref="disco.core.Tracer"/>
         <property name="marshaller" ref="clientSocketMarshaller"/>
@@ -263,23 +263,23 @@
     </bean>
 
     <bean id="clientNioConfig" class="uk.co.exemel.disco.netutil.nio.TlsNioConfig">
-        <property name="workerTimeout" value="$COUGAR_CLIENT{disco.client.socket.worker.timeout}"/>
-        <property name="maxWriteQueueSize" value="$COUGAR_CLIENT{disco.client.socket.maxWriteQueueSize}"/>
-        <property name="recvBufferSize" value="$COUGAR_CLIENT{disco.client.socket.receiveBufferSize}"/>
-        <property name="sendBufferSize" value="$COUGAR_CLIENT{disco.client.socket.sendBufferSize}"/>
-        <property name="useDirectBuffersInMina" value="$COUGAR_CLIENT{disco.client.socket.useDirectBuffers}"/>
+        <property name="workerTimeout" value="$DISCO_CLIENT{disco.client.socket.worker.timeout}"/>
+        <property name="maxWriteQueueSize" value="$DISCO_CLIENT{disco.client.socket.maxWriteQueueSize}"/>
+        <property name="recvBufferSize" value="$DISCO_CLIENT{disco.client.socket.receiveBufferSize}"/>
+        <property name="sendBufferSize" value="$DISCO_CLIENT{disco.client.socket.sendBufferSize}"/>
+        <property name="useDirectBuffersInMina" value="$DISCO_CLIENT{disco.client.socket.useDirectBuffers}"/>
         <property name="nioLogger" ref="clientNioLogger"/>
-        <property name="supportsTls" value="$COUGAR_CLIENT{disco.client.socket.ssl.supportsTls}"/>
-        <property name="requiresTls" value="$COUGAR_CLIENT{disco.client.socket.ssl.requiresTls}"/>
-        <property name="wantClientAuth" value="$COUGAR_CLIENT{disco.client.socket.ssl.wantClientAuth}"/>
-        <property name="keystore" value="$COUGAR_CLIENT{disco.client.socket.ssl.keystore}"/>
-        <property name="keystoreType" value="$COUGAR_CLIENT{disco.client.socket.ssl.keystoreType}"/>
-        <property name="keystorePassword" value="$COUGAR_CLIENT{disco.client.socket.ssl.keystorePassword}"/>
-        <property name="truststore" value="$COUGAR_CLIENT{disco.client.socket.ssl.truststore}"/>
-        <property name="truststoreType" value="$COUGAR_CLIENT{disco.client.socket.ssl.truststoreType}"/>
-        <property name="truststorePassword" value="$COUGAR_CLIENT{disco.client.socket.ssl.truststorePassword}"/>
-        <property name="rpcTimeoutMillis" value="$COUGAR_CLIENT{disco.client.socket.rpc.timeout}"/>
-        <property name="rpcTimeoutGranularityMillis" value="$COUGAR_CLIENT{disco.client.socket.rpc.timeout.granularity}"/>
+        <property name="supportsTls" value="$DISCO_CLIENT{disco.client.socket.ssl.supportsTls}"/>
+        <property name="requiresTls" value="$DISCO_CLIENT{disco.client.socket.ssl.requiresTls}"/>
+        <property name="wantClientAuth" value="$DISCO_CLIENT{disco.client.socket.ssl.wantClientAuth}"/>
+        <property name="keystore" value="$DISCO_CLIENT{disco.client.socket.ssl.keystore}"/>
+        <property name="keystoreType" value="$DISCO_CLIENT{disco.client.socket.ssl.keystoreType}"/>
+        <property name="keystorePassword" value="$DISCO_CLIENT{disco.client.socket.ssl.keystorePassword}"/>
+        <property name="truststore" value="$DISCO_CLIENT{disco.client.socket.ssl.truststore}"/>
+        <property name="truststoreType" value="$DISCO_CLIENT{disco.client.socket.ssl.truststoreType}"/>
+        <property name="truststorePassword" value="$DISCO_CLIENT{disco.client.socket.ssl.truststorePassword}"/>
+        <property name="rpcTimeoutMillis" value="$DISCO_CLIENT{disco.client.socket.rpc.timeout}"/>
+        <property name="rpcTimeoutGranularityMillis" value="$DISCO_CLIENT{disco.client.socket.rpc.timeout.granularity}"/>
         <property name="mbeanServer">
             <bean class="org.springframework.jmx.support.MBeanServerFactoryBean">
                 <property name="locateExistingServerIfPossible" value="true"/>
@@ -289,7 +289,7 @@
 
 
     <bean id="clientNioLogger" class="uk.co.exemel.disco.netutil.nio.NioLogger">
-        <constructor-arg value="$COUGAR_CLIENT{disco.client.socket.logLevel}"/>
+        <constructor-arg value="$DISCO_CLIENT{disco.client.socket.logLevel}"/>
     </bean>
 
     <bean id="clientSocketTransportInfo" class="uk.co.exemel.disco.client.socket.jmx.ClientSocketTransportInfo">
@@ -319,21 +319,21 @@
     <bean name="clientMbeanExporter" class="org.springframework.jmx.export.MBeanExporter">
         <property name="beans">
             <map>
-                <entry key="CoUGAR.socket.transport.client:name=asyncHttpWorkerExecutor"
+                <entry key="DiSCO.socket.transport.client:name=asyncHttpWorkerExecutor"
                        value-ref="asyncHttpWorkerThreadPool"/>
-                <entry key="CoUGAR.socket.transport.client:name=asyncHttpResponseProcessorThreadPool"
+                <entry key="DiSCO.socket.transport.client:name=asyncHttpResponseProcessorThreadPool"
                        value-ref="asyncHttpResponseProcessorThreadPool"/>
 
-                <entry key="CoUGAR.socket.transport.client:name=socketWorkerExecutor" value-ref="workerThreadPool"/>
-                <entry key="CoUGAR.socket.transport.client:name=socketConnectorExecutor"
+                <entry key="DiSCO.socket.transport.client:name=socketWorkerExecutor" value-ref="workerThreadPool"/>
+                <entry key="DiSCO.socket.transport.client:name=socketConnectorExecutor"
                        value-ref="reconnectThreadPool"/>
-                <entry key="CoUGAR.socket.transport.client:name=socketConfig" value-ref="clientNioConfig"/>
-                <entry key="CoUGAR.socket.transport.client:name=nioLogger" value-ref="clientNioLogger"/>
-                <entry key="CoUGAR.socket.transport.client:type=addressResolver,name=hybrid"
+                <entry key="DiSCO.socket.transport.client:name=socketConfig" value-ref="clientNioConfig"/>
+                <entry key="DiSCO.socket.transport.client:name=nioLogger" value-ref="clientNioLogger"/>
+                <entry key="DiSCO.socket.transport.client:type=addressResolver,name=hybrid"
                        value-ref="networkAddressResolver"/>
-                <entry key="CoUGAR.socket.transport.client:type=addressResolver,name=file"
+                <entry key="DiSCO.socket.transport.client:type=addressResolver,name=file"
                        value-ref="FILEBasedNetworkAddressResolver"/>
-                <entry key="CoUGAR.socket.transport.client:type=addressResolver,name=dns"
+                <entry key="DiSCO.socket.transport.client:type=addressResolver,name=dns"
                        value-ref="DNSBasedNetworkAddressResolver"/>
             </map>
         </property>

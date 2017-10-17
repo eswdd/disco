@@ -26,7 +26,7 @@
         <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
         <property name="defaultConfig" value="classpath:conf/disco-transport-jms-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
-        <property name="placeholderPrefix" value="$COUGAR_TRANSPORT_JMS{"/>
+        <property name="placeholderPrefix" value="$DISCO_TRANSPORT_JMS{"/>
     </bean>
 
 
@@ -36,10 +36,10 @@
 
     <bean id="jmsEventMarshaller" class="uk.co.exemel.disco.transport.jms.JMSEventMarshaller">
         <property name="dataBindingFactory" ref="disco.marshalling.JSONBindingFactory"/>
-        <property name="characterEncoding" value="$COUGAR_TRANSPORT_JMS{jmsEventMarshaller.characterEncoding}"/>
-        <property name="deliveryMode" value="$COUGAR_TRANSPORT_JMS{jmsEventMarshaller.deliveryMode}"/>
-        <property name="expirationTime" value="$COUGAR_TRANSPORT_JMS{jmsEventMarshaller.expirationTime}"/>
-        <property name="priority" value="$COUGAR_TRANSPORT_JMS{jmsEventMarshaller.priority}"/>
+        <property name="characterEncoding" value="$DISCO_TRANSPORT_JMS{jmsEventMarshaller.characterEncoding}"/>
+        <property name="deliveryMode" value="$DISCO_TRANSPORT_JMS{jmsEventMarshaller.deliveryMode}"/>
+        <property name="expirationTime" value="$DISCO_TRANSPORT_JMS{jmsEventMarshaller.expirationTime}"/>
+        <property name="priority" value="$DISCO_TRANSPORT_JMS{jmsEventMarshaller.priority}"/>
     </bean>
 
     <bean id="simpleEventErrorHandler" class="uk.co.exemel.disco.transport.jms.DefaultErrorHandlerImpl"/>
@@ -47,8 +47,8 @@
     <alias name="jmsEventUnMarshaller" alias="uk.co.exemel.disco.transport.jms.EventUnMarshaller"/>
 
     <bean id="defaultConnectionMonitorFactory" class="uk.co.exemel.disco.transport.jms.monitoring.DefaultConnectionMonitorFactory">
-        <property name="permanentConnectionExpected" value="$COUGAR_TRANSPORT_JMS{jmsTransport.connectionMonitor.permanentConnectionExpected}"/>
-        <property name="maxImpactToOverallStatus" value="$COUGAR_TRANSPORT_JMS{jmsTransport.connectionMonitor.maxImpact}"/>
+        <property name="permanentConnectionExpected" value="$DISCO_TRANSPORT_JMS{jmsTransport.connectionMonitor.permanentConnectionExpected}"/>
+        <property name="maxImpactToOverallStatus" value="$DISCO_TRANSPORT_JMS{jmsTransport.connectionMonitor.maxImpact}"/>
     </bean>
 
     <!-- Abstract bean definition to help reduce the amount of Disco innards that need to be exposed to the client -->

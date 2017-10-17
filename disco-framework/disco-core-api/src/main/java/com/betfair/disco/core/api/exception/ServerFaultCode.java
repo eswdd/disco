@@ -105,7 +105,7 @@ public enum ServerFaultCode {
     private final String errorString;
     private final String toString;
     private final CredentialFaultCode cfc;
-    public static final String COUGAR_EXCEPTION_PREFIX="DSC";
+    public static final String DISCO_EXCEPTION_PREFIX="DSC";
 
 
     private ServerFaultCode(ResponseCode errorCode, int detailCode) {
@@ -114,7 +114,7 @@ public enum ServerFaultCode {
 
 	private ServerFaultCode(ResponseCode errorCode, int detailCode, CredentialFaultCode cfc) {
 		this.errorCode = errorCode;
-		errorString = COUGAR_EXCEPTION_PREFIX+"-"+String.format("%04d", detailCode);
+		errorString = DISCO_EXCEPTION_PREFIX+"-"+String.format("%04d", detailCode);
         toString = name() + "(" + errorString + ")";
         this.cfc = cfc;
 	}

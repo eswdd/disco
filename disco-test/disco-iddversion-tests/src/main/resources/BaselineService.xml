@@ -561,8 +561,8 @@
 		<description>
 			a service with a security attribute - cannot be called without an Authorisation token.
 			Models placing a bet on an Australian exchange
-			use CoUGARAUS as the token you should have permission to call the service
-			use CoUGARUK as the token and the call will be rejected
+			use DiSCOAUS as the token you should have permission to call the service
+			use DiSCOUK as the token and the call will be rejected
 			no token and the call will be rejected 
 		</description>
 		<parameters>

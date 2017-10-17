@@ -173,13 +173,13 @@ public class JettyServerWrapper {
             httpsConnector.setAcceptQueueSize(httpsAcceptQueueSize);
             httpsConnector.addBean(new ConnectorStatistics());
 
-            mbeanServer.registerMBean(getKeystoreCertificateChains(), new ObjectName("CoUGAR.https:name=keyStore"));
+            mbeanServer.registerMBean(getKeystoreCertificateChains(), new ObjectName("DiSCO.https:name=keyStore"));
             // truststore is not required if we don't want client auth
             if (httpsWantClientAuth) {
                 sslContextFactory.setTrustStorePath(httpsTruststore.getFile().getCanonicalPath());
                 sslContextFactory.setTrustStoreType(httpsTruststoreType);
                 sslContextFactory.setTrustStorePassword(httpsTrustPassword);
-                mbeanServer.registerMBean(getTruststoreCertificateChains(), new ObjectName("CoUGAR.https:name=trustStore"));
+                mbeanServer.registerMBean(getTruststoreCertificateChains(), new ObjectName("DiSCO.https:name=trustStore"));
             }
             connectors.add(httpsConnector);
         }

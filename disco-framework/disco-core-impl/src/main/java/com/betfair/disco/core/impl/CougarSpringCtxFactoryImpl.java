@@ -50,7 +50,7 @@ import org.springframework.core.io.Resource;
 public class DiscoSpringCtxFactoryImpl implements DiscoSpringCtxFactory {
     public static final String LOGGING_BOOTSTRAP_CLASS_PROPERTY = "disco.core.log.bootstrap.class";
 
-    public static final Class DEFAULT_COUGAR_LOG_INIT_CLASS = DiscoLog4JBootstrap.class;
+    public static final Class DEFAULT_DISCO_LOG_INIT_CLASS = DiscoLog4JBootstrap.class;
 
     private static final String CONFIG_PREFIX = "conf";
 
@@ -148,11 +148,11 @@ public class DiscoSpringCtxFactoryImpl implements DiscoSpringCtxFactory {
                 } catch (ClassNotFoundException cnfe) {
                     System.err.println("Unable to resolve logging initialisation class: [" +
                             loggingBootstrapClassName + "] falling back to default log4j initialisation for logging");
-                    logBootstrapClass = DEFAULT_COUGAR_LOG_INIT_CLASS;
+                    logBootstrapClass = DEFAULT_DISCO_LOG_INIT_CLASS;
                 }
             }
         } else {
-            logBootstrapClass = DEFAULT_COUGAR_LOG_INIT_CLASS;
+            logBootstrapClass = DEFAULT_DISCO_LOG_INIT_CLASS;
         }
         return logBootstrapClass;
     }

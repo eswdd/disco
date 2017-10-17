@@ -107,11 +107,11 @@ public class HttpClientExecutable extends AbstractHttpExecutable<HttpUriRequest>
         if (transportSSLEnabled) {
             KeyStoreManagement keyStore = KeyStoreManagement.getKeyStoreManagement(httpsKeystoreType, httpsKeystore, httpsKeyPassword);
             if (jmxControl != null && keyStore != null) {
-                jmxControl.registerMBean("CoUGAR:name=HttpClientKeyStore,beanName="+beanName, keyStore);
+                jmxControl.registerMBean("DiSCO:name=HttpClientKeyStore,beanName="+beanName, keyStore);
             }
             KeyStoreManagement trustStore = KeyStoreManagement.getKeyStoreManagement(httpsTruststoreType, httpsTruststore, httpsTrustPassword);
             if (jmxControl != null) {
-                jmxControl.registerMBean("CoUGAR:name=HttpClientTrustStore,beanName="+beanName, trustStore);
+                jmxControl.registerMBean("DiSCO:name=HttpClientTrustStore,beanName="+beanName, trustStore);
             }
             SSLSocketFactory socketFactory = new SSLSocketFactory(keyStore != null ? keyStore.getKeyStore() : null, keyStore != null ? httpsKeyPassword : null, trustStore.getKeyStore());
             if (hostnameVerificationDisabled) {
@@ -126,7 +126,7 @@ public class HttpClientExecutable extends AbstractHttpExecutable<HttpUriRequest>
         metrics = new HttpClientTransportMetrics();
 
         if (jmxControl != null) {
-            jmxControl.registerMBean("CoUGAR:name=HttpClientExecutable,beanName="+beanName, this);
+            jmxControl.registerMBean("DiSCO:name=HttpClientExecutable,beanName="+beanName, this);
         }
     }
 

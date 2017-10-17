@@ -116,7 +116,7 @@ public class ServiceRegisterableExecutionVenue extends BaseExecutionVenue implem
         if (namespace == null) {
             // register the in process one if this is the core service binding
             final InProcessExecutable inProcessExecutable = new InProcessExecutable(tracer);
-            registerServiceDefinition(DiscoInternalOperations.COUGAR_IN_PROCESS_NAMESPACE, serviceDefinition, new ExecutableResolver() {
+            registerServiceDefinition(DiscoInternalOperations.DISCO_IN_PROCESS_NAMESPACE, serviceDefinition, new ExecutableResolver() {
                 @Override
                 public Executable resolveExecutable(OperationKey operationKey, ExecutionVenue ev) {
                     return inProcessExecutable;

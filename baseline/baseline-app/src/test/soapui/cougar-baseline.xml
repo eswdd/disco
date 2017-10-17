@@ -75,7 +75,7 @@
           </con:parameter>
           <con:parameter>
             <con:name>Authorisation</con:name>
-            <con:value>CoUGARUK</con:value>
+            <con:value>DiSCOUK</con:value>
             <con:style>HEADER</con:style>
           </con:parameter>
         </con:parameters>
@@ -724,7 +724,7 @@
         <con:parameters>
           <con:parameter>
             <con:name>Authority</con:name>
-            <con:value>CoUGARUK</con:value>
+            <con:value>DiSCOUK</con:value>
             <con:style>HEADER</con:style>
           </con:parameter>
           <con:parameter>
@@ -911,7 +911,7 @@
           </con:parameter>
           <con:parameter>
             <con:name>Authentication</con:name>
-            <con:value>CoUGARUK</con:value>
+            <con:value>DiSCOUK</con:value>
             <con:style>HEADER</con:style>
           </con:parameter>
         </con:parameters>
@@ -1108,7 +1108,7 @@
         <con:parameters>
           <con:parameter>
             <con:name>Authentication</con:name>
-            <con:value>CoUGARUK</con:value>
+            <con:value>DiSCOUK</con:value>
             <con:style>HEADER</con:style>
           </con:parameter>
           <con:parameter>
@@ -2872,12 +2872,12 @@
         <con:parameters>
           <con:parameter>
             <con:name>Authority</con:name>
-            <con:value>CoUGARUK</con:value>
+            <con:value>DiSCOUK</con:value>
             <con:style>HEADER</con:style>
           </con:parameter>
           <con:parameter>
             <con:name>Subject</con:name>
-            <con:value>CoUGARUK</con:value>
+            <con:value>DiSCOUK</con:value>
             <con:style>HEADER</con:style>
           </con:parameter>
         </con:parameters>
@@ -3850,7 +3850,7 @@
         <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
         <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/" xmlns:sec="http://www.betfair.com/security/">
    <soapenv:Header>
-	<Authentication>CoUGARUK</Authentication>
+	<Authentication>DiSCOUK</Authentication>
    </soapenv:Header>
    <soapenv:Body>
       <bas:TestSecureServiceRequest>
@@ -4304,9 +4304,9 @@
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -4361,9 +4361,9 @@ declare namespace soapenv='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -4414,9 +4414,9 @@ declare namespace soapenv='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -4460,9 +4460,9 @@ declare namespace soapenv='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -4495,9 +4495,9 @@ declare namespace soapenv='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -4531,9 +4531,9 @@ declare namespace soapenv='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -4569,9 +4569,9 @@ declare namespace soapenv='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -4608,9 +4608,9 @@ declare namespace soapenv='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://localhost:9001/BaselineService</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-          <bas:Authority>CoUGARUK</bas:Authority>
+          <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -4651,9 +4651,9 @@ declare namespace soapenv='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -4854,9 +4854,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -5060,9 +5060,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -5106,7 +5106,7 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header>
-         <Authentication>CoUGARUK</Authentication>
+         <Authentication>DiSCOUK</Authentication>
    </soapenv:Header>
    <soapenv:Body>
       <bas:TestSecureServiceRequest>
@@ -5146,9 +5146,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header>
 	<bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUS</bas:Authority>
+         <bas:Authority>DiSCOUS</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUS</bas:Subject>
+         <bas:Subject>DiSCOUS</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -5188,9 +5188,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header>
 	<bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUS</bas:Authority>
+         <bas:Authority>DiSCOUS</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
 	</bas:Header>
 </soapenv:Header>
    <soapenv:Body>
@@ -5281,9 +5281,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
    <soapenv:Header>
 	<bas:Header>
          <!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -5320,9 +5320,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header>
 	<bas:Header>
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -5358,9 +5358,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -5387,9 +5387,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -5416,9 +5416,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -5445,9 +5445,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -5474,9 +5474,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -5521,9 +5521,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header>
 	<bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -5550,9 +5550,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUK</bas:Authority>
+         <bas:Authority>DiSCOUK</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
@@ -5579,9 +5579,9 @@ declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
             <con:endpoint>http://${#Project#hostname}:${#Project#port}/BaselineService/${#Project#version}</con:endpoint>
             <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://www.betfair.com/servicetypes/v2/Baseline/">
    <soapenv:Header><bas:Header><!--type: string-->
-         <bas:Authority>CoUGARUS</bas:Authority>
+         <bas:Authority>DiSCOUS</bas:Authority>
          <!--type: string-->
-         <bas:Subject>CoUGARUK</bas:Subject>
+         <bas:Subject>DiSCOUK</bas:Subject>
       </bas:Header>
    </soapenv:Header>
    <soapenv:Body>
