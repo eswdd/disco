@@ -20,8 +20,8 @@ package ${package}.${majorVersion};
 
 import ${package}.${majorVersion}.to.*;
 import ${package}.${majorVersion}.enumerations.*;
-import com.betfair.cougar.api.*;
-import com.betfair.cougar.core.api.ev.*;
+import uk.co.exemel.disco.api.*;
+import uk.co.exemel.disco.core.api.ev.*;
 
 import java.util.*;
 
@@ -33,7 +33,7 @@ import java.util.*;
  */
  
 @SuppressWarnings("all")
-public interface  ${service}AsyncService extends com.betfair.cougar.api.Service {<#t>
+public interface  ${service}AsyncService extends uk.co.exemel.disco.api.Service {<#t>
 <#recurse doc><#t>
 }<#t>
 <#t>

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.api.security.InferredCountryResolver;
+import uk.co.exemel.disco.api.security.InferredCountryResolver;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

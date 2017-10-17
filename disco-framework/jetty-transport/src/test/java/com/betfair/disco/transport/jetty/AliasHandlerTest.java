@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
-import com.betfair.cougar.transport.api.TransportCommandProcessor;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.api.TransportCommandProcessor;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
 import org.eclipse.jetty.continuation.Continuation;
 import org.eclipse.jetty.server.Request;
 import org.junit.Before;

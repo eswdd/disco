@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket.jmx;
+package uk.co.exemel.disco.client.socket.jmx;
 
-import com.betfair.cougar.client.socket.ClientConnectedObjectManager;
-import com.betfair.cougar.client.socket.ClientSubscription;
-import com.betfair.cougar.client.socket.HeapState;
-import com.betfair.cougar.core.api.ev.Subscription;
-import com.betfair.cougar.core.api.jmx.JMXHttpParser;
-import com.betfair.cougar.core.api.jmx.JMXHttpParserReader;
-import com.betfair.cougar.netutil.nio.HandlerListener;
-import com.betfair.cougar.netutil.nio.NioUtils;
+import uk.co.exemel.disco.client.socket.ClientConnectedObjectManager;
+import uk.co.exemel.disco.client.socket.ClientSubscription;
+import uk.co.exemel.disco.client.socket.HeapState;
+import uk.co.exemel.disco.core.api.ev.Subscription;
+import uk.co.exemel.disco.core.api.jmx.JMXHttpParser;
+import uk.co.exemel.disco.core.api.jmx.JMXHttpParserReader;
+import uk.co.exemel.disco.netutil.nio.HandlerListener;
+import uk.co.exemel.disco.netutil.nio.NioUtils;
 import org.apache.mina.common.IoSession;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -49,7 +49,7 @@ public class ClientSocketTransportInfo implements JMXHttpParser, HandlerListener
     private String jmxHttpParserReaderBeanName;
 
     public ClientSocketTransportInfo(String jmxHttpParserReaderBeanName, ClientConnectedObjectManager connectedObjectManager) {
-        // irritatingly, this has to be passed as a string in case we're sat outside a cougar server, in which case the bean won't exist..
+        // irritatingly, this has to be passed as a string in case we're sat outside a disco server, in which case the bean won't exist..
         this.jmxHttpParserReaderBeanName = jmxHttpParserReaderBeanName;
         this.connectedObjectManager = connectedObjectManager;
     }
@@ -66,7 +66,7 @@ public class ClientSocketTransportInfo implements JMXHttpParser, HandlerListener
             reader.addCustomParser(this);
         }
         catch (Exception e) {
-            // ignore, probably means that we're not running in a cougar server
+            // ignore, probably means that we're not running in a disco server
         }
     }
 

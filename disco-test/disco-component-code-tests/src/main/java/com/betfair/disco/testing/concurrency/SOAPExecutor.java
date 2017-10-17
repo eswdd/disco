@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.testing.concurrency;
+package uk.co.exemel.disco.testing.concurrency;
 
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SOAPExecutor extends Thread{
-	private CougarManager cougarManager = CougarManager.getInstance();
+	private DiscoManager discoManager = DiscoManager.getInstance();
 
 	private String identifier;
 	private int numberOfRequests;
@@ -70,7 +70,7 @@ public class SOAPExecutor extends Thread{
 			Date time = new Date();
 			expectedRequestTimes.put(identifier + "Response " + loopCounter, new Timestamp(time.getTime()));
 
-			cougarManager.makeSoapCougarHTTPCalls(callBean);
+			discoManager.makeSoapDiscoHTTPCalls(callBean);
 
 			loopCounter++;
 		}
@@ -78,7 +78,7 @@ public class SOAPExecutor extends Thread{
 		// Get actual responses
 		loopCounter = 0;
 		for (HttpCallBean httpCallBean : httpCallBeans) {
-			HttpResponseBean responseBean = httpCallBean.getResponseObjectsByEnum(CougarMessageProtocolResponseTypeEnum.SOAP);
+			HttpResponseBean responseBean = httpCallBean.getResponseObjectsByEnum(DiscoMessageProtocolResponseTypeEnum.SOAP);
 			responseBean.clearResponseHeaders();
 			actualResponses.put(identifier + "Response " + loopCounter, responseBean);
 			loopCounter++;

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol;
+package uk.co.exemel.disco.transport.impl.protocol;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.transport.api.protocol.ProtocolBinding;
-import com.betfair.cougar.transport.api.protocol.ProtocolBindingRegistry;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.transport.api.protocol.ProtocolBinding;
+import uk.co.exemel.disco.transport.api.protocol.ProtocolBindingRegistry;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.Before;

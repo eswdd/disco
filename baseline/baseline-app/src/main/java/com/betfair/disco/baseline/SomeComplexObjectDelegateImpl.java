@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline;
+package uk.co.exemel.disco.baseline;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

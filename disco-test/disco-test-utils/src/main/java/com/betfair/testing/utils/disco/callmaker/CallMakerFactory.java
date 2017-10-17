@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.callmaker;
+package com.betfair.testing.utils.disco.callmaker;
 
-import com.betfair.testing.utils.cougar.enums.*;
+import com.betfair.testing.utils.disco.enums.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,9 +25,9 @@ public final class CallMakerFactory {
 
 	private CallMakerFactory(){}
 	
-	private static Map<CougarMessageProtocolRequestTypeEnum, AbstractCallMaker> requestBuilderMap = new HashMap<CougarMessageProtocolRequestTypeEnum, AbstractCallMaker>();
+	private static Map<DiscoMessageProtocolRequestTypeEnum, AbstractCallMaker> requestBuilderMap = new HashMap<DiscoMessageProtocolRequestTypeEnum, AbstractCallMaker>();
 
-	public static AbstractCallMaker resolveRequestBuilderForCougarService(CougarMessageProtocolRequestTypeEnum protocolRequestType) {
+	public static AbstractCallMaker resolveRequestBuilderForDiscoService(DiscoMessageProtocolRequestTypeEnum protocolRequestType) {
 	
 		AbstractCallMaker callMaker = requestBuilderMap.get(protocolRequestType);
 		if (callMaker == null) {
@@ -36,11 +36,11 @@ public final class CallMakerFactory {
 		return callMaker;
 	}
 
-	public static Map<CougarMessageProtocolRequestTypeEnum, AbstractCallMaker> getRequestBuilderMap() {
+	public static Map<DiscoMessageProtocolRequestTypeEnum, AbstractCallMaker> getRequestBuilderMap() {
 		return requestBuilderMap;
 	}
 
-	public static void setRequestBuilderMap(Map<CougarMessageProtocolRequestTypeEnum, AbstractCallMaker> rbm) {
+	public static void setRequestBuilderMap(Map<DiscoMessageProtocolRequestTypeEnum, AbstractCallMaker> rbm) {
 		CallMakerFactory.requestBuilderMap = rbm;
 	}	
 	

@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
-import com.betfair.cougar.CougarVersion;
+import uk.co.exemel.disco.DiscoVersion;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.junit.Test;
 
@@ -26,7 +26,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for {@link com.betfair.cougar.transport.jetty.CrossOriginHandler}
+ * Unit tests for {@link uk.co.exemel.disco.transport.jetty.CrossOriginHandler}
  */
 public class CrossOriginHandlerTest {
 
@@ -39,7 +39,7 @@ public class CrossOriginHandlerTest {
 
         victim.handle("/", req, req, res);
 
-        verify(res, times(1)).setHeader(eq("Server"), eq("Cougar 2 - " + CougarVersion.getVersion()));
+        verify(res, times(1)).setHeader(eq("Server"), eq("Disco 2 - " + DiscoVersion.getVersion()));
     }
 
     @Test

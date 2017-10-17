@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.CougarVersion;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.client.api.ContextEmitter;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.DiscoVersion;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.client.api.ContextEmitter;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 
@@ -34,20 +34,20 @@ import java.util.Map;
 import static org.apache.http.HttpHeaders.*;
 
 /**
- * {@code CougarRequestFactory} describes contract and base behaviour for creating http requests on client side.
+ * {@code DiscoRequestFactory} describes contract and base behaviour for creating http requests on client side.
  * Particular implementations are to be used within each actual transport.
  */
-public abstract class CougarRequestFactory<HR> {
+public abstract class DiscoRequestFactory<HR> {
     protected static final String UTF8 = "utf-8";
 
     // todo: base this on app name as well?
-    static final String USER_AGENT_HEADER = "Cougar Client " + CougarVersion.getVersion();
+    static final String USER_AGENT_HEADER = "Disco Client " + DiscoVersion.getVersion();
 
     private final ContextEmitter<HR,List<Header>> contextEmission;
 
     private volatile boolean gzipCompressionEnabled;
 
-    public CougarRequestFactory(ContextEmitter<HR,List<Header>> contextEmission) {
+    public DiscoRequestFactory(ContextEmitter<HR,List<Header>> contextEmission) {
         this.contextEmission = contextEmission;
     }
 

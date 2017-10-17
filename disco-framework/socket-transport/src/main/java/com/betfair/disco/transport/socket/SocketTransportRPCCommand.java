@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
-import com.betfair.cougar.transport.api.TransportCommand;
-import com.betfair.cougar.transport.api.protocol.CougarObjectInput;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
+import uk.co.exemel.disco.transport.api.TransportCommand;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectInput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
 import org.apache.mina.common.IoSession;
 
 public interface SocketTransportRPCCommand extends SocketTransportCommand {
 
-	public CougarObjectOutput getOutput();
+	public DiscoObjectOutput getOutput();
 
 }
 

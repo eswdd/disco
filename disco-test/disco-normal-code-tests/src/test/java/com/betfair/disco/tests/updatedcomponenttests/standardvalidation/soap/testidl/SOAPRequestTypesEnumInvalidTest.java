@@ -16,15 +16,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardValidation/SOAP/Test-IDL/SOAP_RequestTypes_Byte_null.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardvalidation.soap.testidl;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardvalidation.soap.testidl;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -33,22 +33,22 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Ensure that when a SOAP request is received with a null Byte parameter Cougar returns the correct fault
+ * Ensure that when a SOAP request is received with a null Byte parameter Disco returns the correct fault
  */
 public class SOAPRequestTypesEnumInvalidTest {
     @Test(dataProvider = "ValidationStyleAndFailureLocation")
     public void doTest(boolean schemaValidationEnabled, String location) throws Exception {
-        CougarHelpers helpers = new CougarHelpers();
+        DiscoHelpers helpers = new DiscoHelpers();
         try {
-            CougarManager cougarManager = CougarManager.getInstance();
+            DiscoManager discoManager = DiscoManager.getInstance();
             helpers.setSOAPSchemaValidationEnabled(schemaValidationEnabled);
             // Create the HttpCallBean
-            CougarManager cougarManager1 = CougarManager.getInstance();
-            HttpCallBean httpCallBeanBaseline = cougarManager1.getNewHttpCallBean();
-            CougarManager cougarManagerBaseline = cougarManager1;
-            // Get the cougar logging attribute for getting log entries later
+            DiscoManager discoManager1 = DiscoManager.getInstance();
+            HttpCallBean httpCallBeanBaseline = discoManager1.getNewHttpCallBean();
+            DiscoManager discoManagerBaseline = discoManager1;
+            // Get the disco logging attribute for getting log entries later
             // Point the created HttpCallBean at the correct service
-            httpCallBeanBaseline.setServiceName("baseline", "cougarBaseline");
+            httpCallBeanBaseline.setServiceName("baseline", "discoBaseline");
 
             httpCallBeanBaseline.setVersion("v2");
             // Create the SOAP request as an XML Document (with a null byte parameter)
@@ -61,11 +61,11 @@ public class SOAPRequestTypesEnumInvalidTest {
                     +(location.equals("query")?"wibble":"BAR")+
                     "</queryParam></EnumSimpleOperationRequest>");
             // Set up the Http Call Bean to make the request
-            CougarManager cougarManager3 = CougarManager.getInstance();
-            HttpCallBean hbean = cougarManager3.getNewHttpCallBean("87.248.113.14");
-            CougarManager hinstance = cougarManager3;
+            DiscoManager discoManager3 = DiscoManager.getInstance();
+            HttpCallBean hbean = discoManager3.getNewHttpCallBean("87.248.113.14");
+            DiscoManager hinstance = discoManager3;
 
-            hinstance.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+            hinstance.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
 
             hbean.setServiceName("Baseline");
 
@@ -76,22 +76,22 @@ public class SOAPRequestTypesEnumInvalidTest {
 
             Timestamp getTimeAsTimeStamp9 = new Timestamp(System.currentTimeMillis());
             // Make the SOAP call to the operation
-            hinstance.makeSoapCougarHTTPCalls(hbean);
+            hinstance.makeSoapDiscoHTTPCalls(hbean);
             // Create the expected response object as an XML document (fault)
             XMLHelpers xMLHelpers5 = new XMLHelpers();
             Document createAsDocument11 = xMLHelpers5.getXMLObjectFromString("<soapenv:Fault><faultcode>soapenv:Client</faultcode><faultstring>DSC-0044</faultstring><detail/></soapenv:Fault>");
             // Check the response is as expected
-            HttpResponseBean response6 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+            HttpResponseBean response6 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
             AssertionUtils.multiAssertEquals(createAsDocument11, response6.getResponseObject());
 
             // generalHelpers.pauseTest(500L);
             // Check the log entries are as expected
 
-            CougarHelpers cougarHelpers9 = new CougarHelpers();
-            String JavaVersion = cougarHelpers9.getJavaVersion();
+            DiscoHelpers discoHelpers9 = new DiscoHelpers();
+            String JavaVersion = discoHelpers9.getJavaVersion();
 
-            CougarManager cougarManager10 = CougarManager.getInstance();
-            cougarManager10.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9, new AccessLogRequirement("87.248.113.14", "/BaselineService/v2", "BadRequest"));
+            DiscoManager discoManager10 = DiscoManager.getInstance();
+            discoManager10.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9, new AccessLogRequirement("87.248.113.14", "/BaselineService/v2", "BadRequest"));
         } finally {
             helpers.setSOAPSchemaValidationEnabled(true);
         }

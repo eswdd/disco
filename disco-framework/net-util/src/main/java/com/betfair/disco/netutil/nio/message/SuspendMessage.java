@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.message;
+package uk.co.exemel.disco.netutil.nio.message;
 
 /**
  *  Sent by the server just before a disconnect is issued so that

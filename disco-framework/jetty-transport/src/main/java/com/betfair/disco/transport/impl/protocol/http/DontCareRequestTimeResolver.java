@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.transport.api.RequestTimeResolver;
+import uk.co.exemel.disco.transport.api.RequestTimeResolver;
 
 import java.util.Date;
 

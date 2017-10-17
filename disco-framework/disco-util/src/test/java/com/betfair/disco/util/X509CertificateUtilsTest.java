@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util;
+package uk.co.exemel.disco.util;
 
 import org.junit.Test;
 import org.springframework.core.io.FileSystemResource;

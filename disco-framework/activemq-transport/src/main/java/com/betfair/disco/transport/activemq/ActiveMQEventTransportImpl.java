@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.activemq;
+package uk.co.exemel.disco.transport.activemq;
 
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.transport.activemq.monitoring.ManagedActiveMQConnection;
-import com.betfair.cougar.transport.api.protocol.events.EventServiceBindingDescriptor;
-import com.betfair.cougar.transport.jms.JmsEventTransportImpl;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.transport.activemq.monitoring.ManagedActiveMQConnection;
+import uk.co.exemel.disco.transport.api.protocol.events.EventServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.jms.JmsEventTransportImpl;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQSession;
 import org.apache.activemq.ActiveMQSslConnectionFactory;

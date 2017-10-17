@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.helpers;
+package com.betfair.testing.utils.disco.helpers;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;

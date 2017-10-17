@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.callmaker;
+package com.betfair.testing.utils.disco.callmaker;
 
 
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
 import org.apache.http.client.methods.HttpUriRequest;
 
 public class RestGenericCallMaker extends AbstractCallMaker {
 
-	private CougarHelpers cougarHelpers = new CougarHelpers();
+	private DiscoHelpers discoHelpers = new DiscoHelpers();
 	
-	public CougarHelpers getCougarHelpers() {
-		return cougarHelpers;
+	public DiscoHelpers getDiscoHelpers() {
+		return discoHelpers;
 	}
 
-	public void setCougarHelpers(CougarHelpers cougarHelpers) {
-		this.cougarHelpers = cougarHelpers;
+	public void setDiscoHelpers(DiscoHelpers discoHelpers) {
+		this.discoHelpers = discoHelpers;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.betfair.testing.utils.cougar.callmaker.AbstractCallMaker#makeCall(com.betfair.testing.utils.cougar.beans.HttpCallBean, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum)
+	 * @see com.betfair.testing.utils.disco.callmaker.AbstractCallMaker#makeCall(com.betfair.testing.utils.disco.beans.HttpCallBean, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum)
 	 */
 	@Override
-	public HttpResponseBean makeCall(HttpCallBean httpCallBean, CougarMessageContentTypeEnum responseContentTypeEnum) {
+	public HttpResponseBean makeCall(HttpCallBean httpCallBean, DiscoMessageContentTypeEnum responseContentTypeEnum) {
 
-		CougarMessageProtocolRequestTypeEnum protocolRequestType = CougarMessageProtocolRequestTypeEnum.REST;
-		CougarMessageContentTypeEnum requestContentTypeEnum = CougarMessageContentTypeEnum.OTHER;
+		DiscoMessageProtocolRequestTypeEnum protocolRequestType = DiscoMessageProtocolRequestTypeEnum.REST;
+		DiscoMessageContentTypeEnum requestContentTypeEnum = DiscoMessageContentTypeEnum.OTHER;
 				
-		HttpUriRequest method = cougarHelpers.getRestMethod(httpCallBean, protocolRequestType);
-		HttpResponseBean responseBean = cougarHelpers.makeRestCougarHTTPCall(httpCallBean, method, protocolRequestType, responseContentTypeEnum, requestContentTypeEnum);
+		HttpUriRequest method = discoHelpers.getRestMethod(httpCallBean, protocolRequestType);
+		HttpResponseBean responseBean = discoHelpers.makeRestDiscoHTTPCall(httpCallBean, method, protocolRequestType, responseContentTypeEnum, requestContentTypeEnum);
 		
 		return responseBean;
 

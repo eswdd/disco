@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.configuration;
+package uk.co.exemel.disco.util.configuration;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.beans.BeansException;

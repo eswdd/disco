@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.core.api.*;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.events.Event;
-import com.betfair.cougar.core.api.transports.EventTransport;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.core.api.*;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.events.Event;
+import uk.co.exemel.disco.core.api.transports.EventTransport;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
 
 import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Instantiate one of these to introduce a service to cougar
+ * Instantiate one of these to introduce a service to disco
  */
 public class ServiceRegistration extends AbstractServiceRegistration {
     //These properties are only used if the application emits events

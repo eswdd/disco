@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.message;
+package uk.co.exemel.disco.netutil.nio.message;
 
 import org.apache.mina.common.ByteBuffer;
 

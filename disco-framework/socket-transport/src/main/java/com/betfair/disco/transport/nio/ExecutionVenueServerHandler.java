@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.nio;
+package uk.co.exemel.disco.transport.nio;
 
-import com.betfair.cougar.netutil.nio.*;
-import com.betfair.cougar.netutil.nio.message.EventMessage;
-import com.betfair.cougar.netutil.nio.message.RequestMessage;
-import com.betfair.cougar.netutil.nio.message.ResponseMessage;
-import com.betfair.cougar.transport.api.TransportCommandProcessor;
-import com.betfair.cougar.transport.api.protocol.CougarObjectIOFactory;
-import com.betfair.cougar.transport.api.protocol.CougarObjectInput;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
-import com.betfair.cougar.transport.api.protocol.socket.SocketBindingDescriptor;
-import com.betfair.cougar.transport.socket.SocketTransportCommand;
-import com.betfair.cougar.transport.socket.SocketTransportCommandImpl;
-import com.betfair.cougar.transport.socket.SocketTransportCommandProcessor;
-import com.betfair.cougar.transport.socket.SocketTransportRPCCommandImpl;
-import com.betfair.cougar.util.jmx.Exportable;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.netutil.nio.*;
+import uk.co.exemel.disco.netutil.nio.message.EventMessage;
+import uk.co.exemel.disco.netutil.nio.message.RequestMessage;
+import uk.co.exemel.disco.netutil.nio.message.ResponseMessage;
+import uk.co.exemel.disco.transport.api.TransportCommandProcessor;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectIOFactory;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectInput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
+import uk.co.exemel.disco.transport.api.protocol.socket.SocketBindingDescriptor;
+import uk.co.exemel.disco.transport.socket.SocketTransportCommand;
+import uk.co.exemel.disco.transport.socket.SocketTransportCommandImpl;
+import uk.co.exemel.disco.transport.socket.SocketTransportCommandProcessor;
+import uk.co.exemel.disco.transport.socket.SocketTransportRPCCommandImpl;
+import uk.co.exemel.disco.util.jmx.Exportable;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoHandlerAdapter;
 import org.apache.mina.common.IoSession;
@@ -48,8 +48,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.betfair.cougar.netutil.nio.NioLogger.LoggingLevel.ALL;
-import static com.betfair.cougar.netutil.nio.NioLogger.LoggingLevel.SESSION;
+import static uk.co.exemel.disco.netutil.nio.NioLogger.LoggingLevel.ALL;
+import static uk.co.exemel.disco.netutil.nio.NioLogger.LoggingLevel.SESSION;
 
 @ManagedResource
 public class ExecutionVenueServerHandler extends IoHandlerAdapter implements Exportable {
@@ -66,7 +66,7 @@ public class ExecutionVenueServerHandler extends IoHandlerAdapter implements Exp
     private final AtomicLong otherExceptions = new AtomicLong();
     private final AtomicLong ioExceptions = new AtomicLong();
 
-    private final CougarObjectIOFactory objectIOFactory;
+    private final DiscoObjectIOFactory objectIOFactory;
     private List<HandlerListener> listeners = new CopyOnWriteArrayList<HandlerListener>();
     private final ConcurrentHashMap<IoSession, String> sessions = new ConcurrentHashMap<IoSession, String>();
 
@@ -80,7 +80,7 @@ public class ExecutionVenueServerHandler extends IoHandlerAdapter implements Exp
     }
 
     public ExecutionVenueServerHandler(NioLogger sessionLogger, TransportCommandProcessor<SocketTransportCommand> processor,
-                                       CougarObjectIOFactory objectIOFactory) {
+                                       DiscoObjectIOFactory objectIOFactory) {
         this.sessionLogger = sessionLogger;
         this.processor = processor;
         this.objectIOFactory = objectIOFactory;
@@ -96,8 +96,8 @@ public class ExecutionVenueServerHandler extends IoHandlerAdapter implements Exp
         else if (message instanceof RequestMessage) {
             RequestMessage req = (RequestMessage) message;
 
-            final CougarObjectOutput out = objectIOFactory.newCougarObjectOutput(new ByteArrayOutputStreamWithIoSession(session, req.getCorrelationId()), CougarProtocol.getProtocolVersion(session));
-            final CougarObjectInput in = objectIOFactory.newCougarObjectInput(new ByteArrayInputStream(req.getPayload()), CougarProtocol.getProtocolVersion(session));
+            final DiscoObjectOutput out = objectIOFactory.newDiscoObjectOutput(new ByteArrayOutputStreamWithIoSession(session, req.getCorrelationId()), DiscoProtocol.getProtocolVersion(session));
+            final DiscoObjectInput in = objectIOFactory.newDiscoObjectInput(new ByteArrayInputStream(req.getPayload()), DiscoProtocol.getProtocolVersion(session));
             final String remoteAddress = ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
             final SocketTransportCommandImpl command = new SocketTransportRPCCommandImpl(in, out, remoteAddress, session);
 
@@ -109,7 +109,7 @@ public class ExecutionVenueServerHandler extends IoHandlerAdapter implements Exp
         else if (message instanceof EventMessage) {
             EventMessage em = (EventMessage) message;
 
-            final CougarObjectInput in = objectIOFactory.newCougarObjectInput(new ByteArrayInputStream(em.getPayload()), CougarProtocol.getProtocolVersion(session));
+            final DiscoObjectInput in = objectIOFactory.newDiscoObjectInput(new ByteArrayInputStream(em.getPayload()), DiscoProtocol.getProtocolVersion(session));
             final String remoteAddress = ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
             final SocketTransportCommandImpl command = new SocketTransportCommandImpl(in, remoteAddress, session);
 

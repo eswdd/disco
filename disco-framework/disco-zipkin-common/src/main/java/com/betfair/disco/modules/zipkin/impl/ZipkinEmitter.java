@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.impl;
+package uk.co.exemel.disco.modules.zipkin.impl;
 
-import com.betfair.cougar.modules.zipkin.api.ZipkinData;
-import com.betfair.cougar.util.geolocation.RemoteAddressUtils;
-import com.betfair.cougar.util.time.Clock;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinData;
+import uk.co.exemel.disco.util.geolocation.RemoteAddressUtils;
+import uk.co.exemel.disco.util.time.Clock;
 import com.github.kristofa.brave.zipkin.ZipkinSpanCollector;
 import com.twitter.zipkin.gen.Endpoint;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ import static com.twitter.zipkin.gen.zipkinCoreConstants.*;
  * An emitter capable of emitting ZipkinData information to a ZipkinSpanCollector. ZipkinEmitter should be instantiated
  * per service, as it stores information about the service (attaching it to the emitted spans transparently).
  *
- * @see com.betfair.cougar.modules.zipkin.api.ZipkinData
+ * @see uk.co.exemel.disco.modules.zipkin.api.ZipkinData
  */
 @ManagedResource
 public class ZipkinEmitter implements InitializingBean {
@@ -58,7 +58,7 @@ public class ZipkinEmitter implements InitializingBean {
 
     /**
      * Creates a new ZipkinEmitter. This constructor overload obtains the service IPv4 through
-     * com.betfair.cougar.util.geolocation.RemoteAddressUtils.
+     * uk.co.exemel.disco.util.geolocation.RemoteAddressUtils.
      *
      * @param serviceName         The name of the service the emitter will correspond to
      * @param zipkinSpanCollector The brave ZipkinSpanCollector to be used for emitting spans

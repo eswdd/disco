@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.transports;
+package uk.co.exemel.disco.core.api.transports;
 
-import com.betfair.cougar.core.api.BindingDescriptorRegistrationListener;
+import uk.co.exemel.disco.core.api.BindingDescriptorRegistrationListener;
 import org.springframework.beans.factory.annotation.Required;
 
 /**

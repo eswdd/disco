@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.logging;
+package uk.co.exemel.disco.core.impl.logging;
 
 import java.io.IOException;
 import java.util.Properties;
 
 /**
  * Null log bootstrap class, employed when you don't
- * want to use a cougar initialised logging framework
+ * want to use a disco initialised logging framework
  */
 public class NullLogBootstrap implements LogBootstrap {
     @Override

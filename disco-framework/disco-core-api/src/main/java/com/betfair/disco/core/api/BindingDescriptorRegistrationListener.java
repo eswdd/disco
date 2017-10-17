@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api;
+package uk.co.exemel.disco.core.api;
 
 /**
  * Mixin interface to allow a transport to be informed of a new serviceBindingDescriptor

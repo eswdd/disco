@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.daos;
+package com.betfair.testing.utils.disco.daos;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -23,7 +23,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
 
-public class CougarDefaultDAO implements ICougarDAO {
+public class DiscoDefaultDAO implements IDiscoDAO {
 	
 	private ThreadLocal<HttpClient> clients = new ThreadLocal<HttpClient>();
 	
@@ -36,7 +36,7 @@ public class CougarDefaultDAO implements ICougarDAO {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.betfair.testing.utils.cougar.daos.ICougarDAO#executeHttpMethodBaseCall(org.apache.commons.httpclient.HttpMethodBase)
+	 * @see com.betfair.testing.utils.disco.daos.IDiscoDAO#executeHttpMethodBaseCall(org.apache.commons.httpclient.HttpMethodBase)
 	 */
 	public HttpResponse executeHttpMethodBaseCall(HttpUriRequest method) throws IOException {
         if (clients.get() == null) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil;
+package uk.co.exemel.disco.netutil;
 
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -26,8 +26,8 @@ import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static com.betfair.cougar.netutil.InetSocketAddressUtils.asString;
-import static com.betfair.cougar.netutil.InetSocketAddressUtils.createInetSocketAddress;
+import static uk.co.exemel.disco.netutil.InetSocketAddressUtils.asString;
+import static uk.co.exemel.disco.netutil.InetSocketAddressUtils.createInetSocketAddress;
 
 @RunWith(value = Parameterized.class)
 public class InetSocketAddressUtilsTest extends TestCase {

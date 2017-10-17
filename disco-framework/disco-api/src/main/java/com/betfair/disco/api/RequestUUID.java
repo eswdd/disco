@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api;
+package uk.co.exemel.disco.api;
 
 import java.io.Externalizable;
 
@@ -31,10 +31,10 @@ public interface RequestUUID {
 	String getUUID();
 
     /**
-     * Returns the representation to be used in standard cougar logs, including but not limited to request, access and
-     * trace logs. This must always return a string compatible with the default cougar RequestUUID implementation.
+     * Returns the representation to be used in standard disco logs, including but not limited to request, access and
+     * trace logs. This must always return a string compatible with the default disco RequestUUID implementation.
      */
-    String toCougarLogString();
+    String toDiscoLogString();
 
     /**
      * Get the root component of this uuid. Returns null if there is none.

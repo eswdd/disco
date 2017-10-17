@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.manager;
+package com.betfair.testing.utils.disco.manager;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.testing.utils.cougar.beans.HttpPageBean;
-import com.betfair.testing.utils.cougar.helpers.HttpHelpers;
+import uk.co.exemel.disco.api.export.Protocol;
+import com.betfair.testing.utils.disco.beans.HttpPageBean;
+import com.betfair.testing.utils.disco.helpers.HttpHelpers;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
@@ -128,7 +128,7 @@ public class HttpPageManager {
 
         List<String> endpointList= new ArrayList<String>();
 
-        // Find end points for each protocol used by Cougar (RESCRIPT, SOAP, JSONRPC)
+        // Find end points for each protocol used by Disco (RESCRIPT, SOAP, JSONRPC)
         for (Protocol p : Protocol.values()) {
             int start=0, end=0, absoluteFilePos = 0;
             boolean done = false;

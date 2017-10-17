@@ -15,14 +15,14 @@
  */
 
 // Originally from UpdatedComponentTests/ErrorCodes/Rest/Rest_Get_WotsitExceptions_SUSPENDED.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.errorcodes.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.errorcodes.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -32,22 +32,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that Cougar can correctly throw a wotsit exception with error code: SUSPENDED.
+ * Ensure that Disco can correctly throw a wotsit exception with error code: SUSPENDED.
  */
 public class RestGetWotsitExceptionsSUSPENDEDTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        discoManager1 = discoManager1;
         
-        cougarManager1.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
-        // Get the cougar log attribute for getting log entries later
+        discoManager1.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        // Get the disco log attribute for getting log entries later
         
         getNewHttpCallBean1.setOperationName("testExceptionQA");
         
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean1.setVersion("v2");
         // Set the query parameter to tell the operation which exception to throw (SUSPENDED)
@@ -58,30 +58,30 @@ public class RestGetWotsitExceptionsSUSPENDEDTest {
 
         Timestamp getTimeAsTimeStamp8 = new Timestamp(System.currentTimeMillis());
         // Make the 4 REST calls to the operation
-        cougarManager1.makeRestCougarHTTPCalls(getNewHttpCallBean1);
+        discoManager1.makeRestDiscoHTTPCalls(getNewHttpCallBean1);
         // Create the expected response as an XML document (the required exception)
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument10 = xMLHelpers4.getXMLObjectFromString("<fault><faultcode>Client</faultcode><faultstring>WEX-0002</faultstring><detail><exceptionname>WotsitException</exceptionname><WotsitException><errorCode>SUSPENDED</errorCode><type>CHEESY</type><clientMessage>SUSPENDED</clientMessage></WotsitException></detail></fault>");
         // Convert the expected response to the various REST types for comparison
-        Map<CougarMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes11 = cougarManager1.convertResponseToRestTypes(createAsDocument10, getNewHttpCallBean1);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes11 = discoManager1.convertResponseToRestTypes(createAsDocument10, getNewHttpCallBean1);
         // Check the 4 responses are as expected (correct error returned)
-        HttpResponseBean response5 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response5.getResponseObject());
+        HttpResponseBean response5 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response5.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 403, response5.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Forbidden", response5.getHttpStatusText());
         
-        HttpResponseBean response6 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response6.getResponseObject());
+        HttpResponseBean response6 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response6.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 403, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Forbidden", response6.getHttpStatusText());
         
-        HttpResponseBean response7 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response7.getResponseObject());
+        HttpResponseBean response7 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response7.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 403, response7.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Forbidden", response7.getHttpStatusText());
         
-        HttpResponseBean response8 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response8.getResponseObject());
+        HttpResponseBean response8 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response8.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 403, response8.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Forbidden", response8.getHttpStatusText());
         // Check the log entries are as expected

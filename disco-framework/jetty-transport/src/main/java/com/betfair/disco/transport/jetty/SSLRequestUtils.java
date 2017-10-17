@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline;
+package uk.co.exemel.disco.baseline;
 
-import com.betfair.cougar.api.LoggableEvent;
+import uk.co.exemel.disco.api.LoggableEvent;
 
-import com.betfair.cougar.api.RequestUUID;
+import uk.co.exemel.disco.api.RequestUUID;
 
 public class LoggedAsyncEvent implements LoggableEvent{
 	private final RequestUUID uuid;

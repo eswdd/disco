@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.transports;
+package uk.co.exemel.disco.core.api.transports;
 
-import com.betfair.cougar.core.api.BindingDescriptor;
+import uk.co.exemel.disco.core.api.BindingDescriptor;
 import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mock;

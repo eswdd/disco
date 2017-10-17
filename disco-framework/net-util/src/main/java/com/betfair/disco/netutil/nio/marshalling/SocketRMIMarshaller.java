@@ -14,44 +14,44 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.marshalling;
+package uk.co.exemel.disco.netutil.nio.marshalling;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.api.fault.FaultCode;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.*;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.client.EnumWrapper;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.fault.FaultDetail;
-import com.betfair.cougar.core.api.transcription.EnumUtils;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.api.transcription.TranscriptionException;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.core.impl.security.CertInfoExtractor;
-import com.betfair.cougar.core.impl.security.CommonNameCertInfoExtractor;
-import com.betfair.cougar.core.impl.security.SSLAwareTokenResolver;
-import com.betfair.cougar.marshalling.api.socket.RemotableMethodInvocationMarshaller;
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
-import com.betfair.cougar.transport.api.protocol.CougarObjectInput;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
-import com.betfair.cougar.transport.api.protocol.socket.InvocationRequest;
-import com.betfair.cougar.transport.api.protocol.socket.InvocationResponse;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.geolocation.RemoteAddressUtils;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.api.fault.FaultCode;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.*;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.client.EnumWrapper;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.fault.FaultDetail;
+import uk.co.exemel.disco.core.api.transcription.EnumUtils;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionException;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.core.impl.security.CertInfoExtractor;
+import uk.co.exemel.disco.core.impl.security.CommonNameCertInfoExtractor;
+import uk.co.exemel.disco.core.impl.security.SSLAwareTokenResolver;
+import uk.co.exemel.disco.marshalling.api.socket.RemotableMethodInvocationMarshaller;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolution;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectInput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
+import uk.co.exemel.disco.transport.api.protocol.socket.InvocationRequest;
+import uk.co.exemel.disco.transport.api.protocol.socket.InvocationResponse;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.geolocation.RemoteAddressUtils;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 
 import javax.naming.NamingException;
@@ -65,7 +65,7 @@ import java.util.*;
  */
 public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller {
 
-    private final IdentityTokenResolver<CougarObjectInput, CougarObjectOutput, X509Certificate[]> identityTokenResolver;
+    private final IdentityTokenResolver<DiscoObjectInput, DiscoObjectOutput, X509Certificate[]> identityTokenResolver;
     private boolean hardFailEnumDeserialisation;
     private DehydratedExecutionContextResolution contextResolution;
 
@@ -75,14 +75,14 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
     }
 
     public SocketRMIMarshaller(CertInfoExtractor certInfoExtractor, DehydratedExecutionContextResolution contextResolution) {
-        this.identityTokenResolver = new SSLAwareTokenResolver<CougarObjectInput, CougarObjectOutput, X509Certificate[]>(certInfoExtractor) {
+        this.identityTokenResolver = new SSLAwareTokenResolver<DiscoObjectInput, DiscoObjectOutput, X509Certificate[]>(certInfoExtractor) {
                 @Override
-                public List<IdentityToken> resolve(CougarObjectInput input, X509Certificate[] certificateChain) {
+                public List<IdentityToken> resolve(DiscoObjectInput input, X509Certificate[] certificateChain) {
                     List<IdentityToken> tokens = new ArrayList<IdentityToken>();
                     try {
                         attachCertInfo(tokens, certificateChain);
                     } catch (NamingException e) {
-                        throw new CougarFrameworkException("Unable to resolve cert info", e);
+                        throw new DiscoFrameworkException("Unable to resolve cert info", e);
                     }
                     try {
                         int size = input.readInt();
@@ -92,11 +92,11 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
                         return tokens;
                     }
                     catch (Exception e) {
-                        throw new RuntimeException("Problem resolving IdentityTokens from CougarObjectInput...", e);
+                        throw new RuntimeException("Problem resolving IdentityTokens from DiscoObjectInput...", e);
                     }
                 }
                 @Override
-                public void rewrite(List<IdentityToken> tokens, CougarObjectOutput output) {
+                public void rewrite(List<IdentityToken> tokens, DiscoObjectOutput output) {
                     try {
                         if (tokens == null) {
                             output.writeInt(0);
@@ -109,7 +109,7 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
                         }
                     }
                     catch (Exception e) {
-                        throw new RuntimeException("Problem transcribing IdentityTokens to CougarObjectOutput...", e);
+                        throw new RuntimeException("Problem transcribing IdentityTokens to DiscoObjectOutput...", e);
                     }
                 }
                 @Override
@@ -122,13 +122,13 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
 
     public static class InvocationResponseImpl implements InvocationResponse {
         private final Object result;
-        private final CougarException exception;
+        private final DiscoException exception;
 
         public InvocationResponseImpl(final Object result) {
             this(result, null);
         }
 
-        public InvocationResponseImpl(final Object result, final CougarException exception) {
+        public InvocationResponseImpl(final Object result, final DiscoException exception) {
             this.result = result;
             this.exception = exception;
         }
@@ -154,18 +154,18 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
             return result;
         }
 
-        public CougarException getException() {
+        public DiscoException getException() {
             return exception;
         }
     }
 
     @Override
-	public void writeInvocationRequest(InvocationRequest request, CougarObjectOutput out, IdentityResolver identityResolver, Map<String,String> additionalParams, byte protocolVersion) throws IOException {
+	public void writeInvocationRequest(InvocationRequest request, DiscoObjectOutput out, IdentityResolver identityResolver, Map<String,String> additionalParams, byte protocolVersion) throws IOException {
         // todo: decide if we want app protocol versioning too?
         // note that new additions to the app protocol must be backwards compatible from the client side, the server side response may be breaking since it knows what
         // the client version is..
-//        if (protocolVersion >= CougarProtocol.TRANSPORT_PROTOCOL_VERSION_TIME_CONSTRAINTS) {
-//            out.writeBytes(new byte[] {CougarProtocol.TRANSPORT_PROTOCOL_VERSION_TIME_CONSTRAINTS});
+//        if (protocolVersion >= DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_TIME_CONSTRAINTS) {
+//            out.writeBytes(new byte[] {DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_TIME_CONSTRAINTS});
 //        }
 		writeExecutionContext(request.getExecutionContext(), out, identityResolver, additionalParams, protocolVersion);
 		writeOperationKey(request.getOperationKey(), out);
@@ -174,11 +174,11 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
 	}
 
     @Override
-	public void writeInvocationResponse(InvocationResponse response, CougarObjectOutput out, byte protocolVersion) throws IOException {
+	public void writeInvocationResponse(InvocationResponse response, DiscoObjectOutput out, byte protocolVersion) throws IOException {
 		out.writeBoolean(response.isSuccess());
 		if (response.isSuccess()) {
             // make sure we serialise enum responses as strings.. unless of course we're on an old version
-            if (protocolVersion >= CougarProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS && response.getResult() != null && Enum.class.isAssignableFrom(response.getResult().getClass())) {
+            if (protocolVersion >= DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS && response.getResult() != null && Enum.class.isAssignableFrom(response.getResult().getClass())) {
                 out.writeObject(((Enum)response.getResult()).name());
             }
             else {
@@ -195,7 +195,7 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
 	}
 
     @Override
-	public InvocationResponse readInvocationResponse(ParameterType resultType, CougarObjectInput in) throws IOException {
+	public InvocationResponse readInvocationResponse(ParameterType resultType, DiscoObjectInput in) throws IOException {
         EnumUtils.setHardFailureForThisThread(hardFailEnumDeserialisation);
 		try {
 			boolean success = in.readBoolean();
@@ -209,21 +209,21 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
 				FaultDetail faultDetail = (FaultDetail) in.readObject();
 				if (faultDetail != null) {
 	                if (faultDetail.getCause() != null) {
-	                    if (faultDetail.getCause() instanceof CougarApplicationException) {
-	                        return new InvocationResponseImpl(null, new CougarClientException(code, faultDetail.getDetailMessage(), (CougarApplicationException)faultDetail.getCause()));
+	                    if (faultDetail.getCause() instanceof DiscoApplicationException) {
+	                        return new InvocationResponseImpl(null, new DiscoClientException(code, faultDetail.getDetailMessage(), (DiscoApplicationException)faultDetail.getCause()));
 	                    } else {
-	                        return new InvocationResponseImpl(null, new CougarClientException(code, faultDetail.getDetailMessage(), faultDetail.getCause()));
+	                        return new InvocationResponseImpl(null, new DiscoClientException(code, faultDetail.getDetailMessage(), faultDetail.getCause()));
 	                    }
 	                }
 	                else {
                         FaultCode faultCode = code == ServerFaultCode.ServiceCheckedException ? FaultCode.Server : code.getResponseCode().getFaultCode();
-	                    return new InvocationResponseImpl(null, new CougarClientException(code, faultCode + " fault received from remote server: "+code,
-                                new CougarClientException(code, faultDetail.getDetailMessage())
+	                    return new InvocationResponseImpl(null, new DiscoClientException(code, faultCode + " fault received from remote server: "+code,
+                                new DiscoClientException(code, faultDetail.getDetailMessage())
                         ));
 	                }
 				}
 	            else {
-				    return new InvocationResponseImpl(null, new CougarClientException(code, "No detailed message available"));
+				    return new InvocationResponseImpl(null, new DiscoClientException(code, "No detailed message available"));
 	            }
 			}
 		}
@@ -235,14 +235,14 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
 		}
 	}
 
-	private void writeOperationKey(OperationKey operationKey, CougarObjectOutput out) throws IOException {
+	private void writeOperationKey(OperationKey operationKey, DiscoObjectOutput out) throws IOException {
 		out.writeInt(operationKey.getVersion().getMajor());
 		out.writeInt(operationKey.getVersion().getMinor());
 		out.writeString(operationKey.getServiceName());
 		out.writeString(operationKey.getOperationName());
 	}
 
-	public OperationKey readOperationKey(CougarObjectInput in) throws IOException {
+	public OperationKey readOperationKey(DiscoObjectInput in) throws IOException {
         EnumUtils.setHardFailureForThisThread(hardFailEnumDeserialisation);
 		return new OperationKey(
 				new ServiceVersion(in.readInt(), in.readInt()),
@@ -250,7 +250,7 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
 				in.readString());
 	}
 
-	void writeArgs(Parameter [] argTypes, Object [] args, CougarObjectOutput out) throws IOException {
+	void writeArgs(Parameter [] argTypes, Object [] args, DiscoObjectOutput out) throws IOException {
 		out.writeInt(argTypes.length);
 		for (int i=0;i<argTypes.length; i++) {
 			out.writeString(argTypes[i].getName());
@@ -258,8 +258,8 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
 		out.writeObject(args);
 	}
 
-    void writeTimeConstraints(TimeConstraints timeConstraints, CougarObjectOutput out, byte protocolVersion) throws IOException {
-        if (protocolVersion >= CougarProtocol.TRANSPORT_PROTOCOL_VERSION_TIME_CONSTRAINTS) {
+    void writeTimeConstraints(TimeConstraints timeConstraints, DiscoObjectOutput out, byte protocolVersion) throws IOException {
+        if (protocolVersion >= DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_TIME_CONSTRAINTS) {
             boolean haveTimeConstraints = timeConstraints.getTimeRemaining() != null;
             out.writeBoolean(haveTimeConstraints);
             if (haveTimeConstraints) {
@@ -268,7 +268,7 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
         }
     }
 
-	public Object [] readArgs(Parameter [] argTypes, CougarObjectInput in) throws IOException {
+	public Object [] readArgs(Parameter [] argTypes, DiscoObjectInput in) throws IOException {
         EnumUtils.setHardFailureForThisThread(hardFailEnumDeserialisation);
 		try {
 			int numArgs = in.readInt();
@@ -286,7 +286,7 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
 		}
 	}
 
-	private void writeExecutionContext(ExecutionContext ctx, CougarObjectOutput out, IdentityResolver identityResolver, Map<String,String> additionalParams, byte protocolVersion) throws IOException {
+	private void writeExecutionContext(ExecutionContext ctx, DiscoObjectOutput out, IdentityResolver identityResolver, Map<String,String> additionalParams, byte protocolVersion) throws IOException {
 		writeGeoLocation(ctx.getLocation(), out, protocolVersion);
 		writeIdentity(ctx.getIdentity(), out, identityResolver);
         writeRequestUUID(ctx.getRequestUUID(), out, protocolVersion);
@@ -296,8 +296,8 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
         writeAdditionalParams(additionalParams, out, protocolVersion);
     }
 
-    void writeAdditionalParams(Map<String,String> additionalParams, CougarObjectOutput out, byte protocolVersion) throws IOException {
-        if (protocolVersion >= CougarProtocol.TRANSPORT_PROTOCOL_VERSION_COMPOUND_REQUEST_UUID) {
+    void writeAdditionalParams(Map<String,String> additionalParams, DiscoObjectOutput out, byte protocolVersion) throws IOException {
+        if (protocolVersion >= DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_COMPOUND_REQUEST_UUID) {
             // when we have some additional params, this will send num keys and then key followed by value for each (as strings)
             if (additionalParams != null) {
                 out.writeInt(additionalParams.size());
@@ -312,13 +312,13 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
         }
     }
 
-    void writeRequestTime(CougarObjectOutput out, byte protocolVersion) throws IOException {
-        if (protocolVersion >= CougarProtocol.TRANSPORT_PROTOCOL_VERSION_TIME_CONSTRAINTS) {
+    void writeRequestTime(DiscoObjectOutput out, byte protocolVersion) throws IOException {
+        if (protocolVersion >= DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_TIME_CONSTRAINTS) {
             out.writeLong(System.currentTimeMillis());
         }
     }
 
-    private DehydratedExecutionContext resolveExecutionContext(CougarObjectInput in, GeoLocationParameters geo, List<IdentityToken> tokens, int transportSecurityStrengthFactor, byte protocolVersion) throws IOException {
+    private DehydratedExecutionContext resolveExecutionContext(DiscoObjectInput in, GeoLocationParameters geo, List<IdentityToken> tokens, int transportSecurityStrengthFactor, byte protocolVersion) throws IOException {
 
 
         final String uuid = readRequestUuidString(in);
@@ -326,10 +326,10 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
 
         final boolean traceEnabled = in.readBoolean();
 
-        final Long requestTime = protocolVersion >= CougarProtocol.TRANSPORT_PROTOCOL_VERSION_TIME_CONSTRAINTS ? in.readLong() : System.currentTimeMillis();
+        final Long requestTime = protocolVersion >= DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_TIME_CONSTRAINTS ? in.readLong() : System.currentTimeMillis();
 
         Map<String,String> additionalParams = new HashMap<>();
-        if (protocolVersion >= CougarProtocol.TRANSPORT_PROTOCOL_VERSION_COMPOUND_REQUEST_UUID) {
+        if (protocolVersion >= DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_COMPOUND_REQUEST_UUID) {
             int numExtraParams = in.readInt();
             for (int i=0; i<numExtraParams; i++) {
                 additionalParams.put(in.readString(),in.readString());
@@ -343,7 +343,7 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
     }
 
     @Override
-    public DehydratedExecutionContext readExecutionContext(CougarObjectInput in, String remoteAddress, X509Certificate[] clientCertChain, int transportSecurityStrengthFactor, byte protocolVersion) throws IOException {
+    public DehydratedExecutionContext readExecutionContext(DiscoObjectInput in, String remoteAddress, X509Certificate[] clientCertChain, int transportSecurityStrengthFactor, byte protocolVersion) throws IOException {
         EnumUtils.setHardFailureForThisThread(hardFailEnumDeserialisation);
         // this has to be first as the protocol requires it
         final GeoLocationParameters geo = readGeoLocation(in, remoteAddress, protocolVersion);
@@ -354,8 +354,8 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
 	}
 
     @Override
-    public TimeConstraints readTimeConstraintsIfPresent(CougarObjectInput in, byte protocolVersion) throws IOException {
-        if (protocolVersion >= CougarProtocol.TRANSPORT_PROTOCOL_VERSION_TIME_CONSTRAINTS) {
+    public TimeConstraints readTimeConstraintsIfPresent(DiscoObjectInput in, byte protocolVersion) throws IOException {
+        if (protocolVersion >= DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_TIME_CONSTRAINTS) {
             boolean haveTimeConstraints = in.readBoolean();
             if (haveTimeConstraints) {
                 long timeout = in.readLong();
@@ -366,7 +366,7 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
         return DefaultTimeConstraints.NO_CONSTRAINTS;
     }
 
-    void writeIdentity(IdentityChain identity, CougarObjectOutput out, IdentityResolver identityResolver) throws IOException {
+    void writeIdentity(IdentityChain identity, DiscoObjectOutput out, IdentityResolver identityResolver) throws IOException {
 		List<IdentityToken> identityTokens = null;
 		if (identityResolver != null) {
             identityTokens = identityResolver.tokenise(identity);
@@ -374,7 +374,7 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
 		identityTokenResolver.rewrite(identityTokens, out);
 	}
 
-    GeoLocationParameters readGeoLocation(CougarObjectInput in, String remoteAddress, byte protocolVersion) throws IOException {
+    GeoLocationParameters readGeoLocation(DiscoObjectInput in, String remoteAddress, byte protocolVersion) throws IOException {
         // The current implementation is analogous to an http connection, so the IP
         // must be provided, but everything else is created on the server. This might
         // become a problem if non-IP based clients are required, but there are no
@@ -382,7 +382,7 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
         String resolvedAddresses = in.readString();
         List<String> addressList = RemoteAddressUtils.parse(null, resolvedAddresses);
         String inferredCountry = null;
-        if (protocolVersion >= CougarProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS) {
+        if (protocolVersion >= DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS) {
             inferredCountry = in.readString();
         }
 
@@ -390,16 +390,16 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
         return new GeoLocationParameters(remoteAddress, addressList, inferredCountry);
 	}
 
-	void writeGeoLocation(GeoLocationDetails geo, CougarObjectOutput out, byte protocolVersion) throws IOException {
+	void writeGeoLocation(GeoLocationDetails geo, DiscoObjectOutput out, byte protocolVersion) throws IOException {
         // See comment about reading geo location.
         String resolvedAddresses = RemoteAddressUtils.externaliseWithLocalAddresses(geo.getResolvedAddresses());
         out.writeString(resolvedAddresses);
-        if (protocolVersion >= CougarProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS) {
+        if (protocolVersion >= DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS) {
             out.writeString(geo.getInferredCountry());
         }
 	}
 
-    private String readRequestUuidString(CougarObjectInput in) throws IOException {
+    private String readRequestUuidString(DiscoObjectInput in) throws IOException {
         if (in.readBoolean()) {
             return in.readString();
         } else {
@@ -407,10 +407,10 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
         }
     }
 
-    void writeRequestUUID(RequestUUID uuid, CougarObjectOutput out, byte protocolVersion) throws IOException {
+    void writeRequestUUID(RequestUUID uuid, DiscoObjectOutput out, byte protocolVersion) throws IOException {
         if (uuid != null) {
             out.writeBoolean(true);
-            if (protocolVersion >= CougarProtocol.TRANSPORT_PROTOCOL_VERSION_COMPOUND_REQUEST_UUID) {
+            if (protocolVersion >= DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_COMPOUND_REQUEST_UUID) {
                 out.writeString(uuid.getNewSubUUID().toString());
             }
             else {
@@ -421,7 +421,7 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
         }
     }
 
-    private Date readReceivedTime(CougarObjectInput in) throws IOException {
+    private Date readReceivedTime(DiscoObjectInput in) throws IOException {
         if (in.readBoolean()) {
             Long ticks = in.readLong();
             return new Date(ticks);
@@ -429,7 +429,7 @@ public class SocketRMIMarshaller implements RemotableMethodInvocationMarshaller 
         return null;
     }
 
-    void writeReceivedTime(Date receivedTime, CougarObjectOutput out) throws IOException {
+    void writeReceivedTime(Date receivedTime, DiscoObjectOutput out) throws IOException {
         if (receivedTime != null) {
             out.writeBoolean(true);
             out.writeLong(receivedTime.getTime());

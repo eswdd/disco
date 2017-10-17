@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.configuration;
+package uk.co.exemel.disco.util.configuration;
 
 import org.slf4j.Logger;
-import com.betfair.cougar.logging.records.SimpleLogRecord;
+import uk.co.exemel.disco.logging.records.SimpleLogRecord;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
@@ -33,7 +33,7 @@ import java.util.logging.Level;
 public class PropertyLoader {
     private static final String DEFAULT_CONFIG_HOST_PROPERTY = "betfair.config.host";
     private static final String DEFAULT_CONFIG_HOST_PROPERTY_VALUE = "/conf/";
-    private static final String COUGAR_APPLICATION_PROPERTIES_FILE = "cougar-application.properties";
+    private static final String COUGAR_APPLICATION_PROPERTIES_FILE = "disco-application.properties";
 
     private Logger logger;
 
@@ -99,7 +99,7 @@ public class PropertyLoader {
 
         /**
          * We need to check to see if the resources exists before we actually configure them as we need to
-         * log whether we found the resources or not. If we don't check this, Cougar will fail to start if
+         * log whether we found the resources or not. If we don't check this, Disco will fail to start if
          * configuration is missing.
          */
         if(configOverrideResource.exists()){

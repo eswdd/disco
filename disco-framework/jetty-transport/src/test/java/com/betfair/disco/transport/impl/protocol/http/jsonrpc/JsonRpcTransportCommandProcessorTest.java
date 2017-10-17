@@ -15,61 +15,61 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http.jsonrpc;
+package uk.co.exemel.disco.transport.impl.protocol.http.jsonrpc;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.security.*;
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.RequestTimer;
-import com.betfair.cougar.core.api.ServiceBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.Executable;
-import com.betfair.cougar.core.api.ev.ExecutionTimingRecorder;
-import com.betfair.cougar.core.api.ev.NullExecutionTimingRecorder;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionPostProcessor;
-import com.betfair.cougar.core.api.ev.ExecutionPreProcessor;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.impl.CougarInternalOperations;
-import com.betfair.cougar.core.impl.ev.BaseExecutionVenue;
-import com.betfair.cougar.logging.CougarLoggingUtils;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.security.*;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.RequestTimer;
+import uk.co.exemel.disco.core.api.ServiceBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.Executable;
+import uk.co.exemel.disco.core.api.ev.ExecutionTimingRecorder;
+import uk.co.exemel.disco.core.api.ev.NullExecutionTimingRecorder;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionPostProcessor;
+import uk.co.exemel.disco.core.api.ev.ExecutionPreProcessor;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.impl.DiscoInternalOperations;
+import uk.co.exemel.disco.core.impl.ev.BaseExecutionVenue;
+import uk.co.exemel.disco.logging.DiscoLoggingUtils;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolution;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.betfair.cougar.logging.EventLogDefinition;
-import com.betfair.cougar.logging.EventLoggingRegistry;
-import com.betfair.cougar.marshalling.impl.databinding.json.JSONBindingFactory;
-import com.betfair.cougar.marshalling.impl.databinding.json.JSONDateFormat;
-import com.betfair.cougar.transport.api.CommandResolver;
-import com.betfair.cougar.transport.api.CommandValidator;
-import com.betfair.cougar.transport.api.ExecutionCommand;
-import com.betfair.cougar.transport.api.RequestLogger;
-import com.betfair.cougar.transport.api.RequestTimeResolver;
-import com.betfair.cougar.transport.api.TransportCommand;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.api.protocol.http.jsonrpc.JsonRpcOperationBindingDescriptor;
-import com.betfair.cougar.transport.impl.AbstractCommandProcessor;
-import com.betfair.cougar.transport.impl.CommandValidatorRegistry;
-import com.betfair.cougar.transport.impl.protocol.http.ContentTypeNormaliser;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
-import com.betfair.cougar.util.geolocation.GeoIPLocator;
-import com.betfair.cougar.util.geolocation.RemoteAddressUtils;
+import uk.co.exemel.disco.logging.EventLogDefinition;
+import uk.co.exemel.disco.logging.EventLoggingRegistry;
+import uk.co.exemel.disco.marshalling.impl.databinding.json.JSONBindingFactory;
+import uk.co.exemel.disco.marshalling.impl.databinding.json.JSONDateFormat;
+import uk.co.exemel.disco.transport.api.CommandResolver;
+import uk.co.exemel.disco.transport.api.CommandValidator;
+import uk.co.exemel.disco.transport.api.ExecutionCommand;
+import uk.co.exemel.disco.transport.api.RequestLogger;
+import uk.co.exemel.disco.transport.api.RequestTimeResolver;
+import uk.co.exemel.disco.transport.api.TransportCommand;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.api.protocol.http.jsonrpc.JsonRpcOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.impl.AbstractCommandProcessor;
+import uk.co.exemel.disco.transport.impl.CommandValidatorRegistry;
+import uk.co.exemel.disco.transport.impl.protocol.http.ContentTypeNormaliser;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.util.geolocation.GeoIPLocator;
+import uk.co.exemel.disco.util.geolocation.RemoteAddressUtils;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -159,7 +159,7 @@ public class JsonRpcTransportCommandProcessorTest  {
     @BeforeClass
     public static void setupStatic() {
         RequestUUIDImpl.setGenerator(new UUIDGeneratorImpl());
-        CougarLoggingUtils.suppressAllRootLoggerOutput();
+        DiscoLoggingUtils.suppressAllRootLoggerOutput();
     }
 
 
@@ -287,7 +287,7 @@ public class JsonRpcTransportCommandProcessorTest  {
                 return Protocol.JSON_RPC;
             }
         });
-        commandProcessor.onCougarStart();
+        commandProcessor.onDiscoStart();
     }
 
     @Test
@@ -303,7 +303,7 @@ public class JsonRpcTransportCommandProcessorTest  {
 
     @Test
     public void ensureNoIdentityResolverBoundWhenNoOperations() {
-        commandProcessor.onCougarStart();
+        commandProcessor.onDiscoStart();
 
         verify(ev, times(0)).registerOperation(JsonRpcTransportCommandProcessor.IDENTITY_RESOLUTION_NAMESPACE,
                 JsonRpcTransportCommandProcessor.IDENTITY_RESOLUTION_OPDEF,
@@ -517,7 +517,7 @@ public class JsonRpcTransportCommandProcessorTest  {
         assertNotNull(executionCommand);
         assertEquals(executionCommand.getOperationKey(), TEST_OP_KEY);
 
-        executionCommand.onResult(new ExecutionResult(new CougarServiceException(ServerFaultCode.MandatoryNotDefined, "Field x is not defined")));
+        executionCommand.onResult(new ExecutionResult(new DiscoServiceException(ServerFaultCode.MandatoryNotDefined, "Field x is not defined")));
 
         String written = tos.getCapturedOutputStream();
         Map m = parseAndValidateResult(written, "fail");
@@ -587,7 +587,7 @@ public class JsonRpcTransportCommandProcessorTest  {
         assertFalse(iter.hasNext());
 
         //Throw a mandatory param exception
-        cmd2.onResult(new ExecutionResult(new CougarValidationException(ServerFaultCode.MandatoryNotDefined, "Mandatory params not defined")));
+        cmd2.onResult(new ExecutionResult(new DiscoValidationException(ServerFaultCode.MandatoryNotDefined, "Mandatory params not defined")));
 
         //Successful void result
         cmd3.onResult(new ExecutionResult());
@@ -730,8 +730,8 @@ public class JsonRpcTransportCommandProcessorTest  {
 
         CommandValidator<HttpCommand> validator = new CommandValidator<HttpCommand>() {
             @Override
-            public void validate(HttpCommand command) throws CougarException {
-                throw new CougarServiceException(ServerFaultCode.SecurityException, "wibble");
+            public void validate(HttpCommand command) throws DiscoException {
+                throw new DiscoServiceException(ServerFaultCode.SecurityException, "wibble");
             }
         };
         validatorRegistry.addValidator(validator);
@@ -1125,7 +1125,7 @@ public class JsonRpcTransportCommandProcessorTest  {
         }
 
         @Override
-        protected void writeErrorResponse(TransportCommand command, DehydratedExecutionContext context, CougarException e, boolean traceStarted) {
+        protected void writeErrorResponse(TransportCommand command, DehydratedExecutionContext context, DiscoException e, boolean traceStarted) {
         }
 
         @Override
@@ -1204,7 +1204,7 @@ public class JsonRpcTransportCommandProcessorTest  {
         */
 
         @Override
-        public void writeErrorResponse(HttpCommand command, DehydratedExecutionContext context, CougarException e, boolean traceStarted) {
+        public void writeErrorResponse(HttpCommand command, DehydratedExecutionContext context, DiscoException e, boolean traceStarted) {
             errorCalled = true;
             super.writeErrorResponse(command, context, e, traceStarted);
         }

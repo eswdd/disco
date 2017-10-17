@@ -15,13 +15,13 @@
  */
 
 // Originally from UpdatedComponentTests/ErrorCodes/SOAP/SOAP_WotsitException_SUSPENDED.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.errorcodes.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.errorcodes.soap;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -38,12 +38,12 @@ public class SOAPWotsitExceptionSUSPENDEDTest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document createAsDocument1 = xMLHelpers1.getXMLObjectFromString("<TestExceptionQARequest><message>SUSPENDED</message></TestExceptionQARequest>");
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean2 = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        cougarManager2 = cougarManager2;
-        // Get the cougar log attribute for getting log entries later
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean2 = discoManager2.getNewHttpCallBean("87.248.113.14");
+        discoManager2 = discoManager2;
+        // Get the disco log attribute for getting log entries later
         
-        cougarManager2.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        discoManager2.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         
         getNewHttpCallBean2.setServiceName("Baseline");
         
@@ -54,12 +54,12 @@ public class SOAPWotsitExceptionSUSPENDEDTest {
 
         Timestamp getTimeAsTimeStamp8 = new Timestamp(System.currentTimeMillis());
         // Make the SOAP call to the operation
-        cougarManager2.makeSoapCougarHTTPCalls(getNewHttpCallBean2);
+        discoManager2.makeSoapDiscoHTTPCalls(getNewHttpCallBean2);
         // Create the expected response as an XML document (the required exception)
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument10 = xMLHelpers4.getXMLObjectFromString("<soapenv:Fault><faultcode>soapenv:Client</faultcode><faultstring>WEX-0002</faultstring><detail><bas:WotsitException><bas:errorCode>SUSPENDED</bas:errorCode><bas:type>CHEESY</bas:type><bas:clientMessage>SUSPENDED</bas:clientMessage></bas:WotsitException></detail></soapenv:Fault>");
         // Check the response is as expected (correct error returned)
-        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(createAsDocument10, response5.getResponseObject());
         // Check the log entries are as expected
     }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.ssl;
+package uk.co.exemel.disco.client.ssl;
 
 import org.apache.http.client.UserTokenHandler;
 import org.apache.http.protocol.HttpContext;

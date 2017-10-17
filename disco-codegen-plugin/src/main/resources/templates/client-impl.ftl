@@ -20,9 +20,9 @@ package ${package}.${majorVersion};
 import ${package}.${majorVersion}.to.*;
 import ${package}.${majorVersion}.enumerations.*;
 import ${package}.${majorVersion}.exception.*;
-import com.betfair.cougar.api.*;
+import uk.co.exemel.disco.api.*;
 
-import com.betfair.cougar.api.annotations.*;
+import uk.co.exemel.disco.api.annotations.*;
 
 import javax.annotation.Resource;
 import javax.jws.*;
@@ -33,10 +33,10 @@ import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.*;
 import java.util.*;
 import java.util.concurrent.Executor;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.impl.CougarInternalOperations;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.impl.DiscoInternalOperations;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
 
 <@compress single_line=true>
 <#include "common.ftl">
@@ -57,7 +57,7 @@ public class ${service}ClientImpl implements ${service}Client {<#t>
 	private static final ServiceVersion serviceVersion = new ServiceVersion("${dotMajorMinorVersion}");
 
 	public ${service}ClientImpl(ExecutionVenue ev, Executor executor) {
-		this(ev, executor, CougarInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
+		this(ev, executor, DiscoInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
     }<#t>
 
     public ${service}ClientImpl(ExecutionVenue ev, Executor executor, String namespace) {

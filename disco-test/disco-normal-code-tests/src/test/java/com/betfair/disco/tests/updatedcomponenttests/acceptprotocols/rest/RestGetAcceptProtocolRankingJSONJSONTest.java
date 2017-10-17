@@ -15,16 +15,16 @@
  */
 
 // Originally from UpdatedComponentTests/AcceptProtocols/Rest/Rest_Get_AcceptProtocolRankingJSONJSON.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.acceptprotocols.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.acceptprotocols.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -35,19 +35,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that when a Rest JSON Get is performed on Cougar, with JSON the highest ranked response protocol, the response is in JSON
+ * Ensure that when a Rest JSON Get is performed on Disco, with JSON the highest ranked response protocol, the response is in JSON
  */
 public class RestGetAcceptProtocolRankingJSONJSONTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean();
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean();
+        discoManager1 = discoManager1;
 
         getNewHttpCallBean1.setOperationName("testSimpleGet", "simple");
 
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
 
         getNewHttpCallBean1.setVersion("v2");
 
@@ -64,7 +64,7 @@ public class RestGetAcceptProtocolRankingJSONJSONTest {
 
         Timestamp getTimeAsTimeStamp8 = new Timestamp(System.currentTimeMillis());
         // Make the JSON call to the operation
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON);
         // Create the expected response as an XML document
         XMLHelpers xMLHelpers5 = new XMLHelpers();
         Document createAsDocument10 = xMLHelpers5.getXMLObjectFromString("<SimpleResponse><message>foo</message></SimpleResponse>");
@@ -72,7 +72,7 @@ public class RestGetAcceptProtocolRankingJSONJSONTest {
         JSONHelpers jSONHelpers6 = new JSONHelpers();
         JSONObject convertXMLDocumentToJSONObjectRemoveRootElement11 = jSONHelpers6.convertXMLDocumentToJSONObjectRemoveRootElement(createAsDocument10);
         // Check the response is as expected (and in JSON)
-        HttpResponseBean getResponseObjectsByEnum12 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.REST);
+        HttpResponseBean getResponseObjectsByEnum12 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.REST);
         AssertionUtils.multiAssertEquals(convertXMLDocumentToJSONObjectRemoveRootElement11, getResponseObjectsByEnum12.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, getResponseObjectsByEnum12.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", getResponseObjectsByEnum12.getHttpStatusText());
@@ -81,9 +81,9 @@ public class RestGetAcceptProtocolRankingJSONJSONTest {
         AssertionUtils.multiAssertEquals("application/json", map8.get("Content-Type"));
         // Check the log entries are as expected
 
-        cougarManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp8, new RequestLogRequirement("2.8", "testSimpleGet") );
+        discoManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp8, new RequestLogRequirement("2.8", "testSimpleGet") );
 
-        cougarManager1.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp8, new AccessLogRequirement(null, null, "Ok") );
+        discoManager1.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp8, new AccessLogRequirement(null, null, "Ok") );
     }
 
 }

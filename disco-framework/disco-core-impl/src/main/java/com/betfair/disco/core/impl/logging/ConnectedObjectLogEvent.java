@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.logging;
+package uk.co.exemel.disco.core.impl.logging;
 
-import com.betfair.cougar.api.LoggableEvent;
-import com.betfair.cougar.core.api.ev.Subscription;
+import uk.co.exemel.disco.api.LoggableEvent;
+import uk.co.exemel.disco.core.api.ev.Subscription;
 
 import java.util.Date;
 

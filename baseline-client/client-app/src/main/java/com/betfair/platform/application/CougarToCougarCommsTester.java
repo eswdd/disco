@@ -20,15 +20,15 @@ import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum;
 import com.betfair.baseline.v2.exception.SimpleException;
 import com.betfair.baseline.v2.to.*;
-import com.betfair.cougar.api.LogExtension;
-import com.betfair.cougar.api.LoggableEvent;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.api.LogExtension;
+import uk.co.exemel.disco.api.LoggableEvent;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -45,10 +45,10 @@ import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 
 /**
- * Very basic class to test remote connectivity for client cougar to cougar calculation
+ * Very basic class to test remote connectivity for client disco to disco calculation
  */
-public class CougarToCougarCommsTester implements ApplicationListener {
-    private final static Logger LOGGER = LoggerFactory.getLogger(CougarToCougarCommsTester.class);
+public class DiscoToDiscoCommsTester implements ApplicationListener {
+    private final static Logger LOGGER = LoggerFactory.getLogger(DiscoToDiscoCommsTester.class);
 
     private BaselineSyncClient client;
 
@@ -253,7 +253,7 @@ public class CougarToCougarCommsTester implements ApplicationListener {
      public void exception() {
         try {
             getClient().testException(ctx, "Unauthorised", "SUSPENDED");
-        } catch (CougarApplicationException cax) {
+        } catch (DiscoApplicationException cax) {
             System.out.println("Expected Application Exception: " + cax.getExceptionCode()+", responseCode: "+ cax.getResponseCode());
         } catch (Exception ex) {
             System.err.println("EXCEPTION RECEIVED: " + ex.getMessage());

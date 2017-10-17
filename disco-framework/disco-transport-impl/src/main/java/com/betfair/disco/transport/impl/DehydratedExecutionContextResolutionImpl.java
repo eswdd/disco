@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl;
+package uk.co.exemel.disco.transport.impl;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.export.ProtocolParadigm;
-import com.betfair.cougar.api.export.ProtocolRegistry;
-import com.betfair.cougar.core.api.GateListener;
-import com.betfair.cougar.core.api.builder.DehydratedExecutionContextBuilder;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextComponent;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolverFactory;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolver;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.export.ProtocolParadigm;
+import uk.co.exemel.disco.api.export.ProtocolRegistry;
+import uk.co.exemel.disco.core.api.GateListener;
+import uk.co.exemel.disco.core.api.builder.DehydratedExecutionContextBuilder;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextComponent;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolution;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolverFactory;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolver;
 
 import java.util.*;
 
@@ -51,7 +51,7 @@ public class DehydratedExecutionContextResolutionImpl implements GateListener, D
     }
 
     @Override
-    public void onCougarStart() {
+    public void onDiscoStart() {
         init(true);
     }
 

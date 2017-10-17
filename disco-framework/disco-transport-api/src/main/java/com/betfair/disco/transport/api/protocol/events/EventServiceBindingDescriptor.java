@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.events;
+package uk.co.exemel.disco.transport.api.protocol.events;
 
-import com.betfair.cougar.core.api.BindingDescriptor;
-import com.betfair.cougar.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.BindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceVersion;
 
 /**
  * This interface contains a set of Event bindings that make up the set of events exposed on
  * a particular event transport.
- * @see com.betfair.cougar.transport.api.protocol.events.EventBindingDescriptor
+ * @see uk.co.exemel.disco.transport.api.protocol.events.EventBindingDescriptor
  */
 public interface EventServiceBindingDescriptor extends BindingDescriptor {
     /**

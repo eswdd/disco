@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util;
+package uk.co.exemel.disco.util;
 
 public final class MessageConstants {
 
-	private static final String PLATFORM = "cougar.";
+	private static final String PLATFORM = "disco.";
 
 	// Http Headers
 	public static final String ACCEPT_HEADER = "Accept";

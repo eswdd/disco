@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.ev;
+package uk.co.exemel.disco.core.api.ev;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
 import org.slf4j.LoggerFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,7 +33,7 @@ import static org.junit.Assert.assertEquals;
  * Unit test for @see ExecutionResult
  */
 public class ExecutionResultTest {
-    private static class TestCAE extends CougarApplicationException {
+    private static class TestCAE extends DiscoApplicationException {
         public TestCAE() {
             super(ResponseCode.InternalError, "Bad");
         }
@@ -51,14 +51,14 @@ public class ExecutionResultTest {
 
     @Test
     public void testExceptionSelection()   {
-        CougarApplicationException cae = new TestCAE();
+        DiscoApplicationException cae = new TestCAE();
         ExecutionResult r = new ExecutionResult(cae);
         assertEquals(ExecutionResult.ResultType.Fault, r.getResultType());
         assertNotNull(r.getFault());
         assertNull(r.getResult());
         assertNull(r.getSubscription());
 
-        r = new ExecutionResult(new CougarFrameworkException("Too many beers"));
+        r = new ExecutionResult(new DiscoFrameworkException("Too many beers"));
         assertEquals(ExecutionResult.ResultType.Fault, r.getResultType());
         assertNotNull(r.getFault());
         assertNull(r.getResult());

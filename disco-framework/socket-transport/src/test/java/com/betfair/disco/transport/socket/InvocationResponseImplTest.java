@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
-import com.betfair.cougar.core.api.ev.ClientExecutionResult;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.api.ev.ClientExecutionResult;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertTrue;
@@ -52,7 +52,7 @@ public class InvocationResponseImplTest {
 
     @Test
     public void testException() {
-        final CougarException ex = new CougarServiceException(ServerFaultCode.FrameworkError, "service is down");
+        final DiscoException ex = new DiscoServiceException(ServerFaultCode.FrameworkError, "service is down");
 
         ExecutionObserver exceptionObserver = new ExecutionObserver() {
             @Override

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.codegen;
+package uk.co.exemel.disco.codegen;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -27,7 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-import com.betfair.cougar.codegen.resolver.InterceptingResolver;
+import uk.co.exemel.disco.codegen.resolver.InterceptingResolver;
 
 /**
  * Unit test {@link XmlValidator}

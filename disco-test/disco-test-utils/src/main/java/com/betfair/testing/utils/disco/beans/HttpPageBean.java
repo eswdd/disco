@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.beans;
+package com.betfair.testing.utils.disco.beans;
 
 public class HttpPageBean {
 	private String loadedURL;

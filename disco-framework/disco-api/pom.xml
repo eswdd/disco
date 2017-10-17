@@ -18,14 +18,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-  	<groupId>com.betfair.cougar</groupId>
-  	<artifactId>cougar-framework</artifactId>
+  	<groupId>uk.co.exemel.disco</groupId>
+  	<artifactId>disco-framework</artifactId>
 	<version>3.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cougar-api</artifactId>
+    <artifactId>disco-api</artifactId>
     <packaging>jar</packaging>
-    <name>cougar-api</name>
+    <name>disco-api</name>
 
     <dependencies>
         <dependency>

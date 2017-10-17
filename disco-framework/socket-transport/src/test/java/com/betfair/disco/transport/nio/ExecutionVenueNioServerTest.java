@@ -14,51 +14,51 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.nio;
+package uk.co.exemel.disco.transport.nio;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.api.security.IdentityResolver;
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.security.IdentityResolverFactory;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.core.impl.security.CommonNameCertInfoExtractor;
-import com.betfair.cougar.core.impl.tracing.CompoundTracer;
-import com.betfair.cougar.core.impl.transports.TransportRegistryImpl;
-import com.betfair.cougar.netutil.nio.marshalling.DefaultExecutionContextResolverFactory;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
-import com.betfair.cougar.transport.api.RequestTimeResolver;
-import com.betfair.cougar.transport.impl.DehydratedExecutionContextResolutionImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.api.security.IdentityResolver;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.security.IdentityResolverFactory;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.core.impl.security.CommonNameCertInfoExtractor;
+import uk.co.exemel.disco.core.impl.tracing.CompoundTracer;
+import uk.co.exemel.disco.core.impl.transports.TransportRegistryImpl;
+import uk.co.exemel.disco.netutil.nio.marshalling.DefaultExecutionContextResolverFactory;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolution;
+import uk.co.exemel.disco.transport.api.RequestTimeResolver;
+import uk.co.exemel.disco.transport.impl.DehydratedExecutionContextResolutionImpl;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.netutil.nio.marshalling.DefaultSocketTimeResolver;
-import com.betfair.cougar.netutil.nio.marshalling.SocketRMIMarshaller;
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.TlsNioConfig;
-import com.betfair.cougar.netutil.nio.message.*;
-import com.betfair.cougar.transport.api.protocol.CougarObjectInput;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
-import com.betfair.cougar.netutil.nio.hessian.HessianObjectIOFactory;
-import com.betfair.cougar.transport.api.protocol.socket.InvocationRequest;
-import com.betfair.cougar.transport.api.protocol.socket.InvocationResponse;
-import com.betfair.cougar.transport.api.protocol.socket.SocketBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.socket.SocketOperationBindingDescriptor;
-import com.betfair.cougar.transport.socket.SocketTransportCommandProcessor;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
-import com.betfair.cougar.util.geolocation.GeoIPLocator;
+import uk.co.exemel.disco.netutil.nio.marshalling.DefaultSocketTimeResolver;
+import uk.co.exemel.disco.netutil.nio.marshalling.SocketRMIMarshaller;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.TlsNioConfig;
+import uk.co.exemel.disco.netutil.nio.message.*;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectInput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
+import uk.co.exemel.disco.netutil.nio.hessian.HessianObjectIOFactory;
+import uk.co.exemel.disco.transport.api.protocol.socket.InvocationRequest;
+import uk.co.exemel.disco.transport.api.protocol.socket.InvocationResponse;
+import uk.co.exemel.disco.transport.api.protocol.socket.SocketBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.socket.SocketOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.socket.SocketTransportCommandProcessor;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.util.geolocation.GeoIPLocator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -74,7 +74,7 @@ import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import static com.betfair.cougar.netutil.nio.message.ProtocolMessage.ProtocolMessageType;
+import static uk.co.exemel.disco.netutil.nio.message.ProtocolMessage.ProtocolMessageType;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
@@ -107,7 +107,7 @@ public class ExecutionVenueNioServerTest {
 	public static Collection<Object[]> data() {
         String[] addresses = new String[] { "127.0.0.1" /*, "::1" */};
         Set<ByteArrayWrapper> versionCombinations = new HashSet<ByteArrayWrapper>();
-        addVersions(versionCombinations, new byte[] {}, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED);
+        addVersions(versionCombinations, new byte[] {}, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED);
         for (ByteArrayWrapper b : versionCombinations) {
             System.out.println("Version combo: "+Arrays.toString(b.getArray()));
         }
@@ -126,13 +126,13 @@ public class ExecutionVenueNioServerTest {
 	}
 
     private static void addVersions(Set<ByteArrayWrapper> versionCombinations, byte[] prefix, byte nextVersion) {
-        if (nextVersion > CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED) {
+        if (nextVersion > DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED) {
             return;
         }
         versionCombinations.add(new ByteArrayWrapper(new byte[] { nextVersion }));
         byte[] newPrefix = addToEnd(prefix, nextVersion);
         versionCombinations.add(new ByteArrayWrapper(newPrefix));
-        for (byte b=(byte) (nextVersion+1); b<=CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED; b++) {
+        for (byte b=(byte) (nextVersion+1); b<=DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED; b++) {
             addVersions(versionCombinations, newPrefix, b);
         }
     }
@@ -257,7 +257,7 @@ public class ExecutionVenueNioServerTest {
                 if ((Boolean)args[0]) {
                     observer.onResult(new ExecutionResult(args[1]));
                 } else {
-                    observer.onResult(new ExecutionResult(new CougarServiceException(ServerFaultCode.FrameworkError, THE_ITALIAN_JOB)));
+                    observer.onResult(new ExecutionResult(new DiscoServiceException(ServerFaultCode.FrameworkError, THE_ITALIAN_JOB)));
                 }
             }
 
@@ -306,7 +306,7 @@ public class ExecutionVenueNioServerTest {
             }
         };
         cmdProcessor.bind(desc);
-        cmdProcessor.onCougarStart();
+        cmdProcessor.onDiscoStart();
 
 
         ExecutionVenueServerHandler handler = new ExecutionVenueServerHandler(new NioLogger("NONE"), cmdProcessor, new HessianObjectIOFactory(false));
@@ -347,7 +347,7 @@ public class ExecutionVenueNioServerTest {
         InvocationResponse response = makeSocketRequest(2, false, "");
 
         assertFalse(response.isSuccess());
-        CougarException exception = response.getException();
+        DiscoException exception = response.getException();
 
         assertNotNull(exception);
         assertEquals("Server fault received from remote server: FrameworkError(DSC-0002)", exception.getMessage());
@@ -394,7 +394,7 @@ public class ExecutionVenueNioServerTest {
         if (message instanceof RequestMessage) {
             RequestMessage messageBody = (RequestMessage) message;
             s.writeInt(messageBody.getPayload().length + 9);
-            if (communicationVersion == CougarProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC) {
+            if (communicationVersion == DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC) {
                 s.writeByte(ProtocolMessageType.MESSAGE.getMessageType());
             }
             else {
@@ -422,7 +422,7 @@ public class ExecutionVenueNioServerTest {
         OutputStream output = connectedClient.getOutputStream();
         InputStream input = connectedClient.getInputStream();
 
-        byte communicationVersion = CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED + 1;
+        byte communicationVersion = DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED + 1;
 
         //We, a nonsense client, only support version 3 of the protocol
         writeMessageToOutputStream(new ConnectMessage(new byte[] {communicationVersion } ), output, communicationVersion);
@@ -436,7 +436,7 @@ public class ExecutionVenueNioServerTest {
         OutputStream output = connectedClient.getOutputStream();
         InputStream input = connectedClient.getInputStream();
 
-        byte communicationVersion = CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED; // handshake is set in stone
+        byte communicationVersion = DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED; // handshake is set in stone
 
         //start with handshake
         writeMessageToOutputStream(new ConnectMessage(clientConnectVersions ), output, communicationVersion);
@@ -449,7 +449,7 @@ public class ExecutionVenueNioServerTest {
 
         //Construct the byte stream to be sent, starts with correlation id, then the marshalled request
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        CougarObjectOutput out = ioFactory.newCougarObjectOutput(baos, communicationVersion);
+        DiscoObjectOutput out = ioFactory.newDiscoObjectOutput(baos, communicationVersion);
 
         Object[] args = { pass, echoMe};
 
@@ -462,7 +462,7 @@ public class ExecutionVenueNioServerTest {
 
         ResponseMessage response = (ResponseMessage) readMessageFromInputStream(input, communicationVersion);
         ByteArrayInputStream bais = new ByteArrayInputStream(response.getPayload());
-        CougarObjectInput dis = ioFactory.newCougarObjectInput(bais, communicationVersion);
+        DiscoObjectInput dis = ioFactory.newDiscoObjectInput(bais, communicationVersion);
 
 		assertEquals(correlationId, response.getCorrelationId());
 		return marshaller.readInvocationResponse(RETURN_PARAM_TYPE, dis);

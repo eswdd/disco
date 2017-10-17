@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.marshalling;
+package uk.co.exemel.disco.netutil.nio.marshalling;
 
-import com.betfair.cougar.api.security.IdentityToken;
+import uk.co.exemel.disco.api.security.IdentityToken;
 
 import java.util.Date;
 import java.util.List;

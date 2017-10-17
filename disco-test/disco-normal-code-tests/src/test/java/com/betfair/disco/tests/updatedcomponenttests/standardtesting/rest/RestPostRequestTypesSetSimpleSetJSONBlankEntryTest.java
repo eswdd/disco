@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/REST/Rest_Post_RequestTypes_Set_SimpleSet_JSON_BlankEntry.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -34,19 +34,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that when a Rest (JSON) Post operation is performed, Cougar can correctly handle a simple Set with a duplicate entry in the post body
+ * Ensure that when a Rest (JSON) Post operation is performed, Disco can correctly handle a simple Set with a duplicate entry in the post body
  */
 public class RestPostRequestTypesSetSimpleSetJSONBlankEntryTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        discoManager1 = discoManager1;
         
         getNewHttpCallBean1.setOperationName("simpleSetOperation");
         
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean1.setVersion("v2");
         // Set the post body to contain a simple set with a duplicate entry
@@ -57,9 +57,9 @@ public class RestPostRequestTypesSetSimpleSetJSONBlankEntryTest {
 
         Timestamp getTimeAsTimeStamp7 = new Timestamp(System.currentTimeMillis());
         // Make JSON call to the operation requesting an XML response
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.XML);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.XML);
         // Make JSON call to the operation requesting a JSON response
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Create the expected response as an XML document
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument10 = xMLHelpers4.getXMLObjectFromString("<SimpleSetOperationResponse><SimpleSetOperationResponseObject><responseSet><String/><String>bbb string</String><String>ccc string</String><String>ddd string</String></responseSet></SimpleSetOperationResponseObject></SimpleSetOperationResponse>");
@@ -67,12 +67,12 @@ public class RestPostRequestTypesSetSimpleSetJSONBlankEntryTest {
         JSONHelpers jSONHelpers5 = new JSONHelpers();
         JSONObject createAsJSONObject11 = jSONHelpers5.createAsJSONObject(new JSONObject("{\"responseSet\": [\"\",\"bbb string\",\"ccc string\",\"ddd string\"]}"));
         // Check the 2 responses are as expected
-        HttpResponseBean response6 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
+        HttpResponseBean response6 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
         AssertionUtils.multiAssertEquals(createAsDocument10, response6.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response6.getHttpStatusText());
         
-        HttpResponseBean response7 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response7 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         AssertionUtils.multiAssertEquals(createAsJSONObject11, response7.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response7.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response7.getHttpStatusText());
@@ -80,7 +80,7 @@ public class RestPostRequestTypesSetSimpleSetJSONBlankEntryTest {
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
         
-        cougarManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "simpleSetOperation"),new RequestLogRequirement("2.8", "simpleSetOperation") );
+        discoManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "simpleSetOperation"),new RequestLogRequirement("2.8", "simpleSetOperation") );
     }
 
 }

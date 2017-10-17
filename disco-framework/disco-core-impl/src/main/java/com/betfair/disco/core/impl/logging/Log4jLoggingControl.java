@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.logging;
+package uk.co.exemel.disco.core.impl.logging;
 
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import uk.co.exemel.disco.logging.DiscoLoggingUtils;
 import org.slf4j.LoggerFactory;
 
 import com.sun.org.apache.xpath.internal.jaxp.JAXPVariableStack;

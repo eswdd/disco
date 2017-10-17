@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.api.databinding;
+package uk.co.exemel.disco.marshalling.api.databinding;
 
-import com.betfair.cougar.core.api.fault.CougarFault;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
 
 import java.io.OutputStream;
 
 
 public interface FaultMarshaller {
 
-	void marshallFault(OutputStream outputStream, CougarFault fault, String encoding);
+	void marshallFault(OutputStream outputStream, DiscoFault fault, String encoding);
 
 }

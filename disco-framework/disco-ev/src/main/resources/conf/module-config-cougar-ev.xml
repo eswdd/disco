@@ -22,34 +22,34 @@
        xmlns:util="http://www.springframework.org/schema/util">
 
 
-    <bean id="faultController" class="com.betfair.cougar.core.api.fault.FaultController" factory-method="getInstance">
-        <property name="detailedFaults" value="$COUGAR-EV{cougar.fault.detailed}"/>
+    <bean id="faultController" class="uk.co.exemel.disco.core.api.fault.FaultController" factory-method="getInstance">
+        <property name="detailedFaults" value="$COUGAR-EV{disco.fault.detailed}"/>
     </bean>
 
-    <bean id="serviceLogManagerFactory" class="com.betfair.cougar.core.impl.ev.DefaultServiceLogManagerFactory">
-        <constructor-arg index="0" ref="cougar.core.EventLoggingRegistry"/>
+    <bean id="serviceLogManagerFactory" class="uk.co.exemel.disco.core.impl.ev.DefaultServiceLogManagerFactory">
+        <constructor-arg index="0" ref="disco.core.EventLoggingRegistry"/>
     </bean>
 
-    <bean id="serviceExecutableResolver" class="com.betfair.cougar.core.impl.ev.ServiceExecutableResolver">
-        <property name="eventLogger" ref="cougar.core.EventLogger"/>
+    <bean id="serviceExecutableResolver" class="uk.co.exemel.disco.core.impl.ev.ServiceExecutableResolver">
+        <property name="eventLogger" ref="disco.core.EventLogger"/>
     </bean>
 
-    <bean id="executionVenue" class="com.betfair.cougar.core.impl.ev.ContainerAwareExecutionVenue">
+    <bean id="executionVenue" class="uk.co.exemel.disco.core.impl.ev.ContainerAwareExecutionVenue">
         <property name="serviceLogManagerFactory" ref="serviceLogManagerFactory"/>
         <property name="stats" ref="kpiMonitor"/>
         <property name="preProcessors" ref="preProcessorInterceptors"/>
         <property name="postProcessors" ref="postProcessorInterceptors"/>
-        <property name="identityResolverFactory" ref="cougar.core.IdentityResolverFactory"/>
-        <property name="monitorRegistry" ref="cougar.core.MonitorRegistry"/>
-        <property name="tracer" ref="cougar.core.Tracer"/>
+        <property name="identityResolverFactory" ref="disco.core.IdentityResolverFactory"/>
+        <property name="monitorRegistry" ref="disco.core.MonitorRegistry"/>
+        <property name="tracer" ref="disco.core.Tracer"/>
     </bean>
 
-    <bean id="cougarIntroductionService" class="com.betfair.cougar.core.impl.CougarIntroductionService" lazy-init="false">
-        <property name="executionVenue" ref="cougar.core.ExecutionVenue"/>
-        <property name="serviceRegistrar" ref="cougar.core.ExecutionVenue"/>
+    <bean id="discoIntroductionService" class="uk.co.exemel.disco.core.impl.DiscoIntroductionService" lazy-init="false">
+        <property name="executionVenue" ref="disco.core.ExecutionVenue"/>
+        <property name="serviceRegistrar" ref="disco.core.ExecutionVenue"/>
         <property name="executableResolver" ref="serviceExecutableResolver"/>
-        <property name="startingGate" ref="cougar.core.StartingGate"/>
-        <property name="transportRegistry" ref="cougar.core.TransportRegistry"/>
+        <property name="startingGate" ref="disco.core.StartingGate"/>
+        <property name="transportRegistry" ref="disco.core.TransportRegistry"/>
     </bean>
 
     <!--
@@ -62,7 +62,7 @@
 
 
     <!-- JMX control and definition -->
-    <bean id="jmxControl" class="com.betfair.cougar.util.jmx.JMXControl">
+    <bean id="jmxControl" class="uk.co.exemel.disco.util.jmx.JMXControl">
         <constructor-arg>
         <bean class="org.springframework.jmx.export.MBeanExporter">
             <property name="server" ref="mbeanServer"/>
@@ -84,7 +84,7 @@
         </constructor-arg>
     </bean>
 
-    <bean id="tlsHtmlAdaptorServer" class="com.betfair.cougar.core.impl.jmx.TlsHtmlAdaptorServer">
+    <bean id="tlsHtmlAdaptorServer" class="uk.co.exemel.disco.core.impl.jmx.TlsHtmlAdaptorServer">
 		<constructor-arg value="$COUGAR-EV{jmx.html.keystore.filepath}"/>
 		<constructor-arg value="$COUGAR-EV{jmx.html.keystore.password}"/>
 		<constructor-arg value="$COUGAR-EV{jmx.html.keystore.certpassword}"/>
@@ -94,7 +94,7 @@
         <constructor-arg value="$COUGAR-EV{jmx.html.reuseAddress}"/>
 	</bean>
 
-	<bean id="htmlAdapter" class="com.betfair.cougar.core.impl.jmx.HtmlAdaptor">
+	<bean id="htmlAdapter" class="uk.co.exemel.disco.core.impl.jmx.HtmlAdaptor">
         <constructor-arg ref="tlsHtmlAdaptorServer"/>
 		<property name="MBeanServer" ref="mbeanServer"/>
 		<property name="username" value="$COUGAR-EV{jmx.html.username}"/>
@@ -106,16 +106,16 @@
         <property name="locateExistingServerIfPossible" value="true"/>
     </bean>
 
-    <bean id="log4jLoggingControl" class="com.betfair.cougar.core.impl.logging.Log4jLoggingControl">
+    <bean id="log4jLoggingControl" class="uk.co.exemel.disco.core.impl.logging.Log4jLoggingControl">
         <property name="logLevels">
             <map>
-                <entry key="" value="$COUGAR{cougar.log.level}"/>
+                <entry key="" value="$COUGAR{disco.log.level}"/>
                 <!-- ROOT LEVEL LOGGER -->
             </map>
         </property>
     </bean>
 
-    <bean id="cougarInternalMBeanExporter" class="org.springframework.jmx.export.MBeanExporter">
+    <bean id="discoInternalMBeanExporter" class="org.springframework.jmx.export.MBeanExporter">
         <property name="server" ref="mbeanServer"/>
 
         <property name="registrationBehavior" ref="org.springframework.jmx.export.MBeanExporter.REGISTRATION_REPLACE_EXISTING"/>
@@ -123,10 +123,10 @@
         <property name="beans">
             <map>
                 <entry key="CoUGAR:name=executionVenue" value-ref="executionVenue"/>
-                <entry key="CoUGAR:name=eventLogging" value-ref="cougar.core.EventLogger"/>
+                <entry key="CoUGAR:name=eventLogging" value-ref="disco.core.EventLogger"/>
                 <entry key="CoUGAR:name=faultController" value-ref="faultController"/>
-                <entry key="CoUGAR:name=LoggingControl" value-ref="cougar.core.LoggingControl"/>
-                <entry key="CoUGAR:name=GeoIPLocator" value-ref="cougar.core.GeoIPLocator"/>
+                <entry key="CoUGAR:name=LoggingControl" value-ref="disco.core.LoggingControl"/>
+                <entry key="CoUGAR:name=GeoIPLocator" value-ref="disco.core.GeoIPLocator"/>
                 <entry key="CoUGAR:name=serviceStatusController" value-ref="inOutServiceMonitor"/>
             </map>
         </property>
@@ -144,18 +144,18 @@
 
     <!-- these abstract Gate control beans make it easier for modules to register themselves as
             GateListeners -->
-   <bean id="baseGateRegisterer" class="com.betfair.cougar.core.api.GateRegisterer"
+   <bean id="baseGateRegisterer" class="uk.co.exemel.disco.core.api.GateRegisterer"
            abstract="true"
            scope="prototype">
-       <constructor-arg index="0" ref="cougar.core.StartingGate"/>
+       <constructor-arg index="0" ref="disco.core.StartingGate"/>
    </bean>
 
-   <bean id="baseGateListenerAdapter" class="com.betfair.cougar.core.api.GateListenerAdapter"
+   <bean id="baseGateListenerAdapter" class="uk.co.exemel.disco.core.api.GateListenerAdapter"
            abstract="true"
            scope="prototype"/>
 
 
-   <!-- The default monitor exposed by Cougar -->
+   <!-- The default monitor exposed by Disco -->
    <bean name="monitorRegistry" class="com.betfair.tornjak.monitor.DefaultMonitorRegistry">
         <property name="statusAggregator" ref="overallStatus"/>
            <property name="monitors">
@@ -171,28 +171,28 @@
     </bean>
 
     <bean id="freeSpaceMonitor" class="com.betfair.tornjak.monitor.FreeSpaceMonitor">
-        <constructor-arg index="0" value="$COUGAR{cougar.log.dir}"/>
-        <constructor-arg index="1" type="long" value="$COUGAR{cougar.log.bytes.required}"/>
+        <constructor-arg index="0" value="$COUGAR{disco.log.dir}"/>
+        <constructor-arg index="1" type="long" value="$COUGAR{disco.log.bytes.required}"/>
     </bean>
 
     <bean id="inOutServiceMonitor" class="com.betfair.tornjak.monitor.service.InOutServiceMonitor">
-        <constructor-arg index="0" value="Cougar Service Status Monitor"/>
+        <constructor-arg index="0" value="Disco Service Status Monitor"/>
         <constructor-arg index="1">
             <bean class="java.io.File">
-                <constructor-arg value="$COUGAR-EV{cougar.service.status.file}"/>
+                <constructor-arg value="$COUGAR-EV{disco.service.status.file}"/>
             </bean>
         </constructor-arg>
     </bean>
     <!-- beans exported from this module should be accessed at the alias address which -->
     <!-- forms part of the module's interface -->
 
-    <alias name="monitorRegistry"                       alias="cougar.core.MonitorRegistry"/>
-    <alias name="htmlAdapter"                           alias="cougar.core.JmxHtmlAdapter"/>
-    <alias name="jmxControl"                            alias="cougar.core.JmxControl"/>
-    <alias name="$COUGAR-EV{cougar.log.loggingControl}" alias="cougar.core.LoggingControl"/>
-    <alias name="baseGateRegisterer"                    alias="cougar.core.GateRegisterer"/>
-    <alias name="baseGateListenerAdapter"               alias="cougar.core.GateListener"/>
-    <alias name="executionVenue"                        alias="cougar.core.ExecutionVenue"/>
-    <alias name="executionVenue"                        alias="cougar.core.StartingGate"/>
-    <alias name="inOutServiceMonitor"                   alias="cougar.core.serviceStatusController"/>
+    <alias name="monitorRegistry"                       alias="disco.core.MonitorRegistry"/>
+    <alias name="htmlAdapter"                           alias="disco.core.JmxHtmlAdapter"/>
+    <alias name="jmxControl"                            alias="disco.core.JmxControl"/>
+    <alias name="$COUGAR-EV{disco.log.loggingControl}" alias="disco.core.LoggingControl"/>
+    <alias name="baseGateRegisterer"                    alias="disco.core.GateRegisterer"/>
+    <alias name="baseGateListenerAdapter"               alias="disco.core.GateListener"/>
+    <alias name="executionVenue"                        alias="disco.core.ExecutionVenue"/>
+    <alias name="executionVenue"                        alias="disco.core.StartingGate"/>
+    <alias name="inOutServiceMonitor"                   alias="disco.core.serviceStatusController"/>
 </beans>

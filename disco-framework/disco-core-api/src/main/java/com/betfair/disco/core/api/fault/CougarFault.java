@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.fault;
+package uk.co.exemel.disco.core.api.fault;
 
-import com.betfair.cougar.api.fault.FaultCode;
+import uk.co.exemel.disco.api.fault.FaultCode;
 
-public interface CougarFault {
+public interface DiscoFault {
 
 	public String getErrorCode();
 

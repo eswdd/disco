@@ -18,12 +18,12 @@
 	
 	<parent>
 		<artifactId>baseline</artifactId>
-		<groupId>com.betfair.cougar</groupId>
+		<groupId>uk.co.exemel.disco</groupId>
 		<version>3.3-SNAPSHOT</version>
 	</parent>
 	
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.betfair.cougar</groupId>
+	<groupId>uk.co.exemel.disco</groupId>
 	<artifactId>baseline-idd</artifactId>
 	<name>baseline-idd</name>
 	

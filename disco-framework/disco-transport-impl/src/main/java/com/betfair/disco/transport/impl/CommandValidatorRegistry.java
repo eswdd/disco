@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl;
+package uk.co.exemel.disco.transport.impl;
 
-import com.betfair.cougar.transport.api.CommandValidator;
-import com.betfair.cougar.transport.api.TransportCommand;
+import uk.co.exemel.disco.transport.api.CommandValidator;
+import uk.co.exemel.disco.transport.api.TransportCommand;
 
 import java.util.ArrayList;
 import java.util.List;

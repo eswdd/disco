@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol;
+package uk.co.exemel.disco.transport.api.protocol;
 
 import java.io.IOException;
 
-public interface CougarObjectInput {
+public interface DiscoObjectInput {
 
 	public void close() throws IOException;
 

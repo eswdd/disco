@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util;
+package uk.co.exemel.disco.util;
 
 import org.junit.Before;
 import org.junit.Test;

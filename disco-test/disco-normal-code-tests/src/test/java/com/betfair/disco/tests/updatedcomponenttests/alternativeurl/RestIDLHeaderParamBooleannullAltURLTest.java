@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/AlternativeURL/Rest_IDL_HeaderParam_Boolean_null_AltURL.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.alternativeurl;
+package uk.co.exemel.disco.tests.updatedcomponenttests.alternativeurl;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -35,21 +35,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that Cougar  can successfully handle a request, with a null parameter, to the alternative URL exposed by the baseline service (e.g. http://10.2.8.203:8080/www/cougarBaseline/v2.8/boolOperation)
+ * Ensure that Disco  can successfully handle a request, with a null parameter, to the alternative URL exposed by the baseline service (e.g. http://10.2.8.203:8080/www/discoBaseline/v2.8/boolOperation)
  */
 public class RestIDLHeaderParamBooleannullAltURLTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean2 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        CougarManager cougarManager2 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean2 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        DiscoManager discoManager2 = discoManager1;
 
-        cougarManager2.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        discoManager2.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
 
         getNewHttpCallBean2.setOperationName("boolOperation");
 
-        getNewHttpCallBean2.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean2.setServiceName("baseline", "discoBaseline");
 
         getNewHttpCallBean2.setVersion("v2");
         // Set the request to use the alternative URL (With www inserted into it)
@@ -68,35 +68,35 @@ public class RestIDLHeaderParamBooleannullAltURLTest {
 
         Timestamp getTimeAsTimeStamp11 = new Timestamp(System.currentTimeMillis());
         // Make the 4 REST calls to the operation
-        cougarManager2.makeRestCougarHTTPCalls(getNewHttpCallBean2);
+        discoManager2.makeRestDiscoHTTPCalls(getNewHttpCallBean2);
         // Create the expected response as an XML document (Fault)
         XMLHelpers xMLHelpers5 = new XMLHelpers();
         Document createAsDocument13 = xMLHelpers5.getXMLObjectFromString("<fault><faultcode>Client</faultcode><faultstring>DSC-0044</faultstring><detail/></fault>");
         // Convert the expected response to REST types for comparison with actual responses
-        Map<CougarMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes14 = cougarManager2.convertResponseToRestTypes(createAsDocument13, getNewHttpCallBean2);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes14 = discoManager2.convertResponseToRestTypes(createAsDocument13, getNewHttpCallBean2);
         // Check the 4 responses are as expected (Bad Request)
-        HttpResponseBean response6 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes14.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response6.getResponseObject());
+        HttpResponseBean response6 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes14.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response6.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response6.getHttpStatusText());
 
-        HttpResponseBean response7 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes14.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response7.getResponseObject());
+        HttpResponseBean response7 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes14.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response7.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response7.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response7.getHttpStatusText());
 
-        HttpResponseBean response8 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes14.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response8.getResponseObject());
+        HttpResponseBean response8 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes14.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response8.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response8.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response8.getHttpStatusText());
 
-        HttpResponseBean response9 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes14.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response9.getResponseObject());
+        HttpResponseBean response9 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes14.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response9.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response9.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response9.getHttpStatusText());
         // Check the correct URL was used
-        CougarManager cougarManager10 = CougarManager.getInstance();
-        cougarManager10.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp11, new AccessLogRequirement("87.248.113.14", "/www/cougarBaseline/v2/boolOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/www/cougarBaseline/v2/boolOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/www/cougarBaseline/v2/boolOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/www/cougarBaseline/v2/boolOperation", "BadRequest") );
+        DiscoManager discoManager10 = DiscoManager.getInstance();
+        discoManager10.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp11, new AccessLogRequirement("87.248.113.14", "/www/discoBaseline/v2/boolOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/www/discoBaseline/v2/boolOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/www/discoBaseline/v2/boolOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/www/discoBaseline/v2/boolOperation", "BadRequest") );
     }
 
 }

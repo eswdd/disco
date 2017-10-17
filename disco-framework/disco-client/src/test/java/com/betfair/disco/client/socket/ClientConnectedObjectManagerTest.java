@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket;
+package uk.co.exemel.disco.client.socket;
 
-import com.betfair.cougar.core.api.ev.ConnectedResponse;
-import com.betfair.cougar.core.api.ev.Subscription;
-import com.betfair.cougar.core.api.ev.WaitingObserver;
-import com.betfair.cougar.netutil.nio.HeapDelta;
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.NioUtils;
-import com.betfair.cougar.netutil.nio.TerminateSubscription;
-import com.betfair.cougar.netutil.nio.connected.*;
-import com.betfair.cougar.test.ParameterizedMultiRunner;
-import com.betfair.cougar.transport.api.protocol.CougarObjectIOFactory;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
-import com.betfair.cougar.transport.api.protocol.socket.InvocationResponse;
-import com.betfair.cougar.transport.api.protocol.socket.NewHeapSubscription;
-import com.betfair.cougar.transport.socket.InvocationResponseImpl;
+import uk.co.exemel.disco.core.api.ev.ConnectedResponse;
+import uk.co.exemel.disco.core.api.ev.Subscription;
+import uk.co.exemel.disco.core.api.ev.WaitingObserver;
+import uk.co.exemel.disco.netutil.nio.HeapDelta;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.NioUtils;
+import uk.co.exemel.disco.netutil.nio.TerminateSubscription;
+import uk.co.exemel.disco.netutil.nio.connected.*;
+import uk.co.exemel.disco.test.ParameterizedMultiRunner;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectIOFactory;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
+import uk.co.exemel.disco.transport.api.protocol.socket.InvocationResponse;
+import uk.co.exemel.disco.transport.api.protocol.socket.NewHeapSubscription;
+import uk.co.exemel.disco.transport.socket.InvocationResponseImpl;
 import com.betfair.platform.virtualheap.Heap;
 import com.betfair.platform.virtualheap.HeapListener;
 import com.betfair.platform.virtualheap.NodeType;
@@ -59,7 +59,7 @@ public class ClientConnectedObjectManagerTest {
     private int ioSessionId = 1;
 
     private int numThreads;
-    private CougarObjectIOFactory objectIOFactory;
+    private DiscoObjectIOFactory objectIOFactory;
 
     public ClientConnectedObjectManagerTest(int numThreads) {
         this.numThreads = numThreads;
@@ -84,7 +84,7 @@ public class ClientConnectedObjectManagerTest {
         subject.setMaxDeltaQueue(10);
         subject.setNioLogger(new NioLogger("TRANSPORT"));
         subject.setNumProcessingThreads(numThreads);
-        objectIOFactory = mock(CougarObjectIOFactory.class);
+        objectIOFactory = mock(DiscoObjectIOFactory.class);
         subject.setObjectIOFactory(objectIOFactory);
         subject.start();
     }
@@ -966,8 +966,8 @@ public class ClientConnectedObjectManagerTest {
 
         assertTrue(listener.waitForEnd(1000L));
 
-        CougarObjectOutput coo = mock(CougarObjectOutput.class);
-        when(objectIOFactory.newCougarObjectOutput(any(OutputStream.class), anyByte())).thenReturn(coo);
+        DiscoObjectOutput coo = mock(DiscoObjectOutput.class);
+        when(objectIOFactory.newDiscoObjectOutput(any(OutputStream.class), anyByte())).thenReturn(coo);
 
         sub2.close();
 
@@ -1003,8 +1003,8 @@ public class ClientConnectedObjectManagerTest {
 
         assertTrue(listener.waitForEnd(1000L));
 
-        CougarObjectOutput coo = mock(CougarObjectOutput.class);
-        when(objectIOFactory.newCougarObjectOutput(any(OutputStream.class), anyByte())).thenReturn(coo);
+        DiscoObjectOutput coo = mock(DiscoObjectOutput.class);
+        when(objectIOFactory.newDiscoObjectOutput(any(OutputStream.class), anyByte())).thenReturn(coo);
 
         sub1.close();
 
@@ -1039,7 +1039,7 @@ public class ClientConnectedObjectManagerTest {
 
         assertTrue(listener.waitForEnd(1000L));
 
-        when(objectIOFactory.newCougarObjectOutput(any(OutputStream.class), anyByte())).thenThrow(new RuntimeException());
+        when(objectIOFactory.newDiscoObjectOutput(any(OutputStream.class), anyByte())).thenThrow(new RuntimeException());
 
         sub1.close();
 

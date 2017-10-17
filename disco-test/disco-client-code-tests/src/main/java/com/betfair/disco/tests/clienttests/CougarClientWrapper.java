@@ -15,25 +15,25 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.clienttests;
+package uk.co.exemel.disco.tests.clienttests;
 
 import com.betfair.baseline.v2.BaselineClient;
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.enumerations.PreOrPostInterceptorException;
 import com.betfair.baseline.v2.exception.SimpleException;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ExecutionContextImpl;
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityResolver;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.api.security.InvalidCredentialsException;
-import com.betfair.cougar.baseline.security.GeneralIdentityResolver;
-import com.betfair.cougar.core.impl.CougarSpringCtxFactoryImpl;
-import com.betfair.cougar.core.impl.security.IdentityChainImpl;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ExecutionContextImpl;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityResolver;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.api.security.InvalidCredentialsException;
+import uk.co.exemel.disco.baseline.security.GeneralIdentityResolver;
+import uk.co.exemel.disco.core.impl.DiscoSpringCtxFactoryImpl;
+import uk.co.exemel.disco.core.impl.security.IdentityChainImpl;
+import uk.co.exemel.disco.logging.DiscoLoggingUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.net.InetAddress;
@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CougarClientWrapper {
+public class DiscoClientWrapper {
 
     public static enum UnderlyingTransport {
         HTTP, Socket
@@ -105,52 +105,52 @@ public class CougarClientWrapper {
 
     private static final IdentityResolver IDENTITY_RESOLVER = new GeneralIdentityResolver();
 
-    private static Map<String, CougarClientWrapper> wrappers = new HashMap<String, CougarClientWrapper>();
+    private static Map<String, DiscoClientWrapper> wrappers = new HashMap<String, DiscoClientWrapper>();
 
-    public static synchronized CougarClientWrapper getInstance(TransportType tt) throws Exception {
+    public static synchronized DiscoClientWrapper getInstance(TransportType tt) throws Exception {
         return getInstance(tt, true);
     }
 
-    public static synchronized CougarClientWrapper getInstance(TransportType tt, boolean clientEnumHandlingHardFail) throws Exception {
+    public static synchronized DiscoClientWrapper getInstance(TransportType tt, boolean clientEnumHandlingHardFail) throws Exception {
         String key = tt.name()+clientEnumHandlingHardFail;
-        CougarClientWrapper ret = wrappers.get(key);
+        DiscoClientWrapper ret = wrappers.get(key);
         if (ret == null) {
-            ret = new CougarClientWrapper();
+            ret = new DiscoClientWrapper();
             ret.setUpClient(tt.getClientName(), clientEnumHandlingHardFail);
             wrappers.put(key, ret);
         }
         return ret;
     }
 
-    private CougarClientWrapper(){
+    private DiscoClientWrapper(){
 
 	}
 
     /**
-     * Start a cougar client instance using the given transport (if one isn't already running)
+     * Start a disco client instance using the given transport (if one isn't already running)
      * Change the transport the running client is using if necessary
      *
      * @param transportType
      * @throws Exception
      */
 	private void setUpClient(String transportType, boolean clientEnumHandlingHardFail) throws Exception {
-        System.setProperty("cougar.client.transport", transportType);
-        System.setProperty("cougar.app.name", "TestClient"); // Set the client app name (will cause client logs to be renamed)
-        System.setProperty("cougar.client.http.async.worker.maxPoolSize", "10");
-        System.setProperty("cougar.client.http.enums.hardFailure", String.valueOf(clientEnumHandlingHardFail));
-        System.setProperty("cougar.client.http.async.enums.hardFailure", String.valueOf(clientEnumHandlingHardFail));
-        System.setProperty("cougar.client.socket.enums.hardFailure", String.valueOf(clientEnumHandlingHardFail));
-        System.setProperty("cougar.client.socket.rpc.timeout","30000");
+        System.setProperty("disco.client.transport", transportType);
+        System.setProperty("disco.app.name", "TestClient"); // Set the client app name (will cause client logs to be renamed)
+        System.setProperty("disco.client.http.async.worker.maxPoolSize", "10");
+        System.setProperty("disco.client.http.enums.hardFailure", String.valueOf(clientEnumHandlingHardFail));
+        System.setProperty("disco.client.http.async.enums.hardFailure", String.valueOf(clientEnumHandlingHardFail));
+        System.setProperty("disco.client.socket.enums.hardFailure", String.valueOf(clientEnumHandlingHardFail));
+        System.setProperty("disco.client.socket.rpc.timeout","30000");
         // skip the defaults - we want to use our own
-        System.setProperty("cougar.client.socket.ssl.supportsTls","false");
-        System.setProperty("cougar.client.socket.ssl.requiresTls","false");
+        System.setProperty("disco.client.socket.ssl.supportsTls","false");
+        System.setProperty("disco.client.socket.ssl.requiresTls","false");
 
-        CougarLoggingUtils.setTraceLogger(null);
-        CougarSpringCtxFactoryImpl cougarCtx = new CougarSpringCtxFactoryImpl();
-        appContext = cougarCtx.create(null);
+        DiscoLoggingUtils.setTraceLogger(null);
+        DiscoSpringCtxFactoryImpl discoCtx = new DiscoSpringCtxFactoryImpl();
+        appContext = discoCtx.create(null);
         client = (BaselineSyncClient) appContext.getBean("syncClient");
         asyncClient = (BaselineClient) appContext.getBean("asyncClient");
-        ctx = new CougarClientExecutionContext();
+        ctx = new DiscoClientExecutionContext();
 	}
 
     /**
@@ -255,7 +255,7 @@ public class CougarClientWrapper {
 	}
 
 
-	public static final class CougarClientExecutionContext extends ExecutionContextImpl{
+	public static final class DiscoClientExecutionContext extends ExecutionContextImpl{
 
 		private GeoLocationDetails geoLocationDetails = null;
 

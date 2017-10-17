@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.jmx;
+package uk.co.exemel.disco.util.jmx;
 
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -26,8 +26,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static com.betfair.cougar.util.jmx.ApplicationChecksums.APPLICATION_CHECKSUM;
-import static com.betfair.cougar.util.jmx.ApplicationChecksums.SEP;
+import static uk.co.exemel.disco.util.jmx.ApplicationChecksums.APPLICATION_CHECKSUM;
+import static uk.co.exemel.disco.util.jmx.ApplicationChecksums.SEP;
 import static junit.framework.Assert.*;
 
 /**

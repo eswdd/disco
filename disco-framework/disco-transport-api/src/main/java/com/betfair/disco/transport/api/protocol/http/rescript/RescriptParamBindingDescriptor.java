@@ -17,7 +17,7 @@
 /**
  *
  */
-package com.betfair.cougar.transport.api.protocol.http.rescript;
+package uk.co.exemel.disco.transport.api.protocol.http.rescript;
 
 /**
  * Describes how a parameter is resolved from an Http Request

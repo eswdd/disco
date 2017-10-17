@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.kpi;
+package uk.co.exemel.disco.core.impl.kpi;
 
 import com.betfair.tornjak.kpi.KPIMonitor;
 import com.betfair.tornjak.kpi.repeater.KPIRepeater;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.app;
+package uk.co.exemel.disco.test.socket.app;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;

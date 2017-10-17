@@ -3,7 +3,7 @@ To run server:
 
 1. bash$ mkdir -p logs; bin/socketTestServer.sh <concurrencyOfUpdates> <numHeaps> <updatesPerHeap> <numPushProcessingThreads> <socketServerPoolSize>
 
-Server will startup on port 9003 and initialise the heaps. Once cougar has started:
+Server will startup on port 9003 and initialise the heaps. Once disco has started:
 
 **** COUGAR HAS STARTED ****
 

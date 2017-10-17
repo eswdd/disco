@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolver;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolver;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
 import org.apache.axiom.om.OMElement;
 import org.junit.Test;
 

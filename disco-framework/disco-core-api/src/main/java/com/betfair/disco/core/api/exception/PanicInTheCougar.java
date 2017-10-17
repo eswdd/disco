@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.exception;
+package uk.co.exemel.disco.core.api.exception;
 
 import java.util.logging.Level;
 
@@ -22,21 +22,21 @@ import java.util.logging.Level;
 
 
 /**
- * Fatal exception - cougar cannot start, or if started is in such a state that correct processing may not proceed - eg. out of memory
+ * Fatal exception - disco cannot start, or if started is in such a state that correct processing may not proceed - eg. out of memory
  *
  */
 @SuppressWarnings("serial")
-public class PanicInTheCougar extends CougarException {
+public class PanicInTheDisco extends DiscoException {
 	private static final Level LOG_LEVEL = Level.SEVERE;
-	public PanicInTheCougar(String cause, Exception e) {
+	public PanicInTheDisco(String cause, Exception e) {
 		super(LOG_LEVEL, ServerFaultCode.StartupError, cause, e);
 	}
 
-	public PanicInTheCougar(String cause) {
+	public PanicInTheDisco(String cause) {
 		super(LOG_LEVEL, ServerFaultCode.StartupError, cause);
 	}
 
-	public PanicInTheCougar(Exception e) {
+	public PanicInTheDisco(Exception e) {
 		super(LOG_LEVEL, ServerFaultCode.StartupError, e);
 	}
 

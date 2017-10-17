@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl;
+package uk.co.exemel.disco.core.impl;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,34 +23,34 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
-import com.betfair.cougar.core.api.CougarSpringCtxFactory;
-import com.betfair.cougar.core.api.exception.PanicInTheCougar;
-import com.betfair.cougar.core.impl.logging.CougarLog4JBootstrap;
-import com.betfair.cougar.core.impl.logging.LogBootstrap;
-import com.betfair.cougar.core.impl.logging.NullLogBootstrap;
+import uk.co.exemel.disco.core.api.DiscoSpringCtxFactory;
+import uk.co.exemel.disco.core.api.exception.PanicInTheDisco;
+import uk.co.exemel.disco.core.impl.logging.DiscoLog4JBootstrap;
+import uk.co.exemel.disco.core.impl.logging.LogBootstrap;
+import uk.co.exemel.disco.core.impl.logging.NullLogBootstrap;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.util.configuration.PropertyLoader;
+import uk.co.exemel.disco.util.configuration.PropertyLoader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 /**
- * A factory that creates and starts cougar application server. Can be used to start cougar application server as a
+ * A factory that creates and starts disco application server. Can be used to start disco application server as a
  * stand-alone java application or to start it as an embedded component, e.g. from a servlet-based web application.
  * <p/>
  * Examples:
- * To start cougar as a standalone app just call:
- * new CougarSpringCtxFactoryImpl().create(null);
+ * To start disco as a standalone app just call:
+ * new DiscoSpringCtxFactoryImpl().create(null);
  * <p/>
- * To integrate cougar with existing servlet-based web application, create custom ServletContextListener and call:
+ * To integrate disco with existing servlet-based web application, create custom ServletContextListener and call:
  * WebApplicationContext parentCtx = WebApplicationContextUtils.getWebApplicationContext(servletContext);
- * new CougarSpringCtxFactoryImpl().create(parentCtx);
+ * new DiscoSpringCtxFactoryImpl().create(parentCtx);
  */
-public class CougarSpringCtxFactoryImpl implements CougarSpringCtxFactory {
-    public static final String LOGGING_BOOTSTRAP_CLASS_PROPERTY = "cougar.core.log.bootstrap.class";
+public class DiscoSpringCtxFactoryImpl implements DiscoSpringCtxFactory {
+    public static final String LOGGING_BOOTSTRAP_CLASS_PROPERTY = "disco.core.log.bootstrap.class";
 
-    public static final Class DEFAULT_COUGAR_LOG_INIT_CLASS = CougarLog4JBootstrap.class;
+    public static final Class DEFAULT_COUGAR_LOG_INIT_CLASS = DiscoLog4JBootstrap.class;
 
     private static final String CONFIG_PREFIX = "conf";
 
@@ -72,8 +72,8 @@ public class CougarSpringCtxFactoryImpl implements CougarSpringCtxFactory {
                context=new ClassPathXmlApplicationContext(configs.toArray(new String[configs.size()]), parentCtx);
             }
         } catch (Exception e) {
-            LoggerFactory.getLogger(CougarSpringCtxFactoryImpl.class).error("",e);
-            throw new PanicInTheCougar(e);
+            LoggerFactory.getLogger(DiscoSpringCtxFactoryImpl.class).error("",e);
+            throw new PanicInTheDisco(e);
         }
         return context;
     }
@@ -81,23 +81,23 @@ public class CougarSpringCtxFactoryImpl implements CougarSpringCtxFactory {
     protected List<String> getConfigs() throws IOException {
         List<String> configs = new ArrayList<String>();
 
-        Enumeration<URL> bootstraps = Main.class.getClassLoader().getResources(CONFIG_PREFIX + "/cougar-bootstrap-spring.xml");
+        Enumeration<URL> bootstraps = Main.class.getClassLoader().getResources(CONFIG_PREFIX + "/disco-bootstrap-spring.xml");
         while (bootstraps.hasMoreElements()) {
             configs.add(bootstraps.nextElement().toExternalForm());
         }
 
-        URL core = Main.class.getClassLoader().getResource(CONFIG_PREFIX + "/cougar-core-spring.xml");
+        URL core = Main.class.getClassLoader().getResource(CONFIG_PREFIX + "/disco-core-spring.xml");
         if (core == null) {
-            throw new IllegalStateException("Cannot find Cougar Core definition");
+            throw new IllegalStateException("Cannot find Disco Core definition");
         }
         configs.add(core.toExternalForm());
 
-        Enumeration<URL> modules = Main.class.getClassLoader().getResources(CONFIG_PREFIX + "/cougar-module-spring.xml");
+        Enumeration<URL> modules = Main.class.getClassLoader().getResources(CONFIG_PREFIX + "/disco-module-spring.xml");
         while (modules.hasMoreElements()) {
             configs.add(modules.nextElement().toExternalForm());
         }
 
-        Enumeration<URL> applications = Main.class.getClassLoader().getResources(CONFIG_PREFIX + "/cougar-application-spring.xml");
+        Enumeration<URL> applications = Main.class.getClassLoader().getResources(CONFIG_PREFIX + "/disco-application-spring.xml");
         while (applications.hasMoreElements()) {
             configs.add(applications.nextElement().toExternalForm());
         }
@@ -113,7 +113,7 @@ public class CougarSpringCtxFactoryImpl implements CougarSpringCtxFactory {
 
         try {
             //Construct a set of resources to attempt to load initial log config from
-            Resource defaultConfig = new ClassPathResource(CONFIG_PREFIX + "/cougar-core-defaults.properties");
+            Resource defaultConfig = new ClassPathResource(CONFIG_PREFIX + "/disco-core-defaults.properties");
             PropertyLoader pl = new PropertyLoader(defaultConfig, "overrides.properties");
             //Build a merged properties file that contains the above as well as System properties
             Properties properties = pl.buildConsolidatedProperties();
@@ -126,7 +126,7 @@ public class CougarSpringCtxFactoryImpl implements CougarSpringCtxFactory {
                     LOGGING_BOOTSTRAP_CLASS_PROPERTY +
                     "] points to a class that the implements LogBootstrap interface or is set to \"none\"");
             ex.printStackTrace();
-            throw new PanicInTheCougar(ex);
+            throw new PanicInTheDisco(ex);
         }
 
     }

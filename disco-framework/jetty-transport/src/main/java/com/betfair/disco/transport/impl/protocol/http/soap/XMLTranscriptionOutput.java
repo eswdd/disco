@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http.soap;
+package uk.co.exemel.disco.transport.impl.protocol.http.soap;
 
-import com.betfair.cougar.core.api.client.EnumWrapper;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.api.transcription.Transcribable;
-import com.betfair.cougar.core.api.transcription.TranscribableParams;
-import com.betfair.cougar.core.api.transcription.TranscriptionOutput;
-import com.betfair.cougar.util.dates.DateTimeUtility;
+import uk.co.exemel.disco.core.api.client.EnumWrapper;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.api.transcription.Transcribable;
+import uk.co.exemel.disco.core.api.transcription.TranscribableParams;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionOutput;
+import uk.co.exemel.disco.util.dates.DateTimeUtility;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;

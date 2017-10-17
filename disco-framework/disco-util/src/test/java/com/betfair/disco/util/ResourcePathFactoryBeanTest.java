@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util;
+package uk.co.exemel.disco.util;
 
 import org.junit.Test;
 import org.springframework.beans.MutablePropertyValues;
@@ -26,7 +26,7 @@ import static junit.framework.Assert.assertTrue;
 
 public class ResourcePathFactoryBeanTest {
 
-    private static final String RESOURCE = "cougar_server_cert.jks";
+    private static final String RESOURCE = "disco_server_cert.jks";
 
     @Test
     public void simplePositiveCase() {

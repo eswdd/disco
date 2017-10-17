@@ -15,11 +15,11 @@
  */
 
 // Originally from UpdatedComponentTests/Concurrency/RPC/RPC_ConcurrentBatchedRequests_SustainedRequests.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.concurrency.rpc;
+package uk.co.exemel.disco.tests.updatedcomponenttests.concurrency.rpc;
 
-import com.betfair.cougar.testing.concurrency.RPCConcurrentBatchedRequests;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import uk.co.exemel.disco.testing.concurrency.RPCConcurrentBatchedRequests;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 
@@ -27,12 +27,12 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Ensure that when sustained concurrent Batched JSON requests are performed against Cougar, each batch of requests is successfully sent and the JSON response to each is correctly handled
+ * Ensure that when sustained concurrent Batched JSON requests are performed against Disco, each batch of requests is successfully sent and the JSON response to each is correctly handled
  */
 public class RPCConcurrentBatchedRequestsSustainedRequestsTest {
     @Test
     public void doTest() throws Exception {
-        CougarManager cougarManager1 = CougarManager.getInstance();
+        DiscoManager discoManager1 = DiscoManager.getInstance();
         // Get current time for getting log entries later
 
         Timestamp getTimeAsTimeStamp2 = new Timestamp(System.currentTimeMillis());

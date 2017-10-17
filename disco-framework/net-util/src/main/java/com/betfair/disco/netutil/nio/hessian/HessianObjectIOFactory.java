@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.hessian;
+package uk.co.exemel.disco.netutil.nio.hessian;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,22 +22,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.betfair.cougar.core.api.transcription.TranscribableParams;
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.transport.api.protocol.CougarObjectIOFactory;
-import com.betfair.cougar.transport.api.protocol.CougarObjectInput;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
+import uk.co.exemel.disco.core.api.transcription.TranscribableParams;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectIOFactory;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectInput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
 import com.caucho.hessian.io.SerializerFactory;
 
-public class HessianObjectIOFactory implements CougarObjectIOFactory {
+public class HessianObjectIOFactory implements DiscoObjectIOFactory {
 
-    private Map<Byte, CougarSerializerFactory> protocolSerializerFactories;
+    private Map<Byte, DiscoSerializerFactory> protocolSerializerFactories;
 
 	public HessianObjectIOFactory(boolean client) {
-        protocolSerializerFactories = new HashMap<Byte, CougarSerializerFactory>();
-        for (byte b = CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED; b<=CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED; b++) {
-            Set<TranscribableParams> transcriptionParams = CougarProtocol.getTranscribableParamSet(b);
-            CougarSerializerFactory csf = CougarSerializerFactory.createInstance(transcriptionParams);
+        protocolSerializerFactories = new HashMap<Byte, DiscoSerializerFactory>();
+        for (byte b = DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED; b<=DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED; b++) {
+            Set<TranscribableParams> transcriptionParams = DiscoProtocol.getTranscribableParamSet(b);
+            DiscoSerializerFactory csf = DiscoSerializerFactory.createInstance(transcriptionParams);
             csf.setAllowNonSerializable(true);
             csf.addFactory(new TranscribableSerialiserFactory(transcriptionParams, client));
             csf.addFactory(new EnumSerialiserFactory(transcriptionParams));
@@ -48,12 +48,12 @@ public class HessianObjectIOFactory implements CougarObjectIOFactory {
 
 
 	@Override
-	public CougarObjectInput newCougarObjectInput(InputStream is, byte protocolVersion) {
+	public DiscoObjectInput newDiscoObjectInput(InputStream is, byte protocolVersion) {
         return new HessianObjectInput(is, protocolSerializerFactories.get(protocolVersion));
 	}
 
 	@Override
-	public CougarObjectOutput newCougarObjectOutput(OutputStream os, byte protocolVersion) {
+	public DiscoObjectOutput newDiscoObjectOutput(OutputStream os, byte protocolVersion) {
         return new HessianObjectOutput(os, protocolSerializerFactories.get(protocolVersion));
 	}
 

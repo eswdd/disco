@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/ResponseTypes/REST/Rest_Post_MapResponse_JSON_DuplicateKey.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.responsetypes.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.responsetypes.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -34,20 +34,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that when a Rest (JSON) Post operation is performed against Cougar, passing in a Map containing duplicate keys in the post body, it is correctly de-serialized, processed, returned the correct Map response.
+ * Ensure that when a Rest (JSON) Post operation is performed against Disco, passing in a Map containing duplicate keys in the post body, it is correctly de-serialized, processed, returned the correct Map response.
  */
 public class RestPostMapResponseJSONDuplicateKeyTest {
     @Test
     public void doTest() throws Exception {
         
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        discoManager1 = discoManager1;
         
         
         getNewHttpCallBean1.setOperationName("simpleMapGet");
         
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean1.setVersion("v2");
         
@@ -58,9 +58,9 @@ public class RestPostMapResponseJSONDuplicateKeyTest {
 
         Timestamp getTimeAsTimeStamp7 = new Timestamp(System.currentTimeMillis());
         
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.XML);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.XML);
         
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument10 = xMLHelpers4.getXMLObjectFromString("<TestSimpleMapGetResponse><entry key=\"aaa\"><String>Value for aaa</String></entry><entry key=\"AAA\"><String>Value for AAA</String></entry><entry key=\"ccc\"><String>Value for ccc</String></entry><entry key=\"bbb\"><String>Value for bbb</String></entry></TestSimpleMapGetResponse>");
@@ -68,12 +68,12 @@ public class RestPostMapResponseJSONDuplicateKeyTest {
         JSONHelpers jSONHelpers5 = new JSONHelpers();
         JSONObject createAsJSONObject11 = jSONHelpers5.createAsJSONObject(new JSONObject("{\"AAA\": \"Value for AAA\",\"aaa\": \"Value for aaa\",\"bbb\": \"Value for bbb\",\"ccc\": \"Value for ccc\"}"));
         
-        HttpResponseBean response6 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
+        HttpResponseBean response6 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
         AssertionUtils.multiAssertEquals(createAsDocument10, response6.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response6.getHttpStatusText());
         
-        HttpResponseBean response7 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response7 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         AssertionUtils.multiAssertEquals(createAsJSONObject11, response7.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response7.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response7.getHttpStatusText());
@@ -81,7 +81,7 @@ public class RestPostMapResponseJSONDuplicateKeyTest {
         // generalHelpers.pauseTest(500L);
         
         
-        cougarManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "testSimpleMapGet"),new RequestLogRequirement("2.8", "testSimpleMapGet") );
+        discoManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "testSimpleMapGet"),new RequestLogRequirement("2.8", "testSimpleMapGet") );
     }
 
 }

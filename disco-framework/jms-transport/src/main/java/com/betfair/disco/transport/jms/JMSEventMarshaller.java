@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms;
+package uk.co.exemel.disco.transport.jms;
 
-import com.betfair.cougar.core.api.events.Event;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import com.betfair.cougar.transport.api.protocol.events.EventMarshaller;
-import com.betfair.cougar.transport.api.protocol.events.EventServiceBindingDescriptor;
-import com.betfair.cougar.util.RequestUUIDImpl;
+import uk.co.exemel.disco.core.api.events.Event;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.transport.api.protocol.events.EventMarshaller;
+import uk.co.exemel.disco.transport.api.protocol.events.EventServiceBindingDescriptor;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
 
 import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
@@ -55,7 +55,7 @@ public class JMSEventMarshaller implements EventMarshaller<TextMessage> {
     private DataBindingFactory dataBindingFactory;
 
 
-    public String marshallEventBody(Event event) throws CougarException {
+    public String marshallEventBody(Event event) throws DiscoException {
         Marshaller marshaller = dataBindingFactory.getMarshaller();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         marshaller.marshall(outputStream, event, characterEncoding, false);
@@ -69,15 +69,15 @@ public class JMSEventMarshaller implements EventMarshaller<TextMessage> {
         sb.append(JMSPropertyConstants.TIMESTAMP_SEPARATOR);
         sb.append(new SimpleDateFormat(dateFormatPattern).format(new Date()));
 
-        if (event.getCougarMessageRouteString() != null) {
+        if (event.getDiscoMessageRouteString() != null) {
             sb.append(JMSPropertyConstants.COUGAR_ROUTING_SEPARATOR);
-            sb.append(event.getCougarMessageRouteString());
+            sb.append(event.getDiscoMessageRouteString());
         }
         return sb.toString();
     }
 
     @Override
-    public TextMessage marshallEvent(EventServiceBindingDescriptor bindingDescriptor, Event event, Object session) throws CougarException {
+    public TextMessage marshallEvent(EventServiceBindingDescriptor bindingDescriptor, Event event, Object session) throws DiscoException {
         try {
             TextMessage message = ((Session)session).createTextMessage(marshallEventBody(event));
 
@@ -105,9 +105,9 @@ public class JMSEventMarshaller implements EventMarshaller<TextMessage> {
 
             return message;
         } catch (JMSException jmsex) {
-            throw new CougarFrameworkException("Error marshalling Event", jmsex);
+            throw new DiscoFrameworkException("Error marshalling Event", jmsex);
         } catch (UnknownHostException e) {
-            throw new CougarFrameworkException("Error looking up local host name", e);
+            throw new DiscoFrameworkException("Error looking up local host name", e);
         }
     }
 

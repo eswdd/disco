@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardValidation/REST/Rest_Post_MissingMandatory_ListOfComplex_JSON.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardvalidation.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardvalidation.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -33,21 +33,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that the correct fault is returned when, a Rest(JSON) Post operation is performed against Cougar, passing a List of complex object in the post body, where the complex object  contained in the list has a mandatory field missing
+ * Ensure that the correct fault is returned when, a Rest(JSON) Post operation is performed against Disco, passing a List of complex object in the post body, where the complex object  contained in the list has a mandatory field missing
  */
 public class RestPostMissingMandatoryListOfComplexJSONTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        discoManager1 = discoManager1;
         // Turn detailed faults off
-        cougarManager1.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        discoManager1.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         
         getNewHttpCallBean1.setOperationName("listOfComplexOperation");
         
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean1.setVersion("v2");
         // Set the body param to a list of complex objects where one of the entries is missing mandatory fields
@@ -58,29 +58,29 @@ public class RestPostMissingMandatoryListOfComplexJSONTest {
 
         Timestamp getTimeAsTimeStamp7 = new Timestamp(System.currentTimeMillis());
         // Make REST JSON call to the operation requesting an XML response
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.XML);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.XML);
         // Make REST JSON call to the operation requesting a JSON response
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Create the expected response as an XML document (Fault)
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument12 = xMLHelpers4.getXMLObjectFromString("<fault><faultcode>Client</faultcode><faultstring>DSC-0018</faultstring><detail/></fault>");
         // Convert the expected response to REST types for comparison with actual responses
-        Map<CougarMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes13 = cougarManager1.convertResponseToRestTypes(createAsDocument12, getNewHttpCallBean1);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes13 = discoManager1.convertResponseToRestTypes(createAsDocument12, getNewHttpCallBean1);
         // Check the 2 responses are as expected (Bad Request)
-        HttpResponseBean response5 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes13.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response5.getResponseObject());
+        HttpResponseBean response5 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes13.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response5.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response5.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response5.getHttpStatusText());
         
-        HttpResponseBean response6 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes13.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response6.getResponseObject());
+        HttpResponseBean response6 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes13.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response6.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response6.getHttpStatusText());
         
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
         
-        cougarManager1.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp7, new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/listOfComplexOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/listOfComplexOperation", "BadRequest") );
+        discoManager1.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp7, new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/listOfComplexOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/listOfComplexOperation", "BadRequest") );
     }
 
 }

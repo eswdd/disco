@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http.rescript;
+package uk.co.exemel.disco.transport.impl.protocol.http.rescript;
 
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.SimpleOperationDefinition;
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.transcription.EnumDerialisationException;
-import com.betfair.cougar.core.api.transcription.EnumUtils;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.marshalling.impl.databinding.DataBindingManager;
-import com.betfair.cougar.marshalling.impl.databinding.DataBindingMap;
-import com.betfair.cougar.marshalling.impl.databinding.json.JSONBindingFactory;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptBody;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptResponse;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.SimpleOperationDefinition;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.transcription.EnumDerialisationException;
+import uk.co.exemel.disco.core.api.transcription.EnumUtils;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.marshalling.impl.databinding.DataBindingManager;
+import uk.co.exemel.disco.marshalling.impl.databinding.DataBindingMap;
+import uk.co.exemel.disco.marshalling.impl.databinding.json.JSONBindingFactory;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptBody;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptResponse;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -162,11 +162,11 @@ public class RescriptOperationBindingTest extends TestCase {
         try {
             Object[] resolvedArguments = operationSimpleGetBinding.resolveArgs(mockedRequest, null, MediaType.APPLICATION_JSON_TYPE, "utf-8");
             fail("A validation exception should have occurred due to an invalid float argument");
-        } catch (CougarMarshallingException expected) {
+        } catch (DiscoMarshallingException expected) {
         }
     }
 
-    @Test(expected=CougarMarshallingException.class)
+    @Test(expected=DiscoMarshallingException.class)
     public void testResolveBodyWithGetMethod() {
         when(mockedRequest.getMethod()).thenReturn("GET");
         operationBodyParamBinding.resolveArgs(mockedRequest, new ByteArrayInputStream("".getBytes()), null, "utf-8");
@@ -200,7 +200,7 @@ public class RescriptOperationBindingTest extends TestCase {
         assertEquals(null, resolvedArgs[0]);
     }
 
-    @Test(expected = CougarMarshallingException.class)
+    @Test(expected = DiscoMarshallingException.class)
     public void testResolveUnrecognizedOptionalBodyEnumWithHardFailure() {
         Boolean originalHardFailureValue = EnumUtils.getHardFailureForThisThread();
         EnumUtils.setHardFailureForThisThread(true);

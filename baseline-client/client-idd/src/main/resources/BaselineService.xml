@@ -23,8 +23,8 @@
 			xmlns:xi="http://www.w3.org/2001/XInclude">
 	<description>The Baseline Service</description>
 
-    <operation name="echoCougarPropertyValue" since="2.0.0">
-        <description>Echo the value of the passed cougar property</description>
+    <operation name="echoDiscoPropertyValue" since="2.0.0">
+        <description>Echo the value of the passed disco property</description>
         <parameters>
             <request>
                 <parameter name="propertyName" type="string">
@@ -599,8 +599,8 @@
 		</parameters>
 	</operation>
 
-    <operation name="testNamedCougarException" since="2.4.0">
-        <description>a service used to test throwing a Cougar Exception with the given error code</description>
+    <operation name="testNamedDiscoException" since="2.4.0">
+        <description>a service used to test throwing a Disco Exception with the given error code</description>
         <parameters>
             <request>
                 <parameter mandatory="true" name="errorCodeName" type="string">
@@ -686,7 +686,7 @@
       </operation>
 
     <operation name="testSimpleTypeReplacement" since="2.0.0">
-            <description>Test that simple types are handled by Cougar</description>
+            <description>Test that simple types are handled by Disco</description>
             <parameters>
 	            <request>
 					<parameter name="simpleInt" type="SimpleInt" mandatory="true">
@@ -1609,7 +1609,7 @@
 	</operation>
 
     <operation name="callUnknownOperation" since="2.0">
-        <description>Invokes an non-existing call using a cougar-client and doesn't handle the exception</description>
+        <description>Invokes an non-existing call using a disco-client and doesn't handle the exception</description>
         <parameters>
             <request/>
             <response type="void">
@@ -2426,7 +2426,7 @@
 
 	<exceptionType name="SimpleException" prefix="SEX">
 		<!--
-			Cougar currently requires that all Exceptions have a first parameter
+			Disco currently requires that all Exceptions have a first parameter
 			that is defined by its valid values, all defined by an incrementing id
 		-->
 		<description>This exception is thrown when an operation fails</description>
@@ -2453,7 +2453,7 @@
 	</exceptionType>
 	<exceptionType name="WotsitException" prefix="WEX">
 		<!--
-			Cougar currently requires that all Exceptions have a first parameter
+			Disco currently requires that all Exceptions have a first parameter
 			that is defined by its valid values, all defined by an incrementing id
 		-->
 		<description>This exception might be thrown when an operation fails</description>

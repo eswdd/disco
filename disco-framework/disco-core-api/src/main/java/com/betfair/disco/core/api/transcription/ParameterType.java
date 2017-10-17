@@ -17,9 +17,9 @@
 /**
  *
  */
-package com.betfair.cougar.core.api.transcription;
+package uk.co.exemel.disco.core.api.transcription;
 
-import com.betfair.cougar.core.api.client.EnumWrapper;
+import uk.co.exemel.disco.core.api.client.EnumWrapper;
 
 import java.util.Date;
 import java.util.List;

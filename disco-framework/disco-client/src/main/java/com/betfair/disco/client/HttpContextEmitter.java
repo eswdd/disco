@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.UUIDGenerator;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.client.api.ContextEmitter;
-import com.betfair.cougar.client.api.GeoLocationSerializer;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.UUIDGenerator;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.client.api.ContextEmitter;
+import uk.co.exemel.disco.client.api.GeoLocationSerializer;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 import org.joda.time.format.DateTimeFormatter;

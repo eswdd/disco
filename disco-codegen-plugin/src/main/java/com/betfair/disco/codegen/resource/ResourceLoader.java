@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.codegen.resource;
+package uk.co.exemel.disco.codegen.resource;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
 
-import com.betfair.cougar.codegen.except.PluginException;
+import uk.co.exemel.disco.codegen.except.PluginException;
 
 /**
  * Responsible for getting resources. Does what we'd normally expect a {@link ClassLoader} to do,

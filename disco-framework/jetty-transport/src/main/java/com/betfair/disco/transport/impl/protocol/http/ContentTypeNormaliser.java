@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
@@ -29,9 +29,9 @@ public interface ContentTypeNormaliser {
 	 * Get the MediaType of the content of the HttpServletRequest.
 	 * This is determined from the Content-Type header for POST requests.
 	 * For POST requests with no Content-Type header, or an invalid value,
-	 * a CougarValidationException is thrown
+	 * a DiscoValidationException is thrown
 	 * For GET requests this method will return null.
-     * @throws CougarValidationException
+     * @throws DiscoValidationException
 	 */
 	public MediaType getNormalisedRequestMediaType(HttpServletRequest request);
 
@@ -40,8 +40,8 @@ public interface ContentTypeNormaliser {
 	 * MediaType is determined first of all by a MessageConstants.FORMAT_PARAMETER parameter,
 	 * or if that is not present, by the request Accept-Types header. If no accept types
 	 * have been set on the request then a default value is returned. If an invalid accept type
-	 * is set a CougarValidationException is thrown.
-     * @throws CougarValidationException
+	 * is set a DiscoValidationException is thrown.
+     * @throws DiscoValidationException
      * @see MessageConstants.FORMAT_PARAMETER
 	 */
 	public MediaType getNormalisedResponseMediaType(HttpServletRequest request);

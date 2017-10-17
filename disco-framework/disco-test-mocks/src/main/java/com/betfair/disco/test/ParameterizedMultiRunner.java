@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test;
+package uk.co.exemel.disco.test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

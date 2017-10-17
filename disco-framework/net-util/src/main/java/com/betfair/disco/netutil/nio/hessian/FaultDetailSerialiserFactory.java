@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.hessian;
+package uk.co.exemel.disco.netutil.nio.hessian;
 
-import com.betfair.cougar.core.api.fault.FaultDetail;
-import com.betfair.cougar.core.api.transcription.Transcribable;
-import com.betfair.cougar.core.api.transcription.TranscribableParams;
+import uk.co.exemel.disco.core.api.fault.FaultDetail;
+import uk.co.exemel.disco.core.api.transcription.Transcribable;
+import uk.co.exemel.disco.core.api.transcription.TranscribableParams;
 import com.caucho.hessian.io.AbstractSerializerFactory;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
@@ -27,7 +27,7 @@ import com.caucho.hessian.io.Serializer;
 import java.util.Set;
 
 /**
- * classes without a no parameter constructor use the CougarInternalDeserialiser - this serialiser/deserialiser requires the client and server to agree on
+ * classes without a no parameter constructor use the DiscoInternalDeserialiser - this serialiser/deserialiser requires the client and server to agree on
  * the serialisation (same number of properties in the same order)
  * </p>
  * classes with a no parameter constructor use the TranscribableSerialiser/Deserialiser which allows the client and server to vary in number and order of serialised
@@ -36,7 +36,7 @@ import java.util.Set;
  * classes using the TranscribableSerialiser/deserialiser are constrained in the transcription they can perform.  Namely they must advertise the params they will
  * transcribe via the getParameters method, and only those parameters in the same order may be transcribel
  * </p>
- * The Cougar class FaultDetail does not conform to the above requirements so must use the InternalSerialiser/Deserialiser
+ * The Disco class FaultDetail does not conform to the above requirements so must use the InternalSerialiser/Deserialiser
  */
 public class FaultDetailSerialiserFactory extends AbstractSerializerFactory {
 

@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/REST/Rest_Post_RequestTypes_List_Empty_JSON.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -33,19 +33,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that Cougar can handle an empty list in the post body from a JSON request
+ * Ensure that Disco can handle an empty list in the post body from a JSON request
  */
 public class RestPostRequestTypesListEmptyJSONTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        discoManager1 = discoManager1;
         
         getNewHttpCallBean1.setOperationName("largePost");
         
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean1.setVersion("v2");
         // Set the post body to contain an empty list
@@ -56,22 +56,22 @@ public class RestPostRequestTypesListEmptyJSONTest {
 
         Timestamp getTimeAsTimeStamp7 = new Timestamp(System.currentTimeMillis());
         // Make the JSON call to the operation
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Create the expected response as an XML document
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument9 = xMLHelpers4.getXMLObjectFromString("<SimpleResponse><message>There were 1 items specified in the list, 0 actually</message></SimpleResponse>");
         // Convert the expected response to REST types for comparison with actual responses
-        Map<CougarMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes10 = cougarManager1.convertResponseToRestTypes(createAsDocument9, getNewHttpCallBean1);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes10 = discoManager1.convertResponseToRestTypes(createAsDocument9, getNewHttpCallBean1);
         // Check the JSON response is as expected
-        HttpResponseBean response5 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes10.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response5.getResponseObject());
+        HttpResponseBean response5 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes10.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response5.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response5.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response5.getHttpStatusText());
         
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
         
-        cougarManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "testLargePost") );
+        discoManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "testLargePost") );
     }
 
 }

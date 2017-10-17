@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.client;
+package uk.co.exemel.disco.test.socket.tester.client;
 
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
 
 import java.util.Arrays;
 import java.util.List;

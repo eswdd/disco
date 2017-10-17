@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http.soap;
+package uk.co.exemel.disco.transport.impl.protocol.http.soap;
 
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.api.transcription.Transcribable;
-import com.betfair.cougar.core.api.transcription.TranscribableParams;
-import com.betfair.cougar.core.api.transcription.TranscriptionInput;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.api.transcription.Transcribable;
+import uk.co.exemel.disco.core.api.transcription.TranscribableParams;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.util.dates.DateTimeUtility;
+import uk.co.exemel.disco.util.dates.DateTimeUtility;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.util.base64.Base64Utils;
 
@@ -102,7 +102,7 @@ public class XMLTranscriptionInput implements TranscriptionInput {
                     } catch (Exception e) {
                         String message = "Unable to parse " + node.getText() + " as type " + paramType;
                         LOGGER.debug(message, e);
-                        throw CougarMarshallingException.unmarshallingException("soap",message,e,client);
+                        throw DiscoMarshallingException.unmarshallingException("soap",message,e,client);
                     }
                 } else {
                     List list = new ArrayList();
@@ -156,7 +156,7 @@ public class XMLTranscriptionInput implements TranscriptionInput {
         throw new UnsupportedOperationException("Parameter Type " + paramType + " is not supported as a simple object type");
     }
 
-    public static CougarValidationException exceptionDuringDeserialisation(ParameterType paramType, String paramName, Exception e, boolean client) {
+    public static DiscoValidationException exceptionDuringDeserialisation(ParameterType paramType, String paramName, Exception e, boolean client) {
         StringBuilder logBuffer = new StringBuilder();
         logBuffer.append("Unable to convert data in request to ");
         logBuffer.append(paramType.getType().name());
@@ -165,7 +165,7 @@ public class XMLTranscriptionInput implements TranscriptionInput {
         String message = logBuffer.toString();
 
         LOGGER.debug(message , e);
-        throw CougarMarshallingException.unmarshallingException("xml", message, e, client);
+        throw DiscoMarshallingException.unmarshallingException("xml", message, e, client);
 
     }
 }

@@ -14,43 +14,43 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http.rescript;
+package uk.co.exemel.disco.transport.impl.protocol.http.rescript;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.fault.FaultCode;
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.api.security.InvalidCredentialsException;
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.PanicInTheCougar;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.fault.CougarFault;
-import com.betfair.cougar.core.api.fault.Fault;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
-import com.betfair.cougar.marshalling.api.databinding.FaultMarshaller;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import com.betfair.cougar.marshalling.api.databinding.UnMarshaller;
-import com.betfair.cougar.marshalling.impl.databinding.DataBindingManager;
-import com.betfair.cougar.marshalling.impl.databinding.DataBindingMap;
-import com.betfair.cougar.transport.api.CommandResolver;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
-import com.betfair.cougar.transport.api.ExecutionCommand;
-import com.betfair.cougar.transport.api.TransportCommand.CommandStatus;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.*;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor.ParamSource;
-import com.betfair.cougar.transport.impl.protocol.http.AbstractHttpCommandProcessorTest;
-import com.betfair.cougar.transport.impl.protocol.http.ContentTypeNormaliser;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.fault.FaultCode;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.api.security.InvalidCredentialsException;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.PanicInTheDisco;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
+import uk.co.exemel.disco.core.api.fault.Fault;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.UnMarshaller;
+import uk.co.exemel.disco.marshalling.impl.databinding.DataBindingManager;
+import uk.co.exemel.disco.marshalling.impl.databinding.DataBindingMap;
+import uk.co.exemel.disco.transport.api.CommandResolver;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolution;
+import uk.co.exemel.disco.transport.api.ExecutionCommand;
+import uk.co.exemel.disco.transport.api.TransportCommand.CommandStatus;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.*;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor.ParamSource;
+import uk.co.exemel.disco.transport.impl.protocol.http.AbstractHttpCommandProcessorTest;
+import uk.co.exemel.disco.transport.impl.protocol.http.ContentTypeNormaliser;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -177,7 +177,7 @@ public class RescriptTransportCommandProcessorTest extends AbstractHttpCommandPr
 		DataBindingManager.getInstance().addBindingMap(dbm);
 
 		rescriptCommandProcessor.bind(serviceBinding);
-		rescriptCommandProcessor.onCougarStart();
+		rescriptCommandProcessor.onDiscoStart();
 
 	}
 
@@ -246,7 +246,7 @@ public class RescriptTransportCommandProcessorTest extends AbstractHttpCommandPr
 		assertNotNull(ev.getObserver());
 
 		// Assert that the expected exception is sent
-		ev.getObserver().onResult(new ExecutionResult(new CougarServiceException(
+		ev.getObserver().onResult(new ExecutionResult(new DiscoServiceException(
 					ServerFaultCode.ServiceCheckedException, "Error in App",
 					new TestApplicationException(ResponseCode.Forbidden, "TestError-123",faultMessages))));
 		assertEquals(CommandStatus.Complete, command.getStatus());
@@ -283,7 +283,7 @@ public class RescriptTransportCommandProcessorTest extends AbstractHttpCommandPr
 		verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
 
 		InOrder inorder = inOrder(faultMarshaller, logger);
-		inorder.verify(faultMarshaller).marshallFault(any(OutputStream.class), any(CougarFault.class), eq("utf-8"));
+		inorder.verify(faultMarshaller).marshallFault(any(OutputStream.class), any(DiscoFault.class), eq("utf-8"));
         inorder.verify(logger).logAccess(eq(command), any(ExecutionContext.class), anyLong(), anyLong(),
                                             any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
 
@@ -304,7 +304,7 @@ public class RescriptTransportCommandProcessorTest extends AbstractHttpCommandPr
 
 		//Now get ready to send a response, but the response type is invalid
 		when(ctn.getNormalisedResponseMediaType(any(HttpServletRequest.class))).thenThrow(
-				new CougarValidationException(ServerFaultCode.AcceptTypeNotValid, ""));
+				new DiscoValidationException(ServerFaultCode.AcceptTypeNotValid, ""));
 		ev.getObserver().onResult(new ExecutionResult("something"));
 
 		//Verify we get the correct response status
@@ -314,7 +314,7 @@ public class RescriptTransportCommandProcessorTest extends AbstractHttpCommandPr
 
 		//And verify that the error is marshalled then logged in that order
 		InOrder inorder = inOrder(faultMarshaller, logger);
-		inorder.verify(faultMarshaller).marshallFault(any(OutputStream.class), any(CougarFault.class), eq("utf-8"));
+		inorder.verify(faultMarshaller).marshallFault(any(OutputStream.class), any(DiscoFault.class), eq("utf-8"));
         inorder.verify(logger).logAccess(eq(command), any(ExecutionContext.class), anyLong(), anyLong(),
                 any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
 
@@ -354,7 +354,7 @@ public class RescriptTransportCommandProcessorTest extends AbstractHttpCommandPr
         verify(response).setStatus(HttpServletResponse.SC_BAD_REQUEST);
 
         InOrder inorder = inOrder(faultMarshaller, logger);
-        inorder.verify(faultMarshaller).marshallFault(any(OutputStream.class), any(CougarFault.class), eq("utf-8"));
+        inorder.verify(faultMarshaller).marshallFault(any(OutputStream.class), any(DiscoFault.class), eq("utf-8"));
         inorder.verify(logger).logAccess(eq(command), any(ExecutionContext.class), anyLong(), anyLong(),
                                             any(MediaType.class), any(MediaType.class), any(ResponseCode.class));
 
@@ -362,7 +362,7 @@ public class RescriptTransportCommandProcessorTest extends AbstractHttpCommandPr
     }
 
 
-	@Test(expected=PanicInTheCougar.class)
+	@Test(expected=PanicInTheDisco.class)
     public void testBindOperation() {
         //Ensure that we don't have more than one operation bound with the same uri path
 

@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl;
+package uk.co.exemel.disco.core.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
-import com.betfair.cougar.test.CougarTestCase;
+import uk.co.exemel.disco.test.DiscoTestCase;
 
-public class CougarOutputStreamTest extends CougarTestCase {
+public class DiscoOutputStreamTest extends DiscoTestCase {
 	ByteArrayOutputStream underlying = new ByteArrayOutputStream();
-	CougarOutputStream os = new CougarOutputStream(underlying);
+	DiscoOutputStream os = new DiscoOutputStream(underlying);
 
 
 	@Override

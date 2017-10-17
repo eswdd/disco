@@ -21,9 +21,9 @@
             http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-    <import resource="classpath:conf/core-config-cougar-core-impl.xml" />
+    <import resource="classpath:conf/core-config-disco-core-impl.xml" />
 
     <!-- KPI monitoring -->
-    <import resource="classpath:conf/cougar-kpi.xml"/>
+    <import resource="classpath:conf/disco-kpi.xml"/>
 
 </beans>

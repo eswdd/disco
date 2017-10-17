@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.transport.api.CommandValidator;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.transport.api.CommandValidator;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
@@ -36,14 +36,14 @@ public class HttpsCommandValidator implements CommandValidator<HttpCommand> {
     private String externalTerminationHeader = "Front-End-Https";
 
     @Override
-    public void validate(HttpCommand command) throws CougarException {
+    public void validate(HttpCommand command) throws DiscoException {
         if (enabled) {
             // https is obvious SSL
             if (!command.getRequest().getScheme().equals("https")) {
                 // if over http, then if we support external termination, then externalTerminationHeader must be present
                 // to indicate it was terminated
                 if (!allowExternalTermination || command.getRequest().getHeader(externalTerminationHeader) == null) {
-                    throw new CougarServiceException(ServerFaultCode.SecurityException, "This service requires a secure communication protocol");
+                    throw new DiscoServiceException(ServerFaultCode.SecurityException, "This service requires a secure communication protocol");
                 }
             }
         }

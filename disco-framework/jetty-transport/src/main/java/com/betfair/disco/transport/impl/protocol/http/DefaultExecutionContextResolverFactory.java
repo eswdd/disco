@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.security.InferredCountryResolver;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolver;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolverFactory;
-import com.betfair.cougar.transport.api.RequestTimeResolver;
-import com.betfair.cougar.transport.api.protocol.http.GeoLocationDeserializer;
-import com.betfair.cougar.util.geolocation.GeoIPLocator;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.security.InferredCountryResolver;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolver;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolverFactory;
+import uk.co.exemel.disco.transport.api.RequestTimeResolver;
+import uk.co.exemel.disco.transport.api.protocol.http.GeoLocationDeserializer;
+import uk.co.exemel.disco.util.geolocation.GeoIPLocator;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 
 import javax.servlet.http.HttpServletRequest;

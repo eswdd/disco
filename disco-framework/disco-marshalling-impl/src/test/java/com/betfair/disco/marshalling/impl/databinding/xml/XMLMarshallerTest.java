@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.xml;
+package uk.co.exemel.disco.marshalling.impl.databinding.xml;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.api.fault.FaultCode;
-import com.betfair.cougar.core.api.fault.Fault;
-import com.betfair.cougar.core.api.fault.FaultController;
-import com.betfair.cougar.marshalling.api.databinding.FaultMarshaller;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import com.betfair.cougar.test.CougarTestCase;
-import com.betfair.cougar.util.dates.DateTimeUtility;
-import com.betfair.cougar.util.dates.XMLDateAdapter;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.api.fault.FaultCode;
+import uk.co.exemel.disco.core.api.fault.Fault;
+import uk.co.exemel.disco.core.api.fault.FaultController;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.test.DiscoTestCase;
+import uk.co.exemel.disco.util.dates.DateTimeUtility;
+import uk.co.exemel.disco.util.dates.XMLDateAdapter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public class XMLMarshallerTest extends CougarTestCase {
+public class XMLMarshallerTest extends DiscoTestCase {
 
     public void testXMLMarshaller() throws Exception {
         Marshaller marshaller = new XMLDataBindingFactory(new JdkEmbeddedXercesSchemaValidationFailureParser()).getMarshaller();
@@ -202,7 +202,7 @@ public class XMLMarshallerTest extends CougarTestCase {
 
     }
 
-    public static class TestFaultException extends CougarApplicationException {
+    public static class TestFaultException extends DiscoApplicationException {
 
         public TestFaultException(ResponseCode code, String message) {
             super(code, message);

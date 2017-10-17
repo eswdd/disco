@@ -66,7 +66,7 @@
 	</simpleType>
 	
 	
-	<simpleType name="CougarComponentStatuses" type="string">
+	<simpleType name="DiscoComponentStatuses" type="string">
 		<validValues>
             <value name="OK">
                 <description>OK Status</description>

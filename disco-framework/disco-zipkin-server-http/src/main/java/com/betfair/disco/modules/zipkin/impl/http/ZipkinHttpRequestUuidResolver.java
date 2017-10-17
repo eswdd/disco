@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.impl.http;
+package uk.co.exemel.disco.modules.zipkin.impl.http;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.core.api.builder.DehydratedExecutionContextBuilder;
-import com.betfair.cougar.modules.zipkin.api.ZipkinKeys;
-import com.betfair.cougar.modules.zipkin.impl.ZipkinExecutionContextResolverFactory;
-import com.betfair.cougar.modules.zipkin.impl.ZipkinManager;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.impl.protocol.http.HttpRequestUuidResolver;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.core.api.builder.DehydratedExecutionContextBuilder;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinKeys;
+import uk.co.exemel.disco.modules.zipkin.impl.ZipkinExecutionContextResolverFactory;
+import uk.co.exemel.disco.modules.zipkin.impl.ZipkinManager;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.impl.protocol.http.HttpRequestUuidResolver;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Zipkin HTTP UUID resolver. Extends default Cougar HTTP Resolver.
+ * Zipkin HTTP UUID resolver. Extends default Disco HTTP Resolver.
  *
  * @see HttpRequestUuidResolver
  */
@@ -44,7 +44,7 @@ public class ZipkinHttpRequestUuidResolver<Ignore> extends HttpRequestUuidResolv
 
     @Override
     public void resolve(HttpCommand httpCommand, Ignore ignore, DehydratedExecutionContextBuilder builder) {
-        RequestUUID cougarUuid = resolve(httpCommand);
+        RequestUUID discoUuid = resolve(httpCommand);
 
         HttpServletRequest request = httpCommand.getRequest();
 
@@ -55,7 +55,7 @@ public class ZipkinHttpRequestUuidResolver<Ignore> extends HttpRequestUuidResolv
         String flags = request.getHeader(ZipkinKeys.FLAGS);
         int port = request.getLocalPort();
 
-        RequestUUID requestUUID = zipkinManager.createNewZipkinRequestUUID(cougarUuid, traceId, spanId, parentSpanId,
+        RequestUUID requestUUID = zipkinManager.createNewZipkinRequestUUID(discoUuid, traceId, spanId, parentSpanId,
                 sampled, flags, port);
         builder.setRequestUUID(requestUUID);
     }

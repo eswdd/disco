@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol;
+package uk.co.exemel.disco.transport.api.protocol;
 
 import java.util.Set;
 
@@ -23,7 +23,7 @@ import java.util.Set;
  * The means of resolving IdentityTokens may differ from channel to channel, so this interface
  * exists to document the bindings between each protocol, uri and identityTokenResolver
  *
- * @see com.betfair.cougar.api.security.IdentityTokenResolver
+ * @see uk.co.exemel.disco.api.security.IdentityTokenResolver
  *
  */
 public interface ProtocolBindingRegistry {

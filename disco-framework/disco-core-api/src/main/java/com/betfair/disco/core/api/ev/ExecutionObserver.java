@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.ev;
+package uk.co.exemel.disco.core.api.ev;
 
 /**
- * Main callback interface for interacting with Cougar
+ * Main callback interface for interacting with Disco
  * @see ExecutionResult
  */
 public interface ExecutionObserver {

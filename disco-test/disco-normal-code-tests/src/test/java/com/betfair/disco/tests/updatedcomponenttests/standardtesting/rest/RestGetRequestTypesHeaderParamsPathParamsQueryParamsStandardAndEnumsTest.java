@@ -16,16 +16,16 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/REST/Rest_Get_RequestTypes_HeaderParams_PathParams_QueryParams_StandardAndEnums.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -38,19 +38,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that when the 4 supported Rest XML/JSON Gets are performed against a Cougar operation with Header Params and Query Params set to standard and Enums values, the correct responses are returned.
+ * Ensure that when the 4 supported Rest XML/JSON Gets are performed against a Disco operation with Header Params and Query Params set to standard and Enums values, the correct responses are returned.
  */
 public class RestGetRequestTypesHeaderParamsPathParamsQueryParamsStandardAndEnumsTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        discoManager1 = discoManager1;
 
         getNewHttpCallBean1.setOperationName("testParameterStylesQA");
 
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
 
         getNewHttpCallBean1.setVersion("v2");
         // Set the parameters to Standard and Enum values
@@ -63,43 +63,43 @@ public class RestGetRequestTypesHeaderParamsPathParamsQueryParamsStandardAndEnum
         map3.put("dateQueryParam","2009-06-01T13:50:00.0Z");
         getNewHttpCallBean1.setQueryParams(map3);
 
-        CougarHelpers cougarHelpers4 = new CougarHelpers();
-        Date convertedDate1 = cougarHelpers4.convertToSystemTimeZone("2009-06-01T13:50:00.0Z");
+        DiscoHelpers discoHelpers4 = new DiscoHelpers();
+        Date convertedDate1 = discoHelpers4.convertToSystemTimeZone("2009-06-01T13:50:00.0Z");
         // Get current time for getting log entries later
 
         Timestamp getTimeAsTimeStamp8 = new Timestamp(System.currentTimeMillis());
         // Make the 4 REST calls to the operation
-        cougarManager1.makeRestCougarHTTPCalls(getNewHttpCallBean1);
+        discoManager1.makeRestDiscoHTTPCalls(getNewHttpCallBean1);
         // Create the expected response as an XML document
         XMLHelpers xMLHelpers6 = new XMLHelpers();
-        Document createAsDocument10 = xMLHelpers6.createAsDocument(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(("<SimpleResponse><message>headerParam=Foo,queryParam=qp1,dateQueryParam="+cougarHelpers4.dateInUTC(convertedDate1)+"</message></SimpleResponse>").getBytes())));
+        Document createAsDocument10 = xMLHelpers6.createAsDocument(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(("<SimpleResponse><message>headerParam=Foo,queryParam=qp1,dateQueryParam="+discoHelpers4.dateInUTC(convertedDate1)+"</message></SimpleResponse>").getBytes())));
         // Convert the expected response to REST types for comparison with actual responses
-        Map<CougarMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes11 = cougarManager1.convertResponseToRestTypes(createAsDocument10, getNewHttpCallBean1);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes11 = discoManager1.convertResponseToRestTypes(createAsDocument10, getNewHttpCallBean1);
         // Check the 4 responses are as expected
-        HttpResponseBean response7 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response7.getResponseObject());
+        HttpResponseBean response7 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response7.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response7.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response7.getHttpStatusText());
 
-        HttpResponseBean response8 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response8.getResponseObject());
+        HttpResponseBean response8 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response8.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response8.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response8.getHttpStatusText());
 
-        HttpResponseBean response9 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response9.getResponseObject());
+        HttpResponseBean response9 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response9.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response9.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response9.getHttpStatusText());
 
-        HttpResponseBean response10 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response10.getResponseObject());
+        HttpResponseBean response10 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response10.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response10.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response10.getHttpStatusText());
 
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
 
-        cougarManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp8, new RequestLogRequirement("2.8", "testParameterStylesQA"),new RequestLogRequirement("2.8", "testParameterStylesQA"),new RequestLogRequirement("2.8", "testParameterStylesQA"),new RequestLogRequirement("2.8", "testParameterStylesQA") );
+        discoManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp8, new RequestLogRequirement("2.8", "testParameterStylesQA"),new RequestLogRequirement("2.8", "testParameterStylesQA"),new RequestLogRequirement("2.8", "testParameterStylesQA"),new RequestLogRequirement("2.8", "testParameterStylesQA") );
     }
 
 }

@@ -17,13 +17,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
-        <artifactId>cougar-master-pom</artifactId>
+        <groupId>uk.co.exemel.disco</groupId>
+        <artifactId>disco-master-pom</artifactId>
         <version>3.3-SNAPSHOT</version>
     </parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>cougar-codegen-plugin</artifactId>
+	<artifactId>disco-codegen-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
 	<version>3.3-SNAPSHOT</version>
 	<name>${project.artifactId}</name>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api;
+package uk.co.exemel.disco.core.api;
 
 public interface ServiceBindingDescriptor extends BindingDescriptor {
     /**

@@ -16,15 +16,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/SOAP/SOAP_RequestTypes_DateTimeList_PositiveOffSet.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.soap;
 
-import com.betfair.testing.utils.cougar.misc.TimingHelpers;
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.TimingHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -35,7 +35,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Ensure that when a SOAP request is received, Cougar can handle the dateTimeList datatype containing a date with a positive offset
+ * Ensure that when a SOAP request is received, Disco can handle the dateTimeList datatype containing a date with a positive offset
  */
 public class SOAPRequestTypesDateTimeListPositiveOffSetTest {
     @Test
@@ -44,29 +44,29 @@ public class SOAPRequestTypesDateTimeListPositiveOffSetTest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document createAsDocument1 = xMLHelpers1.getXMLObjectFromString("<DateTimeListOperationRequest><message><dateTimeList><Date>2009-06-01T15:50:00+02:00</Date><Date>2009-06-01T15:50:00+02:00</Date></dateTimeList></message></DateTimeListOperationRequest>");
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean hbean = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        CougarManager hinstance = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean hbean = discoManager2.getNewHttpCallBean("87.248.113.14");
+        DiscoManager hinstance = discoManager2;
 
         hbean.setServiceName("Baseline");
 
         hbean.setVersion("v2");
         // Create the date object expected to be returned in the response
 
-        String convertUTCDateTimeToCougarFormat6 = TimingHelpers.convertUTCDateTimeToCougarFormat((int) 2009, (int) 6, (int) 1, (int) 13, (int) 50, (int) 0, (int) 0);
+        String convertUTCDateTimeToDiscoFormat6 = TimingHelpers.convertUTCDateTimeToDiscoFormat((int) 2009, (int) 6, (int) 1, (int) 13, (int) 50, (int) 0, (int) 0);
         // Set the created SOAP request as the PostObject
         hbean.setPostObjectForRequestType(createAsDocument1, "SOAP");
         // Get current time for getting log entries later
 
         Timestamp getTimeAsTimeStamp8 = new Timestamp(System.currentTimeMillis());
         // Make the SOAP call to the operation
-        hinstance.makeSoapCougarHTTPCalls(hbean);
+        hinstance.makeSoapDiscoHTTPCalls(hbean);
         // Create the expected response object as an XML document (using the date object created earlier)
         XMLHelpers xMLHelpers5 = new XMLHelpers();
-        Document createAsDocument10 = xMLHelpers5.createAsDocument(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(("<response><responseList><Date>"+convertUTCDateTimeToCougarFormat6+"</Date><Date>"+convertUTCDateTimeToCougarFormat6+"</Date></responseList></response>").getBytes())));
+        Document createAsDocument10 = xMLHelpers5.createAsDocument(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(("<response><responseList><Date>"+convertUTCDateTimeToDiscoFormat6+"</Date><Date>"+convertUTCDateTimeToDiscoFormat6+"</Date></responseList></response>").getBytes())));
 
         // Check the response is as expected
-        HttpResponseBean response6 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response6 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(createAsDocument10, response6.getResponseObject());
 
         // generalHelpers.pauseTest(3000L);

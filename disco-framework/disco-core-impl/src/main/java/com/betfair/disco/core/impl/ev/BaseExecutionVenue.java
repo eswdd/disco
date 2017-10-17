@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.security.*;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.core.impl.security.IdentityChainImpl;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.security.*;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.core.impl.security.IdentityChainImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
@@ -112,9 +112,9 @@ public class BaseExecutionVenue implements ExecutionVenue {
                 catch (InvalidCredentialsException e) {
                     if (e.getCredentialFaultCode() != null) { // Check if a custom error code should be used
                         ServerFaultCode sfc = ServerFaultCode.getByCredentialFaultCode(e.getCredentialFaultCode());
-                        throw new CougarFrameworkException(sfc, "Credentials supplied were invalid", e);
+                        throw new DiscoFrameworkException(sfc, "Credentials supplied were invalid", e);
                     }
-                    throw new CougarFrameworkException(ServerFaultCode.SecurityException, "Credentials supplied were invalid", e);
+                    throw new DiscoFrameworkException(ServerFaultCode.SecurityException, "Credentials supplied were invalid", e);
                 }
                 // ensure the identity chain set in the context is immutable
                 contextWithTokens.setIdentityChain(new IdentityChainImpl(chain.getIdentities()));
@@ -135,7 +135,7 @@ public class BaseExecutionVenue implements ExecutionVenue {
         final DefinedExecutable de = registry.get(key);
         if (de == null) {
             LOGGER.debug("Not request logging request to URI: {} as no operation was found", key.toString());
-            observer.onResult(new ExecutionResult(new CougarFrameworkException(ServerFaultCode.NoSuchOperation, "Operation not found: "+key.toString())));
+            observer.onResult(new ExecutionResult(new DiscoFrameworkException(ServerFaultCode.NoSuchOperation, "Operation not found: "+key.toString())));
         } else {
             long serverExpiryTime = de.maxExecutionTime == 0 ? Long.MAX_VALUE : System.currentTimeMillis() + de.maxExecutionTime;
             long clientExpiryTime = timeConstraints.getExpiryTime() == null ? Long.MAX_VALUE : timeConstraints.getExpiryTime();
@@ -155,11 +155,11 @@ public class BaseExecutionVenue implements ExecutionVenue {
             try {
                 ExecutionContext contextToUse = resolveIdentitiesIfRequired(ctx);
                 de.exec.execute(contextToUse, key, args, observer, this, timeConstraints);
-            } catch (CougarException e) {
+            } catch (DiscoException e) {
                 observer.onResult(new ExecutionResult(e));
             } catch (Exception e) {
                 observer.onResult(new ExecutionResult(
-                        new CougarFrameworkException(ServerFaultCode.ServiceRuntimeException,
+                        new DiscoFrameworkException(ServerFaultCode.ServiceRuntimeException,
                                 "Exception thrown by service method",
                                 e)));
             }
@@ -283,7 +283,7 @@ public class BaseExecutionVenue implements ExecutionVenue {
 
         public void expire() {
             if (onResultCalled.compareAndSet(false, true)) {
-                observer.onResult(new ExecutionResult(new CougarFrameworkException(ServerFaultCode.Timeout, "Executable did not complete in time")));
+                observer.onResult(new ExecutionResult(new DiscoFrameworkException(ServerFaultCode.Timeout, "Executable did not complete in time")));
             }
         }
     }

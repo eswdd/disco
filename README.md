@@ -1,27 +1,27 @@
-Cougar
+Disco
 ======
  
-Welcome to Cougar!
+Welcome to Disco!
 
-Cougar is a framework for making building network exposed service interfaces easy. It supports multiple paradigms of interface interaction over multiple network transports and protocols. It has an asynchronous core, supporting high throughput, highly concurrent implementations, and yet offers simpler synchronous interfaces when you want to trade speed for simpler code. It also comprises an interface definition language, client and server stub generator, plus a whole bunch of other goodies to make your life as simple as possible and to free you up to implement your business logic.
+Disco is a framework for making building network exposed service interfaces easy. It supports multiple paradigms of interface interaction over multiple network transports and protocols. It has an asynchronous core, supporting high throughput, highly concurrent implementations, and yet offers simpler synchronous interfaces when you want to trade speed for simpler code. It also comprises an interface definition language, client and server stub generator, plus a whole bunch of other goodies to make your life as simple as possible and to free you up to implement your business logic.
 
-Read more on [Cougar's site](http://betfair.github.io/cougar).
+Read more on [Disco's site](http://betfair.github.io/disco).
 
 Project admin
 -------------
 
 [Project tasks](ProjectTasks.md)
 
-[Sonar report](http://nemo.sonarqube.org/dashboard/index?id=com.betfair.cougar%3Acougar-master-pom)
+[Sonar report](http://nemo.sonarqube.org/dashboard/index?id=uk.co.exemel.disco%3Adisco-master-pom)
 
-[![Build Status](https://travis-ci.org/betfair/cougar.png?branch=master)](https://travis-ci.org/betfair/cougar)
+[![Build Status](https://travis-ci.org/betfair/disco.png?branch=master)](https://travis-ci.org/betfair/disco)
 
 Licensing & Copyright
 ---------------------
 
 Main project: Copyright 2013-2014, The Sporting Exchange Limited. Specific files may differ.
 
-Cougar is covered by "[The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)":
+Disco is covered by "[The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)":
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

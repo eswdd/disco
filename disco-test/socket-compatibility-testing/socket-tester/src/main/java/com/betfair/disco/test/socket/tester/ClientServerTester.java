@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester;
+package uk.co.exemel.disco.test.socket.tester;
 
-import com.betfair.cougar.test.socket.tester.client.ClientMain;
-import com.betfair.cougar.test.socket.tester.server.ServerMain;
+import uk.co.exemel.disco.test.socket.tester.client.ClientMain;
+import uk.co.exemel.disco.test.socket.tester.server.ServerMain;
 
 /**
  *

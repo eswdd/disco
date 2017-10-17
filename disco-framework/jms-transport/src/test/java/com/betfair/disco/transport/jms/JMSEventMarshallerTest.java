@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms;
+package uk.co.exemel.disco.transport.jms;
 
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import com.betfair.cougar.transport.api.protocol.events.AbstractEvent;
-import com.betfair.cougar.transport.api.protocol.events.EventServiceBindingDescriptor;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.transport.api.protocol.events.AbstractEvent;
+import uk.co.exemel.disco.transport.api.protocol.events.EventServiceBindingDescriptor;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -142,7 +142,7 @@ public class JMSEventMarshallerTest {
 
         String firstHost = "a.host";
 
-        e.setCougarMessageRouteString(firstHost + JMSPropertyConstants.TIMESTAMP_SEPARATOR + "19/01/2011 14:21");
+        e.setDiscoMessageRouteString(firstHost + JMSPropertyConstants.TIMESTAMP_SEPARATOR + "19/01/2011 14:21");
         e.setMessageId(messageId);
 
         cut.marshallEvent(eventServiceBindingDescriptor, e, session);

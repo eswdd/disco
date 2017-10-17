@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.http.soap;
+package uk.co.exemel.disco.transport.api.protocol.http.soap;
 
-import com.betfair.cougar.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
 import org.apache.axiom.om.OMElement;
 
 import java.security.cert.X509Certificate;

@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardValidation/RPC/RPC_InvalidService.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardvalidation.rpc;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardvalidation.rpc;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 
@@ -32,26 +32,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that Cougar returns the correct fault when a  RPC request is made to a Service that doesn't exist. Error should be "Not Found"
+ * Ensure that Disco returns the correct fault when a  RPC request is made to a Service that doesn't exist. Error should be "Not Found"
  */
 public class RPCInvalidServiceTest {
     @Test
     public void doTest() throws Exception {
         // Create the HttpCallBean
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean httpCallBeanBaseline = cougarManager1.getNewHttpCallBean();
-        CougarManager cougarManagerBaseline = cougarManager1;
-        // Get the cougar logging attribute for getting log entries later
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean httpCallBeanBaseline = discoManager1.getNewHttpCallBean();
+        DiscoManager discoManagerBaseline = discoManager1;
+        // Get the disco logging attribute for getting log entries later
         // Point the created HttpCallBean at the correct service
-        httpCallBeanBaseline.setServiceName("baseline", "cougarBaseline");
+        httpCallBeanBaseline.setServiceName("baseline", "discoBaseline");
         
         httpCallBeanBaseline.setVersion("v2");
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean callBean = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        CougarManager cougarManager = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean callBean = discoManager2.getNewHttpCallBean("87.248.113.14");
+        DiscoManager discoManager = discoManager2;
         
-        cougarManager.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        discoManager.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         // Set the call bean to use JSON batching
         callBean.setJSONRPC(true);
         // Set the list of requests to make a batched call to
@@ -85,12 +85,12 @@ public class RPCInvalidServiceTest {
 
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
         // Make JSON call to the operation requesting a JSON response
-        cougarManager.makeRestCougarHTTPCall(callBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager.makeRestDiscoHTTPCall(callBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Get the response to the batched query (store the response for further comparison as order of batched responses cannot be relied on)
-        HttpResponseBean actualResponseJSON = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean actualResponseJSON = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         // Convert the returned json object to a map for comparison
-        CougarHelpers cougarHelpers5 = new CougarHelpers();
-        Map<String, Object> map6 = cougarHelpers5.convertBatchedResponseToMap(actualResponseJSON);
+        DiscoHelpers discoHelpers5 = new DiscoHelpers();
+        Map<String, Object> map6 = discoHelpers5.convertBatchedResponseToMap(actualResponseJSON);
         AssertionUtils.multiAssertEquals("{\"id\":\"OK\",\"result\":{\"message\":\"foo1\"},\"jsonrpc\":\"2.0\"}", map6.get("responseOK"));
         AssertionUtils.multiAssertEquals("{\"id\":\"NoMethod\",\"error\":{\"message\":\"DSC-0021\",\"code\":-32601},\"jsonrpc\":\"2.0\"}", map6.get("responseNoMethod"));
         AssertionUtils.multiAssertEquals("{\"id\":\"NoVersion\",\"error\":{\"message\":\"DSC-0021\",\"code\":-32601},\"jsonrpc\":\"2.0\"}", map6.get("responseNoVersion"));
@@ -101,10 +101,10 @@ public class RPCInvalidServiceTest {
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
         
-        cougarManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "testSimpleGet") );
+        discoManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "testSimpleGet") );
         
-        CougarManager cougarManager10 = CougarManager.getInstance();
-        cougarManager10.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
+        DiscoManager discoManager10 = DiscoManager.getInstance();
+        discoManager10.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
     }
 
 }

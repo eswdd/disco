@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline;
+package uk.co.exemel.disco.baseline;
 
 import com.betfair.baseline.v2.enumerations.PreOrPostInterceptorException;
 import com.betfair.baseline.v2.enumerations.SimpleExceptionErrorCodeEnum;
 import com.betfair.baseline.v2.exception.SimpleException;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.core.api.ev.ExecutionPreProcessor;
-import com.betfair.cougar.core.api.ev.ExecutionRequirement;
-import com.betfair.cougar.core.api.ev.InterceptorResult;
-import com.betfair.cougar.core.api.ev.InterceptorState;
-import com.betfair.cougar.core.api.ev.OperationKey;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.core.api.ev.ExecutionPreProcessor;
+import uk.co.exemel.disco.core.api.ev.ExecutionRequirement;
+import uk.co.exemel.disco.core.api.ev.InterceptorResult;
+import uk.co.exemel.disco.core.api.ev.InterceptorState;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
 
 /**
  * This interceptor has just one role - if the appropriate opkey comes along with the correct argument set then

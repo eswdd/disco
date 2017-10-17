@@ -15,9 +15,9 @@
   ~ limitations under the License.
   -->
 
-<con:soapui-project name="cougar-baseline" resourceRoot="${projectDir}" soapui-version="2.5.1" xmlns:con="http://eviware.com/soapui/config">
+<con:soapui-project name="disco-baseline" resourceRoot="${projectDir}" soapui-version="2.5.1" xmlns:con="http://eviware.com/soapui/config">
   <con:settings>
-    <con:setting id="ProjectSettings@projectRoot">/home/aswathh/perforce/se/development/HEAD/cougar/cougar-framework/baseline/baseline-app/src/test/soapui</con:setting>
+    <con:setting id="ProjectSettings@projectRoot">/home/aswathh/perforce/se/development/HEAD/disco/disco-framework/baseline/baseline-app/src/test/soapui</con:setting>
     <con:setting id="com.eviware.soapui.impl.wsdl.actions.iface.tools.soapui.TestRunnerAction@values-local"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
   <con:entry key="TestSuite" value="BaselineService SOAP TestSuite"/>
   <con:entry key="Domain" value=""/>
@@ -3193,9 +3193,9 @@
     <con:settings>
       <con:setting id="CreateWsdlDocumentationAction@report-directory">C:\work\wsdl</con:setting>
     </con:settings>
-    <con:definitionCache type="TEXT" rootPart="file:/C:/perforce/se/development/projects/cougar/baseline/baseline-app/target/generated-resources/wsdl/BaselineService.wsdl">
+    <con:definitionCache type="TEXT" rootPart="file:/C:/perforce/se/development/projects/disco/baseline/baseline-app/target/generated-resources/wsdl/BaselineService.wsdl">
       <con:part>
-        <con:url>file:/C:/perforce/se/development/projects/cougar/baseline/baseline-app/target/generated-resources/wsdl/BaselineService.wsdl</con:url>
+        <con:url>file:/C:/perforce/se/development/projects/disco/baseline/baseline-app/target/generated-resources/wsdl/BaselineService.wsdl</con:url>
         <con:content><![CDATA[<wsdl:definitions name="Baseline" targetNamespace="http://www.betfair.com/serviceapi/v2.0/Baseline/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:security="http://www.betfair.com/security/" xmlns:tns="http://www.betfair.com/servicetypes/v2/Baseline/" xmlns:wns="http://www.betfair.com/serviceapi/v2.0/Baseline/">
   <wsdl:documentation>Baseline.wsdl v2.0</wsdl:documentation>
   <wsdl:types>
@@ -3990,9 +3990,9 @@
   </con:interface>
   <con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="RemoteService" type="wsdl" bindingName="{http://www.betfair.com/serviceapi/v2.0/Remote/}RemoteService" soapVersion="1_1" anonymous="optional" definition="../../../target/generated-resources/wsdl/RemoteService.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <con:settings/>
-    <con:definitionCache type="TEXT" rootPart="file:/C:/perforce/se/development/projects/cougar/baseline-app/target/generated-resources/wsdl/RemoteService.wsdl">
+    <con:definitionCache type="TEXT" rootPart="file:/C:/perforce/se/development/projects/disco/baseline-app/target/generated-resources/wsdl/RemoteService.wsdl">
       <con:part>
-        <con:url>file:/C:/perforce/se/development/projects/cougar/baseline-app/target/generated-resources/wsdl/RemoteService.wsdl</con:url>
+        <con:url>file:/C:/perforce/se/development/projects/disco/baseline-app/target/generated-resources/wsdl/RemoteService.wsdl</con:url>
         <con:content><![CDATA[<wsdl:definitions name="Remote" targetNamespace="http://www.betfair.com/serviceapi/v2.0/Remote/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.betfair.com/servicetypes/v2/Remote/" xmlns:wns="http://www.betfair.com/serviceapi/v2.0/Remote/">
   <wsdl:documentation>Remote.wsdl v2.0</wsdl:documentation>
   <wsdl:types>

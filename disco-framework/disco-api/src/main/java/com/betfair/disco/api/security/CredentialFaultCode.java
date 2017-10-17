@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api.security;
+package uk.co.exemel.disco.api.security;
 
 /**
- * Enum containing a subset of the com.betfair.cougar.core.api.exception.ServerFaultCode enum
+ * Enum containing a subset of the uk.co.exemel.disco.core.api.exception.ServerFaultCode enum
  * Used to specify a custom fault code to return in an InvalidCredentialsException (As ServerFaultCode is not visible in this package)
  * All CredentialFaultCodes must map 1-1 to a ServerFaultCode
  *

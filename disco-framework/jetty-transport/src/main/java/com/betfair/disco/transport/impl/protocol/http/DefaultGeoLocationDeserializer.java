@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.transport.api.protocol.http.GeoLocationDeserializer;
-import com.betfair.cougar.util.HeaderUtils;
-import com.betfair.cougar.util.geolocation.RemoteAddressUtils;
+import uk.co.exemel.disco.transport.api.protocol.http.GeoLocationDeserializer;
+import uk.co.exemel.disco.util.HeaderUtils;
+import uk.co.exemel.disco.util.geolocation.RemoteAddressUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;

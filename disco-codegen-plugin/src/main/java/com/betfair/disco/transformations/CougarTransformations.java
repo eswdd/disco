@@ -15,26 +15,26 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transformations;
+package uk.co.exemel.disco.transformations;
 
-import com.betfair.cougar.transformations.manglers.CommonTypesMangler;
-import com.betfair.cougar.transformations.manglers.ResponseToSimpleResponseMangler;
-import com.betfair.cougar.transformations.manglers.SimpleTypeMangler;
-import com.betfair.cougar.transformations.validators.DataTypeValidator;
-import com.betfair.cougar.transformations.validators.ExceptionValidator;
-import com.betfair.cougar.transformations.validators.MapsValidator;
-import com.betfair.cougar.transformations.validators.NameClashValidator;
-import com.betfair.cougar.transformations.validators.OperationValidator;
-import com.betfair.cougar.transformations.validators.ParameterNameValidator;
-import com.betfair.cougar.transformations.validators.RequestParameterValidator;
-import com.betfair.cougar.transformations.validators.UnknownDataTypeValidator;
-import com.betfair.cougar.transformations.validators.ValidValuesValidator;
-import com.betfair.cougar.codegen.DocumentMangler;
-import com.betfair.cougar.codegen.NodeExcluder;
-import com.betfair.cougar.codegen.Transformation;
-import static com.betfair.cougar.codegen.Transformation.OutputDomain;
-import com.betfair.cougar.codegen.Transformations;
-import com.betfair.cougar.codegen.Validator;
+import uk.co.exemel.disco.transformations.manglers.CommonTypesMangler;
+import uk.co.exemel.disco.transformations.manglers.ResponseToSimpleResponseMangler;
+import uk.co.exemel.disco.transformations.manglers.SimpleTypeMangler;
+import uk.co.exemel.disco.transformations.validators.DataTypeValidator;
+import uk.co.exemel.disco.transformations.validators.ExceptionValidator;
+import uk.co.exemel.disco.transformations.validators.MapsValidator;
+import uk.co.exemel.disco.transformations.validators.NameClashValidator;
+import uk.co.exemel.disco.transformations.validators.OperationValidator;
+import uk.co.exemel.disco.transformations.validators.ParameterNameValidator;
+import uk.co.exemel.disco.transformations.validators.RequestParameterValidator;
+import uk.co.exemel.disco.transformations.validators.UnknownDataTypeValidator;
+import uk.co.exemel.disco.transformations.validators.ValidValuesValidator;
+import uk.co.exemel.disco.codegen.DocumentMangler;
+import uk.co.exemel.disco.codegen.NodeExcluder;
+import uk.co.exemel.disco.codegen.Transformation;
+import static uk.co.exemel.disco.codegen.Transformation.OutputDomain;
+import uk.co.exemel.disco.codegen.Transformations;
+import uk.co.exemel.disco.codegen.Validator;
 import org.w3c.dom.Node;
 
 import javax.xml.xpath.XPath;
@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CougarTransformations implements Transformations{
+public class DiscoTransformations implements Transformations{
     protected List<Transformation> transformations = new ArrayList<Transformation>();
     protected List<Validator> validations = new ArrayList<Validator>();
     protected List<DocumentMangler> manglers = new ArrayList<DocumentMangler>();
@@ -62,11 +62,11 @@ public class CougarTransformations implements Transformations{
         }
     };
 
-    public CougarTransformations() {
+    public DiscoTransformations() {
         this(false);
     }
 
-    public CougarTransformations(boolean legacyExceptionModeValidation) {
+    public DiscoTransformations(boolean legacyExceptionModeValidation) {
         super();
         Transformation[] definitions = new Transformation[] {
                 //directory name should not  contain / at the end

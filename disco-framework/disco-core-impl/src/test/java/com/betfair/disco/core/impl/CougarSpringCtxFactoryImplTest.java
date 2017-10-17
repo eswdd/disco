@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl;
+package uk.co.exemel.disco.core.impl;
 
-import com.betfair.cougar.core.impl.logging.NullLogBootstrap;
+import uk.co.exemel.disco.core.impl.logging.NullLogBootstrap;
 import org.junit.Test;
 
 
@@ -24,22 +24,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Test case for @see CougarSpringCtxFactoryImpl. Note that this test is primarily concerned
+ * Test case for @see DiscoSpringCtxFactoryImpl. Note that this test is primarily concerned
  * with testing the log initialisation process
  */
-public class CougarSpringCtxFactoryImplTest {
+public class DiscoSpringCtxFactoryImplTest {
 
     @Test
     public void testEstablishLogInitialisationClass() {
-        CougarSpringCtxFactoryImpl classUnderTest = new CougarSpringCtxFactoryImpl();
+        DiscoSpringCtxFactoryImpl classUnderTest = new DiscoSpringCtxFactoryImpl();
         //Start by confirming that null system property results in the default
 
         Class logInitialisationClass = classUnderTest.establishLogInitialisationClass(null);
         assertNotNull(logInitialisationClass);
-        assertEquals(CougarSpringCtxFactoryImpl.DEFAULT_COUGAR_LOG_INIT_CLASS, logInitialisationClass);
+        assertEquals(DiscoSpringCtxFactoryImpl.DEFAULT_COUGAR_LOG_INIT_CLASS, logInitialisationClass);
 
         //Now check that we can chose one of our own doing
-        logInitialisationClass = classUnderTest.establishLogInitialisationClass("com.betfair.cougar.core.impl.TestLogBootstrap");
+        logInitialisationClass = classUnderTest.establishLogInitialisationClass("uk.co.exemel.disco.core.impl.TestLogBootstrap");
         assertNotNull(logInitialisationClass);
         assertEquals(TestLogBootstrap.class, logInitialisationClass);
 
@@ -51,6 +51,6 @@ public class CougarSpringCtxFactoryImplTest {
         //Finally ensure we get something sensible when nonsense is supplied
         logInitialisationClass = classUnderTest.establishLogInitialisationClass("wibble");
         assertNotNull(logInitialisationClass);
-        assertEquals(CougarSpringCtxFactoryImpl.DEFAULT_COUGAR_LOG_INIT_CLASS, logInitialisationClass);
+        assertEquals(DiscoSpringCtxFactoryImpl.DEFAULT_COUGAR_LOG_INIT_CLASS, logInitialisationClass);
     }
 }

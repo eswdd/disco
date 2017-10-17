@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
+        <groupId>uk.co.exemel.disco</groupId>
         <artifactId>socket-compatibility-testing</artifactId>
         <version>3.3-SNAPSHOT</version>
     </parent>
@@ -29,21 +29,21 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-null-geoip-locator</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-null-geoip-locator</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>socket-transport</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>net-util</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-client</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-client</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
@@ -66,7 +66,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.betfair.cougar.test.socket.tester.ClientServerTester</mainClass>
+                                    <mainClass>uk.co.exemel.disco.test.socket.tester.ClientServerTester</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>

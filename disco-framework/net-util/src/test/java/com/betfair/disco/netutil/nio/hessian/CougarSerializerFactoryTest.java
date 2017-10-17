@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.hessian;
+package uk.co.exemel.disco.netutil.nio.hessian;
 
 import com.caucho.hessian.io.Deserializer;
 import org.junit.Test;
@@ -24,13 +24,13 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
-public class CougarSerializerFactoryTest {
+public class DiscoSerializerFactoryTest {
 
-    private static final String MISSING_TYPE_NAME = "com.betfair.cougar.transport.api.protocol.hessian.AnObjectThatDoesNotExist";
+    private static final String MISSING_TYPE_NAME = "uk.co.exemel.disco.transport.api.protocol.hessian.AnObjectThatDoesNotExist";
 
     @Test
     public void testDeserializerFound() throws Exception {
-        CougarSerializerFactory factory = new CougarSerializerFactory(Collections.EMPTY_SET);
+        DiscoSerializerFactory factory = new DiscoSerializerFactory(Collections.EMPTY_SET);
         Deserializer deserializer = factory.getDeserializer(Integer.class.getName());
         assertNotNull(deserializer);
         Set<String> missingTypes = factory.getMissingTypes();
@@ -39,7 +39,7 @@ public class CougarSerializerFactoryTest {
 
     @Test
     public void testNoDeserializerFound() throws Exception {
-        CougarSerializerFactory factory = new CougarSerializerFactory(Collections.EMPTY_SET);
+        DiscoSerializerFactory factory = new DiscoSerializerFactory(Collections.EMPTY_SET);
         Deserializer deserializer = factory.getDeserializer(MISSING_TYPE_NAME);
         assertNull(deserializer);
         Set<String> missingTypes = factory.getMissingTypes();
@@ -50,7 +50,7 @@ public class CougarSerializerFactoryTest {
     @Test
     public void testMissingTypeCacheHit() throws Exception {
         String presentType = getClass().getName();
-        CougarSerializerFactory factory = new CougarSerializerFactory(Collections.EMPTY_SET);
+        DiscoSerializerFactory factory = new DiscoSerializerFactory(Collections.EMPTY_SET);
         Deserializer deserializer = factory.getDeserializer(presentType);
         assertNotNull(deserializer);
 

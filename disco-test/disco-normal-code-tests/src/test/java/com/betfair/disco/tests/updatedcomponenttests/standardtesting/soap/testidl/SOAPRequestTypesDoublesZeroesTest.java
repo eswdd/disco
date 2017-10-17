@@ -16,14 +16,14 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/SOAP/Test-IDL/SOAP_RequestTypes_Doubles_Zeroes.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.soap.testidl;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.soap.testidl;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -32,7 +32,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Ensure that when a SOAP request is received, Cougar can handle the double datatype with zeroes
+ * Ensure that when a SOAP request is received, Disco can handle the double datatype with zeroes
  */
 public class SOAPRequestTypesDoublesZeroesTest {
     @Test
@@ -41,9 +41,9 @@ public class SOAPRequestTypesDoublesZeroesTest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document createAsDocument1 = xMLHelpers1.getXMLObjectFromString("<DoubleOperationRequest><headerParam>0</headerParam><queryParam>0</queryParam><message><bodyParameter>0</bodyParameter></message></DoubleOperationRequest>");
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean2 = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        cougarManager2 = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean2 = discoManager2.getNewHttpCallBean("87.248.113.14");
+        discoManager2 = discoManager2;
 
         getNewHttpCallBean2.setServiceName("Baseline");
 
@@ -54,20 +54,20 @@ public class SOAPRequestTypesDoublesZeroesTest {
 
         Timestamp getTimeAsTimeStamp7 = new Timestamp(System.currentTimeMillis());
         // Make the SOAP call to the operation
-        cougarManager2.makeSoapCougarHTTPCalls(getNewHttpCallBean2);
+        discoManager2.makeSoapDiscoHTTPCalls(getNewHttpCallBean2);
         // Create the expected response object as an XML document
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument9 = xMLHelpers4.getXMLObjectFromString("<response><queryParameter>0.0</queryParameter><headerParameter>0.0</headerParameter><bodyParameter>0.0</bodyParameter></response>");
         // Convert the expected response to SOAP for comparison with actual response
 
         // Check the response is as expected
-        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(createAsDocument9, response5.getResponseObject());
 
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
 
-        cougarManager2.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "doubleOperation") );
+        discoManager2.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "doubleOperation") );
     }
 
 }

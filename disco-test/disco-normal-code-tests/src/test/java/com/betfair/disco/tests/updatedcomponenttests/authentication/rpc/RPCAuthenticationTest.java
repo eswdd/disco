@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/Authentication/RPC/RPC_Authentication.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.authentication.rpc;
+package uk.co.exemel.disco.tests.updatedcomponenttests.authentication.rpc;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 
@@ -32,14 +32,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Verify that when the auth credentials are provided in a batched JSON RPC request, Cougar correctly reads headers X-Token-Username & X-Token-Password (and rewrites them)
+ * Verify that when the auth credentials are provided in a batched JSON RPC request, Disco correctly reads headers X-Token-Username & X-Token-Password (and rewrites them)
  */
 public class RPCAuthenticationTest {
     @Test
     public void doTest() throws Exception {
-        CougarManager cougarManager = CougarManager.getInstance();
+        DiscoManager discoManager = DiscoManager.getInstance();
         // Set up the Http Call Bean to make the request
-        HttpCallBean callBean = cougarManager.getNewHttpCallBean("87.248.113.14");
+        HttpCallBean callBean = discoManager.getNewHttpCallBean("87.248.113.14");
         // Set the auth credentials
         Map<String, String> authCredentials = new HashMap<String, String>();
         authCredentials.put("Username", "foo");
@@ -62,12 +62,12 @@ public class RPCAuthenticationTest {
 
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
         // Make JSON call to the operation requesting a JSON response
-        cougarManager.makeRestCougarHTTPCall(callBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager.makeRestDiscoHTTPCall(callBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Get the response to the batched query (store the response for further comparison as order of batched responses cannot be relied on)
-        HttpResponseBean response = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         // Convert the returned json object to a map for comparison
-        CougarHelpers cougarHelpers5 = new CougarHelpers();
-        Map<String, Object> batchedResponses = cougarHelpers5.convertBatchedResponseToMap(response);
+        DiscoHelpers discoHelpers5 = new DiscoHelpers();
+        Map<String, Object> batchedResponses = discoHelpers5.convertBatchedResponseToMap(response);
 
         AssertionUtils.multiAssertEquals("{\"id\":1,\"result\":{\"identities\":[{\"credentialName\":\"CREDENTIAL: Username\",\"principal\":\"PRINCIPAL: Username\",\"credentialValue\":\"foo\"},{\"credentialName\":\"CREDENTIAL: Password\",\"principal\":\"PRINCIPAL: Password\",\"credentialValue\":\"bar\"}]},\"jsonrpc\":\"2.0\"}", batchedResponses.get("response1"));
         AssertionUtils.multiAssertEquals("{\"id\":2,\"result\":{\"identities\":[{\"credentialName\":\"CREDENTIAL: Username\",\"principal\":\"PRINCIPAL: Username\",\"credentialValue\":\"foo\"},{\"credentialName\":\"CREDENTIAL: Password\",\"principal\":\"PRINCIPAL: Password\",\"credentialValue\":\"bar\"}]},\"jsonrpc\":\"2.0\"}", batchedResponses.get("response2"));
@@ -78,9 +78,9 @@ public class RPCAuthenticationTest {
         AssertionUtils.multiAssertEquals("foo", responseHeaders.get("X-Token-Username"));
         AssertionUtils.multiAssertEquals("bar", responseHeaders.get("X-Token-Password"));
         // Check the log entries are as expected
-        cougarManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "testIdentityChain")
+        discoManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "testIdentityChain")
                                                                 , new RequestLogRequirement("2.8", "testIdentityChain"));
-        cougarManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14","/json-rpc","Ok"));
+        discoManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14","/json-rpc","Ok"));
     }
 
 }

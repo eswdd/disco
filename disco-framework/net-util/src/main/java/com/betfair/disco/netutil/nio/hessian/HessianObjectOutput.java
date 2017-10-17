@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.hessian;
+package uk.co.exemel.disco.netutil.nio.hessian;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
 import com.caucho.hessian.io.Hessian2Output;
 import com.caucho.hessian.io.SerializerFactory;
 
-public class HessianObjectOutput implements CougarObjectOutput {
+public class HessianObjectOutput implements DiscoObjectOutput {
 
 	private Hessian2Output hessian2Output;
 

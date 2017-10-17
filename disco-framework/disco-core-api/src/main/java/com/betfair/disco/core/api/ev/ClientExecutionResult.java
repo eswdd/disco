@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.ev;
+package uk.co.exemel.disco.core.api.ev;
 
 /**
  * Client specific execution result which allows access to the underlying response size

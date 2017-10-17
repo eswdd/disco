@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.caching;
+package uk.co.exemel.disco.caching;
 
 /**
  *

@@ -14,37 +14,37 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api;
+package uk.co.exemel.disco.core.api;
 
 import org.springframework.context.ApplicationContext;
 
 /**
- * A factory that creates and starts cougar application server. Can be used to start cougar application server as a
+ * A factory that creates and starts disco application server. Can be used to start disco application server as a
  * stand-alone java application or to start it as an embedded component, e.g. from a servlet-based web application.
  * <p/>
  * Examples:
- * To start cougar as a standalone app just call:
- * new CougarSpringCtxFactoryImpl().create(null);
+ * To start disco as a standalone app just call:
+ * new DiscoSpringCtxFactoryImpl().create(null);
  * <p/>
- * To integrate cougar with existing servlet-based web application, create custom ServletContextListener and call:
+ * To integrate disco with existing servlet-based web application, create custom ServletContextListener and call:
  * WebApplicationContext parentCtx = WebApplicationContextUtils.getWebApplicationContext(servletContext);
- * new CougarSpringCtxFactoryImpl().create(parentCtx);
+ * new DiscoSpringCtxFactoryImpl().create(parentCtx);
  */
-public interface CougarSpringCtxFactory {
+public interface DiscoSpringCtxFactory {
 
     /**
-     * Creates and starts cougar application server without using a parent context.
+     * Creates and starts disco application server without using a parent context.
      *
-     * @return Cougar spring context.
+     * @return Disco spring context.
      */
     ApplicationContext create();
 
     /**
-     * Creates and starts cougar application server.
+     * Creates and starts disco application server.
      *
-     * @param parentCtx Parent spring context. Useful when starting cougar as an embedded component, e.g. from a servlet-based
+     * @param parentCtx Parent spring context. Useful when starting disco as an embedded component, e.g. from a servlet-based
      *                  web application. If null then parent context is not set.
-     * @return Cougar spring context.
+     * @return Disco spring context.
      */
     ApplicationContext create(ApplicationContext parentCtx);
 }

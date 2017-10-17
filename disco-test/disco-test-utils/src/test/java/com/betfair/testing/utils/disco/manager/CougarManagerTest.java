@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.manager;
+package com.betfair.testing.utils.disco.manager;
 
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.callmaker.AbstractCallMaker;
-import com.betfair.testing.utils.cougar.callmaker.*;
-import com.betfair.testing.utils.cougar.enums.*;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.callmaker.AbstractCallMaker;
+import com.betfair.testing.utils.disco.callmaker.*;
+import com.betfair.testing.utils.disco.enums.*;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
 import org.apache.http.Header;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -45,29 +45,29 @@ import java.util.Map;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
-public class CougarManagerTest {
+public class DiscoManagerTest {
 
 	
-	private CougarManager cougarManager = CougarManager.getInstance();
-	private CougarHelpers cougarHelpers = new CougarHelpers();
-	private CougarTestDAO cougarTestDAO = new CougarTestDAO();
+	private DiscoManager discoManager = DiscoManager.getInstance();
+	private DiscoHelpers discoHelpers = new DiscoHelpers();
+	private DiscoTestDAO discoTestDAO = new DiscoTestDAO();
 
-	public CougarManagerTest() {
+	public DiscoManagerTest() {
 		
-		cougarHelpers.setCougarDAO(cougarTestDAO);
-		cougarManager.setCougarHelpers(cougarHelpers);
+		discoHelpers.setDiscoDAO(discoTestDAO);
+		discoManager.setDiscoHelpers(discoHelpers);
 		
 		RestJSONCallMaker restJSONCallMaker = new RestJSONCallMaker();
-		restJSONCallMaker.setCougarHelpers(cougarHelpers);
+		restJSONCallMaker.setDiscoHelpers(discoHelpers);
 		RestXMLCallMaker restXMLCallMaker = new RestXMLCallMaker();
-		restXMLCallMaker.setCougarHelpers(cougarHelpers);
+		restXMLCallMaker.setDiscoHelpers(discoHelpers);
 		SoapCallMaker soapXMLCallMaker = new SoapCallMaker();
 				
-		Map<CougarMessageProtocolRequestTypeEnum, AbstractCallMaker> requestBuilderMap = new HashMap<CougarMessageProtocolRequestTypeEnum, AbstractCallMaker>();
+		Map<DiscoMessageProtocolRequestTypeEnum, AbstractCallMaker> requestBuilderMap = new HashMap<DiscoMessageProtocolRequestTypeEnum, AbstractCallMaker>();
 		
-		requestBuilderMap.put(CougarMessageProtocolRequestTypeEnum.RESTJSON, restJSONCallMaker);
-		requestBuilderMap.put(CougarMessageProtocolRequestTypeEnum.RESTXML, restXMLCallMaker);
-		requestBuilderMap.put(CougarMessageProtocolRequestTypeEnum.SOAP, soapXMLCallMaker);
+		requestBuilderMap.put(DiscoMessageProtocolRequestTypeEnum.RESTJSON, restJSONCallMaker);
+		requestBuilderMap.put(DiscoMessageProtocolRequestTypeEnum.RESTXML, restXMLCallMaker);
+		requestBuilderMap.put(DiscoMessageProtocolRequestTypeEnum.SOAP, soapXMLCallMaker);
 		
 		CallMakerFactory.setRequestBuilderMap(requestBuilderMap);
 		
@@ -104,9 +104,9 @@ public class CougarManagerTest {
 		
 		httpCallBean.setRestPostQueryObjects(document);
 		
-		cougarManager.makeRestCougarHTTPCalls(httpCallBean);
+		discoManager.makeRestDiscoHTTPCalls(httpCallBean);
 		
-		List<HttpUriRequest> methodsSent = cougarTestDAO.methods;
+		List<HttpUriRequest> methodsSent = discoTestDAO.methods;
 		
 		HttpPost methodSent;
 		
@@ -189,9 +189,9 @@ public class CougarManagerTest {
 		
 		httpCallBean.setRestPostQueryObjects(document);
 		
-		cougarManager.makeRestCougarHTTPCalls(httpCallBean);
+		discoManager.makeRestDiscoHTTPCalls(httpCallBean);
 		
-		List<HttpUriRequest> methodsSent = cougarTestDAO.methods;
+		List<HttpUriRequest> methodsSent = discoTestDAO.methods;
 		
 		HttpGet methodSent;
 		
@@ -241,7 +241,7 @@ public class CougarManagerTest {
 			mapArray[insertOrder[i]] = map;
 		}
 		
-		mapArray = cougarManager.sortRequestLogEntriesByServiceVersion(mapArray);
+		mapArray = discoManager.sortRequestLogEntriesByServiceVersion(mapArray);
 		
 		for(int i = 0; i < mapArray.length; i++){
 			assertEquals("testSimpleGet"+i, mapArray[i].get("Operation"));

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.common;
+package uk.co.exemel.disco.test.socket.tester.common;
 
-import com.betfair.cougar.api.security.Credential;
+import uk.co.exemel.disco.api.security.Credential;
 
 /**
 *

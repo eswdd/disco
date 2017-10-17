@@ -17,13 +17,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
-        <artifactId>cougar-test</artifactId>
+        <groupId>uk.co.exemel.disco</groupId>
+        <artifactId>disco-test</artifactId>
         <version>3.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>cougar-ci-process-launcher</artifactId>
+    <artifactId>disco-ci-process-launcher</artifactId>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <properties>
@@ -75,10 +75,10 @@
                                     <containerProcesses>
                                         <containerProcess>
                                             <id>baseline</id>
-                                            <command>${mavenCommand} -Dcougar.log.echoToStdout=true exec:java -B</command>
+                                            <command>${mavenCommand} -Ddisco.log.echoToStdout=true exec:java -B</command>
                                             <workingDir>baseline/baseline-launch</workingDir>
                                             <startWatchString>COUGAR HAS STARTED</startWatchString>
-                                            <failureWatchString>PanicInTheCougar</failureWatchString>
+                                            <failureWatchString>PanicInTheDisco</failureWatchString>
                                             <environmentProperties>
                                                 <JAVA_HOME>${java.home}</JAVA_HOME>
                                             </environmentProperties>
@@ -88,7 +88,7 @@
                                         <testProcess>
                                             <id>binaryprotocol</id>
                                             <command>${mavenCommand} test -Prun-integration-tests -B</command>
-                                            <workingDir>cougar-test/cougar-binaryprotocol-tests</workingDir>
+                                            <workingDir>disco-test/disco-binaryprotocol-tests</workingDir>
                                             <failureWatchString>Failures: [1-9]|BUILD FAILURE</failureWatchString>
                                             <watchString>Failures: 0</watchString>
                                             <environmentProperties>
@@ -98,7 +98,7 @@
                                         <testProcess>
                                             <id>iddversions</id>
                                             <command>${mavenCommand} test -Prun-integration-tests -B</command>
-                                            <workingDir>cougar-test/cougar-iddversion-tests</workingDir>
+                                            <workingDir>disco-test/disco-iddversion-tests</workingDir>
                                             <failureWatchString>Failures: [1-9]|BUILD FAILURE</failureWatchString>
                                             <watchString>Failures: 0</watchString>
                                             <environmentProperties>
@@ -108,7 +108,7 @@
                                         <testProcess>
                                             <id>clientNG</id>
                                             <command>${mavenCommand} test -Prun-integration-tests -B</command>
-                                            <workingDir>cougar-test/cougar-client-code-tests</workingDir>
+                                            <workingDir>disco-test/disco-client-code-tests</workingDir>
                                             <failureWatchString>Failures: [1-9]|BUILD FAILURE</failureWatchString>
                                             <watchString>Failures: 0</watchString>
                                             <environmentProperties>
@@ -118,7 +118,7 @@
                                         <testProcess>
                                             <id>normalNG</id>
                                             <command>${mavenCommand} test -Prun-integration-tests -B</command>
-                                            <workingDir>cougar-test/cougar-normal-code-tests</workingDir>
+                                            <workingDir>disco-test/disco-normal-code-tests</workingDir>
                                             <failureWatchString>Failures: [1-9]|BUILD FAILURE</failureWatchString>
                                             <watchString>Failures: 0</watchString>
                                             <environmentProperties>

@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.core.api.ServiceBindingDescriptor;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.transport.api.CommandResolver;
-import com.betfair.cougar.transport.api.TransportCommand.CommandStatus;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
-import com.betfair.cougar.util.ServletResponseFileStreamer;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.core.api.ServiceBindingDescriptor;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.transport.api.CommandResolver;
+import uk.co.exemel.disco.transport.api.TransportCommand.CommandStatus;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolution;
+import uk.co.exemel.disco.util.ServletResponseFileStreamer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jmx.export.annotation.ManagedResource;
@@ -52,12 +52,12 @@ public class ServiceNotFoundHttpCommandProcessor extends AbstractHttpCommandProc
 	@Override
 	protected CommandResolver<HttpCommand> createCommandResolver(
             HttpCommand command, Tracer tracer) {
-		throw new CougarServiceException(ServerFaultCode.NoSuchService, "Service does not exist");
+		throw new DiscoServiceException(ServerFaultCode.NoSuchService, "Service does not exist");
 	}
 
 	@Override
 	protected void writeErrorResponse(HttpCommand command,
-                                      DehydratedExecutionContext context, CougarException e, boolean traceStarted) {
+                                      DehydratedExecutionContext context, DiscoException e, boolean traceStarted) {
         try {
             if (command.getStatus() == CommandStatus.InProgress) {
                 try {
@@ -84,7 +84,7 @@ public class ServiceNotFoundHttpCommandProcessor extends AbstractHttpCommandProc
 	}
 
 	@Override
-	public void onCougarStart() {
+	public void onDiscoStart() {
 
 	}
 

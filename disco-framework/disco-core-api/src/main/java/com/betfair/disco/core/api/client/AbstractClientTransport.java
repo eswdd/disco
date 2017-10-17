@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.client;
+package uk.co.exemel.disco.core.api.client;
 
-import com.betfair.cougar.api.security.IdentityResolver;
-import com.betfair.cougar.core.api.ev.Executable;
+import uk.co.exemel.disco.api.security.IdentityResolver;
+import uk.co.exemel.disco.core.api.ev.Executable;
 
 /**
  * This abstract base class contains an identity resolver pertinent

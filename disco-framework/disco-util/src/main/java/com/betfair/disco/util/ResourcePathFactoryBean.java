@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util;
+package uk.co.exemel.disco.util;
 
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Required;
@@ -29,7 +29,7 @@ import org.springframework.core.io.Resource;
  *
  * Will not work for "non URL" based resources
  *
- * ex: Cougar HttpClient -> com.betfair.cougar.client.HttpClientExecutable
+ * ex: Disco HttpClient -> uk.co.exemel.disco.client.HttpClientExecutable
  */
 public class ResourcePathFactoryBean implements FactoryBean {
 

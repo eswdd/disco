@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
-import com.betfair.cougar.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
 import org.junit.Test;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.Executable;
-import com.betfair.cougar.core.api.ev.ExecutableResolver;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.ev.OperationKey;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.Executable;
+import uk.co.exemel.disco.core.api.ev.ExecutableResolver;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
 
 public class CompoundExecutableResolverTest {
 

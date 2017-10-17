@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.server;
+package uk.co.exemel.disco.test.socket.tester.server;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.security.Identity;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.impl.security.SSLAwareTokenResolver;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.security.Identity;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.impl.security.SSLAwareTokenResolver;
 
 /**
  *
@@ -45,7 +45,7 @@ public abstract class ClientAuthExecutable implements Executable {
                 }
             }
             if (!found) {
-                observer.onResult(new ExecutionResult(new CougarServiceException(ServerFaultCode.SecurityException,"missing credentials")));
+                observer.onResult(new ExecutionResult(new DiscoServiceException(ServerFaultCode.SecurityException,"missing credentials")));
                 return false;
             }
         }

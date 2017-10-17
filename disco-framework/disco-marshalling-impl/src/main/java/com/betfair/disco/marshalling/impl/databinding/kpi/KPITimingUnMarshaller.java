@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.kpi;
+package uk.co.exemel.disco.marshalling.impl.databinding.kpi;
 
 import java.io.InputStream;
 
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.marshalling.api.databinding.UnMarshaller;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.marshalling.api.databinding.UnMarshaller;
 import com.betfair.tornjak.kpi.KPIMonitor;
 
 /**

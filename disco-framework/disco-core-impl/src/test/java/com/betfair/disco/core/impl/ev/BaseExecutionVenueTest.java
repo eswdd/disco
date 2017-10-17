@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,26 +22,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityResolver;
-import com.betfair.cougar.api.security.CredentialFaultCode;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.api.security.InvalidCredentialsException;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityResolver;
+import uk.co.exemel.disco.api.security.CredentialFaultCode;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.api.security.InvalidCredentialsException;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -54,14 +54,14 @@ public class BaseExecutionVenueTest {
 
 	private static final InterceptorResult CONTINUE = new InterceptorResult(InterceptorState.CONTINUE, null);
 	private static final InterceptorResult FORCE_ON_RESULT = new InterceptorResult(InterceptorState.FORCE_ON_RESULT, "THIS IS A FORCED PASS");
-	private static final InterceptorResult FORCE_ON_EXCEPTION = new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION, new CougarFrameworkException(ServerFaultCode.SecurityException,"I EXPECT TO FAIL"));
+	private static final InterceptorResult FORCE_ON_EXCEPTION = new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION, new DiscoFrameworkException(ServerFaultCode.SecurityException,"I EXPECT TO FAIL"));
 
     @BeforeClass
     public static void setupStatic() {
         RequestUUIDImpl.setGenerator(new UUIDGeneratorImpl());
     }
 
-    private class EVTestException extends CougarApplicationException {
+    private class EVTestException extends DiscoApplicationException {
 
         public EVTestException(ResponseCode code, String exceptionCode) {
             super(code, exceptionCode);
@@ -216,7 +216,7 @@ public class BaseExecutionVenueTest {
     };
 
 
-    private ExecutionObserver cougarApplicationExceptionResultExecutionObserver = new ExecutionObserver() {
+    private ExecutionObserver discoApplicationExceptionResultExecutionObserver = new ExecutionObserver() {
         public void onResult(ExecutionResult result) {
             switch (result.getResultType()) {
                 case Success:
@@ -346,7 +346,7 @@ public class BaseExecutionVenueTest {
     public void testOnExceptionWithServiceCheckedException() {
         preProcessorList.add(checkedExceptionThrowingPreProcessor);
         bev.registerOperation(null, mockOperationDef, mockExecutable, mockTimingRecorder, 0);
-        bev.execute(mockExecutionContext, mockOperationKey, args, cougarApplicationExceptionResultExecutionObserver,DefaultTimeConstraints.NO_CONSTRAINTS);
+        bev.execute(mockExecutionContext, mockOperationKey, args, discoApplicationExceptionResultExecutionObserver,DefaultTimeConstraints.NO_CONSTRAINTS);
     }
 
 	@Test
@@ -438,7 +438,7 @@ public class BaseExecutionVenueTest {
     public void testFailingPostProcessorCallsOnServiceCheckedExceptionWhenExecutableCompletesOK() {
         postProcessorList.add(checkedServiceExceptionThrowingPostProcessor);
         bev.registerOperation(null, mockOperationDef, mockExecutable, mockTimingRecorder, 0);
-        bev.execute(mockExecutionContext, mockOperationKey, args, cougarApplicationExceptionResultExecutionObserver,DefaultTimeConstraints.NO_CONSTRAINTS);
+        bev.execute(mockExecutionContext, mockOperationKey, args, discoApplicationExceptionResultExecutionObserver,DefaultTimeConstraints.NO_CONSTRAINTS);
     }
 
 	@Test

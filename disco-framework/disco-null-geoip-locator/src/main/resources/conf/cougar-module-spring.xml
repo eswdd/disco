@@ -22,8 +22,8 @@
 
 
     <!--  Geolocation -->
-    <bean id="geoIPLocator" class="com.betfair.cougar.util.geolocation.NullGeoIPLocator"/>
+    <bean id="geoIPLocator" class="uk.co.exemel.disco.util.geolocation.NullGeoIPLocator"/>
 
-    <alias name="geoIPLocator" alias="cougar.core.GeoIPLocator"/>
+    <alias name="geoIPLocator" alias="disco.core.GeoIPLocator"/>
 
 </beans>

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.nio;
+package uk.co.exemel.disco.transport.nio;
 
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
 import org.apache.mina.common.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,21 +40,21 @@ public class IoSessionManager {
     private long maxTimeToWaitForRequestCompletion;
     private NioLogger nioLogger;
 
-    public void shutdownSessions(Set<IoSession> ioSessions, CougarProtocol cougarProtocol, ExecutionVenueServerHandler handler) {
-        shutdownSessions(ioSessions, cougarProtocol, handler, false);
+    public void shutdownSessions(Set<IoSession> ioSessions, DiscoProtocol discoProtocol, ExecutionVenueServerHandler handler) {
+        shutdownSessions(ioSessions, discoProtocol, handler, false);
     }
 
-    public void shutdownSessions(Set<IoSession> ioSessions, CougarProtocol cougarProtocol, ExecutionVenueServerHandler handler, boolean blockUntilComplete) {
+    public void shutdownSessions(Set<IoSession> ioSessions, DiscoProtocol discoProtocol, ExecutionVenueServerHandler handler, boolean blockUntilComplete) {
         if (maxTimeToWaitForRequestCompletion > 0) { // needs graceful shutdown
             for (final IoSession ioSession : ioSessions) {
-                cougarProtocol.suspendSession(ioSession);
+                discoProtocol.suspendSession(ioSession);
             }
 
             waitForOutstandingRequestsToComplete(handler);
         }
 
         for (final IoSession ioSession : ioSessions) {
-            cougarProtocol.closeSession(ioSession, blockUntilComplete);
+            discoProtocol.closeSession(ioSession, blockUntilComplete);
         }
     }
 

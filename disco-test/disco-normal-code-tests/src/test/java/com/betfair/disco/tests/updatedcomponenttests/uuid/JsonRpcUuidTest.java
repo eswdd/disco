@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.updatedcomponenttests.uuid;
+package uk.co.exemel.disco.tests.updatedcomponenttests.uuid;
 
-import com.betfair.testing.utils.cougar.CougarBaseline2_8TestingInvoker;
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
-import com.betfair.testing.utils.cougar.manager.LogTailer;
-import com.betfair.testing.utils.cougar.manager.RequestLogTailer;
+import com.betfair.testing.utils.disco.DiscoBaseline2_8TestingInvoker;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.manager.LogTailer;
+import com.betfair.testing.utils.disco.manager.RequestLogTailer;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -29,7 +29,7 @@ public class JsonRpcUuidTest {
     @Test
     public void noParentUuid() {
         LogTailer.LogLine[] requestLogEntries =
-                CougarBaseline2_8TestingInvoker.create()
+                DiscoBaseline2_8TestingInvoker.create()
                 .setOperation("testSimpleGet")
                 .addJsonRpcMethodCall("1","testSimpleGet","[\"foo\"]")
                 .setExpectedHttpResponse(200, "OK")
@@ -43,7 +43,7 @@ public class JsonRpcUuidTest {
     @Test
     public void withOldUuid() {
         LogTailer.LogLine[] requestLogEntries =
-                CougarBaseline2_8TestingInvoker.create()
+                DiscoBaseline2_8TestingInvoker.create()
                 .setOperation("testSimpleGet")
                 .addJsonRpcMethodCall("1","testSimpleGet","[\"foo\"]")
                 .addHeaderParam("X-UUID", "localhost-abc123-00001")
@@ -57,7 +57,7 @@ public class JsonRpcUuidTest {
     @Test
     public void withParentUuid() {
         LogTailer.LogLine[] requestLogEntries =
-                CougarBaseline2_8TestingInvoker.create()
+                DiscoBaseline2_8TestingInvoker.create()
                 .setOperation("testSimpleGet") // todo: this is not right
                 .addJsonRpcMethodCall("1","testSimpleGet","[\"foo\"]")
                 .addHeaderParam("X-UUID", "localhost-abc123-00001")

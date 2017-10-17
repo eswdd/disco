@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.http;
+package uk.co.exemel.disco.transport.api.protocol.http;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.core.api.fault.CougarFault;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
 
 public class ResponseCodeMapper {
     private static final String COUGAR_FAULT_PREFIX = "DSC-";
@@ -55,7 +55,7 @@ public class ResponseCodeMapper {
 		return RESPONSE_CODES.get(code);
 	}
 
-    public static ResponseCode getResponseCodeFromHttpCode(int httpResponseStatus, CougarFault fault) {
+    public static ResponseCode getResponseCodeFromHttpCode(int httpResponseStatus, DiscoFault fault) {
         if(httpResponseStatus == HttpServletResponse.SC_INTERNAL_SERVER_ERROR){
             if(fault.getErrorCode().startsWith(COUGAR_FAULT_PREFIX)){
                 return ResponseCode.InternalError;

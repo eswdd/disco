@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.client;
+package uk.co.exemel.disco.test.socket.tester.client;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

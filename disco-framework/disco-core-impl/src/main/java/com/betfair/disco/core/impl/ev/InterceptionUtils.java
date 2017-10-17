@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionPreProcessor;
-import com.betfair.cougar.core.api.ev.ExecutionRequirement;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.InterceptorResult;
-import com.betfair.cougar.core.api.ev.InterceptorState;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionPreProcessor;
+import uk.co.exemel.disco.core.api.ev.ExecutionRequirement;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.InterceptorResult;
+import uk.co.exemel.disco.core.api.ev.InterceptorState;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -60,18 +60,18 @@ public class InterceptionUtils {
             if (InterceptorState.FORCE_ON_EXCEPTION.equals(result.getState())) {
                 Object interceptorResult = result.getResult();
                 ExecutionResult executionResult;
-                if (interceptorResult instanceof CougarException) {
+                if (interceptorResult instanceof DiscoException) {
                     executionResult = new ExecutionResult(interceptorResult);
-                } else if (interceptorResult instanceof CougarApplicationException) {
+                } else if (interceptorResult instanceof DiscoApplicationException) {
                     executionResult = new ExecutionResult(interceptorResult);
                 } else if (result.getResult() instanceof Exception) {
                     executionResult = new ExecutionResult(
-                            new CougarFrameworkException(ServerFaultCode.ServiceRuntimeException,
+                            new DiscoFrameworkException(ServerFaultCode.ServiceRuntimeException,
                                     "Interceptor forced exception", (Exception)result.getResult()));
                 } else {
                     // onException forced, but result is not an exception
                     executionResult = new ExecutionResult(
-                            new CougarFrameworkException(ServerFaultCode.ServiceRuntimeException,
+                            new DiscoFrameworkException(ServerFaultCode.ServiceRuntimeException,
                                     "Interceptor forced exception, but result was not an exception - I found a " +
                                             result.getResult()));
                 }

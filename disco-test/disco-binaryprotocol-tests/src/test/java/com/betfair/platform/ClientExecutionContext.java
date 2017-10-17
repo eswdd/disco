@@ -16,13 +16,13 @@
 
 package com.betfair.platform;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.Credential;
-import com.betfair.cougar.api.security.Identity;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.util.RequestUUIDImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.Credential;
+import uk.co.exemel.disco.api.security.Identity;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
 
 import java.security.Principal;
 import java.util.Collections;
@@ -58,7 +58,7 @@ public class ClientExecutionContext implements ExecutionContext {
 
         geolocation = new GeoLocationDetails() {
             public boolean isLowConfidenceGeoLocation() {
-                return false; // decided by cougar on the client side
+                return false; // decided by disco on the client side
             }
 
             public String getCountry() {

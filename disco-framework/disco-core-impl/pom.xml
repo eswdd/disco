@@ -19,14 +19,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
-        <artifactId>cougar-framework</artifactId>
+        <groupId>uk.co.exemel.disco</groupId>
+        <artifactId>disco-framework</artifactId>
         <version>3.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cougar-core-impl</artifactId>
+    <artifactId>disco-core-impl</artifactId>
     <packaging>jar</packaging>
-    <name>cougar-core-impl</name>
+    <name>disco-core-impl</name>
 
     <build>
         <plugins>
@@ -47,8 +47,8 @@
                 </executions>
                 <configuration>
                     <ignoreMissingFile>false</ignoreMissingFile>
-                    <file>src/main/resources/conf/CougarVersion.template</file>
-                    <outputFile>target/generated-resources/version/CougarVersion.properties</outputFile>
+                    <file>src/main/resources/conf/DiscoVersion.template</file>
+                    <outputFile>target/generated-resources/version/DiscoVersion.properties</outputFile>
                     <regex>false</regex>
                     <!-- the name of the token to replace -->
                     <token>[project.version]</token>
@@ -69,17 +69,17 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-util</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-util</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-test-mocks</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-test-mocks</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -102,13 +102,13 @@
             <artifactId>core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-core-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-core-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-config-bootstrap</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-config-bootstrap</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

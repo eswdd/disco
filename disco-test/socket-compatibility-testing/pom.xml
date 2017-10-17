@@ -20,8 +20,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
-        <artifactId>cougar-test</artifactId>
+        <groupId>uk.co.exemel.disco</groupId>
+        <artifactId>disco-test</artifactId>
         <version>3.3-SNAPSHOT</version>
     </parent>
 

@@ -19,14 +19,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-  	<artifactId>cougar-framework</artifactId>
-  	<groupId>com.betfair.cougar</groupId>
+  	<artifactId>disco-framework</artifactId>
+  	<groupId>uk.co.exemel.disco</groupId>
 	<version>3.3-SNAPSHOT</version>
   </parent>
 
-  <artifactId>cougar-transport-impl</artifactId>
+  <artifactId>disco-transport-impl</artifactId>
   <packaging>jar</packaging>
-  <name>cougar-transport-impl</name>
+  <name>disco-transport-impl</name>
 
 	<dependencies>
 		<dependency>
@@ -48,41 +48,41 @@
             <artifactId>axiom-impl</artifactId>
         </dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-api</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-transport-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-transport-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-marshalling-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-marshalling-api</artifactId>
           <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-marshalling-impl</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-marshalling-impl</artifactId>
           <version>${project.version}</version>
         </dependency>
       	<dependency>
-      		<groupId>com.betfair.cougar</groupId>
-      		<artifactId>cougar-core-api</artifactId>
+      		<groupId>uk.co.exemel.disco</groupId>
+      		<artifactId>disco-core-api</artifactId>
 			<version>${project.version}</version>
   	    </dependency>
       	<dependency>
-      		<groupId>com.betfair.cougar</groupId>
-      		<artifactId>cougar-core-impl</artifactId>
+      		<groupId>uk.co.exemel.disco</groupId>
+      		<artifactId>disco-core-impl</artifactId>
   	    </dependency>
 	  	<dependency>
-	  		<groupId>com.betfair.cougar</groupId>
-	  		<artifactId>cougar-util</artifactId>
+	  		<groupId>uk.co.exemel.disco</groupId>
+	  		<artifactId>disco-util</artifactId>
 	  	</dependency>
       	<dependency>
-        	<groupId>com.betfair.cougar</groupId>
-        	<artifactId>cougar-test-mocks</artifactId>
+        	<groupId>uk.co.exemel.disco</groupId>
+        	<artifactId>disco-test-mocks</artifactId>
 			<version>${project.version}</version>
         	<scope>test</scope>
         </dependency>

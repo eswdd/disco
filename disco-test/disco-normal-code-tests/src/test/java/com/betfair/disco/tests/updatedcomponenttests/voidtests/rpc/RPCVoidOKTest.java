@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/VoidTests/RPC/RPC_Void_OK.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.voidtests.rpc;
+package uk.co.exemel.disco.tests.updatedcomponenttests.voidtests.rpc;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 
@@ -38,9 +38,9 @@ public class RPCVoidOKTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean callBean = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        CougarManager cougarManager = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean callBean = discoManager1.getNewHttpCallBean("87.248.113.14");
+        DiscoManager discoManager = discoManager1;
         // Set the call bean to use JSON batching
         callBean.setJSONRPC(true);
         // Set the list of requests to make a batched call to
@@ -58,12 +58,12 @@ public class RPCVoidOKTest {
 
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
         // Make JSON call to the operation requesting a JSON response
-        cougarManager.makeRestCougarHTTPCall(callBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager.makeRestDiscoHTTPCall(callBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Get the response to the batched query (store the response for further comparison as order of batched responses cannot be relied on)
-        HttpResponseBean actualResponseJSON = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean actualResponseJSON = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         // Convert the returned json object to a map for comparison
-        CougarHelpers cougarHelpers4 = new CougarHelpers();
-        Map<String, Object> map5 = cougarHelpers4.convertBatchedResponseToMap(actualResponseJSON);
+        DiscoHelpers discoHelpers4 = new DiscoHelpers();
+        Map<String, Object> map5 = discoHelpers4.convertBatchedResponseToMap(actualResponseJSON);
         AssertionUtils.multiAssertEquals("{\"id\":1,\"result\":null,\"jsonrpc\":\"2.0\"}", map5.get("response1"));
         AssertionUtils.multiAssertEquals("{\"id\":2,\"result\":null,\"jsonrpc\":\"2.0\"}", map5.get("response2"));
         AssertionUtils.multiAssertEquals("200", map5.get("httpStatusCode"));
@@ -72,10 +72,10 @@ public class RPCVoidOKTest {
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
         
-        cougarManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "voidResponseOperation"),new RequestLogRequirement("2.8", "voidResponseOperation") );
+        discoManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "voidResponseOperation"),new RequestLogRequirement("2.8", "voidResponseOperation") );
         
-        CougarManager cougarManager9 = CougarManager.getInstance();
-        cougarManager9.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
+        DiscoManager discoManager9 = DiscoManager.getInstance();
+        discoManager9.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
     }
 
 }

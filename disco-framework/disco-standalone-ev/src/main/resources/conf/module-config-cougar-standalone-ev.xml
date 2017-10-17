@@ -20,29 +20,29 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean class="com.betfair.cougar.util.configuration.PropertyConfigurer">
-        <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
-        <property name="defaultConfig" value="classpath:conf/cougar-standalone-ev-defaults.properties"/>
+    <bean class="uk.co.exemel.disco.util.configuration.PropertyConfigurer">
+        <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
+        <property name="defaultConfig" value="classpath:conf/disco-standalone-ev-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
         <property name="placeholderPrefix" value="$COUGAR_STANDALONE_EV{"/>
     </bean>
 
-    <bean id="executionVenue" class="com.betfair.cougar.core.impl.ev.ServiceRegisterableExecutionVenue">
+    <bean id="executionVenue" class="uk.co.exemel.disco.core.impl.ev.ServiceRegisterableExecutionVenue">
         <property name="serviceLogManagerFactory" ref="serviceLogManagerFactory"/>
         <property name="stats" ref="kpiMonitor"/>
         <property name="preProcessors" ref="preProcessorInterceptors"/>
         <property name="postProcessors" ref="postProcessorInterceptors"/>
-        <property name="identityResolverFactory" ref="cougar.core.IdentityResolverFactory"/>
-        <property name="tracer" ref="cougar.core.Tracer"/>
+        <property name="identityResolverFactory" ref="disco.core.IdentityResolverFactory"/>
+        <property name="tracer" ref="disco.core.Tracer"/>
     </bean>
 
-    <bean id="cougarIntroductionService" class="com.betfair.cougar.core.impl.CougarIntroductionService" init-method="performIntroductions" lazy-init="false">
-        <property name="executionVenue" ref="cougar.core.ExecutionVenue"/>
-        <property name="serviceRegistrar" ref="cougar.core.ExecutionVenue"/>
+    <bean id="discoIntroductionService" class="uk.co.exemel.disco.core.impl.DiscoIntroductionService" init-method="performIntroductions" lazy-init="false">
+        <property name="executionVenue" ref="disco.core.ExecutionVenue"/>
+        <property name="serviceRegistrar" ref="disco.core.ExecutionVenue"/>
         <property name="executableResolver">
-            <bean class="com.betfair.cougar.core.impl.ev.CompoundExecutableResolverImpl"/>
+            <bean class="uk.co.exemel.disco.core.impl.ev.CompoundExecutableResolverImpl"/>
         </property>
-        <property name="transportRegistry" ref="cougar.core.TransportRegistry"/>
+        <property name="transportRegistry" ref="disco.core.TransportRegistry"/>
     </bean>
 
 
@@ -50,18 +50,18 @@
     <!-- Now set up the loggers -->
     <import resource="classpath:conf/remote/logging-handlers.xml"/>
 
-    <bean id="eventLogger" class="com.betfair.cougar.core.impl.logging.EventLoggerImpl">
+    <bean id="eventLogger" class="uk.co.exemel.disco.core.impl.logging.EventLoggerImpl">
         <property name="registry" ref="eventLoggingRegistry"/>
-        <property name="enabled" value="$COUGAR{cougar.log.request}"/>
+        <property name="enabled" value="$COUGAR{disco.log.request}"/>
     </bean>
 
-    <bean id="eventLoggingRegistry" class="com.betfair.cougar.logging.EventLoggingRegistry"/>
+    <bean id="eventLoggingRegistry" class="uk.co.exemel.disco.logging.EventLoggingRegistry"/>
 
 
-    <bean id="serviceLogManagerFactory" class="com.betfair.cougar.core.impl.ev.NamedLoggerServiceLogManagerFactory">
-        <constructor-arg index="0" value="$COUGAR{cougar.app.name}-"/>
+    <bean id="serviceLogManagerFactory" class="uk.co.exemel.disco.core.impl.ev.NamedLoggerServiceLogManagerFactory">
+        <constructor-arg index="0" value="$COUGAR{disco.app.name}-"/>
     </bean>
 
-    <alias name="executionVenue" alias="cougar.core.ExecutionVenue"/>
+    <alias name="executionVenue" alias="disco.core.ExecutionVenue"/>
 
 </beans>

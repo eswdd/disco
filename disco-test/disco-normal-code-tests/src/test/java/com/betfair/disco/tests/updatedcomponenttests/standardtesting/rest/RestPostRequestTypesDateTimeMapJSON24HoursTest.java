@@ -15,16 +15,16 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/REST/Rest_Post_RequestTypes_DateTimeMap_JSON_24Hours.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.rest;
 
-import com.betfair.testing.utils.cougar.misc.TimingHelpers;
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.misc.TimingHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -37,21 +37,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that Cougar can't handle the dateTimeMap data type in the post body of a JSON request containing a date with the time set to 24:00:00 (will rolll to 00:00:00 the next day)
+ * Ensure that Disco can't handle the dateTimeMap data type in the post body of a JSON request containing a date with the time set to 24:00:00 (will rolll to 00:00:00 the next day)
  */
 public class RestPostRequestTypesDateTimeMapJSON24HoursTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean hbean = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        CougarManager hinstance = cougarManager1;
-        cougarManager1.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults","false");
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean hbean = discoManager1.getNewHttpCallBean("87.248.113.14");
+        DiscoManager hinstance = discoManager1;
+        discoManager1.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults","false");
         try {
 
             hbean.setOperationName("dateTimeMapOperation");
 
-            hbean.setServiceName("baseline", "cougarBaseline");
+            hbean.setServiceName("baseline", "discoBaseline");
 
             hbean.setVersion("v2");
             // Set the post body to contain a date time map object
@@ -62,9 +62,9 @@ public class RestPostRequestTypesDateTimeMapJSON24HoursTest {
 
             Timestamp getTimeAsTimeStamp11 = new Timestamp(System.currentTimeMillis());
             // Make JSON call to the operation requesting an XML response
-            hinstance.makeRestCougarHTTPCall(hbean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.XML);
+            hinstance.makeRestDiscoHTTPCall(hbean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.XML);
             // Make JSON call to the operation requesting a JSON response
-            hinstance.makeRestCougarHTTPCall(hbean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+            hinstance.makeRestDiscoHTTPCall(hbean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
             // Create the expected response as an XML document (using the date object created earlier)
             XMLHelpers xMLHelpers6 = new XMLHelpers();
             Document expectedResponseXML = xMLHelpers6.createAsDocument(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(("<fault><faultcode>Client</faultcode><faultstring>DSC-0044</faultstring><detail/></fault>").getBytes())));
@@ -72,22 +72,22 @@ public class RestPostRequestTypesDateTimeMapJSON24HoursTest {
             JSONHelpers jSONHelpers7 = new JSONHelpers();
             JSONObject expectedResponseJSON = jSONHelpers7.createAsJSONObject(new JSONObject("{\"detail\":{},\"faultcode\":\"Client\",\"faultstring\":\"DSC-0044\"}"));
             // Check the 2 responses are as expected
-            HttpResponseBean response8 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
+            HttpResponseBean response8 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
             AssertionUtils.multiAssertEquals(expectedResponseXML, response8.getResponseObject());
             AssertionUtils.multiAssertEquals((int) 400, response8.getHttpStatusCode());
             AssertionUtils.multiAssertEquals("Bad Request", response8.getHttpStatusText());
 
-            HttpResponseBean response9 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+            HttpResponseBean response9 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
             AssertionUtils.multiAssertEquals(expectedResponseJSON, response9.getResponseObject());
             AssertionUtils.multiAssertEquals((int) 400, response9.getHttpStatusCode());
             AssertionUtils.multiAssertEquals("Bad Request", response9.getHttpStatusText());
 
             // Check the log entries are as expected
 
-            cougarManager1.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp11, new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/dateTimeMapOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/dateTimeMapOperation", "BadRequest") );
+            discoManager1.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp11, new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/dateTimeMapOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/dateTimeMapOperation", "BadRequest") );
         }
         finally {
-            cougarManager1.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults","true");
+            discoManager1.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults","true");
         }
     }
 

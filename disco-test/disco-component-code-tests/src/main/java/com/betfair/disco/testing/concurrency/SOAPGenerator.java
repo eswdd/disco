@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.testing.concurrency;
+package uk.co.exemel.disco.testing.concurrency;
 
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.misc.StringHelpers;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.misc.StringHelpers;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

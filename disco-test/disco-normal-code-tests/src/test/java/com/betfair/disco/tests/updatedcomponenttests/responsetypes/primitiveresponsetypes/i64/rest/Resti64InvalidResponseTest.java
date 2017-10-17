@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/ResponseTypes/PrimitiveResponseTypes/i64/REST/Rest_i64InvalidResponse.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.responsetypes.primitiveresponsetypes.i64.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.responsetypes.primitiveresponsetypes.i64.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -33,22 +33,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Test that the Cougar service throws a correct error when invalid value is passed to  i64 primitive type parameter (REST)
+ * Test that the Disco service throws a correct error when invalid value is passed to  i64 primitive type parameter (REST)
  */
 public class Resti64InvalidResponseTest {
     @Test
     public void doTest() throws Exception {
         // Get an HTTPCallBean
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean HTTPCallBean = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        CougarManager CougarManager = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean HTTPCallBean = discoManager1.getNewHttpCallBean("87.248.113.14");
+        DiscoManager DiscoManager = discoManager1;
         // Get LogManager JMX Attribute
-        // Set Cougar Fault Controller attributes
-        CougarManager.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        // Set Disco Fault Controller attributes
+        DiscoManager.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         // Set operation  name
         HTTPCallBean.setOperationName("i64SimpleTypeEcho", "i64Echo");
         // Set service name to call
-        HTTPCallBean.setServiceName("baseline", "cougarBaseline");
+        HTTPCallBean.setServiceName("baseline", "discoBaseline");
         // Set service version to call
         HTTPCallBean.setVersion("v2");
         // Set Query parameter (?msg=true)
@@ -59,35 +59,35 @@ public class Resti64InvalidResponseTest {
 
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
         // Make Rest calls (makes 4 calls with different content/accept combinations of XML and JSON)
-        CougarManager.makeRestCougarHTTPCalls(HTTPCallBean);
+        DiscoManager.makeRestDiscoHTTPCalls(HTTPCallBean);
         // Create a REST response structure as a Document object
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document responseDocument = xMLHelpers4.getXMLObjectFromString("<fault><faultcode>Client</faultcode><faultstring>DSC-0044</faultstring><detail/></fault>");
         // Convert the response document into Rest (XML and JSON) representations
-        Map<CougarMessageProtocolRequestTypeEnum, Object> convertedResponses = CougarManager.convertResponseToRestTypes(responseDocument, HTTPCallBean);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> convertedResponses = DiscoManager.convertResponseToRestTypes(responseDocument, HTTPCallBean);
         // Get the 4 results from the Rest calls and compare to the expected XML and JSON responses
-        HttpResponseBean response5 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
-        AssertionUtils.multiAssertEquals(convertedResponses.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response5.getResponseObject());
+        HttpResponseBean response5 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
+        AssertionUtils.multiAssertEquals(convertedResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response5.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response5.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response5.getHttpStatusText());
 
-        HttpResponseBean response6 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
-        AssertionUtils.multiAssertEquals(convertedResponses.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response6.getResponseObject());
+        HttpResponseBean response6 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        AssertionUtils.multiAssertEquals(convertedResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response6.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response6.getHttpStatusText());
 
-        HttpResponseBean response7 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
-        AssertionUtils.multiAssertEquals(convertedResponses.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response7.getResponseObject());
+        HttpResponseBean response7 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        AssertionUtils.multiAssertEquals(convertedResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response7.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response7.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response7.getHttpStatusText());
 
-        HttpResponseBean response8 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
-        AssertionUtils.multiAssertEquals(convertedResponses.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response8.getResponseObject());
+        HttpResponseBean response8 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
+        AssertionUtils.multiAssertEquals(convertedResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response8.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response8.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response8.getHttpStatusText());
         // Check Service log entries after the time recorded earlier in the test
         // Get access log entries after the time recorded earlier in the test
-        CougarManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/i64Echo", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/i64Echo", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/i64Echo", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/i64Echo", "BadRequest") );
+        DiscoManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/i64Echo", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/i64Echo", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/i64Echo", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/i64Echo", "BadRequest") );
     }
 
 }

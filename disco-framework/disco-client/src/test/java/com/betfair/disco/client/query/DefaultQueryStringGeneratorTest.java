@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.query;
+package uk.co.exemel.disco.client.query;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

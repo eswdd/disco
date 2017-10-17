@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.security;
+package uk.co.exemel.disco.core.api.security;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.security.IdentityResolver;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.api.security.InvalidCredentialsException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.security.IdentityResolver;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.api.security.InvalidCredentialsException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
 import org.junit.Test;
 
 import java.util.List;
@@ -54,7 +54,7 @@ public class IdentityResolverFactoryTest {
         assertNotNull(factory.getIdentityResolver());
     }
 
-    @Test(expected = CougarFrameworkException.class)
+    @Test(expected = DiscoFrameworkException.class)
     public void testDoubleRegistration() {
         IdentityResolverFactory factory = new IdentityResolverFactory();
         factory.setIdentityResolver(new TestIdentityResolver());

@@ -19,10 +19,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="classpath:conf/cougar-module-zipkin.xml"/>
+    <import resource="classpath:conf/disco-module-zipkin.xml"/>
 
-    <bean id="zipkinHttpContextEmitter" class="com.betfair.cougar.modules.zipkin.impl.http.ZipkinHttpContextEmitter">
-        <constructor-arg index="0" ref="cougar.client.DefaultHttpContextEmission"/>
+    <bean id="zipkinHttpContextEmitter" class="uk.co.exemel.disco.modules.zipkin.impl.http.ZipkinHttpContextEmitter">
+        <constructor-arg index="0" ref="disco.client.DefaultHttpContextEmission"/>
     </bean>
 
 </beans>

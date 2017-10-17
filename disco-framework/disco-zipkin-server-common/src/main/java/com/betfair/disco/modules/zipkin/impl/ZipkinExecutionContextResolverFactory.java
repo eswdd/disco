@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.impl;
+package uk.co.exemel.disco.modules.zipkin.impl;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolver;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolverFactory;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolver;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolverFactory;
 
 /**
  * Zipkin factory for EC resolvers for HTTP and socket transports.

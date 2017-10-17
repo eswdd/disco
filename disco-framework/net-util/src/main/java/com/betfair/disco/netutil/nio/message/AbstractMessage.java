@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.message;
+package uk.co.exemel.disco.netutil.nio.message;
 
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.netutil.nio.CougarProtocolEncoder;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocolEncoder;
 import org.apache.mina.common.ByteBuffer;
 
 import java.util.HashMap;
@@ -27,6 +27,6 @@ public abstract class AbstractMessage implements ProtocolMessage {
 
     @Override
     public ByteBuffer getSerialisedForm(byte protocolVersion) {
-        return CougarProtocolEncoder.encode(this, protocolVersion);
+        return DiscoProtocolEncoder.encode(this, protocolVersion);
     }
 }

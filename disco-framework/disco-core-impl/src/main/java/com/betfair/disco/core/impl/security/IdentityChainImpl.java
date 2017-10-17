@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.security;
+package uk.co.exemel.disco.core.impl.security;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.betfair.cougar.api.security.Identity;
-import com.betfair.cougar.api.security.IdentityChain;
+import uk.co.exemel.disco.api.security.Identity;
+import uk.co.exemel.disco.api.security.IdentityChain;
 
 /**
  * Default implementation of IdentityChain

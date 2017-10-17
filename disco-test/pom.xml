@@ -18,14 +18,14 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>com.betfair.cougar</groupId>
-		<artifactId>cougar-master-pom</artifactId>
+		<groupId>uk.co.exemel.disco</groupId>
+		<artifactId>disco-master-pom</artifactId>
 		<version>3.3-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
 
-  	<artifactId>cougar-test</artifactId>
+  	<artifactId>disco-test</artifactId>
     <name>${project.artifactId}</name>
 	<packaging>pom</packaging>
 
@@ -34,14 +34,14 @@
 	</properties>
 
     <modules>
-        <module>cougar-test-utils</module>
-        <module>cougar-ci-test-listener</module>
-        <module>cougar-component-code-tests</module>
-        <module>cougar-client-code-tests</module>
-        <module>cougar-normal-code-tests</module>
-        <module>cougar-iddversion-tests</module>
-        <module>cougar-binaryprotocol-tests</module>
-        <module>cougar-ci-process-launcher</module>
+        <module>disco-test-utils</module>
+        <module>disco-ci-test-listener</module>
+        <module>disco-component-code-tests</module>
+        <module>disco-client-code-tests</module>
+        <module>disco-normal-code-tests</module>
+        <module>disco-iddversion-tests</module>
+        <module>disco-binaryprotocol-tests</module>
+        <module>disco-ci-process-launcher</module>
         <module>socket-compatibility-testing</module>
     </modules>
 </project>

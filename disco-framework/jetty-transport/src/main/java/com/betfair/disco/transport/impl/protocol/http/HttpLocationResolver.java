@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.InferredCountryResolver;
-import com.betfair.cougar.core.api.builder.DehydratedExecutionContextBuilder;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextComponent;
-import com.betfair.cougar.transport.api.SingleComponentResolver;
-import com.betfair.cougar.transport.api.protocol.http.GeoLocationDeserializer;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.util.geolocation.GeoIPLocator;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.InferredCountryResolver;
+import uk.co.exemel.disco.core.api.builder.DehydratedExecutionContextBuilder;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextComponent;
+import uk.co.exemel.disco.transport.api.SingleComponentResolver;
+import uk.co.exemel.disco.transport.api.protocol.http.GeoLocationDeserializer;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.util.geolocation.GeoIPLocator;
 
 import javax.servlet.http.HttpServletRequest;
 

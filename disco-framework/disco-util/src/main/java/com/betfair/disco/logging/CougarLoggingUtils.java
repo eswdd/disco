@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging;
+package uk.co.exemel.disco.logging;
 
 
 import org.slf4j.ILoggerFactory;
@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.impl.Log4jLoggerFactory;
 
 
-public class CougarLoggingUtils {
+public class DiscoLoggingUtils {
 
 
 	private static final ThreadLocal<String> traceId =  new ThreadLocal<String>();

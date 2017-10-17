@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/RPC/RPC_Get_RequestTypes_Parameters_ListOfStrings.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.rpc;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.rpc;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 
@@ -32,17 +32,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that when a Batched JSON request is performed, Cougar can handle various different Lists of Strings being passed in the Header and Query parameters
+ * Ensure that when a Batched JSON request is performed, Disco can handle various different Lists of Strings being passed in the Header and Query parameters
  */
 public class RPCGetRequestTypesParametersListOfStringsTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean callBean = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        CougarManager cougarManager = cougarManager1;
-        // Set Cougar Fault Controller attributes
-        cougarManager.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean callBean = discoManager1.getNewHttpCallBean("87.248.113.14");
+        DiscoManager discoManager = discoManager1;
+        // Set Disco Fault Controller attributes
+        discoManager.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         // Set the call bean to use JSON batching
         callBean.setJSONRPC(true);
         // Set the list of requests to make a batched call to
@@ -68,12 +68,12 @@ public class RPCGetRequestTypesParametersListOfStringsTest {
 
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
         // Make JSON call to the operation requesting a JSON response
-        cougarManager.makeRestCougarHTTPCall(callBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager.makeRestDiscoHTTPCall(callBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Get the response to the batched query (store the response for further comparison as order of batched responses cannot be relied on)
-        HttpResponseBean response = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         // Convert the returned json object to a map for comparison
-        CougarHelpers cougarHelpers4 = new CougarHelpers();
-        Map<String, Object> map5 = cougarHelpers4.convertBatchedResponseToMap(response);
+        DiscoHelpers discoHelpers4 = new DiscoHelpers();
+        Map<String, Object> map5 = discoHelpers4.convertBatchedResponseToMap(response);
         AssertionUtils.multiAssertEquals("{\"id\":\"NormalList\",\"result\":{\"headerParameter\":\"header1,header2\",\"queryParameter\":\"query1,query2\"},\"jsonrpc\":\"2.0\"}", map5.get("responseNormalList"));
         AssertionUtils.multiAssertEquals("{\"id\":\"BlankList\",\"error\":{\"message\":\"DSC-0018\",\"code\":-32602},\"jsonrpc\":\"2.0\"}", map5.get("responseBlankList"));
         AssertionUtils.multiAssertEquals("{\"id\":\"BlankEntry\",\"result\":{\"headerParameter\":\"header1,\",\"queryParameter\":\"query1,\"},\"jsonrpc\":\"2.0\"}", map5.get("responseBlankEntry"));
@@ -84,9 +84,9 @@ public class RPCGetRequestTypesParametersListOfStringsTest {
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
         
-        cougarManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "stringListOperation"),new RequestLogRequirement("2.8", "stringListOperation"),new RequestLogRequirement("2.8", "stringListOperation") );
+        discoManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "stringListOperation"),new RequestLogRequirement("2.8", "stringListOperation"),new RequestLogRequirement("2.8", "stringListOperation") );
         
-        cougarManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
+        discoManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
     }
 
 }

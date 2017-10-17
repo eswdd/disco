@@ -19,35 +19,35 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
-        <artifactId>cougar-framework</artifactId>
+        <groupId>uk.co.exemel.disco</groupId>
+        <artifactId>disco-framework</artifactId>
         <version>3.3-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.betfair.cougar</groupId>
+    <groupId>uk.co.exemel.disco</groupId>
     <artifactId>jms-transport</artifactId>
     <name>jms-transport</name>
     <version>3.3-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-transport-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-transport-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-util</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-util</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-core-impl</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-core-impl</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-marshalling-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-marshalling-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

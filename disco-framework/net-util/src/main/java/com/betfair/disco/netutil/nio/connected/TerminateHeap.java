@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.connected;
+package uk.co.exemel.disco.netutil.nio.connected;
 
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.TranscribableParams;
-import com.betfair.cougar.core.api.transcription.TranscriptionInput;
-import com.betfair.cougar.core.api.transcription.TranscriptionOutput;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.TranscribableParams;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionInput;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionOutput;
 import com.betfair.platform.virtualheap.updates.Update;
 
 import java.util.Set;

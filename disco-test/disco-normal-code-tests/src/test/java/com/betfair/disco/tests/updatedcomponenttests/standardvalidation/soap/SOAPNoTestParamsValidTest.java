@@ -16,14 +16,14 @@
  */
 
 // Originally from UpdatedComponentTests/StandardValidation/SOAP/SOAP_NoTestParams_Valid.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardvalidation.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardvalidation.soap;
 
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -38,19 +38,19 @@ import java.util.Map;
 public class SOAPNoTestParamsValidTest {
     @Test(dataProvider = "SchemaValidationEnabled")
     public void doTest(boolean schemaValidationEnabled) throws Exception {
-        CougarHelpers helpers = new CougarHelpers();
+        DiscoHelpers helpers = new DiscoHelpers();
         try {
-            CougarManager cougarManager = CougarManager.getInstance();
+            DiscoManager discoManager = DiscoManager.getInstance();
             helpers.setSOAPSchemaValidationEnabled(schemaValidationEnabled);
             // Create the SOAP request as an XML Document
             XMLHelpers xMLHelpers1 = new XMLHelpers();
             Document createAsDocument1 = xMLHelpers1.getXMLObjectFromString("<TestNoParamsRequest/>");
             // Set up the Http Call Bean to make the request
-            CougarManager cougarManager2 = CougarManager.getInstance();
-            HttpCallBean getNewHttpCallBean2 = cougarManager2.getNewHttpCallBean();
-            cougarManager2 = cougarManager2;
+            DiscoManager discoManager2 = DiscoManager.getInstance();
+            HttpCallBean getNewHttpCallBean2 = discoManager2.getNewHttpCallBean();
+            discoManager2 = discoManager2;
 
-            cougarManager2.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+            discoManager2.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
 
             getNewHttpCallBean2.setServiceName("Baseline");
 
@@ -61,13 +61,13 @@ public class SOAPNoTestParamsValidTest {
 
             Timestamp getTimeAsTimeStamp8 = new Timestamp(System.currentTimeMillis());
             // Make the SOAP call to the operation
-            cougarManager2.makeSoapCougarHTTPCalls(getNewHttpCallBean2);
+            discoManager2.makeSoapDiscoHTTPCalls(getNewHttpCallBean2);
             // Create the expected response object as an XML document
             XMLHelpers xMLHelpers4 = new XMLHelpers();
             Document createAsDocument10 = xMLHelpers4.getXMLObjectFromString("<response><version>1.0.0</version><status>hello</status></response>");
 
             // Check the response is as expected
-            HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+            HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
             AssertionUtils.multiAssertEquals(createAsDocument10, response5.getResponseObject());
             // todo: Check the log entries are as expected
         } finally {

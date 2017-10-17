@@ -15,13 +15,13 @@
  */
 
 // Originally from ClientTests/Transport/ResponseTypes/Client_Rescript_SetOfIntegersResponse.xls;
-package com.betfair.cougar.tests.clienttests.responsetypes;
+package uk.co.exemel.disco.tests.clienttests.responsetypes;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientResponseTypeUtils;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientResponseTypeUtils;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -30,19 +30,19 @@ import java.util.Set;
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
- * Ensure that when a i32SetSimpleTypeEcho operation is performed against cougar via a cougar client the request is sent and the response is handled correctly
+ * Ensure that when a i32SetSimpleTypeEcho operation is performed against disco via a disco client the request is sent and the response is handled correctly
  */
 public class ClientSetOfIntegersResponseTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Set up client
-        CougarClientWrapper cougarClientWrapper1 = CougarClientWrapper.getInstance(tt);
-        CougarClientWrapper wrapper = cougarClientWrapper1;
-        BaselineSyncClient client = cougarClientWrapper1.getClient();
-        ExecutionContext context = cougarClientWrapper1.getCtx();
+        DiscoClientWrapper discoClientWrapper1 = DiscoClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = discoClientWrapper1;
+        BaselineSyncClient client = discoClientWrapper1.getClient();
+        ExecutionContext context = discoClientWrapper1.getCtx();
         // Build the set object that is the expected repsonse
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils2 = new CougarClientResponseTypeUtils();
-        Set<Integer> inputset = cougarClientResponseTypeUtils2.buildIntSet("1,2");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils2 = new DiscoClientResponseTypeUtils();
+        Set<Integer> inputset = discoClientResponseTypeUtils2.buildIntSet("1,2");
         // Call method using recript transport
         Set<Integer> resultset = client.i32SetSimpleTypeEcho(context, inputset);
         // Check received set response is as expected

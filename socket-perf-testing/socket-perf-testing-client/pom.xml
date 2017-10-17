@@ -19,7 +19,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
+        <groupId>uk.co.exemel.disco</groupId>
         <artifactId>socket-perf-testing</artifactId>
         <version>3.0-SNAPSHOT</version>
     </parent>
@@ -30,8 +30,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.betfair.cougar</groupId>
-                <artifactId>cougar-codegen-plugin</artifactId>
+                <groupId>uk.co.exemel.disco</groupId>
+                <artifactId>disco-codegen-plugin</artifactId>
                 <version>${project.version}</version>
                 <executions>
                     <execution>
@@ -65,18 +65,18 @@
                         <configuration>
                             <programs>
                                 <program>
-                                    <mainClass>com.betfair.cougar.perf.socket.PushMain</mainClass>
+                                    <mainClass>uk.co.exemel.disco.perf.socket.PushMain</mainClass>
                                     <name>pushTestClient.sh</name>
                                 </program>
                                 <program>
-                                    <mainClass>com.betfair.cougar.perf.socket.RpcMain</mainClass>
+                                    <mainClass>uk.co.exemel.disco.perf.socket.RpcMain</mainClass>
                                     <name>rpcTestClient.sh</name>
                                 </program>
                             </programs>
                             <platforms>
                                 <platform>unix</platform>
                             </platforms>
-                            <extraJvmArguments>-Xmn256m -Xmx1g -Xms1g -XX:PermSize=128m -XX:MaxPermSize=128m -XX:SurvivorRatio=16 -XX:MaxTenuringThreshold=4 -XX:+CMSScavengeBeforeRemark -XX:CMSWaitDuration=15000 -XX:CMSInitiatingOccupancyFraction=70 -XX:+HeapDumpOnOutOfMemoryError -Dcougar.client.socket.logLevel=ALL</extraJvmArguments>
+                            <extraJvmArguments>-Xmn256m -Xmx1g -Xms1g -XX:PermSize=128m -XX:MaxPermSize=128m -XX:SurvivorRatio=16 -XX:MaxTenuringThreshold=4 -XX:+CMSScavengeBeforeRemark -XX:CMSWaitDuration=15000 -XX:CMSInitiatingOccupancyFraction=70 -XX:+HeapDumpOnOutOfMemoryError -Ddisco.client.socket.logLevel=ALL</extraJvmArguments>
                             <assembleDirectory>${project.build.directory}/sockettest-client-${project.version}</assembleDirectory>
                         </configuration>
                     </execution>
@@ -123,33 +123,33 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>socket-perf-testing-idd</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-standalone-ev</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-standalone-ev</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-client</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-marshalling-impl</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-marshalling-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-util</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-util</artifactId>
         </dependency>
     </dependencies>
 

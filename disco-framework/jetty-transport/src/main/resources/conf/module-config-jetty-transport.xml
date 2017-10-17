@@ -22,38 +22,38 @@
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-	<bean class="com.betfair.cougar.util.configuration.PropertyConfigurer">
-        <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
+	<bean class="uk.co.exemel.disco.util.configuration.PropertyConfigurer">
+        <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
 		<property name="defaultConfig" value="classpath:conf/jetty-transport-defaults.properties"/>
 		<property name="configOverride" value="overrides.properties"/>
 		<property name="placeholderPrefix" value="$COUGAR-JETTY{"/>
 	</bean>
 
-    <bean id="defaultGeoLocationDeserializer" class="com.betfair.cougar.transport.impl.protocol.http.DefaultGeoLocationDeserializer"/>
+    <bean id="defaultGeoLocationDeserializer" class="uk.co.exemel.disco.transport.impl.protocol.http.DefaultGeoLocationDeserializer"/>
 
-    <bean id="jettyInstance" class="com.betfair.cougar.transport.jetty.JettyHttpTransport" init-method="start" destroy-method="stop" lazy-init="false" scope="singleton">
-        <property name="jmxControl" ref="cougar.core.JmxControl"/>
-        <property name="startingGate" ref="cougar.core.StartingGate"/>
-        <property name="transportRegistry" ref="cougar.core.TransportRegistry"/>
-		<property name="geoIPLocator" ref="cougar.core.GeoIPLocator"/>
-		<property name="commandProcessorFactory" ref="cougar.transport.CommandProcessorFactory"/>
-		<property name="defaultCommandProcessor" ref="cougar.transport.ServiceNotFoundCommandProcessor"/>
-        <property name="protocolBindingRegistry" ref="cougar.transport.ProtocolBindingRegistry"/>
+    <bean id="jettyInstance" class="uk.co.exemel.disco.transport.jetty.JettyHttpTransport" init-method="start" destroy-method="stop" lazy-init="false" scope="singleton">
+        <property name="jmxControl" ref="disco.core.JmxControl"/>
+        <property name="startingGate" ref="disco.core.StartingGate"/>
+        <property name="transportRegistry" ref="disco.core.TransportRegistry"/>
+		<property name="geoIPLocator" ref="disco.core.GeoIPLocator"/>
+		<property name="commandProcessorFactory" ref="disco.transport.CommandProcessorFactory"/>
+		<property name="defaultCommandProcessor" ref="disco.transport.ServiceNotFoundCommandProcessor"/>
+        <property name="protocolBindingRegistry" ref="disco.transport.ProtocolBindingRegistry"/>
 
-        <property name="htmlContextPath" value="$COUGAR-JETTY{cougar.htmlHandler.contextPath}"/>
-        <property name="htmlRegex" value="$COUGAR-JETTY{cougar.htmlHandler.regex}"/>
-        <property name="htmlMediaType" value="$COUGAR-JETTY{cougar.htmlHandler.mediaType}"/>
-        <property name="suppressCommasInAccessLogForStaticHtml" value="$COUGAR-JETTY{cougar.htmlHandler.suppressCommaLogging}"/>
+        <property name="htmlContextPath" value="$COUGAR-JETTY{disco.htmlHandler.contextPath}"/>
+        <property name="htmlRegex" value="$COUGAR-JETTY{disco.htmlHandler.regex}"/>
+        <property name="htmlMediaType" value="$COUGAR-JETTY{disco.htmlHandler.mediaType}"/>
+        <property name="suppressCommasInAccessLogForStaticHtml" value="$COUGAR-JETTY{disco.htmlHandler.suppressCommaLogging}"/>
 
-        <property name="suppressCommasInAccessLogForCalls" value="$COUGAR-JETTY{cougar.callHandler.suppressCommaLogging}"/>
+        <property name="suppressCommasInAccessLogForCalls" value="$COUGAR-JETTY{disco.callHandler.suppressCommaLogging}"/>
 
-        <property name="wsdlContextPath" value="$COUGAR-JETTY{cougar.wsdlHandler.contextPath}"/>
-        <property name="wsdlRegex" value="$COUGAR-JETTY{cougar.wsdlHandler.regex}"/>
-        <property name="wsdlMediaType" value="$COUGAR-JETTY{cougar.wsdlHandler.mediaType}"/>
+        <property name="wsdlContextPath" value="$COUGAR-JETTY{disco.wsdlHandler.contextPath}"/>
+        <property name="wsdlRegex" value="$COUGAR-JETTY{disco.wsdlHandler.regex}"/>
+        <property name="wsdlMediaType" value="$COUGAR-JETTY{disco.wsdlHandler.mediaType}"/>
 
-        <property name="geoLocationDeserializer" ref="$COUGAR-JETTY{cougar.http.geoLocationDeserializerBean}"/>
-        <property name="uuidHeader" value="$COUGAR-JETTY{cougar.http.uuidheader}"/>
-        <property name="uuidParentsHeader" value="$COUGAR-JETTY{cougar.http.uuidparentsheader}"/>
+        <property name="geoLocationDeserializer" ref="$COUGAR-JETTY{disco.http.geoLocationDeserializerBean}"/>
+        <property name="uuidHeader" value="$COUGAR-JETTY{disco.http.uuidheader}"/>
+        <property name="uuidParentsHeader" value="$COUGAR-JETTY{disco.http.uuidparentsheader}"/>
 
         <property name="requestLogger" ref="httpRequestLogger"/>
 
@@ -103,33 +103,33 @@
 
         <property name="jettyEndPoints" ref="jettyEndPoints"/>
 
-        <property name="gzipEnabled" value="$COUGAR-JETTY{cougar.gzipHandler.enabled}"/>
-        <property name="gzipBufferSize" value="$COUGAR-JETTY{cougar.gzipHandler.bufferSize}"/>
-        <property name="gzipMinSize" value="$COUGAR-JETTY{cougar.gzipHandler.minSize}"/>
-        <property name="gzipExcludedAgents" value="$COUGAR-JETTY{cougar.gzipHandler.excludedAgents}"/>
+        <property name="gzipEnabled" value="$COUGAR-JETTY{disco.gzipHandler.enabled}"/>
+        <property name="gzipBufferSize" value="$COUGAR-JETTY{disco.gzipHandler.bufferSize}"/>
+        <property name="gzipMinSize" value="$COUGAR-JETTY{disco.gzipHandler.minSize}"/>
+        <property name="gzipExcludedAgents" value="$COUGAR-JETTY{disco.gzipHandler.excludedAgents}"/>
 
         <!-- CORS -->
-        <property name="corsEnabled" value="$COUGAR-JETTY{cougar.corsHandler.enabled}"/>
-        <property name="corsAllowedOrigins" value="$COUGAR-JETTY{cougar.corsHandler.allowedOrigins}"/>
-        <property name="corsAllowedMethods" value="$COUGAR-JETTY{cougar.corsHandler.allowedMethods}"/>
-        <property name="corsAllowedHeaders" value="$COUGAR-JETTY{cougar.corsHandler.allowedHeaders}"/>
-        <property name="corsPreflightMaxAge" value="$COUGAR-JETTY{cougar.corsHandler.preFlightMaxAge}"/>
-        <property name="corsAllowCredentials" value="$COUGAR-JETTY{cougar.corsHandler.allowCredentials}"/>
-        <property name="corsExposedHeaders" value="$COUGAR-JETTY{cougar.corsHandler.exposedHeaders}"/>
+        <property name="corsEnabled" value="$COUGAR-JETTY{disco.corsHandler.enabled}"/>
+        <property name="corsAllowedOrigins" value="$COUGAR-JETTY{disco.corsHandler.allowedOrigins}"/>
+        <property name="corsAllowedMethods" value="$COUGAR-JETTY{disco.corsHandler.allowedMethods}"/>
+        <property name="corsAllowedHeaders" value="$COUGAR-JETTY{disco.corsHandler.allowedHeaders}"/>
+        <property name="corsPreflightMaxAge" value="$COUGAR-JETTY{disco.corsHandler.preFlightMaxAge}"/>
+        <property name="corsAllowCredentials" value="$COUGAR-JETTY{disco.corsHandler.allowCredentials}"/>
+        <property name="corsExposedHeaders" value="$COUGAR-JETTY{disco.corsHandler.exposedHeaders}"/>
         <!-- END CORS -->
 
-        <property name="serverWrapper.maxFormContentSize" value="$COUGAR-JETTY{cougar.maxFormContentSize}"/>
+        <property name="serverWrapper.maxFormContentSize" value="$COUGAR-JETTY{disco.maxFormContentSize}"/>
 
         <property name="pathAliases" ref="pathAliasMap"/>
     </bean>
 
     <util:map id="pathAliasMap" key-type="java.lang.String" value-type="java.lang.String" scope="singleton"/>
 
-    <bean id="pathAliasMapEntryIntroducer" class="com.betfair.cougar.util.configuration.MapEntryIntroducer" abstract="true">
+    <bean id="pathAliasMapEntryIntroducer" class="uk.co.exemel.disco.util.configuration.MapEntryIntroducer" abstract="true">
         <constructor-arg index="0" ref="pathAliasMap"/>
     </bean>
 
-	<bean id="jettyEndPoints" class="com.betfair.cougar.transport.jetty.jmx.JettyEndpoints"/>
+	<bean id="jettyEndPoints" class="uk.co.exemel.disco.transport.jetty.jmx.JettyEndpoints"/>
 
     <bean id="jetty.mbean.server" class="org.eclipse.jetty.server.jmx.ServerMBean">
        <constructor-arg>
@@ -139,54 +139,54 @@
 
     <!-- http transport command processing -->
 
-    <bean id="httpRequestLogger" class="com.betfair.cougar.transport.impl.protocol.http.HttpRequestLogger">
+    <bean id="httpRequestLogger" class="uk.co.exemel.disco.transport.impl.protocol.http.HttpRequestLogger">
         <constructor-arg ref="eventLoggingRegistry"/>
-        <constructor-arg value="$COUGAR-JETTY{cougar.http.log.access}"/>
-        <property name="headersToLog" value="$COUGAR-JETTY{cougar.http.log.extraFields}"/>
+        <constructor-arg value="$COUGAR-JETTY{disco.http.log.access}"/>
+        <property name="headersToLog" value="$COUGAR-JETTY{disco.http.log.extraFields}"/>
     </bean>
 
-    <bean id="httpCommandValidatorRegistry" class="com.betfair.cougar.transport.impl.CommandValidatorRegistry"/>
+    <bean id="httpCommandValidatorRegistry" class="uk.co.exemel.disco.transport.impl.CommandValidatorRegistry"/>
 
     <bean id="httpCommandProcessor" abstract="true" scope="prototype">
-        <constructor-arg ref="cougar.transport.ContextResolution" index="0"/>
-        <constructor-arg value="$COUGAR-JETTY{cougar.http.requestTimeoutHeader}" index="1"/>
-        <property name="executionVenue" ref="cougar.core.ExecutionVenue"/>
-        <property name="startingGate" ref="cougar.core.StartingGate"/>
-        <property name="executor" ref="cougar.core.CommandProcessorExecutor"/>
+        <constructor-arg ref="disco.transport.ContextResolution" index="0"/>
+        <constructor-arg value="$COUGAR-JETTY{disco.http.requestTimeoutHeader}" index="1"/>
+        <property name="executionVenue" ref="disco.core.ExecutionVenue"/>
+        <property name="startingGate" ref="disco.core.StartingGate"/>
+        <property name="executor" ref="disco.core.CommandProcessorExecutor"/>
         <property name="requestLogger" ref="httpRequestLogger"/>
         <property name="validatorRegistry" ref="httpCommandValidatorRegistry"/>
-        <property name="tracer" ref="cougar.core.Tracer"/>
+        <property name="tracer" ref="disco.core.Tracer"/>
     </bean>
 
-    <bean id="defaultRequestTimeResolver" class="com.betfair.cougar.transport.impl.protocol.http.SimpleHttpRequestTimeResolver">
-        <constructor-arg index="0" value="$COUGAR-JETTY{cougar.http.defaultRequestTimeResolver.requestTimeHeader}"/>
-        <constructor-arg index="1" value="$COUGAR-JETTY{cougar.http.defaultRequestTimeResolver.isClientSynchronized}"/>
+    <bean id="defaultRequestTimeResolver" class="uk.co.exemel.disco.transport.impl.protocol.http.SimpleHttpRequestTimeResolver">
+        <constructor-arg index="0" value="$COUGAR-JETTY{disco.http.defaultRequestTimeResolver.requestTimeHeader}"/>
+        <constructor-arg index="1" value="$COUGAR-JETTY{disco.http.defaultRequestTimeResolver.isClientSynchronized}"/>
     </bean>
 
-    <bean id="rescriptCommandProcessor" class="com.betfair.cougar.transport.impl.protocol.http.rescript.RescriptTransportCommandProcessor" parent="httpCommandProcessor" scope="singleton">
+    <bean id="rescriptCommandProcessor" class="uk.co.exemel.disco.transport.impl.protocol.http.rescript.RescriptTransportCommandProcessor" parent="httpCommandProcessor" scope="singleton">
         <property name="contentTypeNormaliser" ref="contentTypeNormaliser"/>
-        <property name="hardFailEnumDeserialisation" value="$COUGAR-JETTY{cougar.http.enums.hardFailure}"/>
-        <property name="maxPostBodyLength" value="$COUGAR-JETTY{cougar.http.rescript.maxPostBodyLength}"/>
+        <property name="hardFailEnumDeserialisation" value="$COUGAR-JETTY{disco.http.enums.hardFailure}"/>
+        <property name="maxPostBodyLength" value="$COUGAR-JETTY{disco.http.rescript.maxPostBodyLength}"/>
     </bean>
 
-    <bean id="soapCommandProcessor" class="com.betfair.cougar.transport.impl.protocol.http.soap.SoapTransportCommandProcessor" parent="httpCommandProcessor" scope="singleton">
-        <constructor-arg index="2" ref="$COUGAR-JETTY{cougar.http.soap.schemaValidationFailureParserBean}"/>
+    <bean id="soapCommandProcessor" class="uk.co.exemel.disco.transport.impl.protocol.http.soap.SoapTransportCommandProcessor" parent="httpCommandProcessor" scope="singleton">
+        <constructor-arg index="2" ref="$COUGAR-JETTY{disco.http.soap.schemaValidationFailureParserBean}"/>
         <property name="contentTypeNormaliser" ref="contentTypeNormaliser"/>
-        <property name="hardFailEnumDeserialisation" value="$COUGAR-JETTY{cougar.http.enums.hardFailure}"/>
-        <property name="schemaValidationEnabled" value="$COUGAR-JETTY{cougar.http.soap.schemaValidationEnabled}"/>
-        <property name="maxPostBodyLength" value="$COUGAR-JETTY{cougar.http.soap.maxPostBodyLength}"/>
+        <property name="hardFailEnumDeserialisation" value="$COUGAR-JETTY{disco.http.enums.hardFailure}"/>
+        <property name="schemaValidationEnabled" value="$COUGAR-JETTY{disco.http.soap.schemaValidationEnabled}"/>
+        <property name="maxPostBodyLength" value="$COUGAR-JETTY{disco.http.soap.maxPostBodyLength}"/>
     </bean>
 
-    <bean id="jsonRpcCommandProcessor" class="com.betfair.cougar.transport.impl.protocol.http.jsonrpc.JsonRpcTransportCommandProcessor" parent="httpCommandProcessor" scope="singleton">
+    <bean id="jsonRpcCommandProcessor" class="uk.co.exemel.disco.transport.impl.protocol.http.jsonrpc.JsonRpcTransportCommandProcessor" parent="httpCommandProcessor" scope="singleton">
         <constructor-arg index="2" ref="rawJsonBindingFactory"/>
         <property name="contentTypeNormaliser" ref="contentTypeNormaliser"/>
-        <property name="hardFailEnumDeserialisation" value="$COUGAR-JETTY{cougar.http.enums.hardFailure}"/>
-        <property name="maxPostBodyLength" value="$COUGAR-JETTY{cougar.http.jsonrpc.maxPostBodyLength}"/>
+        <property name="hardFailEnumDeserialisation" value="$COUGAR-JETTY{disco.http.enums.hardFailure}"/>
+        <property name="maxPostBodyLength" value="$COUGAR-JETTY{disco.http.jsonrpc.maxPostBodyLength}"/>
     </bean>
 
-    <bean id="notFoundCommandProcessor" class="com.betfair.cougar.transport.impl.protocol.http.ServiceNotFoundHttpCommandProcessor" parent="httpCommandProcessor" scope="singleton"/>
+    <bean id="notFoundCommandProcessor" class="uk.co.exemel.disco.transport.impl.protocol.http.ServiceNotFoundHttpCommandProcessor" parent="httpCommandProcessor" scope="singleton"/>
 
-    <bean id="commandProcessorFactory" class="com.betfair.cougar.transport.impl.protocol.http.HttpCommandProcessorFactory">
+    <bean id="commandProcessorFactory" class="uk.co.exemel.disco.transport.impl.protocol.http.HttpCommandProcessorFactory">
         <property name="commandProcessorNames">
             <map>
                 <entry key="SOAP" value="soapCommandProcessor"/>
@@ -197,31 +197,31 @@
     </bean>
 
 
-    <bean class="com.betfair.cougar.logging.EventLogDefinition" init-method="register">
+    <bean class="uk.co.exemel.disco.logging.EventLogDefinition" init-method="register">
         <property name="logName" value="ACCESS-LOG" />
-        <property name="registry" ref="cougar.core.EventLoggingRegistry"/>
+        <property name="registry" ref="disco.core.EventLoggingRegistry"/>
         <property name="handler">
-            <bean factory-bean="cougar.core.logHandlerFactory" factory-method="registerLogHandler">
+            <bean factory-bean="disco.core.logHandlerFactory" factory-method="registerLogHandler">
                 <constructor-arg type="java.util.Map">
                     <util:map map-class="java.util.HashMap">
                         <entry key="logName" value="ACCESS-LOG"/>
-                        <entry key="fileName" value="$COUGAR{cougar.log.dir}/dw/$COUGAR{system.hostname}-$COUGAR{cougar.app.name}-access.log"/>
-                        <entry key="flush" value="$COUGAR-JETTY{cougar.http.log.ACCESS-LOG.flush}"/>
-                        <entry key="append" value="$COUGAR-JETTY{cougar.http.log.ACCESS-LOG.append}"/>
-                        <entry key="rotation" value="$COUGAR-JETTY{cougar.http.log.ACCESS-LOG.rotation}"/>
+                        <entry key="fileName" value="$COUGAR{disco.log.dir}/dw/$COUGAR{system.hostname}-$COUGAR{disco.app.name}-access.log"/>
+                        <entry key="flush" value="$COUGAR-JETTY{disco.http.log.ACCESS-LOG.flush}"/>
+                        <entry key="append" value="$COUGAR-JETTY{disco.http.log.ACCESS-LOG.append}"/>
+                        <entry key="rotation" value="$COUGAR-JETTY{disco.http.log.ACCESS-LOG.rotation}"/>
                         <entry key="abstractLogger" value="false"/>
-                        <entry key="immediateFlush" value="$COUGAR-JETTY{cougar.http.log.ACCESS-LOG.immediateFlush}"/>
+                        <entry key="immediateFlush" value="$COUGAR-JETTY{disco.http.log.ACCESS-LOG.immediateFlush}"/>
                     </util:map>
                 </constructor-arg>
             </bean>
         </property>
     </bean>
 
-    <bean id="contentTypeNormaliser" class="com.betfair.cougar.transport.impl.protocol.http.ContentTypeNormaliserImpl">
-        <property name="defaultResponseFormat" value="$COUGAR-JETTY{cougar.http.defaultResponseFormat}"/>
+    <bean id="contentTypeNormaliser" class="uk.co.exemel.disco.transport.impl.protocol.http.ContentTypeNormaliserImpl">
+        <property name="defaultResponseFormat" value="$COUGAR-JETTY{disco.http.defaultResponseFormat}"/>
     </bean>
 
-    <bean class="com.betfair.cougar.transport.impl.protocol.http.ContentTypeNormaliserHelper">
+    <bean class="uk.co.exemel.disco.transport.impl.protocol.http.ContentTypeNormaliserHelper">
         <property name="contentTypeNormaliser" ref="contentTypeNormaliser"/>
         <property name="dataBindingMaps" >
             <list>
@@ -232,27 +232,27 @@
         <property name="validEncodings" ref="validEncodings"/>
     </bean>
 
-    <bean class="com.betfair.cougar.transport.impl.protocol.http.InferredCountryResolverHelper"/>
+    <bean class="uk.co.exemel.disco.transport.impl.protocol.http.InferredCountryResolverHelper"/>
 
-    <bean id="httpExecutionContextResolverFactory" class="com.betfair.cougar.transport.impl.protocol.http.DefaultExecutionContextResolverFactory">
+    <bean id="httpExecutionContextResolverFactory" class="uk.co.exemel.disco.transport.impl.protocol.http.DefaultExecutionContextResolverFactory">
         <property name="unknownCipherKeyLength" value="$COUGAR-JETTY{jetty.https.unknownCipherKeyLength}"/>
-        <property name="geoIPLocator" ref="cougar.core.GeoIPLocator"/>
-        <property name="requestTimeResolver" ref="$COUGAR-JETTY{cougar.http.requestTimeResolver}" />
-        <property name="geoLocationDeserializer" ref="$COUGAR-JETTY{cougar.http.geoLocationDeserializerBean}"/>
-        <property name="uuidHeader" value="$COUGAR-JETTY{cougar.http.uuidheader}"/>
-        <property name="uuidParentsHeader" value="$COUGAR-JETTY{cougar.http.uuidparentsheader}"/>
+        <property name="geoIPLocator" ref="disco.core.GeoIPLocator"/>
+        <property name="requestTimeResolver" ref="$COUGAR-JETTY{disco.http.requestTimeResolver}" />
+        <property name="geoLocationDeserializer" ref="$COUGAR-JETTY{disco.http.geoLocationDeserializerBean}"/>
+        <property name="uuidHeader" value="$COUGAR-JETTY{disco.http.uuidheader}"/>
+        <property name="uuidParentsHeader" value="$COUGAR-JETTY{disco.http.uuidparentsheader}"/>
     </bean>
 
-    <bean parent="cougar.transport.ContextRegisterer" lazy-init="false">
+    <bean parent="disco.transport.ContextRegisterer" lazy-init="false">
         <constructor-arg index="1" ref="httpExecutionContextResolverFactory"/>
     </bean>
 
-    <alias name="rescriptCommandProcessor" alias="cougar.transport.RescriptCommandProcessor"/>
-    <alias name="soapCommandProcessor" alias="cougar.transport.SoapCommandProcessor"/>
-    <alias name="notFoundCommandProcessor" alias="cougar.transport.ServiceNotFoundCommandProcessor"/>
-    <alias name="commandProcessorFactory" alias="cougar.transport.CommandProcessorFactory"/>
-    <alias name="httpCommandValidatorRegistry" alias="cougar.transport.HttpCommandValidatorRegistry"/>
-    <alias name="pathAliasMapEntryIntroducer" alias="cougar.transport.HttpPathAliasIntroducer"/>
+    <alias name="rescriptCommandProcessor" alias="disco.transport.RescriptCommandProcessor"/>
+    <alias name="soapCommandProcessor" alias="disco.transport.SoapCommandProcessor"/>
+    <alias name="notFoundCommandProcessor" alias="disco.transport.ServiceNotFoundCommandProcessor"/>
+    <alias name="commandProcessorFactory" alias="disco.transport.CommandProcessorFactory"/>
+    <alias name="httpCommandValidatorRegistry" alias="disco.transport.HttpCommandValidatorRegistry"/>
+    <alias name="pathAliasMapEntryIntroducer" alias="disco.transport.HttpPathAliasIntroducer"/>
 
 	<bean class="org.springframework.jmx.export.MBeanExporter" >
 		<property name="server" ref="mbeanServer"/>
@@ -270,12 +270,12 @@
                 </entry>
                 <entry key="CoUGAR:name=jettyInstance" value-ref="jettyInstance"/>
                 <entry key="CoUGAR:name=EndPoints" value-ref="jettyEndPoints"/>
-                <entry key="com.betfair.cougar.transport.http:type=accessLogger" value-ref="httpRequestLogger"/>
-                <entry key="com.betfair.cougar.transport:type=rescriptCommandProcessor" value-ref="rescriptCommandProcessor"/>
-                <entry key="com.betfair.cougar.transport:type=soapCommandProcessor" value-ref="soapCommandProcessor"/>
-                <entry key="com.betfair.cougar.transport:type=jsonRpcCommandProcessor" value-ref="jsonRpcCommandProcessor"/>
-                <entry key="com.betfair.cougar.transport:type=notFoundCommandProcessor" value-ref="notFoundCommandProcessor"/>
-                <entry key="CoUGAR:type=commandProcessorExecutor" value-ref="cougar.core.CommandProcessorExecutor"/>
+                <entry key="uk.co.exemel.disco.transport.http:type=accessLogger" value-ref="httpRequestLogger"/>
+                <entry key="uk.co.exemel.disco.transport:type=rescriptCommandProcessor" value-ref="rescriptCommandProcessor"/>
+                <entry key="uk.co.exemel.disco.transport:type=soapCommandProcessor" value-ref="soapCommandProcessor"/>
+                <entry key="uk.co.exemel.disco.transport:type=jsonRpcCommandProcessor" value-ref="jsonRpcCommandProcessor"/>
+                <entry key="uk.co.exemel.disco.transport:type=notFoundCommandProcessor" value-ref="notFoundCommandProcessor"/>
+                <entry key="CoUGAR:type=commandProcessorExecutor" value-ref="disco.core.CommandProcessorExecutor"/>
 			</map>
 		</property>
 

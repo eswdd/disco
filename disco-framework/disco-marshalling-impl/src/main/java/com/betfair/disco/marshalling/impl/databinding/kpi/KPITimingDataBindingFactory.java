@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.kpi;
+package uk.co.exemel.disco.marshalling.impl.databinding.kpi;
 
-import com.betfair.cougar.marshalling.api.databinding.*;
+import uk.co.exemel.disco.marshalling.api.databinding.*;
 import com.betfair.tornjak.kpi.KPIMonitor;
 
 /**
@@ -57,10 +57,10 @@ public class KPITimingDataBindingFactory implements DataBindingFactory {
 
         this.factory = factory;
 
-        kpiMarshallerName         = "Cougar.ws." + formatType + ".marshall";
-        kpiFaultMarshallerName    = "Cougar.ws." + formatType + ".marshallFault";
-        kpiUnMarshallerName       = "Cougar.ws." + formatType + ".unmarshall";
-        kpiFaultUnMarshallerName  = "Cougar.ws." + formatType + ".unmarshallFault";
+        kpiMarshallerName         = "Disco.ws." + formatType + ".marshall";
+        kpiFaultMarshallerName    = "Disco.ws." + formatType + ".marshallFault";
+        kpiUnMarshallerName       = "Disco.ws." + formatType + ".unmarshall";
+        kpiFaultUnMarshallerName  = "Disco.ws." + formatType + ".unmarshallFault";
 
         marshaller = new KPITimingMarshaller(monitor, kpiMarshallerName, factory.getMarshaller());
         faultMarshaller = new KPITimingFaultMarshaller(monitor, kpiFaultMarshallerName, factory.getFaultMarshaller());

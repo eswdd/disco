@@ -15,18 +15,18 @@
  */
 
 // Originally from UpdatedComponentTests/Concurrency/SOAP/SOAP_ConcurrentRequests_SINGLE_SERVICE_SUSTAINED.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.concurrency.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.concurrency.soap;
 
-import com.betfair.cougar.testing.concurrency.SOAPConcurrencySingleServiceTest;
-import com.betfair.cougar.testing.concurrency.SOAPConcurrenyResultBean;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
+import uk.co.exemel.disco.testing.concurrency.SOAPConcurrencySingleServiceTest;
+import uk.co.exemel.disco.testing.concurrency.SOAPConcurrenyResultBean;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
 import org.testng.annotations.Test;
 
 import java.util.Map;
 
 /**
- * Ensure that when sustained SOAP requests are performed against Cougar, each request is successfully sent and the response to each is correctly  handled
+ * Ensure that when sustained SOAP requests are performed against Disco, each request is successfully sent and the response to each is correctly  handled
  */
 public class SOAPConcurrentRequestsSINGLESERVICESUSTAINEDTest {
     @Test

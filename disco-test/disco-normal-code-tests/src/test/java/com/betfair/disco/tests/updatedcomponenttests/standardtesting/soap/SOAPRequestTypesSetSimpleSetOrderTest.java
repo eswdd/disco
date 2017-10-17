@@ -16,14 +16,14 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/SOAP/SOAP_RequestTypes_Set_SimpleSet_Order.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.soap;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -32,7 +32,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Ensure that when a SOAP request is received, Cougar can handle a SimpleSet datatype parameter and orders the elements of the set as expected
+ * Ensure that when a SOAP request is received, Disco can handle a SimpleSet datatype parameter and orders the elements of the set as expected
  */
 public class SOAPRequestTypesSetSimpleSetOrderTest {
     @Test
@@ -41,9 +41,9 @@ public class SOAPRequestTypesSetSimpleSetOrderTest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document createAsDocument1 = xMLHelpers1.getXMLObjectFromString("<SimpleSetOperationRequest><message><simpleSet><String>ddd string</String><String>bbb string</String><String>ccc string</String><String>aaa string</String></simpleSet></message></SimpleSetOperationRequest>");
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean2 = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        cougarManager2 = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean2 = discoManager2.getNewHttpCallBean("87.248.113.14");
+        discoManager2 = discoManager2;
 
         getNewHttpCallBean2.setServiceName("Baseline");
 
@@ -54,20 +54,20 @@ public class SOAPRequestTypesSetSimpleSetOrderTest {
 
         Timestamp getTimeAsTimeStamp7 = new Timestamp(System.currentTimeMillis());
         // Make the SOAP call to the operation
-        cougarManager2.makeSoapCougarHTTPCalls(getNewHttpCallBean2);
+        discoManager2.makeSoapDiscoHTTPCalls(getNewHttpCallBean2);
         // Create the expected response object as an XML document (entries should now be ordered alphabetically)
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument9 = xMLHelpers4.getXMLObjectFromString("<response><responseSet><String>aaa string</String><String>bbb string</String><String>ccc string</String><String>ddd string</String></responseSet></response>");
         // Convert the expected response to SOAP for comparison with actual response
 
         // Check the response is as expected
-        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(createAsDocument9, response5.getResponseObject());
 
         // generalHelpers.pauseTest(2000L);
         // Check the log entries are as expected
 
-        cougarManager2.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "simpleSetOperation") );
+        discoManager2.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "simpleSetOperation") );
     }
 
 }

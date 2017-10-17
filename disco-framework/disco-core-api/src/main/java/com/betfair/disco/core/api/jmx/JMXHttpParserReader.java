@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.jmx;
+package uk.co.exemel.disco.core.api.jmx;
 
 
 public interface JMXHttpParserReader {

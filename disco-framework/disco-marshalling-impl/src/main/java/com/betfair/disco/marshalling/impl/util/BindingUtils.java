@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.util;
+package uk.co.exemel.disco.marshalling.impl.util;
 
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.transcription.EnumDerialisationException;
-import com.betfair.cougar.core.api.transcription.EnumUtils;
-import com.betfair.cougar.util.dates.DateTimeUtility;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.transcription.EnumDerialisationException;
+import uk.co.exemel.disco.core.api.transcription.EnumUtils;
+import uk.co.exemel.disco.util.dates.DateTimeUtility;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -50,7 +50,7 @@ public final class BindingUtils {
 		            		result = value;
 		            	}
 					} catch (UnsupportedEncodingException e) {
-						throw new CougarFrameworkException("Unsupported encoding", e);
+						throw new DiscoFrameworkException("Unsupported encoding", e);
 					}
 	        	}
 				else if (clazz == Integer.class) {
@@ -117,7 +117,7 @@ public final class BindingUtils {
 		        	throw newValidationException(name, value, clazz, null, format, client);
 		        }
         	} catch (RuntimeException ex) {
-        		if (ex instanceof CougarMarshallingException || ex instanceof EnumDerialisationException) {
+        		if (ex instanceof DiscoMarshallingException || ex instanceof EnumDerialisationException) {
         			throw ex;
         		} else {
         			throw newValidationException(name, value, clazz, ex, format, client);
@@ -129,11 +129,11 @@ public final class BindingUtils {
     }
 
 
-	private final static CougarMarshallingException newValidationException(String name, String value, Class clazz, Exception originalException, String format, boolean client) {
+	private final static DiscoMarshallingException newValidationException(String name, String value, Class clazz, Exception originalException, String format, boolean client) {
 		final StringBuilder msg = new StringBuilder("Unable to convert '");
 		msg.append(value).append("' to ").append(clazz.getName()).append(" for parameter: " + name);
 
-        return CougarMarshallingException.unmarshallingException(format, msg.toString(), originalException, client);
+        return DiscoMarshallingException.unmarshallingException(format, msg.toString(), originalException, client);
 	}
 
 

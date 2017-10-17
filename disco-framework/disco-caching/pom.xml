@@ -18,14 +18,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.betfair.cougar</groupId>
-		<artifactId>cougar-framework</artifactId>
+		<groupId>uk.co.exemel.disco</groupId>
+		<artifactId>disco-framework</artifactId>
 		<version>3.3-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>cougar-caching</artifactId>
+	<artifactId>disco-caching</artifactId>
 	<packaging>jar</packaging>
-	<name>cougar-caching</name>
+	<name>disco-caching</name>
 
 	<dependencies>
 		<dependency>
@@ -34,25 +34,25 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-api</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-core-api</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-core-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-util</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-util</artifactId>
 		</dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-test-mocks</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-test-mocks</artifactId>
 			<version>${project.version}</version>
             <scope>test</scope>
         </dependency>

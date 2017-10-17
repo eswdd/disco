@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.exception;
+package uk.co.exemel.disco.client.exception;
 
-import com.betfair.cougar.core.api.client.ExceptionFactory;
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.core.api.client.ExceptionFactory;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
 
 import java.io.InputStream;
 
 /**
  * Delegates the exception transformation call to the appropriate implementation
- * This class is designed to be removed when the need for cougar 1.3 dies
+ * This class is designed to be removed when the need for disco 1.3 dies
  */
-// todo: deleteme since cougar 1.3 no longer supported?
+// todo: deleteme since disco 1.3 no longer supported?
 public class ExceptionTransformerDelegate implements ExceptionTransformer {
     private ExceptionTransformer exceptionTransformer;
 
     private DataBindingFactory dataBindingFactory;
 
     public void init() {
-        exceptionTransformer = new HTTPErrorToCougarExceptionTransformer(dataBindingFactory.getFaultUnMarshaller());
+        exceptionTransformer = new HTTPErrorToDiscoExceptionTransformer(dataBindingFactory.getFaultUnMarshaller());
     }
 
     public void setDataBindingFactory(DataBindingFactory dataBindingFactory) {

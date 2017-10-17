@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.beans;
+package com.betfair.testing.utils.disco.beans;
 
 /**
  * Bean to store the parameters of a request that will be part of a batch of json requests (using JSON RPC transport)

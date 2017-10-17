@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.client;
+package uk.co.exemel.disco.test.socket.tester.client;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ExecutionContextImpl;
-import com.betfair.cougar.api.security.Credential;
-import com.betfair.cougar.api.security.Identity;
-import com.betfair.cougar.core.impl.security.IdentityChainImpl;
-import com.betfair.cougar.test.socket.tester.client.tests.EchoFailureTest;
-import com.betfair.cougar.test.socket.tester.client.tests.EchoSuccessTest;
-import com.betfair.cougar.test.socket.tester.client.tests.HeapTest;
-import com.betfair.cougar.test.socket.tester.common.*;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ExecutionContextImpl;
+import uk.co.exemel.disco.api.security.Credential;
+import uk.co.exemel.disco.api.security.Identity;
+import uk.co.exemel.disco.core.impl.security.IdentityChainImpl;
+import uk.co.exemel.disco.test.socket.tester.client.tests.EchoFailureTest;
+import uk.co.exemel.disco.test.socket.tester.client.tests.EchoSuccessTest;
+import uk.co.exemel.disco.test.socket.tester.client.tests.HeapTest;
+import uk.co.exemel.disco.test.socket.tester.common.*;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 
 import java.io.*;
 import java.security.Principal;
@@ -38,7 +38,7 @@ import java.util.concurrent.Future;
  */
 public class ClientMain {
     public static void main(String[] args) throws Exception {
-        System.setProperty("cougar.addressUtils.allowLoopBackIfNoOthers","true");
+        System.setProperty("disco.addressUtils.allowLoopBackIfNoOthers","true");
         {
             ExecutionContext ctx = createExecutionContext();
             Conversion.convert(ctx, ExecutionContext.class, ExecutionContextTO.class);

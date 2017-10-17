@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.updatedcomponenttests.property;
+package uk.co.exemel.disco.tests.updatedcomponenttests.property;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
@@ -30,7 +30,7 @@ import java.io.ByteArrayInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class VerifyOverrideCougarPropertyTest {
+public class VerifyOverrideDiscoPropertyTest {
     @Test
     public void
     doTest() throws Exception {
@@ -40,24 +40,24 @@ public class VerifyOverrideCougarPropertyTest {
     }
 
     public void verifyPropertyValue(String propertyname, String propertyvalue) throws Exception {
-        CougarManager cougarManager = CougarManager.getInstance();
+        DiscoManager discoManager = DiscoManager.getInstance();
 
-        HttpCallBean getNewHttpCallBean = cougarManager.getNewHttpCallBean("87.248.113.14");
-        getNewHttpCallBean.setOperationName("echoCougarPropertyValue", "propertyEcho");
-        getNewHttpCallBean.setServiceName("baseline", "cougarBaseline");
+        HttpCallBean getNewHttpCallBean = discoManager.getNewHttpCallBean("87.248.113.14");
+        getNewHttpCallBean.setOperationName("echoDiscoPropertyValue", "propertyEcho");
+        getNewHttpCallBean.setServiceName("baseline", "discoBaseline");
         getNewHttpCallBean.setVersion("v2");
         Map map = new HashMap();
         map.put("propertyName", propertyname);
 
         getNewHttpCallBean.setQueryParams(map);
 // Make the 4 REST calls to the operation
-        cougarManager.makeRestCougarHTTPCalls(getNewHttpCallBean);
+        discoManager.makeRestDiscoHTTPCalls(getNewHttpCallBean);
 // Create the expected response as an XML document
         XMLHelpers xMLHelpers = new XMLHelpers();
         Document createAsDocument = xMLHelpers.createAsDocument(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(("<String>" + propertyvalue + "</String>").getBytes())));
-        Map<CougarMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes = cougarManager.convertResponseToRestTypes(createAsDocument, getNewHttpCallBean);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes = discoManager.convertResponseToRestTypes(createAsDocument, getNewHttpCallBean);
 // Check the 4 responses are as expected
-        HttpResponseBean response = getNewHttpCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response.getResponseObject());
+        HttpResponseBean response = getNewHttpCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response.getResponseObject());
     }
 }

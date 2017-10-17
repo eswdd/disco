@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/ContentTypes/Rest_Get_ContentTypeNotSupplied.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.contenttypes;
+package uk.co.exemel.disco.tests.updatedcomponenttests.contenttypes;
 
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -33,18 +33,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that when a Rest Get is performed against Cougar without supplying a content type it is correctly processed as the content type is ignored
+ * Ensure that when a Rest Get is performed against Disco without supplying a content type it is correctly processed as the content type is ignored
  */
 public class RestGetContentTypeNotSuppliedTest {
     @Test
     public void doTest() throws Exception {
         // Create the HttpCallBean
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean httpCallBeanBaseline = cougarManager1.getNewHttpCallBean();
-        CougarManager cougarManagerBaseline = cougarManager1;
-        // Get the cougar logging attribute for getting log entries later
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean httpCallBeanBaseline = discoManager1.getNewHttpCallBean();
+        DiscoManager discoManagerBaseline = discoManager1;
+        // Get the disco logging attribute for getting log entries later
         // Point the created HttpCallBean at the correct service
-        httpCallBeanBaseline.setServiceName("baseline", "cougarBaseline");
+        httpCallBeanBaseline.setServiceName("baseline", "discoBaseline");
         
         httpCallBeanBaseline.setVersion("v2");
         // Set up the Http Call Bean to make the request
@@ -61,20 +61,20 @@ public class RestGetContentTypeNotSuppliedTest {
 
         Timestamp getTimeAsTimeStamp5 = new Timestamp(System.currentTimeMillis());
         // Make the REST call to the operation
-        cougarManagerBaseline.makeRestCougarHTTPCall(httpCallBeanBaseline, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.REST);
+        discoManagerBaseline.makeRestDiscoHTTPCall(httpCallBeanBaseline, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.REST);
         // Create the expected response as a JSON object
         JSONHelpers jSONHelpers5 = new JSONHelpers();
         JSONObject expResponse = jSONHelpers5.createAsJSONObject(new JSONObject("{\"message\":\"foo\"}"));
         // Check the response is as expected
-        HttpResponseBean response6 = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.REST);
+        HttpResponseBean response6 = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.REST);
         AssertionUtils.multiAssertEquals(expResponse, response6.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response6.getHttpStatusText());
         // Check the log entries are as expected
         
-        cougarManagerBaseline.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp5, new RequestLogRequirement("2.8", "testSimpleGet") );
+        discoManagerBaseline.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp5, new RequestLogRequirement("2.8", "testSimpleGet") );
         
-        cougarManagerBaseline.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp5, new AccessLogRequirement(null, null, "Ok") );
+        discoManagerBaseline.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp5, new AccessLogRequirement(null, null, "Ok") );
     }
 
 }

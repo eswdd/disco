@@ -19,36 +19,36 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>cougar-framework</artifactId>
-    <groupId>com.betfair.cougar</groupId>
+    <artifactId>disco-framework</artifactId>
+    <groupId>uk.co.exemel.disco</groupId>
     <version>3.3-SNAPSHOT</version>
   </parent>
 
   <artifactId>socket-transport</artifactId>
   <packaging>jar</packaging>
   <name>socket-transport</name>
-  <description>Cougar Server side socket transport. Not to be used by standalone clients.</description>
+  <description>Disco Server side socket transport. Not to be used by standalone clients.</description>
 
 
   <dependencies>
     <dependency>
-      <groupId>com.betfair.cougar</groupId>
-      <artifactId>cougar-transport-api</artifactId>
+      <groupId>uk.co.exemel.disco</groupId>
+      <artifactId>disco-transport-api</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>com.betfair.cougar</groupId>
-      <artifactId>cougar-marshalling-api</artifactId>
+      <groupId>uk.co.exemel.disco</groupId>
+      <artifactId>disco-marshalling-api</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>com.betfair.cougar</groupId>
-      <artifactId>cougar-util</artifactId>
+      <groupId>uk.co.exemel.disco</groupId>
+      <artifactId>disco-util</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>com.betfair.cougar</groupId>
+      <groupId>uk.co.exemel.disco</groupId>
       <artifactId>net-util</artifactId>
     </dependency>
 
@@ -65,14 +65,14 @@
     </dependency>
 
     <dependency>
-      <groupId>com.betfair.cougar</groupId>
-      <artifactId>cougar-transport-impl</artifactId>
+      <groupId>uk.co.exemel.disco</groupId>
+      <artifactId>disco-transport-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
 
       <dependency>
-          <groupId>com.betfair.cougar</groupId>
-          <artifactId>cougar-test-mocks</artifactId>
+          <groupId>uk.co.exemel.disco</groupId>
+          <artifactId>disco-test-mocks</artifactId>
           <version>${project.version}</version>
           <scope>test</scope>
       </dependency>

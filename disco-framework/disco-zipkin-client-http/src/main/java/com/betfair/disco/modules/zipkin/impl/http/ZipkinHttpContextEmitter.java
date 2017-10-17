@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.impl.http;
+package uk.co.exemel.disco.modules.zipkin.impl.http;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.client.ClientCallContext;
-import com.betfair.cougar.client.api.CompoundContextEmitter;
-import com.betfair.cougar.client.api.ContextEmitter;
-import com.betfair.cougar.modules.zipkin.api.ZipkinData;
-import com.betfair.cougar.modules.zipkin.api.ZipkinKeys;
-import com.betfair.cougar.modules.zipkin.api.ZipkinRequestUUID;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.client.ClientCallContext;
+import uk.co.exemel.disco.client.api.CompoundContextEmitter;
+import uk.co.exemel.disco.client.api.ContextEmitter;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinData;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinKeys;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinRequestUUID;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;

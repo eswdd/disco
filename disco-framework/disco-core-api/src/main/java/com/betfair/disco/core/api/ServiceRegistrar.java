@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api;
+package uk.co.exemel.disco.core.api;
 
-import com.betfair.cougar.api.Service;
-import com.betfair.cougar.core.api.ev.ExecutableResolver;
+import uk.co.exemel.disco.api.Service;
+import uk.co.exemel.disco.core.api.ev.ExecutableResolver;
 
 import java.util.Map;
 import java.util.Set;

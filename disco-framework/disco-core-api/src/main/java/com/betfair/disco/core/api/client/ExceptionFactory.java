@@ -15,17 +15,17 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.client;
+package uk.co.exemel.disco.core.api.client;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.exception.CougarException;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
 
 import java.util.List;
 
 /**
  * Interface describes a class who can instantiate an exception on either
- * the CougarApplicationException or CougarException hierarchy
+ * the DiscoApplicationException or DiscoException hierarchy
  */
 public interface ExceptionFactory {
 

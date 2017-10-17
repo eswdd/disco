@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.xml;
+package uk.co.exemel.disco.marshalling.impl.databinding.xml;
 
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.fault.CougarFault;
-import com.betfair.cougar.core.api.fault.FaultController;
-import com.betfair.cougar.core.api.fault.FaultDetail;
-import com.betfair.cougar.marshalling.api.databinding.FaultMarshaller;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
+import uk.co.exemel.disco.core.api.fault.FaultController;
+import uk.co.exemel.disco.core.api.fault.FaultDetail;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -69,9 +69,9 @@ public class XMLMarshaller implements Marshaller, FaultMarshaller {
             }
 			marshaller.marshal(result, xmlWriter);
         } catch (final XMLStreamException e) {
-            throw CougarMarshallingException.marshallingException(getFormat(), "Failed to stream object to XML", e, client);
+            throw DiscoMarshallingException.marshallingException(getFormat(), "Failed to stream object to XML", e, client);
         } catch (final JAXBException e) {
-            throw CougarMarshallingException.marshallingException(getFormat(), "Failed to marshal object to XML", e, client);
+            throw DiscoMarshallingException.marshallingException(getFormat(), "Failed to marshal object to XML", e, client);
         } finally {
         	if (xmlWriter != null) {
 				try {
@@ -84,7 +84,7 @@ public class XMLMarshaller implements Marshaller, FaultMarshaller {
 	}
 
 	@Override
-	public void marshallFault(final OutputStream outputStream, final CougarFault fault, String encoding) {
+	public void marshallFault(final OutputStream outputStream, final DiscoFault fault, String encoding) {
 		XMLStreamWriter xmlWriter = null;
         try {
 			xmlWriter = factory.createXMLStreamWriter(outputStream);
@@ -100,9 +100,9 @@ public class XMLMarshaller implements Marshaller, FaultMarshaller {
 		    xmlWriter.writeEndDocument();
 
         } catch (final XMLStreamException e) {
-            throw CougarMarshallingException.marshallingException(getFormat(), "Failed to stream fault "+fault.getClass()+" to XML", e, false);
+            throw DiscoMarshallingException.marshallingException(getFormat(), "Failed to stream fault "+fault.getClass()+" to XML", e, false);
         } catch (final JAXBException e) {
-            throw CougarMarshallingException.marshallingException(getFormat(), "Failed to marshal fault "+fault.getClass()+" to XML", e, false);
+            throw DiscoMarshallingException.marshallingException(getFormat(), "Failed to marshal fault "+fault.getClass()+" to XML", e, false);
         }
         finally {
         	if (xmlWriter != null) {
@@ -122,9 +122,9 @@ public class XMLMarshaller implements Marshaller, FaultMarshaller {
     }
 
 
-	private void writeFaultDetail(CougarFault cougarFault, XMLStreamWriter xmlWriter) throws XMLStreamException, JAXBException {
+	private void writeFaultDetail(DiscoFault discoFault, XMLStreamWriter xmlWriter) throws XMLStreamException, JAXBException {
 	    xmlWriter.writeStartElement("detail");
-	    FaultDetail detail = cougarFault.getDetail();
+	    FaultDetail detail = discoFault.getDetail();
 	    if(detail != null ) {
 
 	        List<String[]> faultMessages = detail.getFaultMessages();

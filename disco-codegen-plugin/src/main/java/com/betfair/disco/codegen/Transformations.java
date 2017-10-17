@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.codegen;
+package uk.co.exemel.disco.codegen;
 
 import java.util.List;
 

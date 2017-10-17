@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
-        <artifactId>cougar-test</artifactId>
+        <groupId>uk.co.exemel.disco</groupId>
+        <artifactId>disco-test</artifactId>
         <version>3.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cougar-ci-test-listener</artifactId>
+    <artifactId>disco-ci-test-listener</artifactId>
     <name>${project.artifactId}</name>
 
     <dependencies>
@@ -19,8 +19,8 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-test-utils</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-test-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

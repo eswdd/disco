@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.mediatype.MediaTypeUtils;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.mediatype.MediaTypeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.util.HeaderUtils;
-import com.betfair.cougar.util.MessageConstants;
+import uk.co.exemel.disco.util.HeaderUtils;
+import uk.co.exemel.disco.util.MessageConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
@@ -73,14 +73,14 @@ public class ContentTypeNormaliserImpl implements ContentTypeNormaliser {
 
             responseMediaType = MediaTypeUtils.getResponseMediaType(allContentTypes, acceptMT);
             if (responseMediaType == null) {
-                throw new CougarValidationException(ServerFaultCode.AcceptTypeNotValid, "Could not agree a response media type");
+                throw new DiscoValidationException(ServerFaultCode.AcceptTypeNotValid, "Could not agree a response media type");
             } else if (responseMediaType.isWildcardType() || responseMediaType.isWildcardSubtype()) {
-                throw new CougarServiceException(ServerFaultCode.ResponseContentTypeNotValid,
+                throw new DiscoServiceException(ServerFaultCode.ResponseContentTypeNotValid,
                         "Service configuration error - response media type must not be a wildcard - " + responseMediaType);
             }
 
         } catch (IllegalArgumentException e) {
-            throw new CougarValidationException(ServerFaultCode.MediaTypeParseFailure, "Unable to parse supplied media types (" + responseFormat + ")",e);
+            throw new DiscoValidationException(ServerFaultCode.MediaTypeParseFailure, "Unable to parse supplied media types (" + responseFormat + ")",e);
         }
         return responseMediaType;
     }
@@ -100,7 +100,7 @@ public class ContentTypeNormaliserImpl implements ContentTypeNormaliser {
         } else if (paramFormat.equalsIgnoreCase("bin")) {
             paramFormat = MediaType.APPLICATION_OCTET_STREAM;
         } else {
-            throw new CougarValidationException(ServerFaultCode.MediaTypeParseFailure, "Invalid alt param for media type - " + paramFormat);
+            throw new DiscoValidationException(ServerFaultCode.MediaTypeParseFailure, "Invalid alt param for media type - " + paramFormat);
         }
         return paramFormat;
     }
@@ -110,24 +110,24 @@ public class ContentTypeNormaliserImpl implements ContentTypeNormaliser {
         String contentType = request.getContentType();
         if (request.getMethod().equals("POST")) {
             if (contentType == null) {
-                throw new CougarValidationException(ServerFaultCode.ContentTypeNotValid, "Input content type was not specified for deserialisable response");
+                throw new DiscoValidationException(ServerFaultCode.ContentTypeNotValid, "Input content type was not specified for deserialisable response");
             }
             MediaType requestMT;
             try {
                 requestMT = MediaType.valueOf(contentType);
             } catch (Exception e) {
-                throw new CougarValidationException(ServerFaultCode.MediaTypeParseFailure, "Input content type cannot be parsed: " + contentType,e);
+                throw new DiscoValidationException(ServerFaultCode.MediaTypeParseFailure, "Input content type cannot be parsed: " + contentType,e);
             }
             if (requestMT.isWildcardType() || requestMT.isWildcardSubtype()) {
-                throw new CougarValidationException(ServerFaultCode.InvalidInputMediaType, "Input content type may not be wildcard: " + requestMT);
+                throw new DiscoValidationException(ServerFaultCode.InvalidInputMediaType, "Input content type may not be wildcard: " + requestMT);
             }
             if (!MediaTypeUtils.isValid(allContentTypes, requestMT)) {
-                throw new CougarValidationException(ServerFaultCode.ContentTypeNotValid, "Input content type is not valid: " + requestMT);
+                throw new DiscoValidationException(ServerFaultCode.ContentTypeNotValid, "Input content type is not valid: " + requestMT);
             }
             String candidateContentType = requestMT.getType() + "/" + requestMT.getSubtype();
             MediaType normalizedMediaType = validContentTypes.get(candidateContentType);
             if (normalizedMediaType == null) {
-                throw new CougarValidationException(ServerFaultCode.FrameworkError, "Input content type " + contentType + " failed to find a normalized type using key " + candidateContentType);
+                throw new DiscoValidationException(ServerFaultCode.FrameworkError, "Input content type " + contentType + " failed to find a normalized type using key " + candidateContentType);
             }
             return normalizedMediaType;
         }

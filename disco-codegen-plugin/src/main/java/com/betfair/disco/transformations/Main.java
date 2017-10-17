@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transformations;
+package uk.co.exemel.disco.transformations;
 
-import com.betfair.cougar.codegen.DocumentMangler;
-import com.betfair.cougar.codegen.IDLReader;
-import com.betfair.cougar.codegen.Service;
-import com.betfair.cougar.codegen.Transformations;
-import com.betfair.cougar.codegen.Validator;
-import com.betfair.cougar.codegen.XmlUtil;
-import com.betfair.cougar.codegen.resolver.InterceptingResolver;
+import uk.co.exemel.disco.codegen.DocumentMangler;
+import uk.co.exemel.disco.codegen.IDLReader;
+import uk.co.exemel.disco.codegen.Service;
+import uk.co.exemel.disco.codegen.Transformations;
+import uk.co.exemel.disco.codegen.Validator;
+import uk.co.exemel.disco.codegen.XmlUtil;
+import uk.co.exemel.disco.codegen.resolver.InterceptingResolver;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.w3c.dom.Document;
@@ -36,7 +36,7 @@ public class Main {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		Transformations transform = new CougarTransformations();
+		Transformations transform = new DiscoTransformations();
 		IDLReader reader = new IDLReader();
 		Log log = new SystemStreamLog();
 

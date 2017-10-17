@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.codegen.resolver;
+package uk.co.exemel.disco.codegen.resolver;
 
-import com.betfair.cougar.codegen.FileUtil;
+import uk.co.exemel.disco.codegen.FileUtil;
 import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;

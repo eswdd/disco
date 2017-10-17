@@ -20,18 +20,18 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<bean class="com.betfair.cougar.util.configuration.PropertyConfigurer">
-        <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
-		<property name="defaultConfig" value="classpath:conf/cougar-core-defaults.properties"/>
+	<bean class="uk.co.exemel.disco.util.configuration.PropertyConfigurer">
+        <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
+		<property name="defaultConfig" value="classpath:conf/disco-core-defaults.properties"/>
 		<property name="configOverride" value="overrides.properties"/>
 		<property name="placeholderPrefix" value="$COUGAR{"/>
 	</bean>
 
-    <bean name="commandProcessorExecutor" class="com.betfair.cougar.util.JMXReportingThreadPoolExecutor">
-        <constructor-arg index="0" value="$COUGAR{cougar.commandProcessor.corePoolSize}"/>
-        <constructor-arg index="1" value="$COUGAR{cougar.commandProcessor.maximumPoolSize}"/>
-        <constructor-arg index="2" value="$COUGAR{cougar.commandProcessor.keepAliveTime}"/>
-        <constructor-arg index="3" value="$COUGAR{cougar.commandProcessor.timeUnit}"/>
+    <bean name="commandProcessorExecutor" class="uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor">
+        <constructor-arg index="0" value="$COUGAR{disco.commandProcessor.corePoolSize}"/>
+        <constructor-arg index="1" value="$COUGAR{disco.commandProcessor.maximumPoolSize}"/>
+        <constructor-arg index="2" value="$COUGAR{disco.commandProcessor.keepAliveTime}"/>
+        <constructor-arg index="3" value="$COUGAR{disco.commandProcessor.timeUnit}"/>
         <constructor-arg index="4">
             <bean class="java.util.concurrent.LinkedBlockingQueue"/>
         </constructor-arg>
@@ -42,43 +42,43 @@
         </constructor-arg>
     </bean>
 
-    <!-- make sure cougar.app.name is specified and valid -->
-    <bean class="com.betfair.cougar.core.impl.AppNameValidation" lazy-init="false">
-        <constructor-arg value="$COUGAR{cougar.app.name}"/>
+    <!-- make sure disco.app.name is specified and valid -->
+    <bean class="uk.co.exemel.disco.core.impl.AppNameValidation" lazy-init="false">
+        <constructor-arg value="$COUGAR{disco.app.name}"/>
     </bean>
 
 
-    <bean id="identityResolverFactory" class="com.betfair.cougar.core.api.security.IdentityResolverFactory"/>
+    <bean id="identityResolverFactory" class="uk.co.exemel.disco.core.api.security.IdentityResolverFactory"/>
 
-    <bean id="abstractIdentityResolver" class="com.betfair.cougar.core.impl.security.IdentityResolverFactoryHelper"
+    <bean id="abstractIdentityResolver" class="uk.co.exemel.disco.core.impl.security.IdentityResolverFactoryHelper"
           abstract="true" init-method="init">
         <property name="identityResolverFactory" ref="identityResolverFactory"/>
     </bean>
 
 
 
-    <bean id="transportRegistry" class="com.betfair.cougar.core.impl.transports.TransportRegistryImpl"/>
+    <bean id="transportRegistry" class="uk.co.exemel.disco.core.impl.transports.TransportRegistryImpl"/>
 
-    <!--If you want to extend cougar by adding additional preproc interceptors, add 'em to this list -->
+    <!--If you want to extend disco by adding additional preproc interceptors, add 'em to this list -->
     <util:list id="preProcessorInterceptors">
-        <bean class="com.betfair.cougar.core.impl.ev.MandatoryCheckInterceptor">
-            <constructor-arg ref="cougar.core.ExecutionVenue"/>
+        <bean class="uk.co.exemel.disco.core.impl.ev.MandatoryCheckInterceptor">
+            <constructor-arg ref="disco.core.ExecutionVenue"/>
         </bean>
     </util:list>
 
     <util:list id="postProcessorInterceptors"/>
 
     <bean id="preProcessorInterceptorRegistrationHelper" abstract="true" init-method="register"
-            class="com.betfair.cougar.core.api.ev.ClientPreProcessorRegistrationHelper">
+            class="uk.co.exemel.disco.core.api.ev.ClientPreProcessorRegistrationHelper">
         <property name="referenceInterceptorList" ref="preProcessorInterceptors"/>
     </bean>
 
     <bean id="postProcessorInterceptorRegistrationHelper" abstract="true" init-method="register"
-            class="com.betfair.cougar.core.api.ev.ClientPostProcessorRegistrationHelper">
+            class="uk.co.exemel.disco.core.api.ev.ClientPostProcessorRegistrationHelper">
         <property name="referenceInterceptorList" ref="postProcessorInterceptors"/>
     </bean>
 
-	<bean id="applicationProperties" class="com.betfair.cougar.core.impl.jmx.ApplicationProperties" />
+	<bean id="applicationProperties" class="uk.co.exemel.disco.core.impl.jmx.ApplicationProperties" />
 
 	<bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
         	<property name="locateExistingServerIfPossible" value="true"/>
@@ -110,63 +110,63 @@
 		</property>
 	</bean>
 
-    <bean name="libraryVersions" class="com.betfair.cougar.util.jmx.LibraryVersions"/>
-    <bean name="applicationChecksums" class="com.betfair.cougar.util.jmx.ApplicationChecksums">
-        <property name="algorithms" value="$COUGAR{cougar.applicationChecksums.algorithms}"/>
+    <bean name="libraryVersions" class="uk.co.exemel.disco.util.jmx.LibraryVersions"/>
+    <bean name="applicationChecksums" class="uk.co.exemel.disco.util.jmx.ApplicationChecksums">
+        <property name="algorithms" value="$COUGAR{disco.applicationChecksums.algorithms}"/>
     </bean>
 
     <bean id="eventLogRecordSetup" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         <property name="staticMethod"
-                  value="com.betfair.cougar.logging.records.EventLogRecord.setCollectionSeperator"/>
+                  value="uk.co.exemel.disco.logging.records.EventLogRecord.setCollectionSeperator"/>
 
         <property name="arguments">
             <list>
                 <bean class="java.lang.String">
-                    <constructor-arg value="$COUGAR{cougar.eventLogRecord.collectionSeperator}"/>
+                    <constructor-arg value="$COUGAR{disco.eventLogRecord.collectionSeperator}"/>
                 </bean>
             </list>
         </property>
     </bean>
 
-    <bean name="addressClassifier" class="com.betfair.cougar.core.impl.AddressClassifier">
-        <property name="privateAddressRanges" value="$COUGAR{cougar.network.ipv4.privateAddressRanges}"/>
-        <property name="localLoopbackRanges" value="$COUGAR{cougar.network.ipv4.localLoopbackRanges}"/>
+    <bean name="addressClassifier" class="uk.co.exemel.disco.core.impl.AddressClassifier">
+        <property name="privateAddressRanges" value="$COUGAR{disco.network.ipv4.privateAddressRanges}"/>
+        <property name="localLoopbackRanges" value="$COUGAR{disco.network.ipv4.localLoopbackRanges}"/>
     </bean>
 
-    <bean name="compoundTracer" class="com.betfair.cougar.core.impl.tracing.CompoundTracer">
+    <bean name="compoundTracer" class="uk.co.exemel.disco.core.impl.tracing.CompoundTracer">
     </bean>
 
-    <bean name="compoundTracerRegistrationHelper" class="com.betfair.cougar.core.impl.tracing.CompoundTracerRegistrationHelper" abstract="true" init-method="init" lazy-init="false">
+    <bean name="compoundTracerRegistrationHelper" class="uk.co.exemel.disco.core.impl.tracing.CompoundTracerRegistrationHelper" abstract="true" init-method="init" lazy-init="false">
         <constructor-arg index="0" ref="compoundTracer"/>
     </bean>
 
     <bean name="loggingTracerInitialisation" parent="compoundTracerRegistrationHelper">
         <constructor-arg index="1">
-            <bean class="com.betfair.cougar.core.impl.tracing.LoggingTracer"/>
+            <bean class="uk.co.exemel.disco.core.impl.tracing.LoggingTracer"/>
         </constructor-arg>
-        <constructor-arg index="2" value="$COUGAR{cougar.trace.enableLoggingTracer}"/>
+        <constructor-arg index="2" value="$COUGAR{disco.trace.enableLoggingTracer}"/>
     </bean>
 
-    <bean name="optionalGateRegisterer" class="com.betfair.cougar.core.impl.OptionalGateRegisterer"
+    <bean name="optionalGateRegisterer" class="uk.co.exemel.disco.core.impl.OptionalGateRegisterer"
           abstract="true">
-        <constructor-arg index="0" value="cougar.core.StartingGate"/>
+        <constructor-arg index="0" value="disco.core.StartingGate"/>
     </bean>
 
     <!-- Now set up the core set of loggers, server, trace and console -->
     <import resource="classpath:conf/remote/logging-handlers.xml"/>
-	<alias name="identityResolverRegistry"           alias="cougar.core.IdentityResolverRegistry"/>
+	<alias name="identityResolverRegistry"           alias="disco.core.IdentityResolverRegistry"/>
 
-    <alias name="postProcessorInterceptorRegistrationHelper" alias="cougar.core.PostProcessorInterceptorRegistrationHelper"/>
-    <alias name="preProcessorInterceptorRegistrationHelper"  alias="cougar.core.PreProcessorInterceptorRegistrationHelper"/>
-    <alias name="transportRegistry" alias="cougar.core.TransportRegistry"/>
+    <alias name="postProcessorInterceptorRegistrationHelper" alias="disco.core.PostProcessorInterceptorRegistrationHelper"/>
+    <alias name="preProcessorInterceptorRegistrationHelper"  alias="disco.core.PreProcessorInterceptorRegistrationHelper"/>
+    <alias name="transportRegistry" alias="disco.core.TransportRegistry"/>
 
-    <alias name="abstractIdentityResolver" alias="cougar.core.AbstractIdentityResolver"/>
-    <alias name="identityResolverFactory" alias="cougar.core.IdentityResolverFactory"/>
-    <alias name="commandProcessorExecutor" alias="cougar.core.CommandProcessorExecutor"/>
-    <alias name="applicationChecksums" alias="cougar.core.ApplicationChecksums"/>
-    <alias name="addressClassifier" alias="cougar.core.AddressClassifier"/>
+    <alias name="abstractIdentityResolver" alias="disco.core.AbstractIdentityResolver"/>
+    <alias name="identityResolverFactory" alias="disco.core.IdentityResolverFactory"/>
+    <alias name="commandProcessorExecutor" alias="disco.core.CommandProcessorExecutor"/>
+    <alias name="applicationChecksums" alias="disco.core.ApplicationChecksums"/>
+    <alias name="addressClassifier" alias="disco.core.AddressClassifier"/>
 
-    <alias name="compoundTracer" alias="cougar.core.Tracer"/>
-    <alias name="compoundTracerRegistrationHelper" alias="cougar.core.TracerRegistrationHelper"/>
-    <alias name="optionalGateRegisterer" alias="cougar.core.OptionalGateRegisterer"/>
+    <alias name="compoundTracer" alias="disco.core.Tracer"/>
+    <alias name="compoundTracerRegistrationHelper" alias="disco.core.TracerRegistrationHelper"/>
+    <alias name="optionalGateRegisterer" alias="disco.core.OptionalGateRegisterer"/>
 </beans>

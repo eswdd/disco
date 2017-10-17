@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.interceptors;
+package uk.co.exemel.disco.core.impl.interceptors;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.core.api.ev.ExecutionPreProcessor;
-import com.betfair.cougar.core.api.ev.ExecutionRequirement;
-import com.betfair.cougar.core.api.ev.InterceptorResult;
-import com.betfair.cougar.core.api.ev.InterceptorState;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.impl.AddressClassifier;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.core.api.ev.ExecutionPreProcessor;
+import uk.co.exemel.disco.core.api.ev.ExecutionRequirement;
+import uk.co.exemel.disco.core.api.ev.InterceptorResult;
+import uk.co.exemel.disco.core.api.ev.InterceptorState;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.impl.AddressClassifier;
 
 /**
  * Prevents access to the detailed healthcheck unless we know the call has come from an internal address.
@@ -46,7 +46,7 @@ public class PrivateOnlyInterceptor implements ExecutionPreProcessor {
             return new InterceptorResult(InterceptorState.CONTINUE);
         }
 
-        return new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION, new CougarServiceException(ServerFaultCode.BannedLocation, "Access not being made from private network location"));
+        return new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION, new DiscoServiceException(ServerFaultCode.BannedLocation, "Access not being made from private network location"));
     }
 
     @Override

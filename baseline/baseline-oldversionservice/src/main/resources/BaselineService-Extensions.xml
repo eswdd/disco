@@ -33,6 +33,6 @@
 	</operation>
 
 	<extensions>
-		<path>/cougarBaseline</path>
+		<path>/discoBaseline</path>
 	</extensions>
 </interface>

@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.server;
+package uk.co.exemel.disco.test.socket.tester.server;
 
-import com.betfair.cougar.core.api.ev.Executable;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.ev.NullExecutionTimingRecorder;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.security.IdentityResolverFactory;
-import com.betfair.cougar.core.api.transports.TransportRegistry;
-import com.betfair.cougar.core.impl.logging.EventLoggerImpl;
-import com.betfair.cougar.core.impl.security.CommonNameCertInfoExtractor;
-import com.betfair.cougar.core.impl.tracing.CompoundTracer;
-import com.betfair.cougar.core.impl.transports.TransportRegistryImpl;
-import com.betfair.cougar.logging.EventLoggingRegistry;
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.TlsNioConfig;
-import com.betfair.cougar.netutil.nio.hessian.HessianObjectIOFactory;
-import com.betfair.cougar.netutil.nio.marshalling.DefaultExecutionContextResolverFactory;
-import com.betfair.cougar.netutil.nio.marshalling.DefaultSocketTimeResolver;
-import com.betfair.cougar.netutil.nio.marshalling.SocketRMIMarshaller;
-import com.betfair.cougar.test.socket.tester.common.ClientAuthRequirement;
-import com.betfair.cougar.test.socket.tester.common.Common;
-import com.betfair.cougar.test.socket.tester.common.SslRequirement;
-import com.betfair.cougar.transport.api.protocol.CougarObjectIOFactory;
-import com.betfair.cougar.transport.impl.DehydratedExecutionContextResolutionImpl;
-import com.betfair.cougar.transport.nio.ExecutionVenueNioServer;
-import com.betfair.cougar.transport.nio.ExecutionVenueServerHandler;
-import com.betfair.cougar.transport.nio.IoSessionManager;
-import com.betfair.cougar.transport.socket.PooledServerConnectedObjectManager;
-import com.betfair.cougar.transport.socket.SocketTransportCommandProcessor;
-import com.betfair.cougar.util.JMXReportingThreadPoolExecutor;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
-import com.betfair.cougar.util.geolocation.NullGeoIPLocator;
+import uk.co.exemel.disco.core.api.ev.Executable;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.ev.NullExecutionTimingRecorder;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.security.IdentityResolverFactory;
+import uk.co.exemel.disco.core.api.transports.TransportRegistry;
+import uk.co.exemel.disco.core.impl.logging.EventLoggerImpl;
+import uk.co.exemel.disco.core.impl.security.CommonNameCertInfoExtractor;
+import uk.co.exemel.disco.core.impl.tracing.CompoundTracer;
+import uk.co.exemel.disco.core.impl.transports.TransportRegistryImpl;
+import uk.co.exemel.disco.logging.EventLoggingRegistry;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.TlsNioConfig;
+import uk.co.exemel.disco.netutil.nio.hessian.HessianObjectIOFactory;
+import uk.co.exemel.disco.netutil.nio.marshalling.DefaultExecutionContextResolverFactory;
+import uk.co.exemel.disco.netutil.nio.marshalling.DefaultSocketTimeResolver;
+import uk.co.exemel.disco.netutil.nio.marshalling.SocketRMIMarshaller;
+import uk.co.exemel.disco.test.socket.tester.common.ClientAuthRequirement;
+import uk.co.exemel.disco.test.socket.tester.common.Common;
+import uk.co.exemel.disco.test.socket.tester.common.SslRequirement;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectIOFactory;
+import uk.co.exemel.disco.transport.impl.DehydratedExecutionContextResolutionImpl;
+import uk.co.exemel.disco.transport.nio.ExecutionVenueNioServer;
+import uk.co.exemel.disco.transport.nio.ExecutionVenueServerHandler;
+import uk.co.exemel.disco.transport.nio.IoSessionManager;
+import uk.co.exemel.disco.transport.socket.PooledServerConnectedObjectManager;
+import uk.co.exemel.disco.transport.socket.SocketTransportCommandProcessor;
+import uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.util.geolocation.NullGeoIPLocator;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.management.MBeanServerFactory;
@@ -98,11 +98,11 @@ class ServerInstance {
         if (sslRequirement != SslRequirement.None) {
             nioConfig.setSupportsTls(sslRequirement == SslRequirement.Supports || sslRequirement == SslRequirement.Requires);
             nioConfig.setRequiresTls(sslRequirement == SslRequirement.Requires);
-            nioConfig.setKeystore(new ClassPathResource("cougar_server_cert.jks"));
+            nioConfig.setKeystore(new ClassPathResource("disco_server_cert.jks"));
             nioConfig.setKeystoreType("JKS");
             nioConfig.setKeystorePassword("password");
             if (clientAuthRequirement != ClientAuthRequirement.None) {
-                nioConfig.setTruststore(new ClassPathResource("cougar_client_ca.jks"));
+                nioConfig.setTruststore(new ClassPathResource("disco_client_ca.jks"));
                 nioConfig.setTruststoreType("JKS");
                 nioConfig.setTruststorePassword("password");
                 nioConfig.setWantClientAuth(true);
@@ -115,13 +115,13 @@ class ServerInstance {
         IdentityResolverFactory identityResolverFactory = new IdentityResolverFactory();
         DehydratedExecutionContextResolutionImpl contextResolution = new DehydratedExecutionContextResolutionImpl();
         contextResolution.registerFactory(new DefaultExecutionContextResolverFactory(new NullGeoIPLocator(), new DefaultSocketTimeResolver(true))); // todo: set false if run on multiple machines
-        contextResolution.onCougarStart();
+        contextResolution.onDiscoStart();
         SocketRMIMarshaller marshaller = new SocketRMIMarshaller(new CommonNameCertInfoExtractor(), contextResolution);
         EventLoggingRegistry registry = new EventLoggingRegistry();
         TestServerExecutionVenue executionVenue = new TestServerExecutionVenue();
         Executor executor = new JMXReportingThreadPoolExecutor(2,3,5000,TimeUnit.MILLISECONDS,new LinkedBlockingDeque<Runnable>());
 
-        CougarObjectIOFactory objectIoFactory = new HessianObjectIOFactory(false);
+        DiscoObjectIOFactory objectIoFactory = new HessianObjectIOFactory(false);
         IoSessionManager sessionManager = new IoSessionManager();
         TransportRegistry transportRegistry = new TransportRegistryImpl();
 

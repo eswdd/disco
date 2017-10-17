@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.app;
+package uk.co.exemel.disco.test.socket.app;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -41,7 +41,7 @@ public class LocalRepoSearcher implements RepoSearcher {
     @Override
     public List<File> findAndCache(File tmpDir) {
         List<File> ret = new LinkedList<>();
-        findAndCache(new File(dir,"com/betfair/cougar/socket-tester"), ret);
+        findAndCache(new File(dir,"com/betfair/disco/socket-tester"), ret);
         return ret;
     }
 

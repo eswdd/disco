@@ -16,14 +16,14 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/SOAP/Test-IDL/SOAP_RequestTypes_Bytes_Zeroes.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.soap.testidl;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.soap.testidl;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -32,7 +32,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Ensure that when a SOAP request is received, Cougar can handle the byte datatype with zeroes
+ * Ensure that when a SOAP request is received, Disco can handle the byte datatype with zeroes
  */
 public class SOAPRequestTypesBytesZeroesTest {
     @Test
@@ -41,9 +41,9 @@ public class SOAPRequestTypesBytesZeroesTest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document createAsDocument1 = xMLHelpers1.getXMLObjectFromString("<ByteOperationRequest><headerParam>0</headerParam><queryParam>0</queryParam><message><bodyParameter>AAAA</bodyParameter></message></ByteOperationRequest>");
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean hbean = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        CougarManager hinstance = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean hbean = discoManager2.getNewHttpCallBean("87.248.113.14");
+        DiscoManager hinstance = discoManager2;
 
         hbean.setServiceName("Baseline");
 
@@ -54,13 +54,13 @@ public class SOAPRequestTypesBytesZeroesTest {
 
         Timestamp getTimeAsTimeStamp7 = new Timestamp(System.currentTimeMillis());
         // Make the SOAP call to the operation
-        hinstance.makeSoapCougarHTTPCalls(hbean);
+        hinstance.makeSoapDiscoHTTPCalls(hbean);
         // Create the expected response object as an XML document
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument9 = xMLHelpers4.getXMLObjectFromString("<response><queryParameter>0</queryParameter><headerParameter>0</headerParameter><bodyParameter>AAAA</bodyParameter></response>");
 
         // Check the response is as expected
-        HttpResponseBean response5 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response5 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(createAsDocument9, response5.getResponseObject());
 
         // generalHelpers.pauseTest(500L);

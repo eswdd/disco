@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http.rescript;
+package uk.co.exemel.disco.transport.impl.protocol.http.rescript;
 
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.exception.*;
-import com.betfair.cougar.core.api.transcription.EnumDerialisationException;
-import com.betfair.cougar.core.api.transcription.EnumUtils;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
-import com.betfair.cougar.marshalling.api.databinding.UnMarshaller;
-import com.betfair.cougar.marshalling.impl.databinding.DataBindingManager;
-import com.betfair.cougar.marshalling.impl.util.BindingUtils;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptBody;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.exception.*;
+import uk.co.exemel.disco.core.api.transcription.EnumDerialisationException;
+import uk.co.exemel.disco.core.api.transcription.EnumUtils;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.marshalling.api.databinding.UnMarshaller;
+import uk.co.exemel.disco.marshalling.impl.databinding.DataBindingManager;
+import uk.co.exemel.disco.marshalling.impl.util.BindingUtils;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptBody;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
@@ -88,7 +88,7 @@ public class RescriptOperationBinding {
         if (bindingDescriptor.containsBodyData()) {
             //If the request contains body data, then it must be a post request
             if (!request.getMethod().equals("POST")) {
-                throw CougarMarshallingException.unmarshallingException(format, "Bad body data", false);
+                throw DiscoMarshallingException.unmarshallingException(format, "Bad body data", false);
             }
             body = resolveBody(inputStream, mediaType, encoding);
         }
@@ -127,13 +127,13 @@ public class RescriptOperationBinding {
                         }
                         break;
                     default :
-                        throw new PanicInTheCougar("Unsupported argument annotation "+ descriptor.getSource());
+                        throw new PanicInTheDisco("Unsupported argument annotation "+ descriptor.getSource());
                 }
                 //request.trace("Deserialised argument {} from {} to value {}", i, param.getSource(), args[i]);
             }
         }
         catch (EnumDerialisationException ede) {
-            throw CougarMarshallingException.unmarshallingException(format, ede.getMessage(), ede.getCause(), false);
+            throw DiscoMarshallingException.unmarshallingException(format, ede.getMessage(), ede.getCause(), false);
         }
         return args;
     }
@@ -158,7 +158,7 @@ public class RescriptOperationBinding {
         if (mediaType != null) {
             DataBindingFactory factory = DataBindingManager.getInstance().getFactory(mediaType);
             if(factory == null) {
-                throw new CougarFrameworkException("Invalid content type " + mediaType);
+                throw new DiscoFrameworkException("Invalid content type " + mediaType);
             }
             UnMarshaller unMarshaller = factory.getUnMarshaller();
             return (RescriptBody)unMarshaller.unmarshall(inputStream,

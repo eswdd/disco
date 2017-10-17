@@ -15,15 +15,15 @@
  */
 
 // Originally from ClientTests/Transport/StandardTesting/Client_Rescript_Post_RequestTypes_Set_SimpleSet.xls;
-package com.betfair.cougar.tests.clienttests.standardtesting;
+package uk.co.exemel.disco.tests.clienttests.standardtesting;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.to.BodyParamSimpleSetObject;
 import com.betfair.baseline.v2.to.SimpleSetOperationResponseObject;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientResponseTypeUtils;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientResponseTypeUtils;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -34,19 +34,19 @@ import java.util.Set;
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
- * Ensure that when a SimpleSet object is passed in parameters to cougar via a cougar client, the request is sent and the response is handled correctly
+ * Ensure that when a SimpleSet object is passed in parameters to disco via a disco client, the request is sent and the response is handled correctly
  */
 public class ClientPostRequestTypesSetSimpleSetTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Set up the client to use rescript transport
-        CougarClientWrapper cougarClientWrapper1 = CougarClientWrapper.getInstance(tt);
-        CougarClientWrapper wrapper = cougarClientWrapper1;
-        BaselineSyncClient client = cougarClientWrapper1.getClient();
-        ExecutionContext context = cougarClientWrapper1.getCtx();
+        DiscoClientWrapper discoClientWrapper1 = DiscoClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = discoClientWrapper1;
+        BaselineSyncClient client = discoClientWrapper1.getClient();
+        ExecutionContext context = discoClientWrapper1.getCtx();
         // Build set
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils2 = new CougarClientResponseTypeUtils();
-        Set<String> inputSet = cougarClientResponseTypeUtils2.buildSet("aaaString,bbbString,cccString,dddString");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils2 = new DiscoClientResponseTypeUtils();
+        Set<String> inputSet = discoClientResponseTypeUtils2.buildSet("aaaString,bbbString,cccString,dddString");
         // Create body parameter to be passed
         BodyParamSimpleSetObject bodyParamSimpleSetObject3 = new BodyParamSimpleSetObject();
         bodyParamSimpleSetObject3.setSimpleSet(inputSet);

@@ -14,37 +14,37 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.core.api.*;
-import com.betfair.cougar.core.api.ev.ConnectedResponse;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.exception.*;
-import com.betfair.cougar.core.api.security.IdentityResolverFactory;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.api.transcription.EnumDerialisationException;
-import com.betfair.cougar.core.api.transcription.TranscriptionException;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.core.api.*;
+import uk.co.exemel.disco.core.api.ev.ConnectedResponse;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.exception.*;
+import uk.co.exemel.disco.core.api.security.IdentityResolverFactory;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.api.transcription.EnumDerialisationException;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionException;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.logging.EventLoggingRegistry;
-import com.betfair.cougar.marshalling.api.socket.RemotableMethodInvocationMarshaller;
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.NioUtils;
-import com.betfair.cougar.netutil.nio.TerminateSubscription;
-import com.betfair.cougar.transport.api.CommandResolver;
-import com.betfair.cougar.transport.api.CommandValidator;
-import com.betfair.cougar.transport.api.ExecutionCommand;
-import com.betfair.cougar.transport.api.protocol.CougarObjectInput;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
-import com.betfair.cougar.transport.impl.AbstractCommandProcessor;
-import com.betfair.cougar.transport.impl.protocol.SSLCipherUtils;
-import com.betfair.cougar.util.X509CertificateUtils;
+import uk.co.exemel.disco.logging.EventLoggingRegistry;
+import uk.co.exemel.disco.marshalling.api.socket.RemotableMethodInvocationMarshaller;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.NioUtils;
+import uk.co.exemel.disco.netutil.nio.TerminateSubscription;
+import uk.co.exemel.disco.transport.api.CommandResolver;
+import uk.co.exemel.disco.transport.api.CommandValidator;
+import uk.co.exemel.disco.transport.api.ExecutionCommand;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectInput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
+import uk.co.exemel.disco.transport.impl.AbstractCommandProcessor;
+import uk.co.exemel.disco.transport.impl.protocol.SSLCipherUtils;
+import uk.co.exemel.disco.util.X509CertificateUtils;
 import org.apache.mina.filter.SSLFilter;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
@@ -81,7 +81,7 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
 
     private int unknownCipherKeyLength;
 
-    public void setStartingGate(CougarStartingGate startingGate) {
+    public void setStartingGate(DiscoStartingGate startingGate) {
         startingGate.registerStartingListener(this);
     }
 
@@ -97,7 +97,7 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
             super.process(command);
         } else {
             try {
-                CougarObjectInput input = command.getInput();
+                DiscoObjectInput input = command.getInput();
                 Object eventPayload = input.readObject();
                 input.close();
 
@@ -124,15 +124,15 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
     protected CommandResolver<SocketTransportCommand> createCommandResolver(SocketTransportCommand command, final Tracer tracer) {
         try {
 
-            final CougarObjectInput in = command.getInput();
+            final DiscoObjectInput in = command.getInput();
 
             // rpc call
             if (command instanceof SocketTransportRPCCommand) {
                 final SocketTransportRPCCommand rpcCommand = (SocketTransportRPCCommand) command;
 
                 // we only want to do this once ideally
-                X509Certificate[] clientCertChain = (X509Certificate[]) rpcCommand.getSession().getAttribute(CougarProtocol.CLIENT_CERTS_ATTR_NAME);
-                Integer transportSecurityStrengthFactor = (Integer) rpcCommand.getSession().getAttribute(CougarProtocol.TSSF_ATTR_NAME);
+                X509Certificate[] clientCertChain = (X509Certificate[]) rpcCommand.getSession().getAttribute(DiscoProtocol.CLIENT_CERTS_ATTR_NAME);
+                Integer transportSecurityStrengthFactor = (Integer) rpcCommand.getSession().getAttribute(DiscoProtocol.TSSF_ATTR_NAME);
                 Object sslSession = rpcCommand.getSession().getAttribute(SSLFilter.SSL_SESSION);
                 if (sslSession != null) {
                     if (clientCertChain == null) {
@@ -145,32 +145,32 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
                             LOGGER.debug("SSL peer unverified");
                             clientCertChain = new X509Certificate[0];
                         }
-                        rpcCommand.getSession().setAttribute(CougarProtocol.CLIENT_CERTS_ATTR_NAME, clientCertChain);
+                        rpcCommand.getSession().setAttribute(DiscoProtocol.CLIENT_CERTS_ATTR_NAME, clientCertChain);
                     }
                     if (transportSecurityStrengthFactor == null) {
                         SSLSession session = (SSLSession) sslSession;
 
                         transportSecurityStrengthFactor = SSLCipherUtils.deduceKeyLength(session.getCipherSuite(), unknownCipherKeyLength);
-                        rpcCommand.getSession().setAttribute(CougarProtocol.TSSF_ATTR_NAME, transportSecurityStrengthFactor);
+                        rpcCommand.getSession().setAttribute(DiscoProtocol.TSSF_ATTR_NAME, transportSecurityStrengthFactor);
                     }
                 }
                 else {
                     if (clientCertChain == null) {
                         clientCertChain = new X509Certificate[0];
-                        rpcCommand.getSession().setAttribute(CougarProtocol.CLIENT_CERTS_ATTR_NAME, clientCertChain);
+                        rpcCommand.getSession().setAttribute(DiscoProtocol.CLIENT_CERTS_ATTR_NAME, clientCertChain);
                     }
                     if (transportSecurityStrengthFactor == null) {
                         transportSecurityStrengthFactor = 0;
-                        rpcCommand.getSession().setAttribute(CougarProtocol.TSSF_ATTR_NAME, transportSecurityStrengthFactor);
+                        rpcCommand.getSession().setAttribute(DiscoProtocol.TSSF_ATTR_NAME, transportSecurityStrengthFactor);
                     }
                 }
-                byte protocolVersion = CougarProtocol.getProtocolVersion(command.getSession());
+                byte protocolVersion = DiscoProtocol.getProtocolVersion(command.getSession());
                 final DehydratedExecutionContext context = marshaller.readExecutionContext(in, command.getRemoteAddress(), clientCertChain, transportSecurityStrengthFactor, protocolVersion);
                 final SocketRequestContextImpl requestContext = new SocketRequestContextImpl(context);
                 OperationKey remoteOperationKey = marshaller.readOperationKey(in);
                 OperationDefinition opDef = findCompatibleBinding(remoteOperationKey);
                 if (opDef == null) {
-                    throw new CougarFrameworkException("Can't find operation definition in bindings for operation named '" + remoteOperationKey.getOperationName() + "'");
+                    throw new DiscoFrameworkException("Can't find operation definition in bindings for operation named '" + remoteOperationKey.getOperationName() + "'");
                 }
                 final OperationKey operationKey = opDef.getOperationKey(); // safer to read it from locally
                 final OperationDefinition operationDefinition = getExecutionVenue().getOperationDefinition(operationKey);
@@ -229,17 +229,17 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
         } catch (EnumDerialisationException ede) {
             final String message = ede.getMessage();
             LOGGER.debug(message, ede);
-            throw CougarMarshallingException.unmarshallingException("binary",message,ede,false);
-        } catch (CougarException ce) {
+            throw DiscoMarshallingException.unmarshallingException("binary",message,ede,false);
+        } catch (DiscoException ce) {
             throw ce;
         } catch (TranscriptionException e) {
             final String message = "transcription exception deserialising invocation";
             LOGGER.debug(message, e);
-            throw CougarMarshallingException.unmarshallingException("binary",message,e,false);
+            throw DiscoMarshallingException.unmarshallingException("binary",message,e,false);
         } catch (Exception e) {
             final String message = "Unable to deserialise invocation";
             LOGGER.debug(message, e);
-            throw CougarMarshallingException.unmarshallingException("binary",message,e,false);
+            throw DiscoMarshallingException.unmarshallingException("binary",message,e,false);
         }
 
     }
@@ -264,10 +264,10 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
     }
 
     protected boolean writeSuccessResponse(SocketTransportRPCCommand command, ExecutionResult result, DehydratedExecutionContext context) {
-        CougarObjectOutput out = command.getOutput();
+        DiscoObjectOutput out = command.getOutput();
         try {
             synchronized (out) {
-                marshaller.writeInvocationResponse(new InvocationResponseImpl(result.getResult(), null), out, CougarProtocol.getProtocolVersion(command.getSession()));
+                marshaller.writeInvocationResponse(new InvocationResponseImpl(result.getResult(), null), out, DiscoProtocol.getProtocolVersion(command.getSession()));
                 out.flush();
             }
             return true;
@@ -282,14 +282,14 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
     }
 
     @Override
-    protected void writeErrorResponse(SocketTransportCommand command, DehydratedExecutionContext context, CougarException e, boolean traceStarted) {
+    protected void writeErrorResponse(SocketTransportCommand command, DehydratedExecutionContext context, DiscoException e, boolean traceStarted) {
         if (command instanceof SocketTransportRPCCommand) {
             SocketTransportRPCCommand rpcCommand = (SocketTransportRPCCommand) command;
             incrementErrorsWritten();
-            CougarObjectOutput out = rpcCommand.getOutput();
+            DiscoObjectOutput out = rpcCommand.getOutput();
             try {
                 synchronized (out) {
-                    marshaller.writeInvocationResponse(new InvocationResponseImpl(null, e), out, CougarProtocol.getProtocolVersion(command.getSession()));
+                    marshaller.writeInvocationResponse(new InvocationResponseImpl(null, e), out, DiscoProtocol.getProtocolVersion(command.getSession()));
                     out.flush();
                 }
             } catch (Exception ex) {
@@ -314,7 +314,7 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
     }
 
     @Override
-    public void onCougarStart() {
+    public void onDiscoStart() {
         for (ServiceBindingDescriptor bindingDescriptor : getServiceBindingDescriptors()) {
             for (OperationBindingDescriptor opDesc : bindingDescriptor.getOperationBindings()) {
                 bindOperation(opDesc);
@@ -346,7 +346,7 @@ public class SocketTransportCommandProcessor extends AbstractCommandProcessor<So
                 "-v" + bindingDescriptor.getServiceVersion().getMajor();
 
         if (serviceBindingDescriptors.containsKey(servicePlusMajorVersion)) {
-            throw new PanicInTheCougar("More than one version of service [" + bindingDescriptor.getServiceName() +
+            throw new PanicInTheDisco("More than one version of service [" + bindingDescriptor.getServiceName() +
                     "] is attempting to be bound for the same major version. The clashing versions are [" +
                     serviceBindingDescriptors.get(servicePlusMajorVersion).getServiceVersion() + ", " +
                     bindingDescriptor.getServiceVersion() +

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api.export;
+package uk.co.exemel.disco.api.export;
 
 import java.util.HashMap;
 import java.util.HashSet;

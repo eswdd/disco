@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.http;
+package uk.co.exemel.disco.transport.api.protocol.http;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.transport.api.TransportCommand;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.transport.api.TransportCommand;
 
 import java.security.cert.X509Certificate;
 

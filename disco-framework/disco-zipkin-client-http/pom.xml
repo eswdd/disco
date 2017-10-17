@@ -19,30 +19,30 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>cougar-framework</artifactId>
-        <groupId>com.betfair.cougar</groupId>
+        <artifactId>disco-framework</artifactId>
+        <groupId>uk.co.exemel.disco</groupId>
         <version>3.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cougar-zipkin-client-http</artifactId>
+    <artifactId>disco-zipkin-client-http</artifactId>
 
     <dependencies>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-zipkin-common</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-zipkin-common</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-client</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-client</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.to;
+package uk.co.exemel.disco.marshalling.impl.to;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.transcription.TranscribableParams;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.transcription.TranscribableParams;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import com.betfair.cougar.api.Result;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.api.transcription.Transcribable;
-import com.betfair.cougar.core.api.transcription.TranscriptionInput;
-import com.betfair.cougar.core.api.transcription.TranscriptionOutput;
+import uk.co.exemel.disco.api.Result;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.api.transcription.Transcribable;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionInput;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionOutput;
 
 import java.util.Set;
 

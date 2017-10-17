@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.tracing;
+package uk.co.exemel.disco.core.impl.tracing;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.tracing.Tracer;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
 
 import java.util.ArrayList;
 import java.util.List;

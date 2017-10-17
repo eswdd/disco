@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding;
+package uk.co.exemel.disco.marshalling.impl.databinding;
 
 import org.springframework.beans.factory.InitializingBean;
 

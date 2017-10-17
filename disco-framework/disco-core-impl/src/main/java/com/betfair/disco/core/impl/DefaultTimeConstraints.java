@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl;
+package uk.co.exemel.disco.core.impl;
 
-import com.betfair.cougar.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
 
 import java.util.Date;
 

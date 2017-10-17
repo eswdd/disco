@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.api;
+package uk.co.exemel.disco.client.api;
 
 import org.apache.http.client.methods.HttpUriRequest;
 

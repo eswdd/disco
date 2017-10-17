@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http.rescript;
+package uk.co.exemel.disco.transport.impl.protocol.http.rescript;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -25,39 +25,39 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceBindingDescriptor;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.exception.*;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.api.transcription.EnumUtils;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceBindingDescriptor;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.exception.*;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.api.transcription.EnumUtils;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
-import com.betfair.cougar.marshalling.api.databinding.FaultMarshaller;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import com.betfair.cougar.marshalling.impl.databinding.DataBindingManager;
-import com.betfair.cougar.transport.api.CommandResolver;
-import com.betfair.cougar.transport.api.ExecutionCommand;
-import com.betfair.cougar.transport.api.TransportCommand;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.ResponseCodeMapper;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptIdentityTokenResolver;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptResponse;
-import com.betfair.cougar.transport.impl.protocol.http.AbstractTerminateableHttpCommandProcessor;
-import com.betfair.cougar.util.stream.ByteCountingInputStream;
-import com.betfair.cougar.util.stream.ByteCountingOutputStream;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.marshalling.impl.databinding.DataBindingManager;
+import uk.co.exemel.disco.transport.api.CommandResolver;
+import uk.co.exemel.disco.transport.api.ExecutionCommand;
+import uk.co.exemel.disco.transport.api.TransportCommand;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.ResponseCodeMapper;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptIdentityTokenResolver;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptResponse;
+import uk.co.exemel.disco.transport.impl.protocol.http.AbstractTerminateableHttpCommandProcessor;
+import uk.co.exemel.disco.util.stream.ByteCountingInputStream;
+import uk.co.exemel.disco.util.stream.ByteCountingOutputStream;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
 /**
@@ -76,7 +76,7 @@ public class RescriptTransportCommandProcessor extends AbstractTerminateableHttp
     }
 
     @Override
-	public void onCougarStart() {
+	public void onDiscoStart() {
 		for (ServiceBindingDescriptor bindingDescriptor : getServiceBindingDescriptors()) {
 			for (OperationBindingDescriptor opDesc : bindingDescriptor.getOperationBindings()) {
 				bindOperation(bindingDescriptor, opDesc);
@@ -94,7 +94,7 @@ public class RescriptTransportCommandProcessor extends AbstractTerminateableHttp
             if (uri == null) uri = ""; // defensive
             uri += rescriptOperationBindingDescriptor.getURI();
             if (bindings.containsKey(uri)) {
-                throw new PanicInTheCougar("More than one operation is bound to the path [" + uri + "] edit your operation paths so that this is unique, existing = "+bindings.get(uri)+", new = "+bindingDescriptor);
+                throw new PanicInTheDisco("More than one operation is bound to the path [" + uri + "] edit your operation paths so that this is unique, existing = "+bindings.get(uri)+", new = "+bindingDescriptor);
             }
 			bindings.put(uri, new RescriptOperationBinding(rescriptOperationBindingDescriptor, operationDefinition, hardFailEnumDeserialisation));
 		}
@@ -134,7 +134,7 @@ public class RescriptTransportCommandProcessor extends AbstractTerminateableHttp
 					}
 					return executionCommand;
 				}
-				throw new CougarValidationException(ServerFaultCode.NoSuchOperation,
+				throw new DiscoValidationException(ServerFaultCode.NoSuchOperation,
 						"The request could not be resolved to an operation");
 			}
 		};
@@ -151,7 +151,7 @@ public class RescriptTransportCommandProcessor extends AbstractTerminateableHttp
             EnumUtils.setHardFailureForThisThread(hardFailEnumDeserialisation);
 			args = binding.resolveArgs(command.getRequest(), iStream, requestMediaType, encoding);
 		} catch (IOException ioe) {
-			throw new CougarFrameworkException("Unable to resolve arguments for operation " + binding.getOperationKey(), ioe);
+			throw new DiscoFrameworkException("Unable to resolve arguments for operation " + binding.getOperationKey(), ioe);
 		} finally {
 			try {
                             if (iStream != null) {
@@ -189,11 +189,11 @@ public class RescriptTransportCommandProcessor extends AbstractTerminateableHttp
 	}
 
 	@Override
-	protected void writeErrorResponse(HttpCommand command, DehydratedExecutionContext context, CougarException error, boolean traceStarted) {
+	protected void writeErrorResponse(HttpCommand command, DehydratedExecutionContext context, DiscoException error, boolean traceStarted) {
 		writeErrorResponse(command, error, context, null, 0, traceStarted);
 	}
 
-	protected final void writeErrorResponse(HttpCommand command, CougarException error,
+	protected final void writeErrorResponse(HttpCommand command, DiscoException error,
 			DehydratedExecutionContext context, MediaType requestMediaType, long bytesRead, boolean traceStarted) {
         try {
             incrementErrorsWritten();
@@ -208,7 +208,7 @@ public class RescriptTransportCommandProcessor extends AbstractTerminateableHttp
                         ResponseCodeMapper.setResponseStatus(response, error.getResponseCode());
                         try {
                             responseMediaType = getContentTypeNormaliser().getNormalisedResponseMediaType(request);
-                        } catch (CougarValidationException e) {
+                        } catch (DiscoValidationException e) {
                             responseMediaType = MediaType.APPLICATION_XML_TYPE;
                         }
                         response.setContentType(responseMediaType.toString());

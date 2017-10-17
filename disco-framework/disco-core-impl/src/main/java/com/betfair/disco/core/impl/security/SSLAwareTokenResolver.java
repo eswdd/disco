@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.security;
+package uk.co.exemel.disco.core.impl.security;
 
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

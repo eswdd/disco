@@ -15,48 +15,48 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.exception;
+package uk.co.exemel.disco.core.api.exception;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.fault.Fault;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.fault.Fault;
 
 import java.util.logging.Level;
 
-public class CougarClientException extends CougarException {
+public class DiscoClientException extends DiscoException {
 
-	private CougarApplicationException dae;
-    private boolean confirmedAsCougar;
+	private DiscoApplicationException dae;
+    private boolean confirmedAsDisco;
 
-	public CougarClientException(CougarException ce) {
+	public DiscoClientException(DiscoException ce) {
 		this(ce.getServerFaultCode(), ce.getMessage(), ce.getCause());
 	}
 
-	public CougarClientException(ServerFaultCode fault, String message) {
+	public DiscoClientException(ServerFaultCode fault, String message) {
 		this(fault, message, true);
 	}
 
-	public CougarClientException(ServerFaultCode fault, String message, boolean confirmedAsCougar) {
+	public DiscoClientException(ServerFaultCode fault, String message, boolean confirmedAsDisco) {
 		super(Level.FINE, fault, message);
-        this.confirmedAsCougar = confirmedAsCougar;
+        this.confirmedAsDisco = confirmedAsDisco;
 	}
 
-	public CougarClientException(ServerFaultCode fault, String message, CougarApplicationException dae) {
+	public DiscoClientException(ServerFaultCode fault, String message, DiscoApplicationException dae) {
 		super(Level.FINE, fault, message, dae);
 		this.dae = dae;
-        this.confirmedAsCougar = true;
+        this.confirmedAsDisco = true;
 	}
 
-	public CougarClientException(ServerFaultCode fault, String message, Throwable t) {
+	public DiscoClientException(ServerFaultCode fault, String message, Throwable t) {
 		this(fault, message, t, true);
 	}
 
-	public CougarClientException(ServerFaultCode fault, String message, Throwable t, boolean confirmedAsCougar) {
+	public DiscoClientException(ServerFaultCode fault, String message, Throwable t, boolean confirmedAsDisco) {
 		super(Level.FINE, fault, message, t);
-        if (t instanceof CougarApplicationException) {
-            this.dae = (CougarApplicationException) t;
+        if (t instanceof DiscoApplicationException) {
+            this.dae = (DiscoApplicationException) t;
         }
-        this.confirmedAsCougar = confirmedAsCougar;
+        this.confirmedAsDisco = confirmedAsDisco;
 	}
 
 	@Override
@@ -81,10 +81,10 @@ public class CougarClientException extends CougarException {
 
     @Override
     protected String additionalInfo() {
-        return confirmedAsCougar ? null : "Server not confirmed to be a Cougar";
+        return confirmedAsDisco ? null : "Server not confirmed to be a Disco";
     }
 
-    public boolean isConfirmedAsCougar() {
-        return confirmedAsCougar;
+    public boolean isConfirmedAsDisco() {
+        return confirmedAsDisco;
     }
 }

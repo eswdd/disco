@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.helpers;
+package com.betfair.testing.utils.disco.helpers;
 
-import com.betfair.testing.utils.cougar.beans.BatchedRequestBean;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.daos.CougarDefaultDAO;
-import com.betfair.testing.utils.cougar.daos.ICougarDAO;
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.misc.IReflect;
-import com.betfair.testing.utils.cougar.misc.Reflect;
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.beans.BatchedRequestBean;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.daos.DiscoDefaultDAO;
+import com.betfair.testing.utils.disco.daos.IDiscoDAO;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.misc.IReflect;
+import com.betfair.testing.utils.disco.misc.Reflect;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import com.sun.tools.attach.AgentInitializationException;
 import com.sun.tools.attach.AgentLoadException;
 import com.sun.tools.attach.AttachNotSupportedException;
@@ -98,16 +98,16 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CougarHelpers {
+public class DiscoHelpers {
 
-    private static final Logger logger = LoggerFactory.getLogger(CougarHelpers.class);
-	private ICougarDAO cougarDAO = new CougarDefaultDAO();
+    private static final Logger logger = LoggerFactory.getLogger(DiscoHelpers.class);
+	private IDiscoDAO discoDAO = new DiscoDefaultDAO();
 
 	private IReflect reflect = new Reflect();
 
   	private static final String CONNECTOR_ADDRESS = "com.sun.management.jmxremote.localConnectorAddress";
 
-  	private static final String SOAP_CALL_TEXT = "Make Cougar SOAP Call : ";
+  	private static final String SOAP_CALL_TEXT = "Make Disco SOAP Call : ";
   	private static final String JMX_SETTING_ERROR = "Problem setting JMX attribute: ";
   	private static final String JMX_RETRIEVAL_ERROR = "Problem retrieving JMX attribute value: ";
   	private static final String JMX_INVOKE_ERROR = "Problem invoking JMX operation: ";
@@ -163,7 +163,7 @@ public class CougarHelpers {
 	private JMXConnector jmxc = null;
 
 	/*
-	 * Send a request to a locally running Cougar container via SOAP as per the
+	 * Send a request to a locally running Disco container via SOAP as per the
 	 * passed parameters.
 	 *
 	 * @param message
@@ -172,7 +172,7 @@ public class CougarHelpers {
 	 * @param httpBean
 	 * @return
 	 */
-	public HttpResponseBean makeCougarSOAPCall(SOAPMessage message,
+	public HttpResponseBean makeDiscoSOAPCall(SOAPMessage message,
 			String serviceName, String version, HttpCallBean httpBean) {
 		try {
 
@@ -369,13 +369,13 @@ public class CougarHelpers {
 
 	/*
 	 * Create and return a HttpMethodBase for a Rest request based on the passed
-	 * HttpCallBean and CougarMessageProtocolRequestTypeEnum.
+	 * HttpCallBean and DiscoMessageProtocolRequestTypeEnum.
 	 *
 	 * @param httpCallBean
 	 * @param protocolRequestType
 	 * @return
 	 */
-	public HttpUriRequest getRestMethod(HttpCallBean httpCallBean, CougarMessageProtocolRequestTypeEnum protocolRequestType) {
+	public HttpUriRequest getRestMethod(HttpCallBean httpCallBean, DiscoMessageProtocolRequestTypeEnum protocolRequestType) {
 
 		Object postQueryObject = httpCallBean.getPostQueryObjectsByEnum(protocolRequestType);
 		String postQuery;
@@ -474,10 +474,10 @@ public class CougarHelpers {
 	}
 
 	/**
-	 * Send a request to a locally running Cougar container via REST as per the
+	 * Send a request to a locally running Disco container via REST as per the
 	 * passed parameters.
 	 */
-	public HttpResponseBean makeRestCougarHTTPCall(HttpCallBean httpCallBean, HttpUriRequest method, CougarMessageProtocolRequestTypeEnum protocolRequestType, CougarMessageContentTypeEnum responseContentTypeEnum, CougarMessageContentTypeEnum requestContentTypeEnum) {
+	public HttpResponseBean makeRestDiscoHTTPCall(HttpCallBean httpCallBean, HttpUriRequest method, DiscoMessageProtocolRequestTypeEnum protocolRequestType, DiscoMessageContentTypeEnum responseContentTypeEnum, DiscoMessageContentTypeEnum requestContentTypeEnum) {
 
 		Map<String, String> headerParams = httpCallBean.getHeaderParams();
 		String authority = httpCallBean.getAuthority();
@@ -510,7 +510,7 @@ public class CougarHelpers {
             }
 
 			Date requestTime = new Date();
-            final HttpResponse httpResponse = cougarDAO.executeHttpMethodBaseCall(method);
+            final HttpResponse httpResponse = discoDAO.executeHttpMethodBaseCall(method);
             inputStream = httpResponse.getEntity().getContent();
 
             String response = buildResponseString(inputStream);
@@ -557,17 +557,17 @@ public class CougarHelpers {
          return new String(buffer, "UTF-8");
 	}
 
-	public void setCougarDAO(ICougarDAO cougarDAO) {
-		this.cougarDAO = cougarDAO;
+	public void setDiscoDAO(IDiscoDAO discoDAO) {
+		this.discoDAO = discoDAO;
 	}
 
     public static void main(String[] args) {
-        CougarHelpers ch = new CougarHelpers();
+        DiscoHelpers ch = new DiscoHelpers();
         ch.setJMXConnectionFactory();
     }
 
 	/*
-	 * Find the VM instance running Cougar based on COUGARVMNAME1 and COUGARVMNAME2
+	 * Find the VM instance running Disco based on COUGARVMNAME1 and COUGARVMNAME2
 	 * fields, and attach, setting the JmxConnector to be used by other methods.
 	 *
 	 */
@@ -598,13 +598,13 @@ public class CougarHelpers {
                 continue;
             }
 
-            //No exceptions thrown so we have our cougar vm
+            //No exceptions thrown so we have our disco vm
             jmxc = jmxConnector;
             foundVM = true;
             break;
 		}
 		if (!foundVM) {
-			throw new RuntimeException("Unable to find cougar VM");
+			throw new RuntimeException("Unable to find disco VM");
 		}
 	}
 
@@ -711,7 +711,7 @@ public class CougarHelpers {
 			}
 			return jmxc.getMBeanServerConnection();
 		} catch (IOException e) {
-			throw new RuntimeException("Problem connecting to cougar JMX", e);
+			throw new RuntimeException("Problem connecting to disco JMX", e);
 		}
 	}
 
@@ -764,8 +764,8 @@ public class CougarHelpers {
 	}
 
 	private void completeRestMethodBuild(HttpUriRequest method,
-			CougarMessageContentTypeEnum responseContentTypeEnum,
-			CougarMessageContentTypeEnum requestContentTypeEnum,
+			DiscoMessageContentTypeEnum responseContentTypeEnum,
+			DiscoMessageContentTypeEnum requestContentTypeEnum,
 			String postQuery, Map<String, String> headerParams,
 			String authority, Map <String, String> authCredentials, String altUrl,
 			Map<String, String> acceptProtocols, String ipAddress) {
@@ -823,7 +823,7 @@ public class CougarHelpers {
 		//		+ postQuery + "'");
 	}
 
-	private String selectContent(CougarMessageContentTypeEnum requestContentTypeEnum){
+	private String selectContent(DiscoMessageContentTypeEnum requestContentTypeEnum){
 		switch (requestContentTypeEnum) {
 		case JSON:
 	//		logger.LogBetfairDebugEntry("Rest request Content-Type: "+ JSON_CONTENT);
@@ -841,7 +841,7 @@ public class CougarHelpers {
 		}
 	}
 
-	private String selectAccept(CougarMessageContentTypeEnum responseContentTypeEnum,Map<String,String> acceptProtocols){
+	private String selectAccept(DiscoMessageContentTypeEnum responseContentTypeEnum,Map<String,String> acceptProtocols){
 		if (responseContentTypeEnum == null) {
 			int loopCounter = 0;
 			StringBuffer acceptBuff = new StringBuffer();
@@ -896,7 +896,7 @@ public class CougarHelpers {
 	}
 
     public void setSOAPSchemaValidationEnabled(boolean validationEnabled) {
-        setJMXMBeanAttributeValue("com.betfair.cougar.transport:type=soapCommandProcessor", "SchemaValidationEnabled", validationEnabled);
+        setJMXMBeanAttributeValue("uk.co.exemel.disco.transport:type=soapCommandProcessor", "SchemaValidationEnabled", validationEnabled);
     }
 
 	private Object getJMXMBeanAttributeValue(String mBeanName, String attributeName) {
@@ -953,7 +953,7 @@ public class CougarHelpers {
 	}
 	/**
 	 * Returns the system Java version string in the format usable for User-Agent field
-	 * in cougar log
+	 * in disco log
 	 * @return String
 	 */
 	public String getJavaVersion() {

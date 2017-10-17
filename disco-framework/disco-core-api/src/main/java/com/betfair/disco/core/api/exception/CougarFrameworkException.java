@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.exception;
+package uk.co.exemel.disco.core.api.exception;
 
 import java.util.logging.Level;
 
@@ -24,22 +24,22 @@ import java.util.logging.Level;
  *
  */
 @SuppressWarnings("serial")
-public class CougarFrameworkException extends CougarException {
+public class DiscoFrameworkException extends DiscoException {
 	private static final Level LOG_LEVEL = Level.WARNING;
 
-	public CougarFrameworkException(String cause) {
+	public DiscoFrameworkException(String cause) {
 		super(LOG_LEVEL, ServerFaultCode.FrameworkError, cause);
 	}
 
-	public CougarFrameworkException(String cause, Throwable t) {
+	public DiscoFrameworkException(String cause, Throwable t) {
 		this(ServerFaultCode.FrameworkError, cause, t);
 	}
 
-	public CougarFrameworkException(ServerFaultCode faultCode, String cause) {
+	public DiscoFrameworkException(ServerFaultCode faultCode, String cause) {
 		super(LOG_LEVEL, faultCode, cause);
 	}
 
-	public CougarFrameworkException(ServerFaultCode faultCode, String cause, Throwable t) {
+	public DiscoFrameworkException(ServerFaultCode faultCode, String cause, Throwable t) {
 		super(LOG_LEVEL, faultCode, cause, t);
 	}
 

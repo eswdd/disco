@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
 import static org.mockito.Mockito.*;
 
-import com.betfair.cougar.api.Validatable;
+import uk.co.exemel.disco.api.Validatable;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import com.betfair.cougar.core.api.ev.InterceptorResult;
-import com.betfair.cougar.core.api.ev.InterceptorState;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.api.ev.InterceptorResult;
+import uk.co.exemel.disco.core.api.ev.InterceptorState;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,7 +91,7 @@ public class MandatoryCheckInterceptorTest {
 		InterceptorResult result = interceptor.invoke(null, mockOperationKey1, new Object[] {null} );
 		assertNotNull(result);
 		assertEquals(InterceptorState.FORCE_ON_EXCEPTION, result.getState());
-		assertTrue(result.getResult() instanceof CougarValidationException);
+		assertTrue(result.getResult() instanceof DiscoValidationException);
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class MandatoryCheckInterceptorTest {
 		InterceptorResult result = interceptor.invoke(null, mockOperationKey1, new Object[] {null, "2" } );
 		assertNotNull(result);
 		assertEquals(InterceptorState.FORCE_ON_EXCEPTION, result.getState());
-		assertTrue(result.getResult() instanceof CougarValidationException);
+		assertTrue(result.getResult() instanceof DiscoValidationException);
 	}
 
     @Test
@@ -119,7 +119,7 @@ public class MandatoryCheckInterceptorTest {
         InterceptorResult result = interceptor.invoke(null, mockOperationKey2, new Object[] { l, m } );
         assertNotNull(result);
         assertEquals(InterceptorState.FORCE_ON_EXCEPTION, result.getState());
-        assertTrue(result.getResult() instanceof CougarValidationException);
+        assertTrue(result.getResult() instanceof DiscoValidationException);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class MandatoryCheckInterceptorTest {
         InterceptorResult result = interceptor.invoke(null, mockOperationKey2, new Object[] { l, null } );
         assertNotNull(result);
         assertEquals(InterceptorState.FORCE_ON_EXCEPTION, result.getState());
-        assertTrue(result.getResult() instanceof CougarValidationException);
+        assertTrue(result.getResult() instanceof DiscoValidationException);
     }
 
     @Test

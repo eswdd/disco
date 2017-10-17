@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.socket;
+package uk.co.exemel.disco.transport.api.protocol.socket;
 
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
 
 public interface InvocationResponse {
     public void recreate(ExecutionObserver observer, ParameterType returnType, long size);
@@ -27,5 +27,5 @@ public interface InvocationResponse {
 
 	public Object getResult();
 
-	public CougarException getException();
+	public DiscoException getException();
 }

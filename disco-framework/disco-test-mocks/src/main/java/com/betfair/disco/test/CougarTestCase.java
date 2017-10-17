@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test;
+package uk.co.exemel.disco.test;
 
-import com.betfair.cougar.core.api.RequestTimer;
+import uk.co.exemel.disco.core.api.RequestTimer;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.util.configuration.PropertyConfigurer;
+import uk.co.exemel.disco.util.configuration.PropertyConfigurer;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -33,15 +33,15 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 
-public abstract class CougarTestCase extends TestCase {
+public abstract class DiscoTestCase extends TestCase {
 
     private final Map<String, String> props = new TreeMap<String, String>();
 
-    protected CougarTestCase() {
+    protected DiscoTestCase() {
     	super();
     }
 
-	protected CougarTestCase(String name) {
+	protected DiscoTestCase(String name) {
 		super(name);
 	}
 

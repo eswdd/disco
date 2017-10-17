@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.impl;
+package uk.co.exemel.disco.modules.zipkin.impl;
 
-import com.betfair.cougar.modules.zipkin.api.ZipkinData;
-import com.betfair.cougar.modules.zipkin.api.ZipkinDataBuilder;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinData;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinDataBuilder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,7 +26,7 @@ import java.util.Objects;
 /**
  * A default implementation of ZipkinData.
  *
- * @see com.betfair.cougar.modules.zipkin.api.ZipkinData
+ * @see uk.co.exemel.disco.modules.zipkin.api.ZipkinData
  */
 public class ZipkinDataImpl implements ZipkinData {
 
@@ -100,7 +100,7 @@ public class ZipkinDataImpl implements ZipkinData {
     /**
      * A ZipkinDataBuilder implementation to be used when instantiating new ZipkinDataImpl instances.
      *
-     * @see com.betfair.cougar.modules.zipkin.api.ZipkinDataBuilder
+     * @see uk.co.exemel.disco.modules.zipkin.api.ZipkinDataBuilder
      */
     public static final class Builder implements ZipkinDataBuilder {
         private long traceId;

@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms;
+package uk.co.exemel.disco.transport.jms;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.Credential;
-import com.betfair.cougar.api.security.Identity;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.Subscription;
-import com.betfair.cougar.core.api.events.Event;
-import com.betfair.cougar.core.api.events.EventTransportIdentity;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.transports.EventTransportMode;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.Credential;
+import uk.co.exemel.disco.api.security.Identity;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.Subscription;
+import uk.co.exemel.disco.core.api.events.Event;
+import uk.co.exemel.disco.core.api.events.EventTransportIdentity;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.transports.EventTransportMode;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.transport.api.protocol.events.EventBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.events.EventErrorHandler;
-import com.betfair.cougar.transport.api.protocol.events.EventServiceBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.events.jms.JMSDestinationResolver;
-import com.betfair.cougar.transport.jms.monitoring.ConnectionMonitor;
-import com.betfair.cougar.transport.jms.monitoring.TopicSubscriberPingMonitor;
+import uk.co.exemel.disco.transport.api.protocol.events.EventBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.events.EventErrorHandler;
+import uk.co.exemel.disco.transport.api.protocol.events.EventServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.events.jms.JMSDestinationResolver;
+import uk.co.exemel.disco.transport.jms.monitoring.ConnectionMonitor;
+import uk.co.exemel.disco.transport.jms.monitoring.TopicSubscriberPingMonitor;
 import com.betfair.tornjak.monitor.Monitor;
 import com.betfair.tornjak.monitor.MonitorRegistry;
 import junit.framework.Assert;
@@ -216,18 +216,18 @@ public class JmsEventTransportImplTest {
         try {
             cut.subscribe("bobTheBuilder", null, null);
             fail("Should have thrown an exception here");
-        } catch (CougarValidationException anticipated) {}
+        } catch (DiscoValidationException anticipated) {}
 
         cut.notify(evsd, EventTransportMode.Subscribe);
         try {
             cut.subscribe("bobTheBuilder", null, null);
             fail("Should have thrown an exception here");
-        } catch (CougarValidationException anticipated) {}
+        } catch (DiscoValidationException anticipated) {}
 
         //Check that a subscription identifier name is expected
         cut.setDestinationType(JmsEventTransportImpl.DestinationType.DurableTopic);
         cut.subscribe(EVENT_NAME, null, inbredExecutionObserver);
-        assertEquals("Should have thrown a CougarFrameworkException as a subscription id must be supplied", CougarFrameworkException.class, this.observedResult.getClass());
+        assertEquals("Should have thrown a DiscoFrameworkException as a subscription id must be supplied", DiscoFrameworkException.class, this.observedResult.getClass());
 
         observedResult = null;
 
@@ -278,7 +278,7 @@ public class JmsEventTransportImplTest {
         try {
             cut.publish(DummyEventImpl.BOBS_ADDRESS);
             fail("An exception should have been thrown here");
-        } catch (CougarException ignored) {}
+        } catch (DiscoException ignored) {}
     }
 
     @Test
@@ -293,7 +293,7 @@ public class JmsEventTransportImplTest {
         try {
             cut.publish(DummyEventImpl.BOBS_ADDRESS);
             fail("An exception should have been thrown here");
-        } catch (CougarException ignored) {}
+        } catch (DiscoException ignored) {}
     }
 
     @Test

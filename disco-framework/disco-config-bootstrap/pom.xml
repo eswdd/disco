@@ -19,20 +19,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
-        <artifactId>cougar-framework</artifactId>
+        <groupId>uk.co.exemel.disco</groupId>
+        <artifactId>disco-framework</artifactId>
         <version>3.3-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.betfair.cougar</groupId>
-    <artifactId>cougar-config-bootstrap</artifactId>
-    <name>cougar-config-bootstrap</name>
+    <groupId>uk.co.exemel.disco</groupId>
+    <artifactId>disco-config-bootstrap</artifactId>
+    <name>disco-config-bootstrap</name>
     <version>3.3-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-util</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-util</artifactId>
         </dependency>
     </dependencies>
 

@@ -15,16 +15,16 @@
  */
 
 // Originally from UpdatedComponentTests/Authentication/REST/REST_Authentication.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.authentication.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.authentication.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -34,20 +34,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Verify that when the auth credentials are provided, Cougar correctly reads headers X-Token-Username & X-Token-Password (and rewrites them)
+ * Verify that when the auth credentials are provided, Disco correctly reads headers X-Token-Username & X-Token-Password (and rewrites them)
  */
 public class RESTAuthenticationTest {
     @Test
     public void doTest() throws Exception {
 
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        discoManager1 = discoManager1;
 
 
         getNewHttpCallBean1.setOperationName("testIdentityChain", "identityChain");
 
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
 
         getNewHttpCallBean1.setVersion("v2");
 
@@ -59,15 +59,15 @@ public class RESTAuthenticationTest {
 
         Timestamp getTimeAsTimeStamp8 = new Timestamp(System.currentTimeMillis());
 
-        cougarManager1.makeRestCougarHTTPCalls(getNewHttpCallBean1);
+        discoManager1.makeRestDiscoHTTPCalls(getNewHttpCallBean1);
 
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument10 = xMLHelpers4.getXMLObjectFromString("<IdentChain><identities><Ident><credentialName>CREDENTIAL: Username</credentialName><credentialValue>foo</credentialValue><principal>PRINCIPAL: Username</principal></Ident><Ident><credentialName>CREDENTIAL: Password</credentialName><credentialValue>bar</credentialValue><principal>PRINCIPAL: Password</principal></Ident></identities></IdentChain>");
 
-        Map<CougarMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes11 = cougarManager1.convertResponseToRestTypes(createAsDocument10, getNewHttpCallBean1);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes11 = discoManager1.convertResponseToRestTypes(createAsDocument10, getNewHttpCallBean1);
 
-        HttpResponseBean getResponseObjectsByEnum12 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(CougarMessageProtocolRequestTypeEnum.RESTXML), getResponseObjectsByEnum12.getResponseObject());
+        HttpResponseBean getResponseObjectsByEnum12 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), getResponseObjectsByEnum12.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, getResponseObjectsByEnum12.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", getResponseObjectsByEnum12.getHttpStatusText());
 
@@ -75,8 +75,8 @@ public class RESTAuthenticationTest {
         AssertionUtils.multiAssertEquals("foo", map6.get("X-Token-Username"));
         AssertionUtils.multiAssertEquals("bar", map6.get("X-Token-Password"));
 
-        HttpResponseBean getResponseObjectsByEnum14 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), getResponseObjectsByEnum14.getResponseObject());
+        HttpResponseBean getResponseObjectsByEnum14 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), getResponseObjectsByEnum14.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, getResponseObjectsByEnum14.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", getResponseObjectsByEnum14.getHttpStatusText());
 
@@ -84,8 +84,8 @@ public class RESTAuthenticationTest {
         AssertionUtils.multiAssertEquals("foo", map8.get("X-Token-Username"));
         AssertionUtils.multiAssertEquals("bar", map8.get("X-Token-Password"));
 
-        HttpResponseBean getResponseObjectsByEnum16 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), getResponseObjectsByEnum16.getResponseObject());
+        HttpResponseBean getResponseObjectsByEnum16 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), getResponseObjectsByEnum16.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, getResponseObjectsByEnum16.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", getResponseObjectsByEnum16.getHttpStatusText());
 
@@ -93,8 +93,8 @@ public class RESTAuthenticationTest {
         AssertionUtils.multiAssertEquals("foo", map10.get("X-Token-Username"));
         AssertionUtils.multiAssertEquals("bar", map10.get("X-Token-Password"));
 
-        HttpResponseBean getResponseObjectsByEnum18 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(CougarMessageProtocolRequestTypeEnum.RESTXML), getResponseObjectsByEnum18.getResponseObject());
+        HttpResponseBean getResponseObjectsByEnum18 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes11.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), getResponseObjectsByEnum18.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, getResponseObjectsByEnum18.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", getResponseObjectsByEnum18.getHttpStatusText());
 
@@ -103,9 +103,9 @@ public class RESTAuthenticationTest {
         AssertionUtils.multiAssertEquals("bar", map12.get("X-Token-Password"));
 
 
-        cougarManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp8, new RequestLogRequirement("2.8", "testIdentityChain"),new RequestLogRequirement("2.8", "testIdentityChain"),new RequestLogRequirement("2.8", "testIdentityChain"),new RequestLogRequirement("2.8", "testIdentityChain") );
+        discoManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp8, new RequestLogRequirement("2.8", "testIdentityChain"),new RequestLogRequirement("2.8", "testIdentityChain"),new RequestLogRequirement("2.8", "testIdentityChain"),new RequestLogRequirement("2.8", "testIdentityChain") );
 
-        cougarManager1.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp8, new AccessLogRequirement(null, null, "Ok"),new AccessLogRequirement(null, null, "Ok"),new AccessLogRequirement(null, null, "Ok"),new AccessLogRequirement(null, null, "Ok") );
+        discoManager1.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp8, new AccessLogRequirement(null, null, "Ok"),new AccessLogRequirement(null, null, "Ok"),new AccessLogRequirement(null, null, "Ok"),new AccessLogRequirement(null, null, "Ok") );
     }
 
 }

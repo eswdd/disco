@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
-import com.betfair.cougar.netutil.nio.HandlerListener;
-import com.betfair.cougar.transport.nio.ExecutionVenueServerHandler;
+import uk.co.exemel.disco.netutil.nio.HandlerListener;
+import uk.co.exemel.disco.transport.nio.ExecutionVenueServerHandler;
 
 import java.util.List;
 

@@ -15,14 +15,14 @@
  */
 
 // Originally from UpdatedComponentTests/IPBlacklist/RPC/RPC_BlacklistedIP.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.ipblacklist;
+package uk.co.exemel.disco.tests.updatedcomponenttests.ipblacklist;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 
@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Test that the Cougar service forbids the access for the X-Forwarded-For  in the blacklist (Batched JSON)
+ * Test that the Disco service forbids the access for the X-Forwarded-For  in the blacklist (Batched JSON)
  */
 public class RPCBlacklistedIPTest {
     @Test
@@ -66,10 +66,10 @@ public class RPCBlacklistedIPTest {
     private void doTest_ExpectedResponse(String testIPAddress, boolean ok) throws Exception
     {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager = CougarManager.getInstance();
-        HttpCallBean callBean = cougarManager.getNewHttpCallBean(testIPAddress.replace(";",","));
-        // Set Cougar Fault Controller attributes
-        cougarManager.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        DiscoManager discoManager = DiscoManager.getInstance();
+        HttpCallBean callBean = discoManager.getNewHttpCallBean(testIPAddress.replace(";",","));
+        // Set Disco Fault Controller attributes
+        discoManager.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         // Set the call bean to use JSON batching
         callBean.setJSONRPC(true);
         // Set the list of requests to make a batched call to
@@ -87,12 +87,12 @@ public class RPCBlacklistedIPTest {
 
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
         // Make JSON call to the operation requesting a JSON response
-        cougarManager.makeRestCougarHTTPCall(callBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager.makeRestDiscoHTTPCall(callBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Get the response to the batched query (store the response for further comparison as order of batched responses cannot be relied on)
-        HttpResponseBean actualResponseJSON = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean actualResponseJSON = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         // Convert the returned json object to a map for comparison
-        CougarHelpers cougarHelpers4 = new CougarHelpers();
-        Map<String, Object> map5 = cougarHelpers4.convertBatchedResponseToMap(actualResponseJSON);
+        DiscoHelpers discoHelpers4 = new DiscoHelpers();
+        Map<String, Object> map5 = discoHelpers4.convertBatchedResponseToMap(actualResponseJSON);
         if (ok) {
             AssertionUtils.multiAssertEquals("{\"id\":1,\"result\":\"foo\",\"jsonrpc\":\"2.0\"}", map5.get("response1"));
             AssertionUtils.multiAssertEquals("{\"id\":2,\"result\":\"foo\",\"jsonrpc\":\"2.0\"}", map5.get("response2"));
@@ -104,6 +104,6 @@ public class RPCBlacklistedIPTest {
         AssertionUtils.multiAssertEquals("200", map5.get("httpStatusCode"));
         AssertionUtils.multiAssertEquals("OK", map5.get("httpStatusText"));
         // Check the log entries are as expected
-        cougarManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement(testIPAddress, "/json-rpc", "Ok"));
+        discoManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement(testIPAddress, "/json-rpc", "Ok"));
     }
 }

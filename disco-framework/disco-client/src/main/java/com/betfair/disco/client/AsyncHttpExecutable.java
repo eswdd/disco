@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.client.api.ContextEmitter;
-import com.betfair.cougar.core.api.client.TransportMetrics;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
-import com.betfair.cougar.util.KeyStoreManagement;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.client.api.ContextEmitter;
+import uk.co.exemel.disco.core.api.client.TransportMetrics;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.util.KeyStoreManagement;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import org.eclipse.jetty.client.ConnectionPool;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.HttpDestination;
@@ -77,8 +77,8 @@ public class AsyncHttpExecutable extends AbstractHttpExecutable<Request> impleme
 
     public AsyncHttpExecutable(HttpServiceBindingDescriptor bindingDescriptor, ContextEmitter emission, Tracer tracer,
                                ExecutorService threadPool, ExecutorService responseThreadPool) {
-        super(bindingDescriptor, new JettyCougarRequestFactory(emission), tracer);
-        ((JettyCougarRequestFactory)super.requestFactory).setExecutable(this);
+        super(bindingDescriptor, new JettyDiscoRequestFactory(emission), tracer);
+        ((JettyDiscoRequestFactory)super.requestFactory).setExecutable(this);
         this.threadPool = threadPool;
         this.responseThreadPool = responseThreadPool;
     }
@@ -121,7 +121,7 @@ public class AsyncHttpExecutable extends AbstractHttpExecutable<Request> impleme
 
                 final SslContextFactory sslContextFactory = client.getSslContextFactory();
 
-                com.betfair.cougar.netutil.SslContextFactory factory = new com.betfair.cougar.netutil.SslContextFactory();
+                uk.co.exemel.disco.netutil.SslContextFactory factory = new uk.co.exemel.disco.netutil.SslContextFactory();
                 factory.setTrustManagerFactoryKeyStore(trustStore.getKeyStore());
                 if (keyStore != null) {
                     factory.setKeyManagerFactoryKeyStore(keyStore.getKeyStore());
@@ -187,7 +187,7 @@ public class AsyncHttpExecutable extends AbstractHttpExecutable<Request> impleme
                     @Override
                     public void run() {
                         try {
-                            processResponse(new CougarHttpResponse() {
+                            processResponse(new DiscoHttpResponse() {
                                 @Override
                                 public InputStream getEntity() throws IOException {
                                     return inputStream;
@@ -226,9 +226,9 @@ public class AsyncHttpExecutable extends AbstractHttpExecutable<Request> impleme
         request.onResponseFailure(new Response.FailureListener() {
             @Override
             public void onFailure(Response response, Throwable failure) {
-                ServerFaultCode serverFaultCode = ServerFaultCode.RemoteCougarCommunicationFailure;
+                ServerFaultCode serverFaultCode = ServerFaultCode.RemoteDiscoCommunicationFailure;
                 if (failure instanceof TimeoutException) {
-                    failure = new CougarFrameworkException("Read timed out", failure);
+                    failure = new DiscoFrameworkException("Read timed out", failure);
                     serverFaultCode = ServerFaultCode.Timeout;
                 }
                 LOGGER.warn("COUGAR: HTTP communication ERROR - URL [" + url + "] time [" + elapsed(startTime) + "mS]", failure);

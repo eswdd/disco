@@ -17,7 +17,7 @@
 
 <interface name="Baseline">
 
-    <operation name="echoCougarPropertyValue">
+    <operation name="echoDiscoPropertyValue">
         <parameters>
             <request>
                 <parameter name="propertyName">
@@ -526,7 +526,7 @@
         </extensions>
 	</operation>
 
-    <operation name="testNamedCougarException">
+    <operation name="testNamedDiscoException">
         <parameters>
             <request>
                 <parameter name="errorCodeName">
@@ -537,7 +537,7 @@
             </request>
         </parameters>
         <extensions>
-            <path>/testNamedCougarException</path>
+            <path>/testNamedDiscoException</path>
             <method>GET</method>
         </extensions>
     </operation>
@@ -2473,6 +2473,6 @@
 
 
 	<extensions>
-		<path>/cougarBaseline</path>
+		<path>/discoBaseline</path>
 	</extensions>
 </interface>

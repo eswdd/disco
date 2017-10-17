@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api;
+package uk.co.exemel.disco.transport.api;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
 
 import javax.ws.rs.core.MediaType;
 

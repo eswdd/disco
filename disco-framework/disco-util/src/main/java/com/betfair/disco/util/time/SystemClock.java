@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.time;
+package uk.co.exemel.disco.util.time;
 
 public class SystemClock implements Clock {
 

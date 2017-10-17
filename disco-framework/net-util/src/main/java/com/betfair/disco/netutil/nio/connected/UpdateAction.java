@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.connected;
+package uk.co.exemel.disco.netutil.nio.connected;
 
-import com.betfair.cougar.core.api.transcription.Transcribable;
+import uk.co.exemel.disco.core.api.transcription.Transcribable;
 import com.betfair.platform.virtualheap.updates.Update;
 
 public interface UpdateAction extends Transcribable {

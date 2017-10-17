@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardValidation/REST/Rest_Post_RequestTypes_DateTimeMap_60Seconds.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardvalidation.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardvalidation.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -34,20 +34,20 @@ import java.io.ByteArrayInputStream;
 import java.sql.Timestamp;
 
 /**
- * Ensure that Cougar returns the correct fault, when a REST request has a body parameter that contains a date map with dates with the seconds set to 60 (should be rolled to the next minute)
+ * Ensure that Disco returns the correct fault, when a REST request has a body parameter that contains a date map with dates with the seconds set to 60 (should be rolled to the next minute)
  */
 public class RestPostRequestTypesDateTimeMap60SecondsTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean hbean = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        CougarManager hinstance = cougarManager1;
-        cougarManager1.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean hbean = discoManager1.getNewHttpCallBean("87.248.113.14");
+        DiscoManager hinstance = discoManager1;
+        discoManager1.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
 
         hbean.setOperationName("dateTimeMapOperation");
 
-        hbean.setServiceName("baseline", "cougarBaseline");
+        hbean.setServiceName("baseline", "discoBaseline");
 
         hbean.setVersion("v2");
         // Set the body parameter to a date list containing date objects with seconds incorrectly set to 60
@@ -56,9 +56,9 @@ public class RestPostRequestTypesDateTimeMap60SecondsTest {
 
         Timestamp getTimeAsTimeStamp11 = new Timestamp(System.currentTimeMillis());
         // Make the REST JSON call to the operation requesting an XML response
-        hinstance.makeRestCougarHTTPCall(hbean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.XML);
+        hinstance.makeRestDiscoHTTPCall(hbean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.XML);
         // Make the REST JSON call to the operation requesting a JSON response
-        hinstance.makeRestCougarHTTPCall(hbean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        hinstance.makeRestDiscoHTTPCall(hbean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Create the expected response as an XML document (Fault)
         XMLHelpers xMLHelpers3 = new XMLHelpers();
         Document expectedXML = xMLHelpers3.getXMLObjectFromString("<fault><faultcode>Client</faultcode><faultstring>DSC-0044</faultstring><detail/></fault>");
@@ -66,12 +66,12 @@ public class RestPostRequestTypesDateTimeMap60SecondsTest {
         JSONHelpers jSONHelpers4 = new JSONHelpers();
         JSONObject expectedJSON = jSONHelpers4.convertXMLDocumentToJSONObjectRemoveRootElement(expectedXML);
         // Check the 2 responses are as expected (Bad Request)
-        HttpResponseBean response5 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
+        HttpResponseBean response5 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
         AssertionUtils.multiAssertEquals(expectedXML, response5.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response5.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response5.getHttpStatusText());
 
-        HttpResponseBean response6 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response6 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         AssertionUtils.multiAssertEquals(expectedJSON, response6.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response6.getHttpStatusText());
@@ -79,8 +79,8 @@ public class RestPostRequestTypesDateTimeMap60SecondsTest {
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
 
-        CougarManager cougarManager9 = CougarManager.getInstance();
-        cougarManager9.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp11, new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/dateTimeMapOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/dateTimeMapOperation", "BadRequest") );
+        DiscoManager discoManager9 = DiscoManager.getInstance();
+        discoManager9.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp11, new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/dateTimeMapOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/dateTimeMapOperation", "BadRequest") );
     }
 
 }

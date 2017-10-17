@@ -33,28 +33,28 @@ import com.betfair.baseline.v2.enumerations.EnumOperationResponseObjectQueryPara
 import com.betfair.baseline.v2.to.BodyParamEnumObject;
 import com.betfair.baseline.v2.to.EnumOperationResponseObject;
 import com.betfair.baseline.v2.to.SimpleResponse;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.Executable;
-import com.betfair.cougar.core.api.ev.ExecutionTimingRecorder;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionPostProcessor;
-import com.betfair.cougar.core.api.ev.ExecutionPreProcessor;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.SimpleOperationDefinition;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.util.RequestUUIDImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.Executable;
+import uk.co.exemel.disco.core.api.ev.ExecutionTimingRecorder;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionPostProcessor;
+import uk.co.exemel.disco.core.api.ev.ExecutionPreProcessor;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.SimpleOperationDefinition;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
 
 public class TestClient {
 
@@ -295,7 +295,7 @@ public class TestClient {
 					System.out.println("FAIL");
 				}
 				else {
-					CougarException ce = executionResult.getFault();
+					DiscoException ce = executionResult.getFault();
 					if (ResponseCode.BadRequest.equals(ce.getResponseCode())) {
 						System.out.println("PASS");
 					}

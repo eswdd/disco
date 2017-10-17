@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.jmx;
+package uk.co.exemel.disco.core.impl.jmx;
 
-import com.betfair.cougar.core.api.jmx.JMXHttpParser;
+import uk.co.exemel.disco.core.api.jmx.JMXHttpParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.sun.jdmk.comm.HtmlParser;

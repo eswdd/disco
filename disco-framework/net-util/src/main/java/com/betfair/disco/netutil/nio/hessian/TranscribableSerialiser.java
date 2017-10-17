@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.hessian;
+package uk.co.exemel.disco.netutil.nio.hessian;
 
 import java.io.IOException;
 import java.util.Set;
 
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.Transcribable;
-import com.betfair.cougar.core.api.transcription.TranscribableParams;
-import com.betfair.cougar.core.api.transcription.TranscriptionOutput;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.Transcribable;
+import uk.co.exemel.disco.core.api.transcription.TranscribableParams;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionOutput;
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.Serializer;
 

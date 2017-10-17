@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.marshalling;
+package uk.co.exemel.disco.netutil.nio.marshalling;
 
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
-import com.betfair.cougar.transport.impl.SimpleRequestTimeResolver;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
+import uk.co.exemel.disco.transport.impl.SimpleRequestTimeResolver;
 
 import java.io.IOException;
 import java.util.Date;

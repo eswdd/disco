@@ -15,11 +15,11 @@
  */
 
 // Originally from UpdatedComponentTests/Logging/Logging_CheckJMXPageHttpEndPointList.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.logging;
+package uk.co.exemel.disco.tests.updatedcomponenttests.logging;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpPageBean;
-import com.betfair.testing.utils.cougar.manager.HttpPageManager;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpPageBean;
+import com.betfair.testing.utils.disco.manager.HttpPageManager;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -46,7 +46,7 @@ public class LoggingCheckJMXPageHttpEndPointListTest {
         // Check the page was loaded
         HttpPageBean response3 = Bean.getMe();
         AssertionUtils.multiAssertEquals(true, response3.getPageLoaded());
-        // Click on the Cougar end points link
+        // Click on the Disco end points link
         boolean result = pageManager.clickOnLink(Bean, "CoUGAR", "EndPoints");
         AssertionUtils.multiAssertEquals(true, result);
         // Check the clicked link is loaded
@@ -62,7 +62,7 @@ public class LoggingCheckJMXPageHttpEndPointListTest {
         AssertionUtils.multiAssertEquals(true, response5.getPageLoaded());
         // Parse the html page text to produce a list of the endpoints listed on the page
         List<String> endPointList = pageManager.parseJmxEndpointPage(Bean);
-        // Check the various versions of testSimpleGet endpoints are listed on the page (using regex as can't hardcode the IP address that Cougar will be running on)
+        // Check the various versions of testSimpleGet endpoints are listed on the page (using regex as can't hardcode the IP address that Disco will be running on)
         result = pageManager.endPointExists(endPointList, "SOAP : Baseline/v1\\.0/testSimpleGet => http://.*/BaselineService/v1");
         AssertionUtils.multiAssertEquals(true, result);
         
@@ -75,16 +75,16 @@ public class LoggingCheckJMXPageHttpEndPointListTest {
         result = pageManager.endPointExists(endPointList, "JSON_RPC : Baseline/v2\\.8/testSimpleGet => http://.*/json-rpc/");
         AssertionUtils.multiAssertEquals(true, result);
         
-        result = pageManager.endPointExists(endPointList, "RESCRIPT : Baseline/v1\\.0/testSimpleGet => http://.*/cougarBaseline/v1/simple");
+        result = pageManager.endPointExists(endPointList, "RESCRIPT : Baseline/v1\\.0/testSimpleGet => http://.*/discoBaseline/v1/simple");
         AssertionUtils.multiAssertEquals(true, result);
         
-        result = pageManager.endPointExists(endPointList, "RESCRIPT : Baseline/v1\\.0/testSimpleGet => http://.*/www/cougarBaseline/v1/simple");
+        result = pageManager.endPointExists(endPointList, "RESCRIPT : Baseline/v1\\.0/testSimpleGet => http://.*/www/discoBaseline/v1/simple");
         AssertionUtils.multiAssertEquals(true, result);
         
-        result = pageManager.endPointExists(endPointList, "RESCRIPT : Baseline/v2\\.8/testSimpleGet => http://.*/cougarBaseline/v2/simple");
+        result = pageManager.endPointExists(endPointList, "RESCRIPT : Baseline/v2\\.8/testSimpleGet => http://.*/discoBaseline/v2/simple");
         AssertionUtils.multiAssertEquals(true, result);
         
-        result = pageManager.endPointExists(endPointList, "RESCRIPT : Baseline/v2\\.8/testSimpleGet => http://.*/www/cougarBaseline/v2/simple");
+        result = pageManager.endPointExists(endPointList, "RESCRIPT : Baseline/v2\\.8/testSimpleGet => http://.*/www/discoBaseline/v2/simple");
         AssertionUtils.multiAssertEquals(true, result);
     }
 

@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket;
+package uk.co.exemel.disco.client.socket;
 
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.Subscription;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.impl.ev.ConnectedResponseImpl;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.Subscription;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.impl.ev.ConnectedResponseImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.netutil.nio.HeapDelta;
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.NioUtils;
-import com.betfair.cougar.netutil.nio.TerminateSubscription;
-import com.betfair.cougar.netutil.nio.connected.InitialUpdate;
-import com.betfair.cougar.transport.api.protocol.CougarObjectIOFactory;
-import com.betfair.cougar.transport.api.protocol.socket.InvocationResponse;
-import com.betfair.cougar.transport.api.protocol.socket.NewHeapSubscription;
+import uk.co.exemel.disco.netutil.nio.HeapDelta;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.NioUtils;
+import uk.co.exemel.disco.netutil.nio.TerminateSubscription;
+import uk.co.exemel.disco.netutil.nio.connected.InitialUpdate;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectIOFactory;
+import uk.co.exemel.disco.transport.api.protocol.socket.InvocationResponse;
+import uk.co.exemel.disco.transport.api.protocol.socket.NewHeapSubscription;
 import com.betfair.platform.virtualheap.Heap;
 import com.betfair.platform.virtualheap.ImmutableHeap;
 import com.betfair.platform.virtualheap.conflate.Conflater;
@@ -71,7 +71,7 @@ public class ClientConnectedObjectManager {
 
     private Conflater newListenerConflater;
 
-    private CougarObjectIOFactory objectIOFactory;
+    private DiscoObjectIOFactory objectIOFactory;
 
     private static final AtomicLong initialPopulationThreadIdSource = new AtomicLong();
 
@@ -109,7 +109,7 @@ public class ClientConnectedObjectManager {
         this.maxDeltaQueue = maxDeltaQueue;
     }
 
-    public void setObjectIOFactory(CougarObjectIOFactory objectIOFactory) {
+    public void setObjectIOFactory(DiscoObjectIOFactory objectIOFactory) {
         this.objectIOFactory = objectIOFactory;
     }
 
@@ -152,7 +152,7 @@ public class ClientConnectedObjectManager {
             newHeapSubscription = (NewHeapSubscription) in.getResult();
         } catch (Exception e) {
             LOGGER.warn("Error unpacking subscription result", e);
-            observer.onResult(new ExecutionResult(new CougarClientException(ServerFaultCode.FrameworkError, "Error unpacking subscription result", e)));
+            observer.onResult(new ExecutionResult(new DiscoClientException(ServerFaultCode.FrameworkError, "Error unpacking subscription result", e)));
             return;
         }
         nioLogger.log(NioLogger.LoggingLevel.TRANSPORT, currentSession, "Received a subscription response for heapId %s with subscriptionId %s", newHeapSubscription.getHeapId(), newHeapSubscription.getSubscriptionId());
@@ -186,7 +186,7 @@ public class ClientConnectedObjectManager {
         if (heapState == null) {
             nioLogger.log(NioLogger.LoggingLevel.TRANSPORT, currentSession, "Couldn't find heap definition, heapId = %s", newHeapSubscription.getHeapId());
             LOGGER.warn("Can't find the heap for this subscription result. Heap id = " + newHeapSubscription.getHeapId());
-            observer.onResult(new ExecutionResult(new CougarClientException(ServerFaultCode.FrameworkError, "Can't find the heap for this subscription result. Heap id = " + newHeapSubscription.getHeapId())));
+            observer.onResult(new ExecutionResult(new DiscoClientException(ServerFaultCode.FrameworkError, "Can't find the heap for this subscription result. Heap id = " + newHeapSubscription.getHeapId())));
         } else {
             if (preExistingHeap && heapState.haveSeenInitialUpdate()) {
                 Subscription sub = heapState.addSubscription(this, currentSession, newHeapSubscription.getHeapId(), newHeapSubscription.getSubscriptionId());
@@ -196,7 +196,7 @@ public class ClientConnectedObjectManager {
                     // null sub means we already had a subscription with that id, something's not in a good state in the server, so kill this connection as we don't know what's going on
                     nioLogger.log(NioLogger.LoggingLevel.TRANSPORT, currentSession, "Duplicate subscription returned by the server, id = %s - closing session", newHeapSubscription.getSubscriptionId());
                     LOGGER.warn("Duplicate subscription returned by the server, id = " + newHeapSubscription.getSubscriptionId() + " - closing session");
-                    observer.onResult(new ExecutionResult(new CougarClientException(ServerFaultCode.FrameworkError, "Duplicate subscription returned by the server, id = " + newHeapSubscription.getSubscriptionId())));
+                    observer.onResult(new ExecutionResult(new DiscoClientException(ServerFaultCode.FrameworkError, "Duplicate subscription returned by the server, id = " + newHeapSubscription.getSubscriptionId())));
                     currentSession.close();
                 }
             } else {
@@ -235,7 +235,7 @@ public class ClientConnectedObjectManager {
                                     terminateSubscriptions(currentSession, newHeapSubscription.getHeapId(), Subscription.CloseReason.INTERNAL_ERROR);
                                 }
                                 LOGGER.warn("Didn't get initial population message for heap id = " + newHeapSubscription.getHeapId());
-                                observer.onResult(new ExecutionResult(new CougarClientException(ServerFaultCode.FrameworkError, "Didn't get initial population message for heap id = " + newHeapSubscription.getHeapId())));
+                                observer.onResult(new ExecutionResult(new DiscoClientException(ServerFaultCode.FrameworkError, "Didn't get initial population message for heap id = " + newHeapSubscription.getHeapId())));
                             }
                         }
                     }

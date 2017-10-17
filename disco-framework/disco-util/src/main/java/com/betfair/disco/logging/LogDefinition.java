@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging;
+package uk.co.exemel.disco.logging;
 
 
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class LogDefinition {
 	public void register() {
 		if (traceLog) {
             Logger traceLogger = LoggerFactory.getLogger(logName);
-			CougarLoggingUtils.setTraceLogger(traceLogger);
+			DiscoLoggingUtils.setTraceLogger(traceLogger);
 		}
 	}
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
 import org.apache.http.conn.ClientConnectionOperator;
 import org.apache.http.conn.params.ConnPerRoute;
@@ -29,23 +29,23 @@ import java.util.concurrent.TimeUnit;
  * Expose counters on client connection pools in JMX.
  */
 @ManagedResource
-public class CougarClientConnManager extends ThreadSafeClientConnManager {
+public class DiscoClientConnManager extends ThreadSafeClientConnManager {
 
     public static final int TOTAL_CONNECTIONS = 20;
 
     @Override
     protected ConnPoolByRoute createConnectionPool(long connTTL, TimeUnit connTTLTimeUnit) {
-        return new CougarConnPoolByRoute(connOperator, connPerRoute, TOTAL_CONNECTIONS, connTTL, connTTLTimeUnit);
+        return new DiscoConnPoolByRoute(connOperator, connPerRoute, TOTAL_CONNECTIONS, connTTL, connTTLTimeUnit);
     }
 
     @ManagedAttribute
     public int getFreeConnections() {
-        return ((CougarConnPoolByRoute) pool).getFreeConnections();
+        return ((DiscoConnPoolByRoute) pool).getFreeConnections();
     }
 
 
-    private final class CougarConnPoolByRoute extends ConnPoolByRoute {
-        private CougarConnPoolByRoute(ClientConnectionOperator operator, ConnPerRoute connPerRoute,
+    private final class DiscoConnPoolByRoute extends ConnPoolByRoute {
+        private DiscoConnPoolByRoute(ClientConnectionOperator operator, ConnPerRoute connPerRoute,
                                       int maxTotalConnections, long connTTL, TimeUnit connTTLTimeUnit) {
             super(operator, connPerRoute, maxTotalConnections, connTTL, connTTLTimeUnit);
         }

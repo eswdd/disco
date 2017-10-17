@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.manager;
+package com.betfair.testing.utils.disco.manager;
 
-import com.betfair.cougar.util.configuration.PropertyConfigurer;
+import uk.co.exemel.disco.util.configuration.PropertyConfigurer;
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.callmaker.AbstractCallMaker;
-import com.betfair.testing.utils.cougar.callmaker.CallMakerFactory;
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.callmaker.AbstractCallMaker;
+import com.betfair.testing.utils.disco.callmaker.CallMakerFactory;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import org.json.JSONObject;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.w3c.dom.Document;
@@ -42,9 +42,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class CougarManager {
+public class DiscoManager {
 
-	private CougarHelpers cougarHelpers;
+	private DiscoHelpers discoHelpers;
 	private JSONHelpers jHelpers = new JSONHelpers();
 	private static final Map<String, String> OPERATION_PATHS = new HashMap<String, String>(){
 		{
@@ -70,23 +70,23 @@ public class CougarManager {
     private String serviceLogFileName;
     private String traceLogFileName;
 
-    private static CougarManager instance = new CougarManager();
+    private static DiscoManager instance = new DiscoManager();
 
-    public static CougarManager getInstance() {
+    public static DiscoManager getInstance() {
         return instance;
     }
 
-    private CougarManager() {
-		ClassPathXmlApplicationContext springContext = new ClassPathXmlApplicationContext("/conf/com.betfair.jett.utils.cougar.xml");
-		cougarHelpers = (CougarHelpers)springContext.getBean("cougarHelpers");
+    private DiscoManager() {
+		ClassPathXmlApplicationContext springContext = new ClassPathXmlApplicationContext("/conf/com.betfair.jett.utils.disco.xml");
+		discoHelpers = (DiscoHelpers)springContext.getBean("discoHelpers");
 
-		HashMap<CougarMessageProtocolRequestTypeEnum, AbstractCallMaker> requestBuilderMap = (HashMap<CougarMessageProtocolRequestTypeEnum, AbstractCallMaker>)springContext.getBean("requestBuilderMap");
+		HashMap<DiscoMessageProtocolRequestTypeEnum, AbstractCallMaker> requestBuilderMap = (HashMap<DiscoMessageProtocolRequestTypeEnum, AbstractCallMaker>)springContext.getBean("requestBuilderMap");
 		CallMakerFactory.setRequestBuilderMap(requestBuilderMap);
 	}
 
 	/**
 	 *
-	 * Get a new CougarHttpCallBean
+	 * Get a new DiscoHttpCallBean
 	 *
 	 * @return
 	 */
@@ -95,7 +95,7 @@ public class CougarManager {
 	}
 
 	/**
-	 * Get a new CougarHttpCallBean setting the ipAddress as passed
+	 * Get a new DiscoHttpCallBean setting the ipAddress as passed
 	 *
 	 * @param ipAddress
 	 * @return
@@ -113,16 +113,16 @@ public class CougarManager {
 	 * @param httpCallBean
 	 * @return
 	 */
-	public void makeRestCougarHTTPCalls(HttpCallBean httpCallBean) {
+	public void makeRestDiscoHTTPCalls(HttpCallBean httpCallBean) {
 			AbstractCallMaker callMaker;
 
-			callMaker =  CallMakerFactory.resolveRequestBuilderForCougarService(CougarMessageProtocolRequestTypeEnum.RESTJSON);
-			httpCallBean.setResponseByEnum(CougarMessageProtocolResponseTypeEnum.RESTJSONJSON, callMaker.makeCall(httpCallBean, CougarMessageContentTypeEnum.JSON));
-			httpCallBean.setResponseByEnum(CougarMessageProtocolResponseTypeEnum.RESTJSONXML, callMaker.makeCall(httpCallBean, CougarMessageContentTypeEnum.XML));
+			callMaker =  CallMakerFactory.resolveRequestBuilderForDiscoService(DiscoMessageProtocolRequestTypeEnum.RESTJSON);
+			httpCallBean.setResponseByEnum(DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON, callMaker.makeCall(httpCallBean, DiscoMessageContentTypeEnum.JSON));
+			httpCallBean.setResponseByEnum(DiscoMessageProtocolResponseTypeEnum.RESTJSONXML, callMaker.makeCall(httpCallBean, DiscoMessageContentTypeEnum.XML));
 
-			callMaker =  CallMakerFactory.resolveRequestBuilderForCougarService(CougarMessageProtocolRequestTypeEnum.RESTXML);
-			httpCallBean.setResponseByEnum(CougarMessageProtocolResponseTypeEnum.RESTXMLXML, callMaker.makeCall(httpCallBean, CougarMessageContentTypeEnum.XML));
-			httpCallBean.setResponseByEnum(CougarMessageProtocolResponseTypeEnum.RESTXMLJSON, callMaker.makeCall(httpCallBean, CougarMessageContentTypeEnum.JSON));
+			callMaker =  CallMakerFactory.resolveRequestBuilderForDiscoService(DiscoMessageProtocolRequestTypeEnum.RESTXML);
+			httpCallBean.setResponseByEnum(DiscoMessageProtocolResponseTypeEnum.RESTXMLXML, callMaker.makeCall(httpCallBean, DiscoMessageContentTypeEnum.XML));
+			httpCallBean.setResponseByEnum(DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON, callMaker.makeCall(httpCallBean, DiscoMessageContentTypeEnum.JSON));
 	}
 
 	/**
@@ -131,39 +131,39 @@ public class CougarManager {
 	 *
 	 * @return
 	 */
-	public void makeSoapCougarHTTPCalls(HttpCallBean httpCallBean) {
+	public void makeSoapDiscoHTTPCalls(HttpCallBean httpCallBean) {
 
 			AbstractCallMaker callMaker;
-			callMaker =  CallMakerFactory.resolveRequestBuilderForCougarService(CougarMessageProtocolRequestTypeEnum.SOAP);
-			httpCallBean.setResponseByEnum(CougarMessageProtocolResponseTypeEnum.SOAP, callMaker.makeCall(httpCallBean, CougarMessageContentTypeEnum.XML));
+			callMaker =  CallMakerFactory.resolveRequestBuilderForDiscoService(DiscoMessageProtocolRequestTypeEnum.SOAP);
+			httpCallBean.setResponseByEnum(DiscoMessageProtocolResponseTypeEnum.SOAP, callMaker.makeCall(httpCallBean, DiscoMessageContentTypeEnum.XML));
 	}
 
 
 
-	public CougarHelpers getCougarHelpers() {
-		return cougarHelpers;
+	public DiscoHelpers getDiscoHelpers() {
+		return discoHelpers;
 	}
 
-	public void setCougarHelpers(CougarHelpers cougarHelpers) {
-		this.cougarHelpers = cougarHelpers;
+	public void setDiscoHelpers(DiscoHelpers discoHelpers) {
+		this.discoHelpers = discoHelpers;
 	}
 
 
 	/**
 	 * Method returns a Map holding the response converted to each of the Rest message/content types
-	 * supported by the cougar baseline app
+	 * supported by the disco baseline app
 	 *
 	 * @param document
 	 * @param httpCallBean
 	 * @return
 	 */
-	public Map<CougarMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes(Document document, HttpCallBean httpCallBean) {
+	public Map<DiscoMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes(Document document, HttpCallBean httpCallBean) {
 
-		HashMap<CougarMessageProtocolRequestTypeEnum, Object> returnMap = new HashMap<CougarMessageProtocolRequestTypeEnum, Object>();
+		HashMap<DiscoMessageProtocolRequestTypeEnum, Object> returnMap = new HashMap<DiscoMessageProtocolRequestTypeEnum, Object>();
 
 		JSONObject jObject = jHelpers.convertXMLDocumentToJSONObjectRemoveRootElement(document);
 		jHelpers.removeJSONObjectHoldingSameTypeList(jObject);
-		returnMap.put(CougarMessageProtocolRequestTypeEnum.RESTJSON, jObject);
+		returnMap.put(DiscoMessageProtocolRequestTypeEnum.RESTJSON, jObject);
 
 		Document newDocument = null;
 
@@ -194,10 +194,10 @@ public class CougarManager {
 		}
 
 		if(newDocument == null){ // Return original document (for null messages & faults)
-			returnMap.put(CougarMessageProtocolRequestTypeEnum.RESTXML, document);
+			returnMap.put(DiscoMessageProtocolRequestTypeEnum.RESTXML, document);
 		}
 		else{ // Return new Document with correct root
-			returnMap.put(CougarMessageProtocolRequestTypeEnum.RESTXML, newDocument);
+			returnMap.put(DiscoMessageProtocolRequestTypeEnum.RESTXML, newDocument);
 		}
 
 		return returnMap;
@@ -210,11 +210,11 @@ public class CougarManager {
 	 *
 	 * @return
 	 */
-	public void makeRestCougarHTTPCall(HttpCallBean httpCallBean, CougarMessageProtocolRequestTypeEnum requestProtocolType) {
+	public void makeRestDiscoHTTPCall(HttpCallBean httpCallBean, DiscoMessageProtocolRequestTypeEnum requestProtocolType) {
 			AbstractCallMaker callMaker;
 
-			callMaker =  CallMakerFactory.resolveRequestBuilderForCougarService(requestProtocolType);
-			httpCallBean.setResponseByEnum(CougarMessageProtocolResponseTypeEnum.REST, callMaker.makeCall(httpCallBean, null));
+			callMaker =  CallMakerFactory.resolveRequestBuilderForDiscoService(requestProtocolType);
+			httpCallBean.setResponseByEnum(DiscoMessageProtocolResponseTypeEnum.REST, callMaker.makeCall(httpCallBean, null));
 
 	}
 
@@ -253,23 +253,23 @@ public class CougarManager {
 	 * @param attributeName
 	 * @param value
 	 */
-	public void setCougarFaultControllerJMXMBeanAttrbiute(String attributeName, String value) {
-		cougarHelpers.setJMXFaultControllerAttribute(attributeName, value);
+	public void setDiscoFaultControllerJMXMBeanAttrbiute(String attributeName, String value) {
+		discoHelpers.setJMXFaultControllerAttribute(attributeName, value);
 	}
 
 	/**
 	 *
-	 * Gets the value of the passed attribute from Cougar JMX Logging Manager
+	 * Gets the value of the passed attribute from Disco JMX Logging Manager
 	 *
 	 * @param attributeName
 	 * @return
 	 */
-	public String getCougarLogManagerJMXAttributeValue(String attributeName) {
-		return cougarHelpers.getJMXLoggingManagerAttributeValue(attributeName);
+	public String getDiscoLogManagerJMXAttributeValue(String attributeName) {
+		return discoHelpers.getJMXLoggingManagerAttributeValue(attributeName);
 	}
 
-	public Integer getCougarUpTimeInMins(String attributeName){
-		String value = cougarHelpers.getRuntimeAttributeValue(attributeName);
+	public Integer getDiscoUpTimeInMins(String attributeName){
+		String value = discoHelpers.getRuntimeAttributeValue(attributeName);
 		Integer timeInMS = Integer.valueOf(value);
 		Integer timeInMins = (timeInMS / 60000);
 		return timeInMins;
@@ -285,20 +285,20 @@ public class CougarManager {
 	 * @param requestProtocolType
 	 * @param responseContentType
 	 */
-	public void makeRestCougarHTTPCall(HttpCallBean httpCallBean, CougarMessageProtocolRequestTypeEnum requestProtocolType, CougarMessageContentTypeEnum responseContentType) {
+	public void makeRestDiscoHTTPCall(HttpCallBean httpCallBean, DiscoMessageProtocolRequestTypeEnum requestProtocolType, DiscoMessageContentTypeEnum responseContentType) {
 			AbstractCallMaker callMaker;
-			callMaker =  CallMakerFactory.resolveRequestBuilderForCougarService(requestProtocolType);
-			CougarMessageProtocolResponseTypeEnum messageProtocolResponseTypeEnum = CougarMessageProtocolResponseTypeEnum.valueOf(requestProtocolType.toString()+responseContentType.toString());
+			callMaker =  CallMakerFactory.resolveRequestBuilderForDiscoService(requestProtocolType);
+			DiscoMessageProtocolResponseTypeEnum messageProtocolResponseTypeEnum = DiscoMessageProtocolResponseTypeEnum.valueOf(requestProtocolType.toString()+responseContentType.toString());
 			httpCallBean.setResponseByEnum(messageProtocolResponseTypeEnum, callMaker.makeCall(httpCallBean, responseContentType));
 	}
 
 
     public String getBaseLogDirectory() {
         if (baseLogDirectory == null) {
-            baseLogDirectory = System.getProperty("cougar.base.log.dir");
+            baseLogDirectory = System.getProperty("disco.base.log.dir");
             if (baseLogDirectory == null) {
-                String logDir = cougarHelpers.getJMXApplicationPropertyValue("cougar.log.dir");
-                String workingDir = cougarHelpers.getJMXSystemPropertyValue("user.dir");
+                String logDir = discoHelpers.getJMXApplicationPropertyValue("disco.log.dir");
+                String workingDir = discoHelpers.getJMXSystemPropertyValue("user.dir");
                 baseLogDirectory = workingDir + "/" + logDir;
             }
         }
@@ -308,7 +308,7 @@ public class CougarManager {
     public String getAccessLogFileName() {
         if (accessLogFileName == null) {
             String machineName = PropertyConfigurer.HOSTNAME;
-            String logName = machineName + "-cougar-baseline-access.log";
+            String logName = machineName + "-disco-baseline-access.log";
             accessLogFileName = "dw/"+logName;
         }
         return accessLogFileName;
@@ -317,7 +317,7 @@ public class CougarManager {
     public String getRequestLogFileName() {
         if (requestLogFileName == null) {
             String machineName = PropertyConfigurer.HOSTNAME;
-            String logName = machineName + "-cougar-baseline-request-Baseline.log";
+            String logName = machineName + "-disco-baseline-request-Baseline.log";
             requestLogFileName = "dw/"+logName;
         }
         return requestLogFileName;
@@ -326,7 +326,7 @@ public class CougarManager {
     public String getServiceLogFileName() {
         if (serviceLogFileName == null) {
             String machineName = PropertyConfigurer.HOSTNAME;
-            String logName = machineName + "-cougar-baseline-server.log";
+            String logName = machineName + "-disco-baseline-server.log";
             serviceLogFileName = logName;
         }
         return serviceLogFileName;
@@ -335,7 +335,7 @@ public class CougarManager {
     public String getTraceLogFileName() {
         if (traceLogFileName == null) {
             String machineName = PropertyConfigurer.HOSTNAME;
-            String logName = machineName + "-cougar-baseline-trace.log";
+            String logName = machineName + "-disco-baseline-trace.log";
             traceLogFileName = logName;
         }
         return traceLogFileName;

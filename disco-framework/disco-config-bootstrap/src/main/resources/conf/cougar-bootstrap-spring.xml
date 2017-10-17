@@ -19,9 +19,9 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="cougar.core.EncryptorRegistry" class="com.betfair.cougar.util.configuration.EncryptorRegistry"/>
-    <bean id="cougar.core.EncryptorRegisterer" class="com.betfair.cougar.util.configuration.EncryptorRegisterer" abstract="true" lazy-init="false" scope="singleton">
-        <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
+    <bean id="disco.core.EncryptorRegistry" class="uk.co.exemel.disco.util.configuration.EncryptorRegistry"/>
+    <bean id="disco.core.EncryptorRegisterer" class="uk.co.exemel.disco.util.configuration.EncryptorRegisterer" abstract="true" lazy-init="false" scope="singleton">
+        <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
     </bean>
 
 </beans>

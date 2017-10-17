@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.logging;
+package uk.co.exemel.disco.core.impl.logging;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.util.configuration.PropertyConfigurer;
+import uk.co.exemel.disco.util.configuration.PropertyConfigurer;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Enumeration;
@@ -30,7 +30,7 @@ import java.util.Map;
 public abstract class AbstractLoggingControl implements InitializingBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractLoggingControl.class);
 
-    private static final String CUSTOM_LOG_LEVEL = "cougar.log.level.";
+    private static final String CUSTOM_LOG_LEVEL = "disco.log.level.";
 
     public void setLogLevels(Map<String, String> logLevels) {
         for (Map.Entry<String, String> e : logLevels.entrySet()) {

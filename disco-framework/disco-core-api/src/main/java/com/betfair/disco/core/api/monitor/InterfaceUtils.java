@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.monitor;
+package uk.co.exemel.disco.core.api.monitor;
 
-import com.betfair.cougar.api.Service;
+import uk.co.exemel.disco.api.Service;
 
 
 public class InterfaceUtils {

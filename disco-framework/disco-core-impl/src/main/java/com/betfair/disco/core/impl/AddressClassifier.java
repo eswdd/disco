@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl;
+package uk.co.exemel.disco.core.impl;
 
-import com.betfair.cougar.util.NetworkAddress;
+import uk.co.exemel.disco.util.NetworkAddress;
 
 import java.util.ArrayList;
 import java.util.List;

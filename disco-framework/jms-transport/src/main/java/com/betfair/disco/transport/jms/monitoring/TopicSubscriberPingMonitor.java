@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms.monitoring;
+package uk.co.exemel.disco.transport.jms.monitoring;
 
 import com.betfair.tornjak.monitor.OnDemandMonitor;
 import com.betfair.tornjak.monitor.Status;

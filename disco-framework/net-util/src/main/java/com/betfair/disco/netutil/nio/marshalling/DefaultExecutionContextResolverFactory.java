@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.marshalling;
+package uk.co.exemel.disco.netutil.nio.marshalling;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.core.api.builder.DehydratedExecutionContextBuilder;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextComponent;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolver;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolverFactory;
-import com.betfair.cougar.transport.api.RequestTimeResolver;
-import com.betfair.cougar.util.geolocation.GeoIPLocator;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.core.api.builder.DehydratedExecutionContextBuilder;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextComponent;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolver;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolverFactory;
+import uk.co.exemel.disco.transport.api.RequestTimeResolver;
+import uk.co.exemel.disco.util.geolocation.GeoIPLocator;
 
 import java.util.Date;
 import java.util.Set;

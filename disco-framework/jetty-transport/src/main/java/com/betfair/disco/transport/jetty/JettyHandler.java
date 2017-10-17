@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,19 +27,19 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.betfair.cougar.CougarVersion;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.core.api.RequestTimer;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.DiscoVersion;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.core.api.RequestTimer;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.transport.api.TransportCommandProcessor;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.api.protocol.http.ResponseCodeMapper;
-import com.betfair.cougar.util.HeaderUtils;
+import uk.co.exemel.disco.transport.api.TransportCommandProcessor;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.api.protocol.http.ResponseCodeMapper;
+import uk.co.exemel.disco.util.HeaderUtils;
 import org.eclipse.jetty.continuation.Continuation;
 import org.eclipse.jetty.continuation.ContinuationListener;
 import org.eclipse.jetty.continuation.ContinuationSupport;
@@ -56,7 +56,7 @@ public class JettyHandler extends AbstractHandler {
 
 	private int timeoutInSeconds;
     private boolean suppressCommasInAccessLog;
-    private static final String VERSION_HEADER = "Cougar 2 - "+CougarVersion.getVersion();
+    private static final String VERSION_HEADER = "Disco 2 - "+DiscoVersion.getVersion();
 
     public JettyHandler(final TransportCommandProcessor<HttpCommand> commandProcessor, boolean suppressCommasInAccessLog) {
         this(commandProcessor, null, null, suppressCommasInAccessLog);
@@ -96,8 +96,8 @@ public class JettyHandler extends AbstractHandler {
 				LOGGER.debug("Message Timeout at Jetty Handler for path {}", target);
 				response.sendError(HttpServletResponse.SC_GATEWAY_TIMEOUT);
 			}
-		} catch (CougarException ce) {
-			LOGGER.warn("Cougar Exception thrown processing request", ce);
+		} catch (DiscoException ce) {
+			LOGGER.warn("Disco Exception thrown processing request", ce);
 			response.sendError(ResponseCodeMapper.getHttpResponseCode(ce.getResponseCode()));
 		} catch (Exception e) {
 			LOGGER.error("Unexpected Exception thrown processing request", e);
@@ -293,7 +293,7 @@ public class JettyHandler extends AbstractHandler {
             if (m.matches()) {
                 return m.group(1).toLowerCase();
             }
-            throw new CougarValidationException(ServerFaultCode.NoSuchService, "Uri [" + uri + "] did not contain a version");
+            throw new DiscoValidationException(ServerFaultCode.NoSuchService, "Uri [" + uri + "] did not contain a version");
         }
 
 

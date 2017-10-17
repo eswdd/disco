@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
 import java.util.List;
 
-import com.betfair.cougar.core.api.ev.CompoundExecutableResolver;
-import com.betfair.cougar.core.api.ev.ExecutableResolver;
+import uk.co.exemel.disco.core.api.ev.CompoundExecutableResolver;
+import uk.co.exemel.disco.core.api.ev.ExecutableResolver;
 
 /**
  * Helper class for registering multiple ExecutionResolvers with Spring configuration.

@@ -15,27 +15,27 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.client.exception.ExceptionTransformer;
-import com.betfair.cougar.client.query.QueryStringGeneratorFactory;
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.client.AbstractClientTransport;
-import com.betfair.cougar.core.api.client.ExceptionFactory;
-import com.betfair.cougar.core.api.client.TransportMetrics;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.*;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.api.transcription.EnumDerialisationException;
-import com.betfair.cougar.core.api.transcription.EnumUtils;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.impl.tracing.TracingEndObserver;
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.client.exception.ExceptionTransformer;
+import uk.co.exemel.disco.client.query.QueryStringGeneratorFactory;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.client.AbstractClientTransport;
+import uk.co.exemel.disco.core.api.client.ExceptionFactory;
+import uk.co.exemel.disco.core.api.client.TransportMetrics;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.*;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.api.transcription.EnumDerialisationException;
+import uk.co.exemel.disco.core.api.transcription.EnumUtils;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.impl.tracing.TracingEndObserver;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
@@ -86,7 +86,7 @@ public abstract class AbstractHttpExecutable<HR> extends AbstractClientTransport
     private QueryStringGeneratorFactory queryStringGeneratorFactory;
     private ExceptionTransformer exceptionTransformer;
     private ExceptionFactory exceptionFactory;
-    protected CougarRequestFactory<HR> requestFactory;
+    protected DiscoRequestFactory<HR> requestFactory;
     private Tracer tracer;
 
     protected boolean transportSSLEnabled;
@@ -114,7 +114,7 @@ public abstract class AbstractHttpExecutable<HR> extends AbstractClientTransport
 
 
     protected AbstractHttpExecutable(final HttpServiceBindingDescriptor bindingDescriptor,
-                                  CougarRequestFactory<HR> requestFactory,
+                                  DiscoRequestFactory<HR> requestFactory,
                                   Tracer tracer) {
         this.serviceBindingDescriptor = bindingDescriptor;
         this.requestFactory = requestFactory;
@@ -200,7 +200,7 @@ public abstract class AbstractHttpExecutable<HR> extends AbstractClientTransport
 
     }
 
-    protected interface CougarHttpResponse {
+    protected interface DiscoHttpResponse {
 
         InputStream getEntity() throws IOException;
 
@@ -213,7 +213,7 @@ public abstract class AbstractHttpExecutable<HR> extends AbstractClientTransport
         long getResponseSize();
     }
 
-    protected void processResponse(final CougarHttpResponse response,
+    protected void processResponse(final DiscoHttpResponse response,
                                    final ExecutionObserver obs,
                                    final OperationDefinition definition) {
         Exception exception = null;
@@ -223,7 +223,7 @@ public abstract class AbstractHttpExecutable<HR> extends AbstractClientTransport
                 descriptorMap.get(definition.getOperationKey().getLocalKey());
         try {
             if (response.getEntity() == null) {
-                exception = new CougarClientException(ServerFaultCode.RemoteCougarCommunicationFailure,
+                exception = new DiscoClientException(ServerFaultCode.RemoteDiscoCommunicationFailure,
                         "No response returned by server");
             } else {
                 inputStream = response.getEntity();
@@ -248,7 +248,7 @@ public abstract class AbstractHttpExecutable<HR> extends AbstractClientTransport
                     }
                 } else if (response.getResponseStatus() == HttpStatus.SC_NOT_FOUND) {
                     // IN this case, we know there will be no exception body, so just stick on a new Exception
-                    exception = new CougarClientException(ServerFaultCode.NoSuchService,
+                    exception = new DiscoClientException(ServerFaultCode.NoSuchService,
                             "The server did not recognise the URL.");
                 } else {
                     try {
@@ -260,17 +260,17 @@ public abstract class AbstractHttpExecutable<HR> extends AbstractClientTransport
                 }
             }
         } catch (final Exception e) {
-            if (e instanceof CougarClientException) {
+            if (e instanceof DiscoClientException) {
                 exception = e;
             }
             else if (e instanceof EnumDerialisationException) {
-                exception = new CougarClientException(CougarMarshallingException.unmarshallingException("json","Enum failure",e,true));
+                exception = new DiscoClientException(DiscoMarshallingException.unmarshallingException("json","Enum failure",e,true));
             }
-            else if (e instanceof CougarException) {
-                exception = new CougarClientException((CougarException)e);
+            else if (e instanceof DiscoException) {
+                exception = new DiscoClientException((DiscoException)e);
             }
             else {
-                exception = new CougarClientException(ServerFaultCode.RemoteCougarCommunicationFailure,
+                exception = new DiscoClientException(ServerFaultCode.RemoteDiscoCommunicationFailure,
                         "Exception occurred in Client: " + e.getMessage(), e);
             }
         } finally {
@@ -285,25 +285,25 @@ public abstract class AbstractHttpExecutable<HR> extends AbstractClientTransport
         // end request callback
     }
 
-    private CougarClientException clientException(CougarHttpResponse response, Exception e) {
-        if (e instanceof CougarClientException) {
-            return (CougarClientException)e;
+    private DiscoClientException clientException(DiscoHttpResponse response, Exception e) {
+        if (e instanceof DiscoClientException) {
+            return (DiscoClientException)e;
         }
-        if (e instanceof CougarException) {
-            return new CougarClientException(((CougarException)e).getServerFaultCode(),e.getMessage(),e, !isDefinitelyCougarResponse(response));
+        if (e instanceof DiscoException) {
+            return new DiscoClientException(((DiscoException)e).getServerFaultCode(),e.getMessage(),e, !isDefinitelyDiscoResponse(response));
         }
-        ServerFaultCode serverFaultCode = ServerFaultCode.RemoteCougarCommunicationFailure;
-        String message = "Unknown error communicating with remote Cougar service";
+        ServerFaultCode serverFaultCode = ServerFaultCode.RemoteDiscoCommunicationFailure;
+        String message = "Unknown error communicating with remote Disco service";
         switch (response.getResponseStatus()) {
             case HttpStatus.SC_NOT_FOUND:
                 serverFaultCode = ServerFaultCode.NoSuchOperation;
                 message = "Service not found";
         }
-        return new CougarClientException(serverFaultCode, message, e, !isDefinitelyCougarResponse(response));
+        return new DiscoClientException(serverFaultCode, message, e, !isDefinitelyDiscoResponse(response));
     }
 
     protected void processException(ExecutionObserver obs, Throwable t, String url) {
-        ServerFaultCode serverFaultCode = ServerFaultCode.RemoteCougarCommunicationFailure;
+        ServerFaultCode serverFaultCode = ServerFaultCode.RemoteDiscoCommunicationFailure;
         if (t instanceof SocketTimeoutException) {
             serverFaultCode = ServerFaultCode.Timeout;
         }
@@ -311,7 +311,7 @@ public abstract class AbstractHttpExecutable<HR> extends AbstractClientTransport
     }
 
     protected void processException(ExecutionObserver obs, Throwable t, String url, ServerFaultCode serverFaultCode) {
-        Exception exception = new CougarClientException(serverFaultCode,
+        Exception exception = new DiscoClientException(serverFaultCode,
                 "Exception occurred in Client: " + t.getMessage()+": "+url, t);
         obs.onResult(new ClientExecutionResult(exception, 0));
     }
@@ -325,19 +325,19 @@ public abstract class AbstractHttpExecutable<HR> extends AbstractClientTransport
 
 
     /**
-     * has the responding server identified itself as Cougar
+     * has the responding server identified itself as Disco
      *
      * Note that due to legacy servers/network infrastructure a 'false negative' is possible.
-     * in other words although a 'true' response confirms that the server has identified itself Cougar,
-     * a 'false' does not confirm that a server IS NOT Cougar. The cougar header could have been stripped out
-     * by network infrastructure, or the server could still be a legacy Cougar which does not provide this header.
+     * in other words although a 'true' response confirms that the server has identified itself Disco,
+     * a 'false' does not confirm that a server IS NOT Disco. The disco header could have been stripped out
+     * by network infrastructure, or the server could still be a legacy Disco which does not provide this header.
      *
      * @param response http response
-     * @return boolean has the responding server identified itself as Cougar
+     * @return boolean has the responding server identified itself as Disco
      */
-    private boolean isDefinitelyCougarResponse(CougarHttpResponse response) {
+    private boolean isDefinitelyDiscoResponse(DiscoHttpResponse response) {
         String ident = response.getServerIdentity();
-        if (ident != null && ident.contains("Cougar 2")) {
+        if (ident != null && ident.contains("Disco 2")) {
             return true;
         }
         return false;
@@ -429,7 +429,7 @@ public abstract class AbstractHttpExecutable<HR> extends AbstractClientTransport
         this.hostnameVerificationDisabled = hostnameVerificationDisabled;
     }
 
-    public void setRequestFactory(CougarRequestFactory<HR> requestFactory) {
+    public void setRequestFactory(DiscoRequestFactory<HR> requestFactory) {
         this.requestFactory = requestFactory;
     }
 

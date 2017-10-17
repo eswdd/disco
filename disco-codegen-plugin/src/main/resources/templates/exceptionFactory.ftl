@@ -23,8 +23,8 @@ package ${package}.${majorVersion}.exception;
 
 import ${package}.${majorVersion}.enumerations.*;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.core.api.client.AbstractExceptionFactory;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.core.api.client.AbstractExceptionFactory;
 
 import java.util.Map;
 

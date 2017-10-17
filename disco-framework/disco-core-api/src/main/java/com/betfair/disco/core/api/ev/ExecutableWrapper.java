@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.ev;
+package uk.co.exemel.disco.core.api.ev;
 
 /**
- * Interface to be implemented by any Executables which wrap other executables. Used by various Cougar internals to
+ * Interface to be implemented by any Executables which wrap other executables. Used by various Disco internals to
  * find the wrapping they need to implement certain hooks.
  */
 public interface ExecutableWrapper extends Executable {

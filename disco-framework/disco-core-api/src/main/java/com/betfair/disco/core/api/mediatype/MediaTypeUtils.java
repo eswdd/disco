@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.mediatype;
+package uk.co.exemel.disco.core.api.mediatype;
 
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;

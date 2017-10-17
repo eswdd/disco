@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms;
+package uk.co.exemel.disco.transport.jms;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.transport.api.protocol.events.EventErrorHandler;
+import uk.co.exemel.disco.transport.api.protocol.events.EventErrorHandler;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import java.util.logging.Level;
 
 /**
- * this default implementation of the @see com.betfair.cougar.transport.api.protocol.events.EventErrorHandler
+ * this default implementation of the @see uk.co.exemel.disco.transport.api.protocol.events.EventErrorHandler
  * interface logs and acks a bad message.  If you require additional functionality implement your own
  * EventErrorHandler and wire that in to the EventHandler implementation
  */

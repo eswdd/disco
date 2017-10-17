@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging;
+package uk.co.exemel.disco.logging;
 
-import com.betfair.cougar.logging.handlers.AbstractLogHandler;
-import com.betfair.cougar.logging.handlers.LogHandlerFactory;
+import uk.co.exemel.disco.logging.handlers.AbstractLogHandler;
+import uk.co.exemel.disco.logging.handlers.LogHandlerFactory;
 
 import java.io.IOException;
 import java.util.Map;

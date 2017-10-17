@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.core.api.*;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.PanicInTheCougar;
-import com.betfair.cougar.core.api.transports.AbstractRegisterableTransport;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.core.api.*;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.PanicInTheDisco;
+import uk.co.exemel.disco.core.api.transports.AbstractRegisterableTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.transport.api.RequestLogger;
-import com.betfair.cougar.transport.api.TransportCommandProcessorFactory;
-import com.betfair.cougar.transport.api.protocol.ProtocolBinding;
-import com.betfair.cougar.transport.api.protocol.ProtocolBindingRegistry;
-import com.betfair.cougar.transport.api.protocol.http.GeoLocationDeserializer;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommandProcessor;
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.jsonrpc.JsonRpcOperationBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
-import com.betfair.cougar.transport.jetty.jmx.JettyEndpoints;
-import com.betfair.cougar.util.geolocation.GeoIPLocator;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.transport.api.RequestLogger;
+import uk.co.exemel.disco.transport.api.TransportCommandProcessorFactory;
+import uk.co.exemel.disco.transport.api.protocol.ProtocolBinding;
+import uk.co.exemel.disco.transport.api.protocol.ProtocolBindingRegistry;
+import uk.co.exemel.disco.transport.api.protocol.http.GeoLocationDeserializer;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommandProcessor;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.jsonrpc.JsonRpcOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.jetty.jmx.JettyEndpoints;
+import uk.co.exemel.disco.util.geolocation.GeoIPLocator;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
@@ -158,7 +158,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
     }
 
     @Override
-    public void onCougarStart() {
+    public void onDiscoStart() {
         createJettyHandlers();
 
         logOperationEndpoints(serviceBindingDescriptors);
@@ -166,17 +166,17 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
             server.start();
         } catch (Exception ex) {
             LOGGER.error("Failed to startup jetty", ex);
-            throw new PanicInTheCougar(ex);
+            throw new PanicInTheDisco(ex);
         }
     }
 
     /**
      * By setting the starting gate property this IntroductionService will register
-     * itself with the CougarStartingGate
+     * itself with the DiscoStartingGate
      *
      * @param startingGate the starting gate for the application
      */
-    public void setStartingGate(CougarStartingGate startingGate) {
+    public void setStartingGate(DiscoStartingGate startingGate) {
         startingGate.registerStartingListener(this);
     }
 
@@ -216,7 +216,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
     public void initialiseStaticJettyConfig() throws Exception {
         server.initialiseConnectors();
 
-        ErrorHandler errorHandler = new CougarErrorHandler();
+        ErrorHandler errorHandler = new DiscoErrorHandler();
         wsdlStaticHandler = new StaticContentServiceHandler(
                 wsdlContextPath,
                 wsdlRegex,
@@ -354,7 +354,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
                     corsContext.setResourceBase(".");
                 }
                 catch (ServletException e) {
-                    throw new CougarFrameworkException("Failed to create CORS handler: [" + jettyContextRoot + "]", e);
+                    throw new DiscoFrameworkException("Failed to create CORS handler: [" + jettyContextRoot + "]", e);
                 }
             }
             //-- End CORS stuff
@@ -372,7 +372,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
                     context.setHandler(new GzipHandler(gzipBufferSize, gzipMinSize, gzipExcludedAgents, jettyServiceHandler));
                 }
                 catch (ServletException e) {
-                    throw new CougarFrameworkException("Failed to create GZIP handler: [" + jettyContextRoot + "]", e);
+                    throw new DiscoFrameworkException("Failed to create GZIP handler: [" + jettyContextRoot + "]", e);
                 }
             }
             else {
@@ -386,7 +386,7 @@ public class JettyHttpTransport extends AbstractRegisterableTransport implements
                     context.start();
                 }
             } catch (Exception ex) {
-                throw new CougarFrameworkException("Failed to register serviceBindingDescriptor: [" + jettyContextRoot + "]", ex);
+                throw new DiscoFrameworkException("Failed to register serviceBindingDescriptor: [" + jettyContextRoot + "]", ex);
             }
         }
     }

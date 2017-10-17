@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.impl;
+package uk.co.exemel.disco.modules.zipkin.impl;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.modules.zipkin.api.ZipkinData;
-import com.betfair.cougar.modules.zipkin.api.ZipkinDataBuilder;
-import com.betfair.cougar.modules.zipkin.api.ZipkinRequestUUID;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinData;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinDataBuilder;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinRequestUUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -33,7 +33,7 @@ public class ZipkinRequestUUIDImplTest {
     private ZipkinRequestUUID victim;
 
     @Mock
-    private RequestUUID cougarUuid;
+    private RequestUUID discoUuid;
 
     @Mock
     private ZipkinData zipkinData;
@@ -50,82 +50,82 @@ public class ZipkinRequestUUIDImplTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void ZipkinRequestUUIDImpl_WhenCougarIdIsNull_ShouldThrowNPE() {
+    public void ZipkinRequestUUIDImpl_WhenDiscoIdIsNull_ShouldThrowNPE() {
         victim = new ZipkinRequestUUIDImpl(null, null);
     }
 
     @Test
-    public void getRootUUIDComponent_ShouldDeferToCougarUUID() {
+    public void getRootUUIDComponent_ShouldDeferToDiscoUUID() {
         String rootUUIDComponent = "abcde-1234-fghij-5678-klmno";
 
-        when(cougarUuid.getRootUUIDComponent()).thenReturn(rootUUIDComponent);
+        when(discoUuid.getRootUUIDComponent()).thenReturn(rootUUIDComponent);
 
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, null);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, null);
 
         assertEquals(rootUUIDComponent, victim.getRootUUIDComponent());
     }
 
     @Test
-    public void getParentUUIDComponent_ShouldDeferToCougarUUID() {
+    public void getParentUUIDComponent_ShouldDeferToDiscoUUID() {
         String parentUUIDComponent = "abcde-1234-fghij-5678-klmno";
 
-        when(cougarUuid.getParentUUIDComponent()).thenReturn(parentUUIDComponent);
+        when(discoUuid.getParentUUIDComponent()).thenReturn(parentUUIDComponent);
 
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, null);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, null);
 
         assertEquals(parentUUIDComponent, victim.getParentUUIDComponent());
     }
 
     @Test
-    public void getLocalUUIDComponent_ShouldDeferToCougarUUID() {
+    public void getLocalUUIDComponent_ShouldDeferToDiscoUUID() {
         String localUUIDComponent = "abcde-1234-fghij-5678-klmno";
 
-        when(cougarUuid.getLocalUUIDComponent()).thenReturn(localUUIDComponent);
+        when(discoUuid.getLocalUUIDComponent()).thenReturn(localUUIDComponent);
 
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, null);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, null);
 
         assertEquals(localUUIDComponent, victim.getLocalUUIDComponent());
     }
 
     @Test
-    public void toCougarLogString_ShouldDeferToCougarUUID() {
-        String cougarLogString = "abcde-1234-fghij-5678-klmno";
+    public void toDiscoLogString_ShouldDeferToDiscoUUID() {
+        String discoLogString = "abcde-1234-fghij-5678-klmno";
 
-        when(cougarUuid.toCougarLogString()).thenReturn(cougarLogString);
+        when(discoUuid.toDiscoLogString()).thenReturn(discoLogString);
 
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, null);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, null);
 
-        assertEquals(cougarLogString, victim.toCougarLogString());
+        assertEquals(discoLogString, victim.toDiscoLogString());
     }
 
     @Test
-    public void getUUID_ShouldDeferToCougarGetUUID() {
-        String cougarUUID = "abcde-1234-fghij-5678-klmno";
+    public void getUUID_ShouldDeferToDiscoGetUUID() {
+        String discoUUID = "abcde-1234-fghij-5678-klmno";
 
-        when(cougarUuid.getUUID()).thenReturn(cougarUUID);
+        when(discoUuid.getUUID()).thenReturn(discoUUID);
 
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, null);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, null);
 
-        assertEquals(cougarUUID, victim.getUUID());
+        assertEquals(discoUUID, victim.getUUID());
     }
 
     @Test
     public void isZipkinTracingEnabled_WhenZipkinDataBuilderIsNull_ShouldReturnFalse() {
-        victim = new ZipkinRequestUUIDImpl(cougarUuid);
+        victim = new ZipkinRequestUUIDImpl(discoUuid);
 
         assertFalse(victim.isZipkinTracingEnabled());
     }
 
     @Test
     public void isZipkinTracingEnabled_WhenZipkinDataBuilderIsNotNull_ShouldReturnTrue() {
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, zipkinDataBuilder);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, zipkinDataBuilder);
 
         assertTrue(victim.isZipkinTracingEnabled());
     }
 
     @Test(expected = NullPointerException.class)
     public void buildZipkinData_WhenSpanNameIsNull_ShouldThrowNPE() {
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, null);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, null);
 
         victim.buildZipkinData(null);
     }
@@ -137,7 +137,7 @@ public class ZipkinRequestUUIDImplTest {
         when(zipkinDataBuilder.spanName(spanName)).thenReturn(zipkinDataBuilder);
         when(zipkinDataBuilder.build()).thenReturn(zipkinData);
 
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, zipkinDataBuilder);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, zipkinDataBuilder);
 
         ZipkinData result = victim.buildZipkinData(spanName);
 
@@ -151,7 +151,7 @@ public class ZipkinRequestUUIDImplTest {
         when(zipkinDataBuilder.spanName(spanName)).thenReturn(zipkinDataBuilder);
         when(zipkinDataBuilder.build()).thenReturn(zipkinData);
 
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, zipkinDataBuilder);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, zipkinDataBuilder);
 
         // Build Zipkin data for the first time
         victim.buildZipkinData(spanName);
@@ -162,7 +162,7 @@ public class ZipkinRequestUUIDImplTest {
 
     @Test
     public void isZipkinTracingReady_WhenZipkinDataHasNotBeenBuilt_ShouldReturnFalse() {
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, zipkinDataBuilder);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, zipkinDataBuilder);
 
         assertFalse(victim.isZipkinTracingReady());
     }
@@ -174,7 +174,7 @@ public class ZipkinRequestUUIDImplTest {
         when(zipkinDataBuilder.spanName(spanName)).thenReturn(zipkinDataBuilder);
         when(zipkinDataBuilder.build()).thenReturn(zipkinData);
 
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, zipkinDataBuilder);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, zipkinDataBuilder);
 
         victim.buildZipkinData(spanName);
 
@@ -182,19 +182,19 @@ public class ZipkinRequestUUIDImplTest {
     }
 
     @Test
-    public void toString_ShouldConcatenateZipkinDataWithCougarUUID() {
+    public void toString_ShouldConcatenateZipkinDataWithDiscoUUID() {
         String zipkinSpanName = "Span Name";
-        String cougarUUID = "abcde-1234-fghij-5678-klmno";
+        String discoUUID = "abcde-1234-fghij-5678-klmno";
         String zipkinDataToString = "ZipkinDataImpl{spanName=" + zipkinSpanName + "}";
-        String expectedResult = "ZipkinRequestUUIDImpl{cougarUuid=" + cougarUUID +
+        String expectedResult = "ZipkinRequestUUIDImpl{discoUuid=" + discoUUID +
                 ", zipkinData=" + zipkinDataToString + "}";
 
         when(zipkinDataBuilder.spanName(zipkinSpanName)).thenReturn(zipkinDataBuilder);
         when(zipkinDataBuilder.build()).thenReturn(zipkinData);
-        when(cougarUuid.getUUID()).thenReturn(cougarUUID);
+        when(discoUuid.getUUID()).thenReturn(discoUUID);
         when(zipkinData.toString()).thenReturn(zipkinDataToString);
 
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, zipkinDataBuilder);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, zipkinDataBuilder);
 
         victim.buildZipkinData(zipkinSpanName);
         String result = victim.toString();
@@ -209,7 +209,7 @@ public class ZipkinRequestUUIDImplTest {
         when(zipkinDataBuilder.spanName(spanName)).thenReturn(zipkinDataBuilder);
         when(zipkinDataBuilder.build()).thenReturn(zipkinData);
 
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, zipkinDataBuilder);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, zipkinDataBuilder);
 
         victim.buildZipkinData(spanName);
 
@@ -218,14 +218,14 @@ public class ZipkinRequestUUIDImplTest {
 
     @Test(expected = IllegalStateException.class)
     public void getZipkinData_WhenZipkinDataHasNotBeenBuiltYet_ShouldThrowISE() {
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, zipkinDataBuilder);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, zipkinDataBuilder);
 
         victim.getZipkinData();
     }
 
     @Test(expected = IllegalStateException.class)
     public void getZipkinData_WhenZipkinIsDisabledForThisRequest_ShouldThrowISE() {
-        victim = new ZipkinRequestUUIDImpl(cougarUuid);
+        victim = new ZipkinRequestUUIDImpl(discoUuid);
 
         victim.getZipkinData();
     }
@@ -233,9 +233,9 @@ public class ZipkinRequestUUIDImplTest {
     @Test
     public void getNewSubUUID_WhenZipkinTracingIsNotEnabled_ChildShouldNotBeTracedEither() {
 
-        when(cougarUuid.getNewSubUUID()).thenReturn(requestUUID);
+        when(discoUuid.getNewSubUUID()).thenReturn(requestUUID);
 
-        victim = new ZipkinRequestUUIDImpl(cougarUuid);
+        victim = new ZipkinRequestUUIDImpl(discoUuid);
 
         RequestUUID result = victim.getNewSubUUID();
 
@@ -252,12 +252,12 @@ public class ZipkinRequestUUIDImplTest {
 
         when(zipkinDataBuilder.spanName(spanName)).thenReturn(zipkinDataBuilder);
         when(zipkinDataBuilder.build()).thenReturn(zipkinData);
-        when(cougarUuid.getNewSubUUID()).thenReturn(requestUUID);
+        when(discoUuid.getNewSubUUID()).thenReturn(requestUUID);
         when(zipkinData.getTraceId()).thenReturn(traceId);
         when(zipkinData.getSpanId()).thenReturn(spanId);
         when(zipkinData.getPort()).thenReturn(port);
 
-        victim = new ZipkinRequestUUIDImpl(cougarUuid, zipkinDataBuilder);
+        victim = new ZipkinRequestUUIDImpl(discoUuid, zipkinDataBuilder);
         victim.buildZipkinData(spanName);
 
         RequestUUID result = victim.getNewSubUUID();

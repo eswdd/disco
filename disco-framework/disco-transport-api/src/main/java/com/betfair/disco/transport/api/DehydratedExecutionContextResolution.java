@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api;
+package uk.co.exemel.disco.transport.api;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolverFactory;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolverFactory;
 
 /**
  *

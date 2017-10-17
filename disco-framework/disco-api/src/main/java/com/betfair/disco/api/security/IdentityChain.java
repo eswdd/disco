@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api.security;
+package uk.co.exemel.disco.api.security;
 
 import java.util.List;
 
@@ -22,20 +22,20 @@ import java.util.List;
  * A chain of Identities that together form the chain of trust that has authenticated the identity.
  * The primary subject would be, for example, a user. The user may have authenticated
  * with a third party application (the second subject), which in turn authenticated the
- * legacy public API (the third subject), which has authenticated with the Cougar service.
+ * legacy public API (the third subject), which has authenticated with the Disco service.
  * Together this forms a chain of trust which is the identity. Every subject within the
  * chain is important. For example, the third party application may not be permitted
  * to access all the functionality of the web site, meaning there is a more limited range
- * of functionality for this user than they would have if they had used the same Cougar service
+ * of functionality for this user than they would have if they had used the same Disco service
  * via the betfair.com web site.
  *
  */
 public interface IdentityChain {
 
 	/**
-	 * Gets a List of all CougarSubjects, with the primary subject first,
+	 * Gets a List of all DiscoSubjects, with the primary subject first,
 	 * and all subsequent subjects in the chain of trust in order after
-	 * @return an ordered list of CougarSubjects
+	 * @return an ordered list of DiscoSubjects
 	 */
 	List<Identity> getIdentities();
 
@@ -47,7 +47,7 @@ public interface IdentityChain {
 	 * those subjects that implement a known interface.
 	 * @param <T> the type of Identity to return
 	 * @param clazz
-	 * @return all CougarSubjects that are instances of the specified class
+	 * @return all DiscoSubjects that are instances of the specified class
 	 */
 	<T extends Identity> List<T> getIdentities(Class<T> clazz);
 

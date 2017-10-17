@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api;
+package uk.co.exemel.disco.api;
 
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.Identity;
-import com.betfair.cougar.api.security.IdentityChain;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.Identity;
+import uk.co.exemel.disco.api.security.IdentityChain;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -108,7 +108,7 @@ public class ExecutionContextImplTest {
             }
 
             @Override
-            public String toCougarLogString() {
+            public String toDiscoLogString() {
                 return null;  //To change body of implemented methods use File | Settings | File Templates.
             }
 

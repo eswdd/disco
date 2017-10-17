@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket;
+package uk.co.exemel.disco.client.socket;
 
-import com.betfair.cougar.client.socket.resolver.NetworkAddressResolver;
-import com.betfair.cougar.netutil.nio.ClientHandshake;
-import com.betfair.cougar.netutil.nio.NioConfig;
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.NioUtils;
-import com.betfair.cougar.netutil.nio.message.ProtocolMessage;
-import com.betfair.cougar.util.JMXReportingThreadPoolExecutor;
+import uk.co.exemel.disco.client.socket.resolver.NetworkAddressResolver;
+import uk.co.exemel.disco.netutil.nio.ClientHandshake;
+import uk.co.exemel.disco.netutil.nio.NioConfig;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.NioUtils;
+import uk.co.exemel.disco.netutil.nio.message.ProtocolMessage;
+import uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor;
 import org.apache.mina.common.*;
 import org.apache.mina.transport.socket.nio.SocketConnector;
 import org.slf4j.Logger;

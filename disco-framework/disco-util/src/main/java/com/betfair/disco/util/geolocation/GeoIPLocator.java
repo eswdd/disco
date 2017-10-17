@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.geolocation;
+package uk.co.exemel.disco.util.geolocation;
 
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
 
 import java.util.List;
 

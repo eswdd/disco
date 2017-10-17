@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test;
+package uk.co.exemel.disco.test;
 
 import java.util.List;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.CougarApplicationException;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
 
-public class MockException extends CougarApplicationException {
+public class MockException extends DiscoApplicationException {
 
 	public MockException() {
 		super(ResponseCode.InternalError, "DUMMY");

@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityChain;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityChain;
 
 import java.util.Date;
 
 /**
  * Elements of the ExecutionContext which are required information for a client call.
- * @see com.betfair.cougar.api.ExecutionContext
+ * @see uk.co.exemel.disco.api.ExecutionContext
  */
 public interface ClientCallContext {
     /**

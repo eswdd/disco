@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.util;
+package uk.co.exemel.disco.marshalling.impl.util;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -23,11 +23,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.core.api.transcription.EnumDerialisationException;
-import com.betfair.cougar.test.CougarTestCase;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.core.api.transcription.EnumDerialisationException;
+import uk.co.exemel.disco.test.DiscoTestCase;
 
-public class BindingUtilsTest extends CougarTestCase {
+public class BindingUtilsTest extends DiscoTestCase {
 
 	public enum TestEnum { SUNDAY, MONDAY };
 
@@ -65,7 +65,7 @@ public class BindingUtilsTest extends CougarTestCase {
 		final String testDate = "the day the Earth stood stupid";
 		try {
 			BindingUtils.convertToSimpleType(java.util.Date.class, null,  "dateParameter", testDate,false, true,"json",false);
-		} catch (CougarMarshallingException e) {
+		} catch (DiscoMarshallingException e) {
 			assertException(e, "dateParameter", testDate, IllegalArgumentException.class);
 		}
 	}
@@ -123,7 +123,7 @@ public class BindingUtilsTest extends CougarTestCase {
 		try {
 			BindingUtils.convertToSimpleType(Boolean.class, null,  "fooParam", "eep", true, true,"json",false);
 			fail();
-		} catch (CougarMarshallingException e) {
+		} catch (DiscoMarshallingException e) {
 			assertException(e, "fooParam", "eep", null);
 		}
 	}
@@ -137,7 +137,7 @@ public class BindingUtilsTest extends CougarTestCase {
 		try {
 			BindingUtils.convertToSimpleType(Void.class, null, "foo", "1", true, true,"json",false);
 			fail();
-		} catch (CougarMarshallingException e) {
+		} catch (DiscoMarshallingException e) {
 			assertException(e, "foo", "1", null);
 		}
 	}
@@ -147,7 +147,7 @@ public class BindingUtilsTest extends CougarTestCase {
 		try {
 			BindingUtils.convertToSimpleType(Integer.class, null,  "foo", "1.3", true, true,"json",false);
 			fail();
-		} catch (CougarMarshallingException e) {
+		} catch (DiscoMarshallingException e) {
 			assertException(e, "foo", "1.3", NumberFormatException.class);
 		}
 	}
@@ -157,7 +157,7 @@ public class BindingUtilsTest extends CougarTestCase {
 		try {
 			BindingUtils.convertToSimpleType(Double.class, null,  "bar", "foo", true, true,"json",false);
 			fail();
-		} catch (CougarMarshallingException e) {
+		} catch (DiscoMarshallingException e) {
 			assertException(e, "bar", "foo", NumberFormatException.class);
 		}
 	}
@@ -225,7 +225,7 @@ public class BindingUtilsTest extends CougarTestCase {
     		BindingUtils.convertToSimpleType(List.class, Integer.class,  "list", "12.3 , 456 ,789", true, true,"json",false);
     		fail();
     	}
-    	catch (CougarMarshallingException e) {
+    	catch (DiscoMarshallingException e) {
     		assertException(e, "list", "12.3", NumberFormatException.class);
     	}
     }

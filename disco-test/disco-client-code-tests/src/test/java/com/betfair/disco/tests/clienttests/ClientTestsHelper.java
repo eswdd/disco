@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.clienttests;
+package uk.co.exemel.disco.tests.clienttests;
 
 import org.testng.AssertJUnit;
 
@@ -28,15 +28,15 @@ import java.sql.Timestamp;
 public class ClientTestsHelper {
     public static Object[][] clientsToTest() {
         return new Object[][]{
-                {CougarClientWrapper.TransportType.RESCRIPT},
-                {CougarClientWrapper.TransportType.SECURE_RESCRIPT},
-                {CougarClientWrapper.TransportType.CLIENT_AUTH_RESCRIPT},
-                {CougarClientWrapper.TransportType.ASYNC_RESCRIPT},
-                {CougarClientWrapper.TransportType.SECURE_ASYNC_RESCRIPT},
-                {CougarClientWrapper.TransportType.CLIENT_AUTH_ASYNC_RESCRIPT},
-                {CougarClientWrapper.TransportType.SOCKET},
-                {CougarClientWrapper.TransportType.SECURE_SOCKET},
-                {CougarClientWrapper.TransportType.CLIENT_AUTH_SOCKET}
+                {DiscoClientWrapper.TransportType.RESCRIPT},
+                {DiscoClientWrapper.TransportType.SECURE_RESCRIPT},
+                {DiscoClientWrapper.TransportType.CLIENT_AUTH_RESCRIPT},
+                {DiscoClientWrapper.TransportType.ASYNC_RESCRIPT},
+                {DiscoClientWrapper.TransportType.SECURE_ASYNC_RESCRIPT},
+                {DiscoClientWrapper.TransportType.CLIENT_AUTH_ASYNC_RESCRIPT},
+                {DiscoClientWrapper.TransportType.SOCKET},
+                {DiscoClientWrapper.TransportType.SECURE_SOCKET},
+                {DiscoClientWrapper.TransportType.CLIENT_AUTH_SOCKET}
         };
     }
 

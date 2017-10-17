@@ -23,7 +23,7 @@
            @XmlElementWrapper(name="${paramName}",nillable=true)
         </#if>
         <#if javaType?contains("Date")>
-            @XmlJavaTypeAdapter(value=com.betfair.cougar.util.dates.XMLDateAdapter.class)
+            @XmlJavaTypeAdapter(value=uk.co.exemel.disco.util.dates.XMLDateAdapter.class)
         </#if>
         @XmlElement(name="${javaSubType}",nillable=true)
 <#t>                        
@@ -37,7 +37,7 @@
 	        @XmlElementWrapper(name="${paramName}",nillable=true)
         </#if>
         <#if javaType?contains("Date")>
-            @XmlJavaTypeAdapter(value=com.betfair.cougar.util.dates.XMLDateAdapter.class)
+            @XmlJavaTypeAdapter(value=uk.co.exemel.disco.util.dates.XMLDateAdapter.class)
         </#if>
 
         @XmlElement(name="${javaSubType}",nillable=true)

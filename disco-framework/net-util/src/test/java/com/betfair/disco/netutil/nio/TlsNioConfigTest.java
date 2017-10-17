@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
-import com.betfair.cougar.netutil.nio.monitoring.SessionWriteQueueMonitoring;
+import uk.co.exemel.disco.netutil.nio.monitoring.SessionWriteQueueMonitoring;
 import org.apache.mina.common.DefaultIoFilterChainBuilder;
 import org.apache.mina.common.IoFilter;
 import org.apache.mina.common.support.BaseIoConnectorConfig;
@@ -80,30 +80,30 @@ public class TlsNioConfigTest {
 
     private static String getPath(String filename) throws IOException {
         String userDir = new File(System.getProperty("user.dir")).getCanonicalPath();
-        if (userDir.endsWith("/cougar-framework/net-util")) {
-            userDir = userDir.substring(0, userDir.indexOf("/cougar-framework/net-util"));
+        if (userDir.endsWith("/disco-framework/net-util")) {
+            userDir = userDir.substring(0, userDir.indexOf("/disco-framework/net-util"));
         }
-        if (userDir.endsWith("\\cougar-framework\\net-util")) {
-            userDir = userDir.substring(0, userDir.indexOf("\\cougar-framework\\net-util"));
+        if (userDir.endsWith("\\disco-framework\\net-util")) {
+            userDir = userDir.substring(0, userDir.indexOf("\\disco-framework\\net-util"));
         }
 
-        return new File(userDir, "cougar-framework/net-util/src/test/resources/"+filename).getCanonicalPath();
+        return new File(userDir, "disco-framework/net-util/src/test/resources/"+filename).getCanonicalPath();
     }
 
     public static String getClientKeystorePath() throws IOException {
-        return getPath("cougar_client_cert.jks");
+        return getPath("disco_client_cert.jks");
     }
 
     public static String getClientTruststorePath() throws IOException {
-        return getPath("cougar_server_ca.jks");
+        return getPath("disco_server_ca.jks");
     }
 
     public static String getServerKeystorePath() throws IOException {
-        return getPath("cougar_server_cert.jks");
+        return getPath("disco_server_cert.jks");
     }
 
     public static String getServerTruststorePath() throws IOException {
-        return getPath("cougar_client_ca.jks");
+        return getPath("disco_client_ca.jks");
     }
 
     @Test
@@ -119,8 +119,8 @@ public class TlsNioConfigTest {
         assertEquals("codec", addedFilters.get(1).getFirst());
         assertInstanceOf(ProtocolCodecFilter.class, addedFilters.get(1).getSecond());
         assertEquals("protocol", addedFilters.get(2).getFirst());
-        assertInstanceOf(CougarProtocol.class, addedFilters.get(2).getSecond());
-        CougarProtocol cp = (CougarProtocol) addedFilters.get(2).getSecond();
+        assertInstanceOf(DiscoProtocol.class, addedFilters.get(2).getSecond());
+        DiscoProtocol cp = (DiscoProtocol) addedFilters.get(2).getSecond();
         assertNull(cp.getSslFilter());
     }
 
@@ -144,9 +144,9 @@ public class TlsNioConfigTest {
         assertEquals("codec", addedFilters.get(1).getFirst());
         assertInstanceOf(ProtocolCodecFilter.class, addedFilters.get(1).getSecond());
         assertEquals("protocol", addedFilters.get(2).getFirst());
-        assertInstanceOf(CougarProtocol.class, addedFilters.get(2).getSecond());
+        assertInstanceOf(DiscoProtocol.class, addedFilters.get(2).getSecond());
 
-        CougarProtocol cp = (CougarProtocol) addedFilters.get(2).getSecond();
+        DiscoProtocol cp = (DiscoProtocol) addedFilters.get(2).getSecond();
         assertFalse(cp.isRequiresTls());
         assertTrue(cp.isSupportsTls());
         assertNotNull(cp.getSslFilter());
@@ -178,9 +178,9 @@ public class TlsNioConfigTest {
         assertEquals("codec", addedFilters.get(1).getFirst());
         assertInstanceOf(ProtocolCodecFilter.class, addedFilters.get(1).getSecond());
         assertEquals("protocol", addedFilters.get(2).getFirst());
-        assertInstanceOf(CougarProtocol.class, addedFilters.get(2).getSecond());
+        assertInstanceOf(DiscoProtocol.class, addedFilters.get(2).getSecond());
 
-        CougarProtocol cp = (CougarProtocol) addedFilters.get(2).getSecond();
+        DiscoProtocol cp = (DiscoProtocol) addedFilters.get(2).getSecond();
         assertFalse(cp.isRequiresTls());
         assertTrue(cp.isSupportsTls());
         assertNotNull(cp.getSslFilter());
@@ -234,9 +234,9 @@ public class TlsNioConfigTest {
         assertEquals("codec", addedFilters.get(1).getFirst());
         assertInstanceOf(ProtocolCodecFilter.class, addedFilters.get(1).getSecond());
         assertEquals("protocol", addedFilters.get(2).getFirst());
-        assertInstanceOf(CougarProtocol.class, addedFilters.get(2).getSecond());
+        assertInstanceOf(DiscoProtocol.class, addedFilters.get(2).getSecond());
 
-        CougarProtocol cp = (CougarProtocol) addedFilters.get(2).getSecond();
+        DiscoProtocol cp = (DiscoProtocol) addedFilters.get(2).getSecond();
         assertFalse(cp.isRequiresTls());
         assertTrue(cp.isSupportsTls());
         assertNotNull(cp.getSslFilter());
@@ -293,9 +293,9 @@ public class TlsNioConfigTest {
         assertEquals("codec", addedFilters.get(1).getFirst());
         assertInstanceOf(ProtocolCodecFilter.class, addedFilters.get(1).getSecond());
         assertEquals("protocol", addedFilters.get(2).getFirst());
-        assertInstanceOf(CougarProtocol.class, addedFilters.get(2).getSecond());
+        assertInstanceOf(DiscoProtocol.class, addedFilters.get(2).getSecond());
 
-        CougarProtocol cp = (CougarProtocol) addedFilters.get(2).getSecond();
+        DiscoProtocol cp = (DiscoProtocol) addedFilters.get(2).getSecond();
         assertFalse(cp.isRequiresTls());
         assertTrue(cp.isSupportsTls());
         assertNotNull(cp.getSslFilter());
@@ -349,9 +349,9 @@ public class TlsNioConfigTest {
         assertEquals("codec", addedFilters.get(1).getFirst());
         assertInstanceOf(ProtocolCodecFilter.class, addedFilters.get(1).getSecond());
         assertEquals("protocol", addedFilters.get(2).getFirst());
-        assertInstanceOf(CougarProtocol.class, addedFilters.get(2).getSecond());
+        assertInstanceOf(DiscoProtocol.class, addedFilters.get(2).getSecond());
 
-        CougarProtocol cp = (CougarProtocol) addedFilters.get(2).getSecond();
+        DiscoProtocol cp = (DiscoProtocol) addedFilters.get(2).getSecond();
         assertTrue(cp.isRequiresTls());
         assertTrue(cp.isSupportsTls());
         assertNotNull(cp.getSslFilter());
@@ -394,8 +394,8 @@ public class TlsNioConfigTest {
         assertEquals("codec", addedFilters.get(1).getFirst());
         assertInstanceOf(ProtocolCodecFilter.class, addedFilters.get(1).getSecond());
         assertEquals("protocol", addedFilters.get(2).getFirst());
-        assertInstanceOf(CougarProtocol.class, addedFilters.get(2).getSecond());
-        CougarProtocol cp = (CougarProtocol) addedFilters.get(2).getSecond();
+        assertInstanceOf(DiscoProtocol.class, addedFilters.get(2).getSecond());
+        DiscoProtocol cp = (DiscoProtocol) addedFilters.get(2).getSecond();
         assertNull(cp.getSslFilter());
     }
 
@@ -419,9 +419,9 @@ public class TlsNioConfigTest {
         assertEquals("codec", addedFilters.get(1).getFirst());
         assertInstanceOf(ProtocolCodecFilter.class, addedFilters.get(1).getSecond());
         assertEquals("protocol", addedFilters.get(2).getFirst());
-        assertInstanceOf(CougarProtocol.class, addedFilters.get(2).getSecond());
+        assertInstanceOf(DiscoProtocol.class, addedFilters.get(2).getSecond());
 
-        CougarProtocol cp = (CougarProtocol) addedFilters.get(2).getSecond();
+        DiscoProtocol cp = (DiscoProtocol) addedFilters.get(2).getSecond();
         assertFalse(cp.isRequiresTls());
         assertTrue(cp.isSupportsTls());
         assertNotNull(cp.getSslFilter());
@@ -453,9 +453,9 @@ public class TlsNioConfigTest {
         assertEquals("codec", addedFilters.get(1).getFirst());
         assertInstanceOf(ProtocolCodecFilter.class, addedFilters.get(1).getSecond());
         assertEquals("protocol", addedFilters.get(2).getFirst());
-        assertInstanceOf(CougarProtocol.class, addedFilters.get(2).getSecond());
+        assertInstanceOf(DiscoProtocol.class, addedFilters.get(2).getSecond());
 
-        CougarProtocol cp = (CougarProtocol) addedFilters.get(2).getSecond();
+        DiscoProtocol cp = (DiscoProtocol) addedFilters.get(2).getSecond();
         assertFalse(cp.isRequiresTls());
         assertTrue(cp.isSupportsTls());
         assertNotNull(cp.getSslFilter());
@@ -509,9 +509,9 @@ public class TlsNioConfigTest {
         assertEquals("codec", addedFilters.get(1).getFirst());
         assertInstanceOf(ProtocolCodecFilter.class, addedFilters.get(1).getSecond());
         assertEquals("protocol", addedFilters.get(2).getFirst());
-        assertInstanceOf(CougarProtocol.class, addedFilters.get(2).getSecond());
+        assertInstanceOf(DiscoProtocol.class, addedFilters.get(2).getSecond());
 
-        CougarProtocol cp = (CougarProtocol) addedFilters.get(2).getSecond();
+        DiscoProtocol cp = (DiscoProtocol) addedFilters.get(2).getSecond();
         assertFalse(cp.isRequiresTls());
         assertTrue(cp.isSupportsTls());
         assertNotNull(cp.getSslFilter());
@@ -568,9 +568,9 @@ public class TlsNioConfigTest {
         assertEquals("codec", addedFilters.get(1).getFirst());
         assertInstanceOf(ProtocolCodecFilter.class, addedFilters.get(1).getSecond());
         assertEquals("protocol", addedFilters.get(2).getFirst());
-        assertInstanceOf(CougarProtocol.class, addedFilters.get(2).getSecond());
+        assertInstanceOf(DiscoProtocol.class, addedFilters.get(2).getSecond());
 
-        CougarProtocol cp = (CougarProtocol) addedFilters.get(2).getSecond();
+        DiscoProtocol cp = (DiscoProtocol) addedFilters.get(2).getSecond();
         assertFalse(cp.isRequiresTls());
         assertTrue(cp.isSupportsTls());
         assertNotNull(cp.getSslFilter());
@@ -624,9 +624,9 @@ public class TlsNioConfigTest {
         assertEquals("codec", addedFilters.get(1).getFirst());
         assertInstanceOf(ProtocolCodecFilter.class, addedFilters.get(1).getSecond());
         assertEquals("protocol", addedFilters.get(2).getFirst());
-        assertInstanceOf(CougarProtocol.class, addedFilters.get(2).getSecond());
+        assertInstanceOf(DiscoProtocol.class, addedFilters.get(2).getSecond());
 
-        CougarProtocol cp = (CougarProtocol) addedFilters.get(2).getSecond();
+        DiscoProtocol cp = (DiscoProtocol) addedFilters.get(2).getSecond();
         assertTrue(cp.isRequiresTls());
         assertTrue(cp.isSupportsTls());
         assertNotNull(cp.getSslFilter());

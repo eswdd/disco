@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding;
+package uk.co.exemel.disco.marshalling.impl.databinding;
 
 import java.util.*;
 
 import javax.ws.rs.core.MediaType;
 
-import com.betfair.cougar.marshalling.api.databinding.*;
-import com.betfair.cougar.test.CougarTestCase;
+import uk.co.exemel.disco.marshalling.api.databinding.*;
+import uk.co.exemel.disco.test.DiscoTestCase;
 
-public class DataBindingManagerTest extends CougarTestCase {
+public class DataBindingManagerTest extends DiscoTestCase {
 
 	public void testGetFactory() throws Exception {
 		DataBindingManager dbm = DataBindingManager.getInstance();

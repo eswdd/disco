@@ -22,49 +22,49 @@
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-    <bean class="com.betfair.cougar.util.configuration.PropertyConfigurer">
-        <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
-        <property name="defaultConfig" value="classpath:conf/cougar-transport-jms-defaults.properties"/>
+    <bean class="uk.co.exemel.disco.util.configuration.PropertyConfigurer">
+        <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
+        <property name="defaultConfig" value="classpath:conf/disco-transport-jms-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
         <property name="placeholderPrefix" value="$COUGAR_TRANSPORT_JMS{"/>
     </bean>
 
 
-    <bean id="jmsEventUnMarshaller" class="com.betfair.cougar.transport.jms.JMSEventUnMarshaller">
-        <property name="dataBindingFactory" ref="cougar.marshalling.JSONBindingFactory"/>
+    <bean id="jmsEventUnMarshaller" class="uk.co.exemel.disco.transport.jms.JMSEventUnMarshaller">
+        <property name="dataBindingFactory" ref="disco.marshalling.JSONBindingFactory"/>
     </bean>
 
-    <bean id="jmsEventMarshaller" class="com.betfair.cougar.transport.jms.JMSEventMarshaller">
-        <property name="dataBindingFactory" ref="cougar.marshalling.JSONBindingFactory"/>
+    <bean id="jmsEventMarshaller" class="uk.co.exemel.disco.transport.jms.JMSEventMarshaller">
+        <property name="dataBindingFactory" ref="disco.marshalling.JSONBindingFactory"/>
         <property name="characterEncoding" value="$COUGAR_TRANSPORT_JMS{jmsEventMarshaller.characterEncoding}"/>
         <property name="deliveryMode" value="$COUGAR_TRANSPORT_JMS{jmsEventMarshaller.deliveryMode}"/>
         <property name="expirationTime" value="$COUGAR_TRANSPORT_JMS{jmsEventMarshaller.expirationTime}"/>
         <property name="priority" value="$COUGAR_TRANSPORT_JMS{jmsEventMarshaller.priority}"/>
     </bean>
 
-    <bean id="simpleEventErrorHandler" class="com.betfair.cougar.transport.jms.DefaultErrorHandlerImpl"/>
+    <bean id="simpleEventErrorHandler" class="uk.co.exemel.disco.transport.jms.DefaultErrorHandlerImpl"/>
 
-    <alias name="jmsEventUnMarshaller" alias="com.betfair.cougar.transport.jms.EventUnMarshaller"/>
+    <alias name="jmsEventUnMarshaller" alias="uk.co.exemel.disco.transport.jms.EventUnMarshaller"/>
 
-    <bean id="defaultConnectionMonitorFactory" class="com.betfair.cougar.transport.jms.monitoring.DefaultConnectionMonitorFactory">
+    <bean id="defaultConnectionMonitorFactory" class="uk.co.exemel.disco.transport.jms.monitoring.DefaultConnectionMonitorFactory">
         <property name="permanentConnectionExpected" value="$COUGAR_TRANSPORT_JMS{jmsTransport.connectionMonitor.permanentConnectionExpected}"/>
         <property name="maxImpactToOverallStatus" value="$COUGAR_TRANSPORT_JMS{jmsTransport.connectionMonitor.maxImpact}"/>
     </bean>
 
-    <!-- Abstract bean definition to help reduce the amount of Cougar innards that need to be exposed to the client -->
+    <!-- Abstract bean definition to help reduce the amount of Disco innards that need to be exposed to the client -->
 
-    <bean id="abstractJmsTransport" class="com.betfair.cougar.transport.jms.JmsEventTransportImpl"
+    <bean id="abstractJmsTransport" class="uk.co.exemel.disco.transport.jms.JmsEventTransportImpl"
           abstract="true" init-method="init" destroy-method="destroy">
         <property name="errorHandler" ref="simpleEventErrorHandler"/>
         <property name="eventMarshaller" ref="jmsEventMarshaller"/>
         <property name="eventUnMarshaller" ref="jmsEventUnMarshaller"/>
-        <property name="transportRegistry" ref="cougar.core.TransportRegistry"/>
+        <property name="transportRegistry" ref="disco.core.TransportRegistry"/>
         <property name="connectionMonitor">
-            <bean factory-bean="cougar.jms.DefaultConnectionMonitorFactory" factory-method="getConnectionMonitor"/>
+            <bean factory-bean="disco.jms.DefaultConnectionMonitorFactory" factory-method="getConnectionMonitor"/>
         </property>
     </bean>
 
-    <alias name="defaultConnectionMonitorFactory" alias="cougar.jms.DefaultConnectionMonitorFactory"/>
-    <alias name="abstractJmsTransport" alias="cougar.jms.AbstractJmsTransport"/>
+    <alias name="defaultConnectionMonitorFactory" alias="disco.jms.DefaultConnectionMonitorFactory"/>
+    <alias name="abstractJmsTransport" alias="disco.jms.AbstractJmsTransport"/>
 
 </beans>

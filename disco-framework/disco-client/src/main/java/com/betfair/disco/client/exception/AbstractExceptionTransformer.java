@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.exception;
+package uk.co.exemel.disco.client.exception;
 
-import com.betfair.cougar.core.api.fault.CougarFault;
-import com.betfair.cougar.marshalling.api.databinding.FaultUnMarshaller;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultUnMarshaller;
 
 import java.io.InputStream;
 
@@ -34,7 +34,7 @@ public abstract class AbstractExceptionTransformer implements ExceptionTransform
         this.faultUnMarshaller = faultUnMarshaller;
 	}
 
-    protected CougarFault getFaultFromInputStream(InputStream inputStream) {
+    protected DiscoFault getFaultFromInputStream(InputStream inputStream) {
         return getFaultUnMarshaller().unMarshallFault(inputStream, UNMARSHALL_ENCODING);
     }
 

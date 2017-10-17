@@ -15,37 +15,37 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket;
+package uk.co.exemel.disco.client.socket;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.client.CallContextFactory;
-import com.betfair.cougar.client.ClientCallContext;
-import com.betfair.cougar.client.api.ContextEmitter;
-import com.betfair.cougar.client.socket.jmx.ClientSocketTransportInfo;
-import com.betfair.cougar.client.socket.resolver.NetworkAddressResolver;
-import com.betfair.cougar.core.api.client.AbstractClientTransport;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.impl.tracing.TracingEndObserver;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.client.CallContextFactory;
+import uk.co.exemel.disco.client.ClientCallContext;
+import uk.co.exemel.disco.client.api.ContextEmitter;
+import uk.co.exemel.disco.client.socket.jmx.ClientSocketTransportInfo;
+import uk.co.exemel.disco.client.socket.resolver.NetworkAddressResolver;
+import uk.co.exemel.disco.core.api.client.AbstractClientTransport;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.impl.tracing.TracingEndObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.marshalling.api.socket.RemotableMethodInvocationMarshaller;
-import com.betfair.cougar.netutil.nio.*;
-import com.betfair.cougar.netutil.nio.message.EventMessage;
-import com.betfair.cougar.netutil.nio.message.ResponseMessage;
-import com.betfair.cougar.transport.api.protocol.CougarObjectIOFactory;
-import com.betfair.cougar.transport.api.protocol.CougarObjectInput;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
-import com.betfair.cougar.core.api.transcription.EnumUtils;
-import com.betfair.cougar.transport.api.protocol.socket.InvocationRequest;
-import com.betfair.cougar.transport.api.protocol.socket.InvocationResponse;
-import com.betfair.cougar.util.JMXReportingThreadPoolExecutor;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.marshalling.api.socket.RemotableMethodInvocationMarshaller;
+import uk.co.exemel.disco.netutil.nio.*;
+import uk.co.exemel.disco.netutil.nio.message.EventMessage;
+import uk.co.exemel.disco.netutil.nio.message.ResponseMessage;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectIOFactory;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectInput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
+import uk.co.exemel.disco.core.api.transcription.EnumUtils;
+import uk.co.exemel.disco.transport.api.protocol.socket.InvocationRequest;
+import uk.co.exemel.disco.transport.api.protocol.socket.InvocationResponse;
+import uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import com.caucho.hessian.io.HessianProtocolException;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.mina.common.*;
@@ -67,7 +67,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.FutureTask;
 
-import static com.betfair.cougar.netutil.nio.NioLogger.LoggingLevel.*;
+import static uk.co.exemel.disco.netutil.nio.NioLogger.LoggingLevel.*;
 
 public class ExecutionVenueNioClient extends AbstractClientTransport implements ApplicationContextAware, InitializingBean {
     private static final Logger LOG = LoggerFactory.getLogger(ExecutionVenueNioClient.class);
@@ -79,7 +79,7 @@ public class ExecutionVenueNioClient extends AbstractClientTransport implements 
 
     private final IoSessionFactory sessionFactory;
 
-    private final CougarObjectIOFactory objectIOFactory;
+    private final DiscoObjectIOFactory objectIOFactory;
     private ClientConnectedObjectManager connectedObjectManager;
     private List<HandlerListener> handlerListeners = new CopyOnWriteArrayList<HandlerListener>();
     private final NioLogger logger;
@@ -89,13 +89,13 @@ public class ExecutionVenueNioClient extends AbstractClientTransport implements 
     private RPCTimeoutChecker rpcTimeoutChecker;
     private Tracer tracer;
 
-    public ExecutionVenueNioClient(NioLogger logger, NioConfig nioConfig, CougarObjectIOFactory objectIOFactory, ClientConnectedObjectManager connectedObjectManager, ClientSocketTransportInfo clientSocketTransportInfo, String addressList,
+    public ExecutionVenueNioClient(NioLogger logger, NioConfig nioConfig, DiscoObjectIOFactory objectIOFactory, ClientConnectedObjectManager connectedObjectManager, ClientSocketTransportInfo clientSocketTransportInfo, String addressList,
                                    JMXReportingThreadPoolExecutor ioExecutorService, JMXReportingThreadPoolExecutor reconnectExecutor, NetworkAddressResolver addressResolver, Tracer tracer) {
         this(logger, nioConfig, objectIOFactory, connectedObjectManager, clientSocketTransportInfo, addressList,
                 ioExecutorService, reconnectExecutor, DEFAULT_RECONNECT_INTERVAL, DEFAULT_HANDSHAKE_RESPONSE_TIMEOUT, DEFAULT_SESSION_RECYCLE_INTERVAL, addressResolver, tracer);
     }
 
-    public ExecutionVenueNioClient(NioLogger logger, NioConfig nioConfig, CougarObjectIOFactory objectIOFactory, ClientConnectedObjectManager connectedObjectManager, ClientSocketTransportInfo clientSocketTransportInfo, String addressList,
+    public ExecutionVenueNioClient(NioLogger logger, NioConfig nioConfig, DiscoObjectIOFactory objectIOFactory, ClientConnectedObjectManager connectedObjectManager, ClientSocketTransportInfo clientSocketTransportInfo, String addressList,
                                    JMXReportingThreadPoolExecutor ioExecutorService, JMXReportingThreadPoolExecutor reconnectExecutor,
                                    int reconnectInterval, int handshakeResponseTimeout, long sessionRecycleInterval,
                                    NetworkAddressResolver addressResolver, Tracer tracer) {
@@ -203,7 +203,7 @@ public class ExecutionVenueNioClient extends AbstractClientTransport implements 
                 }
             } else if (message instanceof EventMessage) {
                 EventMessage em = (EventMessage) message;
-                CougarObjectInput input = objectIOFactory.newCougarObjectInput(new ByteArrayInputStream(em.getPayload()), CougarProtocol.getProtocolVersion(session));
+                DiscoObjectInput input = objectIOFactory.newDiscoObjectInput(new ByteArrayInputStream(em.getPayload()), DiscoProtocol.getProtocolVersion(session));
                 Object payload = input.readObject();
                 if (payload instanceof HeapDelta) {
                     connectedObjectManager.applyDelta(session, (HeapDelta) payload);
@@ -297,13 +297,13 @@ public class ExecutionVenueNioClient extends AbstractClientTransport implements 
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Operation: " + def.getOperationKey() + " with parameters: " + Arrays.toString(args));
                 }
-                observer.onResult(new ExecutionResult(new CougarClientException(ServerFaultCode.FrameworkError,
+                observer.onResult(new ExecutionResult(new DiscoClientException(ServerFaultCode.FrameworkError,
                         "This Client is not connected to a server so this call cannot be completed!")));
             } else {
                 try {
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    byte protocolVersion = CougarProtocol.getProtocolVersion(session);
-                    final CougarObjectOutput out = objectIOFactory.newCougarObjectOutput(baos, protocolVersion);
+                    byte protocolVersion = DiscoProtocol.getProtocolVersion(session);
+                    final DiscoObjectOutput out = objectIOFactory.newDiscoObjectOutput(baos, protocolVersion);
 
                     final Map<String,String> additionalData = new HashMap<>();
                     contextEmitter.emit(callContext,additionalData,null);
@@ -341,7 +341,7 @@ public class ExecutionVenueNioClient extends AbstractClientTransport implements 
                     ((RequestResponseManager) session.getAttribute(RequestResponseManager.SESSION_KEY)).sendRequest(baos.toByteArray(), new RequestResponseManager.ResponseHandler() {
                         @Override
                         public void responseReceived(ResponseMessage message) {
-                            CougarObjectInput in = objectIOFactory.newCougarObjectInput(new ByteArrayInputStream(message.getPayload()), CougarProtocol.getProtocolVersion(session));
+                            DiscoObjectInput in = objectIOFactory.newDiscoObjectInput(new ByteArrayInputStream(message.getPayload()), DiscoProtocol.getProtocolVersion(session));
 
                             try {
                                 EnumUtils.setHardFailureForThisThread(hardFailEnumDeserialisation);
@@ -354,7 +354,7 @@ public class ExecutionVenueNioClient extends AbstractClientTransport implements 
                                     response.recreate(observer, def.getReturnType(), message.getPayload().length);
                                 }
                             } catch (Exception e) {
-                                observer.onResult(new ExecutionResult(new CougarClientException(CougarMarshallingException.unmarshallingException("binary", "Unable to deserialise response, closing session", e, true))));
+                                observer.onResult(new ExecutionResult(new DiscoClientException(DiscoMarshallingException.unmarshallingException("binary", "Unable to deserialise response, closing session", e, true))));
                                 if (session.isConnected()) {
                                     logger.log(NioLogger.LoggingLevel.SESSION, session, "Error occurred whilst trying to deserialise response, closing session");
                                     // it is possible that we never get here
@@ -365,16 +365,16 @@ public class ExecutionVenueNioClient extends AbstractClientTransport implements 
 
                         @Override
                         public void timedOut() {
-                            observer.onResult(new ExecutionResult(new CougarClientException(ServerFaultCode.Timeout, "Exception occurred in Client: Read timed out: "+NioUtils.getRemoteAddressUrl(session))));
+                            observer.onResult(new ExecutionResult(new DiscoClientException(ServerFaultCode.Timeout, "Exception occurred in Client: Read timed out: "+NioUtils.getRemoteAddressUrl(session))));
                         }
 
                         @Override
                         public void sessionClosed() {
-                            observer.onResult(new ExecutionResult(new CougarClientException(ServerFaultCode.RemoteCougarCommunicationFailure, "Connectivity to remote server lost!")));
+                            observer.onResult(new ExecutionResult(new DiscoClientException(ServerFaultCode.RemoteDiscoCommunicationFailure, "Connectivity to remote server lost!")));
                         }
                     });
                 } catch (Throwable e) {
-                    observer.onResult(new ExecutionResult(new CougarClientException(ServerFaultCode.FrameworkError,
+                    observer.onResult(new ExecutionResult(new DiscoClientException(ServerFaultCode.FrameworkError,
                             "An exception occurred with remote method call", e)));
                 }
             }
@@ -418,11 +418,11 @@ public class ExecutionVenueNioClient extends AbstractClientTransport implements 
 
     private boolean validateCTX(ExecutionContext ctx, ExecutionObserver observer) {
         // Ensure that the context passed is valid
-        CougarValidationException ex = null;
+        DiscoValidationException ex = null;
         if (ctx == null) {
-            ex = new CougarValidationException(ServerFaultCode.MandatoryNotDefined, "Execution Context must not be null");
+            ex = new DiscoValidationException(ServerFaultCode.MandatoryNotDefined, "Execution Context must not be null");
         } else if (ctx.getLocation() == null) {
-            ex = new CougarValidationException(ServerFaultCode.MandatoryNotDefined, "Geolocation details must not be null");
+            ex = new DiscoValidationException(ServerFaultCode.MandatoryNotDefined, "Geolocation details must not be null");
         }
         if (ex != null) {
             observer.onResult(new ExecutionResult(ex));

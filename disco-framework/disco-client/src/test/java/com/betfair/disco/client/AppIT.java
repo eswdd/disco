@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -26,7 +26,7 @@ public class AppIT {
 	public void testWiring() {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(
 				new String[] {
-						"conf/cougar-application-spring.xml"
+						"conf/disco-application-spring.xml"
 					});
 	}
 

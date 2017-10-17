@@ -32,15 +32,15 @@ import ${package}.${majorVersion}.${serviceDefinitionName};
 import java.util.ArrayList;
 import java.util.List;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.OperationKey;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
 
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
 
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor.ParamSource;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor.ParamSource;
 
 public class ${serviceName}RescriptServiceBindingDescriptor implements HttpServiceBindingDescriptor {
 

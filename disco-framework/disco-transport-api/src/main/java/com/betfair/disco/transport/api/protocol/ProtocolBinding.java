@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol;
+package uk.co.exemel.disco.transport.api.protocol;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
 
 /**
- * A protocol binding is used to describe the relationship between a Cougar http transport @see Protocol
+ * A protocol binding is used to describe the relationship between a Disco http transport @see Protocol
  * the context root it will accessed from and the identitytokenResolver to use on auth tokens
  * being received on that channel
  */

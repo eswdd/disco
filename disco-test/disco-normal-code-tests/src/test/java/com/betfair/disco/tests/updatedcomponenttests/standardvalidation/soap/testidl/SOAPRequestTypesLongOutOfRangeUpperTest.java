@@ -16,15 +16,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardValidation/SOAP/Test-IDL/SOAP_RequestTypes_Long_OutOfRange_Upper.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardvalidation.soap.testidl;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardvalidation.soap.testidl;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -34,33 +34,33 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Ensure that when a SOAP request is received with an out of range (upper) Long parameter, Cougar returns the correct fault
+ * Ensure that when a SOAP request is received with an out of range (upper) Long parameter, Disco returns the correct fault
  */
 public class SOAPRequestTypesLongOutOfRangeUpperTest {
     @Test(dataProvider = "SchemaValidationEnabled")
     public void doTest(boolean schemaValidationEnabled) throws Exception {
-        CougarHelpers helpers = new CougarHelpers();
+        DiscoHelpers helpers = new DiscoHelpers();
         try {
-            CougarManager cougarManager = CougarManager.getInstance();
-            helpers.setJMXMBeanAttributeValue("com.betfair.cougar.transport:type=soapCommandProcessor", "SchemaValidationEnabled", schemaValidationEnabled);
+            DiscoManager discoManager = DiscoManager.getInstance();
+            helpers.setJMXMBeanAttributeValue("uk.co.exemel.disco.transport:type=soapCommandProcessor", "SchemaValidationEnabled", schemaValidationEnabled);
             // Create the HttpCallBean
-            CougarManager cougarManager1 = CougarManager.getInstance();
-            HttpCallBean httpCallBeanBaseline = cougarManager1.getNewHttpCallBean();
-            CougarManager cougarManagerBaseline = cougarManager1;
-            // Get the cougar logging attribute for getting log entries later
+            DiscoManager discoManager1 = DiscoManager.getInstance();
+            HttpCallBean httpCallBeanBaseline = discoManager1.getNewHttpCallBean();
+            DiscoManager discoManagerBaseline = discoManager1;
+            // Get the disco logging attribute for getting log entries later
             // Point the created HttpCallBean at the correct service
-            httpCallBeanBaseline.setServiceName("baseline", "cougarBaseline");
+            httpCallBeanBaseline.setServiceName("baseline", "discoBaseline");
 
             httpCallBeanBaseline.setVersion("v2");
             // Create the SOAP request as an XML Document (with an out of range (upper) parameter)
             XMLHelpers xMLHelpers2 = new XMLHelpers();
             Document createAsDocument2 = xMLHelpers2.getXMLObjectFromString("<I64OperationRequest><headerParam>92233720368547758089</headerParam><queryParam>543553</queryParam><message><bodyParameter>543553</bodyParameter></message></I64OperationRequest>");
             // Set up the Http Call Bean to make the request
-            CougarManager cougarManager3 = CougarManager.getInstance();
-            HttpCallBean getNewHttpCallBean3 = cougarManager3.getNewHttpCallBean("87.248.113.14");
-            cougarManager3 = cougarManager3;
+            DiscoManager discoManager3 = DiscoManager.getInstance();
+            HttpCallBean getNewHttpCallBean3 = discoManager3.getNewHttpCallBean("87.248.113.14");
+            discoManager3 = discoManager3;
 
-            cougarManager3.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+            discoManager3.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
 
             getNewHttpCallBean3.setServiceName("Baseline");
 
@@ -71,26 +71,26 @@ public class SOAPRequestTypesLongOutOfRangeUpperTest {
 
             Timestamp getTimeAsTimeStamp9 = new Timestamp(System.currentTimeMillis());
             // Make the SOAP call to the operation
-            cougarManager3.makeSoapCougarHTTPCalls(getNewHttpCallBean3);
+            discoManager3.makeSoapDiscoHTTPCalls(getNewHttpCallBean3);
             // Create the expected response object as an XML document (fault)
             XMLHelpers xMLHelpers5 = new XMLHelpers();
             Document createAsDocument11 = xMLHelpers5.getXMLObjectFromString("<soapenv:Fault><faultcode>soapenv:Client</faultcode><faultstring>DSC-0044</faultstring><detail/></soapenv:Fault>");
 
             // Check the response is as expected
-            HttpResponseBean response6 = getNewHttpCallBean3.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+            HttpResponseBean response6 = getNewHttpCallBean3.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
             AssertionUtils.multiAssertEquals(createAsDocument11, response6.getResponseObject());
 
             // generalHelpers.pauseTest(500L);
             // Check the log entries are as expected
 
 
-            CougarHelpers cougarHelpers10 = new CougarHelpers();
-            String JavaVersion = cougarHelpers10.getJavaVersion();
+            DiscoHelpers discoHelpers10 = new DiscoHelpers();
+            String JavaVersion = discoHelpers10.getJavaVersion();
 
-            CougarManager cougarManager11 = CougarManager.getInstance();
-            cougarManager11.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9, new AccessLogRequirement("87.248.113.14", "/BaselineService/v2", "BadRequest"));
+            DiscoManager discoManager11 = DiscoManager.getInstance();
+            discoManager11.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9, new AccessLogRequirement("87.248.113.14", "/BaselineService/v2", "BadRequest"));
         } finally {
-            helpers.setJMXMBeanAttributeValue("com.betfair.cougar.transport:type=soapCommandProcessor", "SchemaValidationEnabled", true);
+            helpers.setJMXMBeanAttributeValue("uk.co.exemel.disco.transport:type=soapCommandProcessor", "SchemaValidationEnabled", true);
         }
     }
 

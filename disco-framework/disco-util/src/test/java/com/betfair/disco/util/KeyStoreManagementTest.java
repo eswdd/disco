@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util;
+package uk.co.exemel.disco.util;
 
-import com.betfair.cougar.util.configuration.PropertyConfigurer;
+import uk.co.exemel.disco.util.configuration.PropertyConfigurer;
 import org.junit.Test;
 import org.springframework.core.io.FileSystemResource;
 
@@ -33,22 +33,22 @@ public class KeyStoreManagementTest {
 
     private static String getPath(String filename) throws IOException {
         String userDir = new File(System.getProperty("user.dir")).getCanonicalPath();
-        if (userDir.endsWith("/cougar-framework/cougar-util")) {
-            userDir = userDir.substring(0, userDir.indexOf("/cougar-framework/cougar-util"));
+        if (userDir.endsWith("/disco-framework/disco-util")) {
+            userDir = userDir.substring(0, userDir.indexOf("/disco-framework/disco-util"));
         }
-        else if (userDir.endsWith("\\cougar-framework\\cougar-util")) {
-            userDir = userDir.substring(0, userDir.indexOf("\\cougar-framework\\cougar-util"));
+        else if (userDir.endsWith("\\disco-framework\\disco-util")) {
+            userDir = userDir.substring(0, userDir.indexOf("\\disco-framework\\disco-util"));
         }
 
-        return new File(userDir, "cougar-framework/cougar-util/src/test/resources/"+filename).getCanonicalPath();
+        return new File(userDir, "disco-framework/disco-util/src/test/resources/"+filename).getCanonicalPath();
     }
 
     public static String getKeystorePath() throws IOException {
-        return getPath("cougar_server_cert.jks");
+        return getPath("disco_server_cert.jks");
     }
 
     public static String getTruststorePath() throws IOException {
-        return getPath("cougar_server_ca.jks");
+        return getPath("disco_server_ca.jks");
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.marshalling;
+package uk.co.exemel.disco.netutil.nio.marshalling;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.core.api.builder.DehydratedExecutionContextBuilder;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextComponent;
-import com.betfair.cougar.transport.api.SingleComponentResolver;
-import com.betfair.cougar.util.RequestUUIDImpl;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.core.api.builder.DehydratedExecutionContextBuilder;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextComponent;
+import uk.co.exemel.disco.transport.api.SingleComponentResolver;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
 
 /**
  * Default Socket UUID resolver.

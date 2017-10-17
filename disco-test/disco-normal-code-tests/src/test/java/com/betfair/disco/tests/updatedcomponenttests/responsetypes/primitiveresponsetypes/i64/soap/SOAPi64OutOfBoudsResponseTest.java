@@ -16,14 +16,14 @@
  */
 
 // Originally from UpdatedComponentTests/ResponseTypes/PrimitiveResponseTypes/i64/SOAP/SOAP_i64OutOfBoudsResponse.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.responsetypes.primitiveresponsetypes.i64.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.responsetypes.primitiveresponsetypes.i64.soap;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -32,7 +32,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Test that the Cougar service returns a correct error when an out of type bounds value is passed in i64 primitive type (SOAP)
+ * Test that the Disco service returns a correct error when an out of type bounds value is passed in i64 primitive type (SOAP)
  */
 public class SOAPi64OutOfBoudsResponseTest {
     @Test
@@ -41,12 +41,12 @@ public class SOAPi64OutOfBoudsResponseTest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document requestDocument = xMLHelpers1.getXMLObjectFromString("<I64SimpleTypeEchoRequest><msg>-9223372036854775809</msg></I64SimpleTypeEchoRequest>");
         // Get an HTTPCallBean
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean HTTPCallBean = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        CougarManager CougarManager = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean HTTPCallBean = discoManager2.getNewHttpCallBean("87.248.113.14");
+        DiscoManager DiscoManager = discoManager2;
         // Get LogManager JMX Attribute
-        // Set Cougar Fault Controller attributes
-        CougarManager.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        // Set Disco Fault Controller attributes
+        DiscoManager.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         // Set service name to call
         HTTPCallBean.setServiceName("Baseline");
         // Set service version to call
@@ -56,19 +56,19 @@ public class SOAPi64OutOfBoudsResponseTest {
         // Get current time
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        // Make Cougar SOAP call
-        CougarManager.makeSoapCougarHTTPCalls(HTTPCallBean);
+        // Make Disco SOAP call
+        DiscoManager.makeSoapDiscoHTTPCalls(HTTPCallBean);
         // Create a soap response structure as a Document object
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document responseDocument = xMLHelpers4.getXMLObjectFromString("<soapenv:Fault><faultcode>soapenv:Client</faultcode><faultstring>DSC-0044</faultstring><detail/></soapenv:Fault>");
 
         // Get the actual SOAP response and compare it to the expected response
-        HttpResponseBean response6 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response6 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(responseDocument, response6.getResponseObject());
         // Pause test
         // generalHelpers.pauseTest(500L);
         // Get access log entries after the time recorded earlier in the test
-        CougarManager.verifyAccessLogEntriesAfterDate(timestamp, new AccessLogRequirement("87.248.113.14", "/BaselineService/v2", "BadRequest") );
+        DiscoManager.verifyAccessLogEntriesAfterDate(timestamp, new AccessLogRequirement("87.248.113.14", "/BaselineService/v2", "BadRequest") );
     }
 
 }

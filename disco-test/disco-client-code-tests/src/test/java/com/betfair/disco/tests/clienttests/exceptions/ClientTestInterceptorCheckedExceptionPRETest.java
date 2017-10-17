@@ -15,24 +15,24 @@
  */
 
 // Originally from ClientTests/Transport/Exceptions/Client_Rescript_TestInterceptorCheckedException_PRE.xls;
-package com.betfair.cougar.tests.clienttests.exceptions;
+package uk.co.exemel.disco.tests.clienttests.exceptions;
 
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
- * Ensure that when an exception is thrown from a pre operation interceptor it is thrown and handled correctly by the cougar client
+ * Ensure that when an exception is thrown from a pre operation interceptor it is thrown and handled correctly by the disco client
  */
 public class ClientTestInterceptorCheckedExceptionPRETest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Set up the client using rescript transport
-        CougarClientWrapper cougarClientWrapper1 = CougarClientWrapper.getInstance(tt);
-        CougarClientWrapper wrapper = cougarClientWrapper1;
+        DiscoClientWrapper discoClientWrapper1 = DiscoClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = discoClientWrapper1;
         // Call a wrapper method that will call an operation that returns a pre operation interceptor exception, catches it and returns the exception message
         String errorMessage = wrapper.callInterceptorExceptionOperation(com.betfair.baseline.v2.enumerations.PreOrPostInterceptorException.PRE);
         assertEquals("An anticipated pre-execution BSIDL defined checked exception", errorMessage);

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.kpi;
+package uk.co.exemel.disco.marshalling.impl.databinding.kpi;
 
-import com.betfair.cougar.core.api.fault.CougarFault;
-import com.betfair.cougar.marshalling.api.databinding.FaultMarshaller;
-import com.betfair.cougar.marshalling.api.databinding.FaultUnMarshaller;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultUnMarshaller;
 import com.betfair.tornjak.kpi.KPIMonitor;
 
 import java.io.InputStream;
@@ -41,10 +41,10 @@ public class KPITimingFaultUnMarshaller implements FaultUnMarshaller {
     }
 
     @Override
-    public CougarFault unMarshallFault(InputStream inputStream, String encoding) {
+    public DiscoFault unMarshallFault(InputStream inputStream, String encoding) {
         boolean success = false;
         long start = System.currentTimeMillis();
-        CougarFault fault = null;
+        DiscoFault fault = null;
         try {
             fault = faultUnMarshaller.unMarshallFault(inputStream, encoding);
             success = true;

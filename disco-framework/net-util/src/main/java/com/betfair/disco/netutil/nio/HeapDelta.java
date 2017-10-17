@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
-import com.betfair.cougar.core.api.transcription.*;
+import uk.co.exemel.disco.core.api.transcription.*;
 import com.betfair.platform.virtualheap.HeapListener;
-import com.betfair.cougar.netutil.nio.connected.*;
+import uk.co.exemel.disco.netutil.nio.connected.*;
 
 import java.util.ArrayList;
 import java.util.List;

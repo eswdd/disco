@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.common;
+package uk.co.exemel.disco.test.socket.tester.common;
 
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.transcription.TranscribableEnum;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.transcription.TranscribableEnum;
 
 import java.io.Externalizable;
 import java.io.IOException;

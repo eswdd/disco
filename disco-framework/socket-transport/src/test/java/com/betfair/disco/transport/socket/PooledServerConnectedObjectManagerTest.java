@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.LoggableEvent;
-import com.betfair.cougar.core.api.ev.ConnectedResponse;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.Subscription;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.logging.EventLogger;
-import com.betfair.cougar.core.impl.ev.ConnectedResponseImpl;
-import com.betfair.cougar.core.impl.ev.DefaultSubscription;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.LoggableEvent;
+import uk.co.exemel.disco.core.api.ev.ConnectedResponse;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.Subscription;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.logging.EventLogger;
+import uk.co.exemel.disco.core.impl.ev.ConnectedResponseImpl;
+import uk.co.exemel.disco.core.impl.ev.DefaultSubscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.TerminateSubscription;
-import com.betfair.cougar.netutil.nio.connected.*;
-import com.betfair.cougar.test.ParameterizedMultiRunner;
-import com.betfair.cougar.transport.api.protocol.CougarObjectIOFactory;
-import com.betfair.cougar.transport.api.protocol.socket.NewHeapSubscription;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.TerminateSubscription;
+import uk.co.exemel.disco.netutil.nio.connected.*;
+import uk.co.exemel.disco.test.ParameterizedMultiRunner;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectIOFactory;
+import uk.co.exemel.disco.transport.api.protocol.socket.NewHeapSubscription;
 import com.betfair.platform.virtualheap.HeapListener;
 import com.betfair.platform.virtualheap.MutableHeap;
 import com.betfair.platform.virtualheap.NodeType;
@@ -67,7 +67,7 @@ public class PooledServerConnectedObjectManagerTest {
     private static Logger LOGGER = LoggerFactory.getLogger(PooledServerConnectedObjectManagerTest.class);
 
     private PooledServerConnectedObjectManager subject;
-    private ExpectingOutput cougarOutput;
+    private ExpectingOutput discoOutput;
     private int ioSessionId;
 
     private int numThreads;
@@ -91,8 +91,8 @@ public class PooledServerConnectedObjectManagerTest {
         subject = new PooledServerConnectedObjectManager();
         subject.setNumProcessingThreads(numThreads);
         subject.setNioLogger(new NioLogger("ALL"));
-        CougarObjectIOFactory ioFactory;
-        subject.setObjectIOFactory(ioFactory = mock(CougarObjectIOFactory.class));
+        DiscoObjectIOFactory ioFactory;
+        subject.setObjectIOFactory(ioFactory = mock(DiscoObjectIOFactory.class));
         subject.setEventLogger(new EventLogger() {
             @Override
             public void logEvent(LoggableEvent event) {
@@ -102,8 +102,8 @@ public class PooledServerConnectedObjectManagerTest {
             public void logEvent(LoggableEvent loggableEvent, Object[] extensionFields) {
             }
         });
-        cougarOutput = new ExpectingOutput(1000L);
-        doReturn(cougarOutput).when(ioFactory).newCougarObjectOutput(any(ByteArrayOutputStream.class),anyByte());
+        discoOutput = new ExpectingOutput(1000L);
+        doReturn(discoOutput).when(ioFactory).newDiscoObjectOutput(any(ByteArrayOutputStream.class),anyByte());
         subject.start();
     }
 
@@ -119,7 +119,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         IoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -149,7 +149,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -162,7 +162,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         // 2 subs at about the same time, we're interested in the second..
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
@@ -193,7 +193,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         IoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -228,7 +228,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         IoSession session = new MyIoSession("1");
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -243,7 +243,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
-        verify(commandProcessor).writeErrorResponse(any(SocketTransportCommand.class), any(DehydratedExecutionContext.class), any(CougarFrameworkException.class), eq(true));
+        verify(commandProcessor).writeErrorResponse(any(SocketTransportCommand.class), any(DehydratedExecutionContext.class), any(DiscoFrameworkException.class), eq(true));
 
         assertNull(subject.getHeapsByClient().get(session));
         assertEquals(0, subject.getHeapStates().size());
@@ -259,7 +259,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         IoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -280,7 +280,7 @@ public class PooledServerConnectedObjectManagerTest {
         subscriptionResult = new ConnectedResponseImpl(heap, sub2);
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
-        verify(commandProcessor).writeErrorResponse(any(SocketTransportCommand.class), any(DehydratedExecutionContext.class), any(CougarFrameworkException.class), eq(true));
+        verify(commandProcessor).writeErrorResponse(any(SocketTransportCommand.class), any(DehydratedExecutionContext.class), any(DiscoFrameworkException.class), eq(true));
 
         assertNull(subject.getHeapsByClient().get(session));
         assertEquals(0, subject.getHeapStates().size());
@@ -298,7 +298,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -311,7 +311,7 @@ public class PooledServerConnectedObjectManagerTest {
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
         expectedUpdates.add(createUpdate(new InstallRoot(0, NodeType.OBJECT), new InstallField(0, 1, "value", NodeType.SCALAR), new SetScalar(1, 1)));
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
@@ -323,7 +323,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 1;
+        int updatesWritten = discoOutput.getAllValues().size() - 1;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session, updatesWritten + 1);
@@ -339,7 +339,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -352,7 +352,7 @@ public class PooledServerConnectedObjectManagerTest {
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
         expectedUpdates.add(createUpdate(new InstallRoot(0, NodeType.OBJECT), new InstallField(0, 1, "value", NodeType.SCALAR), new SetScalar(1, 1), new SetScalar(1, 2), new SetScalar(1, 3)));
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
@@ -372,7 +372,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 1;
+        int updatesWritten = discoOutput.getAllValues().size() - 1;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session, updatesWritten + 1);
@@ -388,7 +388,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -401,12 +401,12 @@ public class PooledServerConnectedObjectManagerTest {
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
         expectedUpdates.add(createUpdate(new InstallRoot(0, NodeType.OBJECT), new InstallField(0, 1, "value", NodeType.SCALAR), new SetScalar(1, 1)));
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
         MyIoSession session2 = new MyIoSession(String.valueOf(ioSessionId++));
-        session2.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session2.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session2);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
@@ -418,7 +418,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         assertExpectedUpdatesWritten();
 
-        assertEquals(3, cougarOutput.getAllValues().size());
+        assertEquals(3, discoOutput.getAllValues().size());
 
         assertExpectedSessionWrites(session, 2);
         assertExpectedSessionWrites(session2, 2);
@@ -435,7 +435,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -449,12 +449,12 @@ public class PooledServerConnectedObjectManagerTest {
         expectedUpdates.add(createInitial());
         expectedUpdates.add(createInitial());
         expectedUpdates.add(createUpdate(new InstallRoot(0, NodeType.OBJECT), new InstallField(0, 1, "value", NodeType.SCALAR), new SetScalar(1, 1), new SetScalar(1, 2), new SetScalar(1, 3)));
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
         MyIoSession session2 = new MyIoSession(String.valueOf(ioSessionId++));
-        session2.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session2.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session2);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
@@ -477,7 +477,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 2;
+        int updatesWritten = discoOutput.getAllValues().size() - 2;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session, updatesWritten + 1);
@@ -494,7 +494,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -507,7 +507,7 @@ public class PooledServerConnectedObjectManagerTest {
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial(new InstallRoot(0, NodeType.OBJECT), new InstallField(0, 1, "value", NodeType.SCALAR), new SetScalar(1, 1)));
         expectedUpdates.add(createUpdate(new SetScalar(1, 2), new SetScalar(1, 3)));
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         heap.beginUpdate();
         SimpleConnectedObject object = objectProjector(SimpleConnectedObject.class).project(heap.ensureRoot(NodeType.OBJECT));
@@ -529,7 +529,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 1;
+        int updatesWritten = discoOutput.getAllValues().size() - 1;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session, updatesWritten + 1);
@@ -559,7 +559,7 @@ public class PooledServerConnectedObjectManagerTest {
         expectedUpdates.add(createInitial(new InstallRoot(0, NodeType.OBJECT), new InstallField(0, 1, "value", NodeType.SCALAR), new SetScalar(1, 2)));
         expectedUpdates.add(createUpdate(new SetScalar(1, 3)));
 
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         heap.beginUpdate();
         SimpleConnectedObject object = objectProjector(SimpleConnectedObject.class).project(heap.ensureRoot(NodeType.OBJECT));
@@ -567,7 +567,7 @@ public class PooledServerConnectedObjectManagerTest {
         heap.endUpdate();
 
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
@@ -578,7 +578,7 @@ public class PooledServerConnectedObjectManagerTest {
         heap.endUpdate();
 
         MyIoSession session2 = new MyIoSession(String.valueOf(ioSessionId++));
-        session2.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session2.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session2);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
@@ -591,7 +591,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 2;
+        int updatesWritten = discoOutput.getAllValues().size() - 2;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session, updatesWritten + 1);
@@ -608,7 +608,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -621,7 +621,7 @@ public class PooledServerConnectedObjectManagerTest {
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
         expectedUpdates.add(createUpdate(new InstallRoot(0, NodeType.OBJECT), new InstallField(0, 1, "value", NodeType.SCALAR), new SetScalar(1, 1), new SetScalar(1, 2), new TerminateHeap()));
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
@@ -645,7 +645,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 1;
+        int updatesWritten = discoOutput.getAllValues().size() - 1;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session, updatesWritten + 1);
@@ -680,7 +680,7 @@ public class PooledServerConnectedObjectManagerTest {
                 return super.close();
             }
         };
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -738,15 +738,15 @@ public class PooledServerConnectedObjectManagerTest {
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
         expectedUpdates.add(createUpdate(new InstallRoot(0, NodeType.OBJECT), new InstallField(0, 1, "value", NodeType.SCALAR), new SetScalar(1, 1), new SetScalar(1, 2), new SetScalar(1, 3)));
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
         subject.addSubscription(commandProcessor, command, subscriptionResult1, operationDefinition, requestContext, null);
 
         MyIoSession session2 = new MyIoSession(String.valueOf(ioSessionId++));
-        session2.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session2.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session2);
         subject.addSubscription(commandProcessor, command, subscriptionResult2, operationDefinition, requestContext, null);
 
@@ -784,7 +784,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 2;
+        int updatesWritten = discoOutput.getAllValues().size() - 2;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session2, updatesWritten + 1);
@@ -806,7 +806,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -819,9 +819,9 @@ public class PooledServerConnectedObjectManagerTest {
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
         expectedUpdates.add(createUpdate(new InstallRoot(0, NodeType.OBJECT), new InstallField(0, 1, "value", NodeType.SCALAR), new SetScalar(1, 1)));
-        // this last one we'll see on the cougarOutput, but not on the session write (since it's gonna fail)
+        // this last one we'll see on the discoOutput, but not on the session write (since it's gonna fail)
         expectedUpdates.add(createUpdate(new SetScalar(1, 2)));
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
@@ -845,7 +845,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 2;
+        int updatesWritten = discoOutput.getAllValues().size() - 2;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session, updatesWritten + 1);
@@ -870,7 +870,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -878,7 +878,7 @@ public class PooledServerConnectedObjectManagerTest {
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
         expectedUpdates.add(createInitial());
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         OperationDefinition operationDefinition = mock(OperationDefinition.class);
 
@@ -894,7 +894,7 @@ public class PooledServerConnectedObjectManagerTest {
         subject.addSubscription(commandProcessor, command, subscriptionResult2, operationDefinition, requestContext, null);
 
         String subscriptionId2 = getSubscriptionId(subject.getHeapStates().get("secondSubscriptionClosedByPublisher"), sub2);
-        cougarOutput.getExpectedSubTerminations().add(new TerminateSubscription(1, subscriptionId2, Subscription.CloseReason.REQUESTED_BY_PUBLISHER.name()));
+        discoOutput.getExpectedSubTerminations().add(new TerminateSubscription(1, subscriptionId2, Subscription.CloseReason.REQUESTED_BY_PUBLISHER.name()));
 
         session.awaitWrite(1, 2000L); // ensures we've had the initial updates through
 
@@ -903,7 +903,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 1;
+        int updatesWritten = discoOutput.getAllValues().size() - 1;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session, updatesWritten + 1);
@@ -919,7 +919,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -931,12 +931,12 @@ public class PooledServerConnectedObjectManagerTest {
 
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
         String subscriptionId = getSubscriptionId(subject.getHeapStates().get("lastSubscriptionClosedByPublisher"), sub);
-        cougarOutput.getExpectedSubTerminations().add(new TerminateSubscription(1, subscriptionId, Subscription.CloseReason.REQUESTED_BY_PUBLISHER.name()));
+        discoOutput.getExpectedSubTerminations().add(new TerminateSubscription(1, subscriptionId, Subscription.CloseReason.REQUESTED_BY_PUBLISHER.name()));
 
         session.awaitWrite(1, 2000L); // ensures we've had the initial update through
 
@@ -945,7 +945,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 1;
+        int updatesWritten = discoOutput.getAllValues().size() - 1;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session, updatesWritten + 1);
@@ -961,7 +961,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -973,12 +973,12 @@ public class PooledServerConnectedObjectManagerTest {
 
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
         String subscriptionId = getSubscriptionId(subject.getHeapStates().get("subscriptionCloseNotificationFails"), sub);
-        cougarOutput.getExpectedSubTerminations().add(new TerminateSubscription(1, subscriptionId, Subscription.CloseReason.REQUESTED_BY_PUBLISHER.name()));
+        discoOutput.getExpectedSubTerminations().add(new TerminateSubscription(1, subscriptionId, Subscription.CloseReason.REQUESTED_BY_PUBLISHER.name()));
 
         session.awaitWrite(1, 2000L); // ensures we've had the initial update through
 
@@ -989,7 +989,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 1;
+        int updatesWritten = discoOutput.getAllValues().size() - 1;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session, updatesWritten);
@@ -1005,7 +1005,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -1013,7 +1013,7 @@ public class PooledServerConnectedObjectManagerTest {
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
         expectedUpdates.add(createUpdate(new InstallRoot(0, NodeType.OBJECT), new InstallField(0, 1, "value", NodeType.SCALAR), new SetScalar(1, 1)));
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         OperationDefinition operationDefinition = mock(OperationDefinition.class);
 
@@ -1038,7 +1038,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 1;
+        int updatesWritten = discoOutput.getAllValues().size() - 1;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session, updatesWritten + 1);
@@ -1057,7 +1057,7 @@ public class PooledServerConnectedObjectManagerTest {
 
         SocketTransportRPCCommand command = mock(SocketTransportRPCCommand.class);
         MyIoSession session = new MyIoSession(String.valueOf(ioSessionId++));
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
         DehydratedExecutionContext requestContext = mock(DehydratedExecutionContext.class);
@@ -1070,7 +1070,7 @@ public class PooledServerConnectedObjectManagerTest {
         List<Update> expectedUpdates = new ArrayList<Update>();
         expectedUpdates.add(createInitial());
         expectedUpdates.add(createUpdate(new InstallRoot(0, NodeType.OBJECT), new InstallField(0, 1, "value", NodeType.SCALAR), new SetScalar(1, 1)));
-        cougarOutput.setExpectedUpdates(expectedUpdates);
+        discoOutput.setExpectedUpdates(expectedUpdates);
 
         subject.addSubscription(commandProcessor, command, subscriptionResult, operationDefinition, requestContext, null);
 
@@ -1084,7 +1084,7 @@ public class PooledServerConnectedObjectManagerTest {
         assertExpectedUpdatesWritten();
 
         // might be related to the optimisation whereby if we need to send the same message to multiple clients we serialise it only once
-        int updatesWritten = cougarOutput.getAllValues().size() - 1;
+        int updatesWritten = discoOutput.getAllValues().size() - 1;
 
         // +1 to include the initial update for that session
         assertExpectedSessionWrites(session, updatesWritten + 1);
@@ -1112,7 +1112,7 @@ public class PooledServerConnectedObjectManagerTest {
 
     private void assertExpectedUpdatesWritten() throws InterruptedException {
         final AtomicReference<String> failureText = new AtomicReference<String>();
-        cougarOutput.addListener(new ExpectingOutput.ExpectingOutputListener() {
+        discoOutput.addListener(new ExpectingOutput.ExpectingOutputListener() {
             @Override
             public void failure(String s) {
                 failureText.set(s);
@@ -1127,7 +1127,7 @@ public class PooledServerConnectedObjectManagerTest {
             LOGGER.debug("Starting wait for expected updates");
         }
 
-        cougarOutput.start();
+        discoOutput.start();
 
         BlockingDeque queue = subject.getHeapsWaitingForUpdate();
         while (!queue.isEmpty()) {
@@ -1153,8 +1153,8 @@ public class PooledServerConnectedObjectManagerTest {
         }
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("CougarObjectOutput.writeObject():");
-            for (Object o : new ArrayList<Object>(cougarOutput.getAllValues())) {
+            LOGGER.debug("DiscoObjectOutput.writeObject():");
+            for (Object o : new ArrayList<Object>(discoOutput.getAllValues())) {
                 LOGGER.debug(String.valueOf(o));
             }
         }
@@ -1164,7 +1164,7 @@ public class PooledServerConnectedObjectManagerTest {
         }
 
         // add in checks for the terminate subs
-        assertEquals(cougarOutput.getExpectedSubTerminations(), cougarOutput.getSubTerminations());
+        assertEquals(discoOutput.getExpectedSubTerminations(), discoOutput.getSubTerminations());
     }
 
     private void assertExpectedSessionWrites(MyIoSession session, int writes) throws InterruptedException {

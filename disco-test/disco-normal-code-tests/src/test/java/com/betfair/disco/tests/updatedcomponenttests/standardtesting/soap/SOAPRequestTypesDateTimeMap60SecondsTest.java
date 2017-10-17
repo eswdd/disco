@@ -16,13 +16,13 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/SOAP/SOAP_RequestTypes_DateTimeMap_60Seconds.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.soap;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -31,7 +31,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Ensure that when a SOAP request is received, Cougar correctly returns a fault when a dateTimeMap parameter contains a date set to 00:00:60 (should be 00:01:00)
+ * Ensure that when a SOAP request is received, Disco correctly returns a fault when a dateTimeMap parameter contains a date set to 00:00:60 (should be 00:01:00)
  */
 public class SOAPRequestTypesDateTimeMap60SecondsTest {
     @Test
@@ -40,9 +40,9 @@ public class SOAPRequestTypesDateTimeMap60SecondsTest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document createAsDocument1 = xMLHelpers1.getXMLObjectFromString("<DateTimeMapOperationRequest><message><dateTimeMap><entry key=\"date1\"><Date>2009-12-01T00:00:60Z</Date></entry><entry key=\"date2\"><Date>2009-12-01T00:00:60Z</Date></entry></dateTimeMap></message></DateTimeMapOperationRequest>");
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean hbean = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        CougarManager hinstance = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean hbean = discoManager2.getNewHttpCallBean("87.248.113.14");
+        DiscoManager hinstance = discoManager2;
 
         hbean.setServiceName("Baseline");
 
@@ -53,13 +53,13 @@ public class SOAPRequestTypesDateTimeMap60SecondsTest {
 
         Timestamp getTimeAsTimeStamp9 = new Timestamp(System.currentTimeMillis());
         // Make the SOAP call to the operation
-        hinstance.makeSoapCougarHTTPCalls(hbean);
+        hinstance.makeSoapDiscoHTTPCalls(hbean);
         // Create the expected response object as an XML document (fault)
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument11 = xMLHelpers4.getXMLObjectFromString("<soapenv:Fault><faultcode>soapenv:Client</faultcode><faultstring>DSC-0044</faultstring><detail/></soapenv:Fault>");
 
         // Check the response is as expected
-        HttpResponseBean response5 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response5 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(createAsDocument11, response5.getResponseObject());
 
         // generalHelpers.pauseTest(3000L);

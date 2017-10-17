@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.configuration;
+package uk.co.exemel.disco.util.configuration;
 
 import org.jasypt.encryption.StringEncryptor;
 
@@ -28,7 +28,7 @@ public class EncryptorRegistry {
 
     public void registerEncryptor(StringEncryptor encryptor) {
         if (this.encryptor != null) {
-            throw new IllegalStateException("Cougar only supports a single encryptor, already have one set: "+this.encryptor);
+            throw new IllegalStateException("Disco only supports a single encryptor, already have one set: "+this.encryptor);
         }
         this.encryptor = encryptor;
     }

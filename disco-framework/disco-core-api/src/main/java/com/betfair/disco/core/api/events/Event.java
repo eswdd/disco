@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.events;
+package uk.co.exemel.disco.core.api.events;
 
-import com.betfair.cougar.core.api.transcription.Transcribable;
+import uk.co.exemel.disco.core.api.transcription.Transcribable;
 
 /**
  * Super interface for generated Event objects
  */
 public interface Event extends Transcribable {
     /**
-     * @return returns a globally unique message identifier.  Note that once specified, a cougar
+     * @return returns a globally unique message identifier.  Note that once specified, a disco
      * instance won't modify this property, it will be passed from instance to instance
      */
     public String getMessageId();
 
     /**
      * Should return a separated list of pairs, where each item contains a host and the timestamp when
-     * that cougar host touched this message to aid tracing
-     * @return returns a separated list of kvps, where each pair contains a cougar host and a timestamp
+     * that disco host touched this message to aid tracing
+     * @return returns a separated list of kvps, where each pair contains a disco host and a timestamp
      */
-    public String getCougarMessageRouteString();
+    public String getDiscoMessageRouteString();
 }

@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.common;
+package uk.co.exemel.disco.test.socket.tester.common;
 
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.ConnectedResponse;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.SimpleOperationDefinition;
-import com.betfair.cougar.core.api.transcription.*;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.ConnectedResponse;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.SimpleOperationDefinition;
+import uk.co.exemel.disco.core.api.transcription.*;
 
 /**
  *
  */
 public class Common {
 
-    private static final int minMajorCougarVersion = 2;
+    private static final int minMajorDiscoVersion = 2;
     private static final int[] maxMinorVersions = new int[] { -1, -1, 10, Integer.MAX_VALUE };
-    private static ServiceVersion serviceVersionFromCougarVersion(int majorVersion, int minorVersion) {
+    private static ServiceVersion serviceVersionFromDiscoVersion(int majorVersion, int minorVersion) {
         if (majorVersion >= maxMinorVersions.length) {
             throw new RuntimeException("Invalid major version: "+majorVersion);
         }
@@ -38,7 +38,7 @@ public class Common {
             throw new RuntimeException("Invalid minor version: "+minorVersion+" > "+maxMinorVersions[majorVersion]);
         }
         int retMinor = 0;
-        for (int m=minMajorCougarVersion; m<majorVersion; m++) {
+        for (int m=minMajorDiscoVersion; m<majorVersion; m++) {
             retMinor += 1 /* for zero version */ + maxMinorVersions[m];
         }
         retMinor++; /* for zero version on current major */
@@ -46,7 +46,7 @@ public class Common {
         return new ServiceVersion(1,retMinor);
     }
 
-    public static final ServiceVersion SERVICE_VERSION = serviceVersionFromCougarVersion(3,3);
+    public static final ServiceVersion SERVICE_VERSION = serviceVersionFromDiscoVersion(3,3);
 
     public static final OperationDefinition echoOperationDefinition = new SimpleOperationDefinition(
             new OperationKey(new ServiceVersion(1,0),"SocketTester","echoSuccess", OperationKey.Type.Request),

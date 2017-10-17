@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.logging;
+package uk.co.exemel.disco.core.impl.logging;
 
 import org.junit.After;
 import org.junit.Test;

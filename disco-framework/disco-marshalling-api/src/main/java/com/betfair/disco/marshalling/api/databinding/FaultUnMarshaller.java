@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.api.databinding;
+package uk.co.exemel.disco.marshalling.api.databinding;
 
-import com.betfair.cougar.core.api.fault.CougarFault;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
 
 import java.io.InputStream;
 
 /**
- * Interface to describe a marshaller to hydrate a CougarFault from the input stream
+ * Interface to describe a marshaller to hydrate a DiscoFault from the input stream
  */
 public interface FaultUnMarshaller {
 
-    CougarFault unMarshallFault(InputStream inputStream, String encoding);
+    DiscoFault unMarshallFault(InputStream inputStream, String encoding);
 }

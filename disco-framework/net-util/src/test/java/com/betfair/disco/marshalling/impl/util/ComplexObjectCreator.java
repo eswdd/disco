@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.util;
+package uk.co.exemel.disco.marshalling.impl.util;
 
 import org.apache.bcel.Constants;
 import org.apache.bcel.generic.ClassGen;
@@ -37,7 +37,7 @@ private InstructionFactory _factory;
   private ClassGen           _cg;
 
   public ComplexObjectCreator(String objectType) {
-    _cg = new ClassGen(objectType, "java.lang.Object", "ComplexObject.java", ACC_PUBLIC | ACC_SUPER, new String[] { "com.betfair.cougar.api.Result" });
+    _cg = new ClassGen(objectType, "java.lang.Object", "ComplexObject.java", ACC_PUBLIC | ACC_SUPER, new String[] { "uk.co.exemel.disco.api.Result" });
 
     _cp = _cg.getConstantPool();
     _factory = new InstructionFactory(_cg, _cp);

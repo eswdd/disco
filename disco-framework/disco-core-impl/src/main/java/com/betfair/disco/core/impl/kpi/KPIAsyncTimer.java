@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.kpi;
+package uk.co.exemel.disco.core.impl.kpi;
 
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
 import com.betfair.tornjak.kpi.KPIMonitor;
 import com.betfair.tornjak.kpi.KPITimer;
 import com.betfair.tornjak.kpi.aop.KPIAsyncTimedEvent;
@@ -26,7 +26,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
 /**
- * Cougar-specific aspect which handles {@link KPIAsyncTimedEvent}-annotated methods. The methods must also have an
+ * Disco-specific aspect which handles {@link KPIAsyncTimedEvent}-annotated methods. The methods must also have an
  * argument of type {@link ExecutionObserver} in the last position. Method signatures on the generated
  * async service interfaces match this pattern.
  */
@@ -36,11 +36,11 @@ public class KPIAsyncTimer {
     private KPIMonitor monitor;
 
     @Pointcut("@annotation(timer) && args(.., observer)")
-    private void cougarAsyncMethod(KPIAsyncTimedEvent timer, ExecutionObserver observer) {
+    private void discoAsyncMethod(KPIAsyncTimedEvent timer, ExecutionObserver observer) {
 
     }
 
-    @Around("cougarAsyncMethod(event, observer)")
+    @Around("discoAsyncMethod(event, observer)")
     public Object measureAsyncMethod(final ProceedingJoinPoint pjp, KPIAsyncTimedEvent event, ExecutionObserver observer) throws Throwable {
         final String eventValue = event.value();
         final String eventOperation = event.operation();

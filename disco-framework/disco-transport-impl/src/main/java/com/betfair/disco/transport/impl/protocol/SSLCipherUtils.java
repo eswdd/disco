@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol;
+package uk.co.exemel.disco.transport.impl.protocol;
 
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLSession;

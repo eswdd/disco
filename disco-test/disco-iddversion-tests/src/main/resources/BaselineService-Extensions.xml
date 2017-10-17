@@ -2076,6 +2076,6 @@
 	</event>
 	
 	<extensions>
-		<path>/cougarBaseline</path>
+		<path>/discoBaseline</path>
 	</extensions>
 </interface>

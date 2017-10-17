@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging.records;
+package uk.co.exemel.disco.logging.records;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -25,9 +25,9 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.logging.Level;
 
-import com.betfair.cougar.api.LoggableEvent;
+import uk.co.exemel.disco.api.LoggableEvent;
 
-public final class EventLogRecord extends CougarLogRecord {
+public final class EventLogRecord extends DiscoLogRecord {
 
 	private static final String fieldSeperator = ",";
 	private static final String collectionStart = "[";
@@ -57,7 +57,7 @@ public final class EventLogRecord extends CougarLogRecord {
     }
 
     /* (non-Javadoc)
-      * @see com.betfair.cougar.logging.records.LoggableEvent#renderMessageString()
+      * @see uk.co.exemel.disco.logging.records.LoggableEvent#renderMessageString()
       */
     public final void renderMessageString() {
         Object[] coreFields = event.getFieldsToLog();
@@ -87,7 +87,7 @@ public final class EventLogRecord extends CougarLogRecord {
 
     // Return a byte array for binary logging. Dummy implementation
     /* (non-Javadoc)
-      * @see com.betfair.cougar.logging.records.LoggableEvent#getBytes()
+      * @see uk.co.exemel.disco.logging.records.LoggableEvent#getBytes()
       */
     public final byte[] getBytes() throws IOException {
         return getMessage().getBytes();

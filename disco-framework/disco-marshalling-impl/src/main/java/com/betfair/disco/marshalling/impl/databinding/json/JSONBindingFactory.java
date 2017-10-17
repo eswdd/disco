@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.json;
+package uk.co.exemel.disco.marshalling.impl.databinding.json;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.marshalling.api.databinding.*;
+import uk.co.exemel.disco.marshalling.api.databinding.*;
 
 public class JSONBindingFactory implements DataBindingFactory {
 	private final static Logger LOGGER = LoggerFactory.getLogger(JSONBindingFactory.class);

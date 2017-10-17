@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.testng;
+package uk.co.exemel.disco.testng;
 
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -56,7 +56,7 @@ public class TestListener implements ITestListener, Runnable {
                     }
 
                     // server dump
-//                    CougarManager.getInstance().getCougarHelpers().dumpThreads();
+//                    DiscoManager.getInstance().getDiscoHelpers().dumpThreads();
                 }
             }
             catch (InterruptedException ie) {

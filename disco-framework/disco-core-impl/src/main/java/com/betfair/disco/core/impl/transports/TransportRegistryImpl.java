@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.transports;
+package uk.co.exemel.disco.core.impl.transports;
 
-import com.betfair.cougar.core.api.transports.AbstractRegisterableTransport;
-import com.betfair.cougar.core.api.transports.TransportRegistry;
+import uk.co.exemel.disco.core.api.transports.AbstractRegisterableTransport;
+import uk.co.exemel.disco.core.api.transports.TransportRegistry;
 
 import java.util.Iterator;
 import java.util.Set;

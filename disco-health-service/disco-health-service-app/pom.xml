@@ -18,20 +18,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>com.betfair.cougar</groupId>
-		<artifactId>cougar-health-service</artifactId>
+		<groupId>uk.co.exemel.disco</groupId>
+		<artifactId>disco-health-service</artifactId>
 		<version>3.3-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>cougar-health-service-app</artifactId>
+	<artifactId>disco-health-service-app</artifactId>
 	<packaging>jar</packaging>
-	<name>cougar-health-service-application</name>
+	<name>disco-health-service-application</name>
 	
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.betfair.cougar</groupId>
-				<artifactId>cougar-codegen-plugin</artifactId>
+				<groupId>uk.co.exemel.disco</groupId>
+				<artifactId>disco-codegen-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
 					<execution>
@@ -41,7 +41,7 @@
 						<configuration>
 							<services>
 								<service>
-									<serviceName>CougarHealthService</serviceName>
+									<serviceName>DiscoHealthService</serviceName>
 								</service>
 							</services>
                             <iddAsResource>true</iddAsResource>
@@ -72,26 +72,26 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-health-service-idd</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-health-service-idd</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-api</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-util</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-util</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-core-impl</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-core-impl</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-transport-impl</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-transport-impl</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -106,7 +106,7 @@
         <!-- At runtime the jetty-transport module must be present, since the health service needs to be
              accessible over HTTP to comply with IS NFRs -->
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>jetty-transport</artifactId>
             <scope>runtime</scope>
         </dependency>

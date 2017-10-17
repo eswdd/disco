@@ -19,20 +19,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>com.betfair.cougar</groupId>
-		<artifactId>cougar-testing-service</artifactId>
+		<groupId>uk.co.exemel.disco</groupId>
+		<artifactId>disco-testing-service</artifactId>
 		<version>3.3-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>cougar-testing-service-impl</artifactId>
+	<artifactId>disco-testing-service-impl</artifactId>
 	<packaging>jar</packaging>
-	<name>cougar-testing-service-impl</name>
+	<name>disco-testing-service-impl</name>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.betfair.cougar</groupId>
-				<artifactId>cougar-codegen-plugin</artifactId>
+				<groupId>uk.co.exemel.disco</groupId>
+				<artifactId>disco-codegen-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
 					<execution>
@@ -93,28 +93,28 @@
 	</build>
 	<dependencies>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-testing-service-idd</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-testing-service-idd</artifactId>
         </dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-api</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-util</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-util</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-core-impl</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-core-impl</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-caching</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-caching</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-transport-impl</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-transport-impl</artifactId>
 		</dependency>
         <dependency>
             <groupId>junit</groupId>

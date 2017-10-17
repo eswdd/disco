@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.xml;
+package uk.co.exemel.disco.marshalling.impl.databinding.xml;
 
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
 import org.xml.sax.SAXParseException;
 
 import javax.ws.rs.core.MediaType;
@@ -48,7 +48,7 @@ public class JdkEmbeddedXercesSchemaValidationFailureParser implements SchemaVal
     }
 
     @Override
-    public CougarException parse(SAXParseException spe, String format, boolean client) {
+    public DiscoException parse(SAXParseException spe, String format, boolean client) {
         String toParse = spe.getMessage();
 
         // only worth looking through those we've defined
@@ -61,10 +61,10 @@ public class JdkEmbeddedXercesSchemaValidationFailureParser implements SchemaVal
                     // we've found the key, if we have a mapping then return the appropriate exception, otherwise no point continuing
                     ServerFaultCode sfc = faultCodes.get(key);
                     if (sfc == null && deserialisationFailures.contains(key)) {
-                        return CougarMarshallingException.unmarshallingException(format, spe.getMessage(), spe, client);
+                        return DiscoMarshallingException.unmarshallingException(format, spe.getMessage(), spe, client);
                     }
                     if (sfc != null) {
-                        return new CougarValidationException(sfc, spe);
+                        return new DiscoValidationException(sfc, spe);
                     }
                     return null;
                 }

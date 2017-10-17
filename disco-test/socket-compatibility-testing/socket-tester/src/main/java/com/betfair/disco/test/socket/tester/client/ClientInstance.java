@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.client;
+package uk.co.exemel.disco.test.socket.tester.client;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.client.api.CompoundContextEmitter;
-import com.betfair.cougar.client.api.ContextEmitter;
-import com.betfair.cougar.client.socket.ClientConnectedObjectManager;
-import com.betfair.cougar.client.socket.ExecutionVenueNioClient;
-import com.betfair.cougar.client.socket.jmx.ClientSocketTransportInfo;
-import com.betfair.cougar.client.socket.resolver.DNSBasedAddressResolver;
-import com.betfair.cougar.client.socket.resolver.NetworkAddressResolver;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.WaitingObserver;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.core.impl.tracing.CompoundTracer;
-import com.betfair.cougar.marshalling.api.socket.RemotableMethodInvocationMarshaller;
-import com.betfair.cougar.netutil.nio.NioConfig;
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.TlsNioConfig;
-import com.betfair.cougar.netutil.nio.hessian.HessianObjectIOFactory;
-import com.betfair.cougar.netutil.nio.marshalling.SocketRMIMarshaller;
-import com.betfair.cougar.test.socket.tester.common.ClientAuthRequirement;
-import com.betfair.cougar.test.socket.tester.common.SslRequirement;
-import com.betfair.cougar.transport.api.protocol.CougarObjectIOFactory;
-import com.betfair.cougar.util.JMXReportingThreadPoolExecutor;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.client.api.CompoundContextEmitter;
+import uk.co.exemel.disco.client.api.ContextEmitter;
+import uk.co.exemel.disco.client.socket.ClientConnectedObjectManager;
+import uk.co.exemel.disco.client.socket.ExecutionVenueNioClient;
+import uk.co.exemel.disco.client.socket.jmx.ClientSocketTransportInfo;
+import uk.co.exemel.disco.client.socket.resolver.DNSBasedAddressResolver;
+import uk.co.exemel.disco.client.socket.resolver.NetworkAddressResolver;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.WaitingObserver;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.core.impl.tracing.CompoundTracer;
+import uk.co.exemel.disco.marshalling.api.socket.RemotableMethodInvocationMarshaller;
+import uk.co.exemel.disco.netutil.nio.NioConfig;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.TlsNioConfig;
+import uk.co.exemel.disco.netutil.nio.hessian.HessianObjectIOFactory;
+import uk.co.exemel.disco.netutil.nio.marshalling.SocketRMIMarshaller;
+import uk.co.exemel.disco.test.socket.tester.common.ClientAuthRequirement;
+import uk.co.exemel.disco.test.socket.tester.common.SslRequirement;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectIOFactory;
+import uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.management.MBeanServerFactory;
@@ -65,12 +65,12 @@ public class ClientInstance {
             TlsNioConfig tlsNioConfig = new TlsNioConfig();
             tlsNioConfig.setSupportsTls(sslRequirement == SslRequirement.Supports || sslRequirement == SslRequirement.Requires);
             tlsNioConfig.setRequiresTls(sslRequirement == SslRequirement.Requires);
-            tlsNioConfig.setTruststore(new ClassPathResource("cougar_server_ca.jks"));
+            tlsNioConfig.setTruststore(new ClassPathResource("disco_server_ca.jks"));
             tlsNioConfig.setTruststoreType("JKS");
             tlsNioConfig.setTruststorePassword("password");
             tlsNioConfig.setMbeanServer(MBeanServerFactory.createMBeanServer());
             if (clientAuthRequirement != ClientAuthRequirement.None) {
-                tlsNioConfig.setKeystore(new ClassPathResource("cougar_client_cert.jks"));
+                tlsNioConfig.setKeystore(new ClassPathResource("disco_client_cert.jks"));
                 tlsNioConfig.setKeystoreType("JKS");
                 tlsNioConfig.setKeystorePassword("password");
                 tlsNioConfig.setWantClientAuth(true);
@@ -94,7 +94,7 @@ public class ClientInstance {
         config.setWorkerTimeout(0);
         config.setUseDirectBuffersInMina(false);
 
-        CougarObjectIOFactory objectIoFactory = new HessianObjectIOFactory(true);
+        DiscoObjectIOFactory objectIoFactory = new HessianObjectIOFactory(true);
         connectedObjectManager = new ClientConnectedObjectManager();
         connectedObjectManager.setNioLogger(logger);
         connectedObjectManager.setMaxDeltaQueue(100);

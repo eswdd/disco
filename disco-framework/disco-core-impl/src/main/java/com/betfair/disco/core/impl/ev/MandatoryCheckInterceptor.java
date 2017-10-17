@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.core.api.ev.ExecutionPreProcessor;
-import com.betfair.cougar.core.api.ev.ExecutionRequirement;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.ev.InterceptorResult;
-import com.betfair.cougar.core.api.ev.InterceptorState;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.util.ValidationUtils;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.core.api.ev.ExecutionPreProcessor;
+import uk.co.exemel.disco.core.api.ev.ExecutionRequirement;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.ev.InterceptorResult;
+import uk.co.exemel.disco.core.api.ev.InterceptorState;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.util.ValidationUtils;
 
 public class MandatoryCheckInterceptor implements ExecutionPreProcessor {
 
@@ -49,7 +49,7 @@ public class MandatoryCheckInterceptor implements ExecutionPreProcessor {
 		    if (args[i] == null) {
 	            if (parms[i].isMandatory()) {
 	            	return new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION,
-	            			new CougarValidationException(ServerFaultCode.MandatoryNotDefined,
+	            			new DiscoValidationException(ServerFaultCode.MandatoryNotDefined,
 	            					"Mandatory attributes not defined for parameter '"+parms[i].getName() + "'"));
 	            }
 	        } else {
@@ -57,7 +57,7 @@ public class MandatoryCheckInterceptor implements ExecutionPreProcessor {
                     ValidationUtils.validateMandatory(args[i]);
                 } catch (IllegalArgumentException e) {
                     return new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION,
-                            new CougarValidationException(ServerFaultCode.MandatoryNotDefined,
+                            new DiscoValidationException(ServerFaultCode.MandatoryNotDefined,
                                     "Embedded fields not defined for parameter '"+parms[i].getName() + "'", e));
                 }
 	        }

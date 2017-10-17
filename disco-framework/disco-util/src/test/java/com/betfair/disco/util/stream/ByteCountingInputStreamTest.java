@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.stream;
+package uk.co.exemel.disco.util.stream;
 
 import java.io.ByteArrayInputStream;
 

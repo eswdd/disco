@@ -36,11 +36,11 @@ import java.util.*;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import com.betfair.cougar.api.*;
-import com.betfair.cougar.core.api.collectionwrappers.*;
-import com.betfair.cougar.util.BitmapBuilder;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptResponse;
+import uk.co.exemel.disco.api.*;
+import uk.co.exemel.disco.core.api.collectionwrappers.*;
+import uk.co.exemel.disco.util.BitmapBuilder;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptResponse;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -113,7 +113,7 @@ public class  ${className} implements RescriptResponse {
     @XmlElement(name="${javaType}")
             </#if>
             <#if javaType=="Date">
-    @XmlJavaTypeAdapter(value=com.betfair.cougar.util.dates.XMLDateAdapter.class)
+    @XmlJavaTypeAdapter(value=uk.co.exemel.disco.util.dates.XMLDateAdapter.class)
         </#if>
 
         </#if>

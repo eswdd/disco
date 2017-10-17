@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.impl.socket;
+package uk.co.exemel.disco.modules.zipkin.impl.socket;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.core.api.builder.DehydratedExecutionContextBuilder;
-import com.betfair.cougar.modules.zipkin.api.ZipkinKeys;
-import com.betfair.cougar.modules.zipkin.impl.ZipkinExecutionContextResolverFactory;
-import com.betfair.cougar.modules.zipkin.impl.ZipkinManager;
-import com.betfair.cougar.netutil.nio.marshalling.SocketContextResolutionParams;
-import com.betfair.cougar.netutil.nio.marshalling.SocketRequestUuidResolver;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.core.api.builder.DehydratedExecutionContextBuilder;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinKeys;
+import uk.co.exemel.disco.modules.zipkin.impl.ZipkinExecutionContextResolverFactory;
+import uk.co.exemel.disco.modules.zipkin.impl.ZipkinManager;
+import uk.co.exemel.disco.netutil.nio.marshalling.SocketContextResolutionParams;
+import uk.co.exemel.disco.netutil.nio.marshalling.SocketRequestUuidResolver;
 
 import java.util.Map;
 
@@ -44,7 +44,7 @@ public class ZipkinSocketRequestUuidResolver<Void> extends SocketRequestUuidReso
 
     @Override
     public void resolve(SocketContextResolutionParams params, Void ignore, DehydratedExecutionContextBuilder builder) {
-        RequestUUID cougarUUID = super.resolve(params);
+        RequestUUID discoUUID = super.resolve(params);
 
         String traceId = null;
         String spanId = null;
@@ -61,7 +61,7 @@ public class ZipkinSocketRequestUuidResolver<Void> extends SocketRequestUuidReso
             flags = additionalData.get(ZipkinKeys.FLAGS);
         }
 
-        RequestUUID requestUUID = zipkinManager.createNewZipkinRequestUUID(cougarUUID, traceId, spanId, parentSpanId,
+        RequestUUID requestUUID = zipkinManager.createNewZipkinRequestUUID(discoUUID, traceId, spanId, parentSpanId,
                 sampled, flags, serverPort);
         builder.setRequestUUID(requestUUID);
     }

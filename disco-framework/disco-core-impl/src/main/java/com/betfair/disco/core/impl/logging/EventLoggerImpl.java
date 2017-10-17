@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.logging;
+package uk.co.exemel.disco.core.impl.logging;
 
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
-import com.betfair.cougar.api.LoggableEvent;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.logging.EventLogger;
+import uk.co.exemel.disco.api.LoggableEvent;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.logging.EventLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.logging.EventLogDefinition;
-import com.betfair.cougar.logging.EventLoggingRegistry;
-import com.betfair.cougar.logging.records.EventLogRecord;
+import uk.co.exemel.disco.logging.EventLogDefinition;
+import uk.co.exemel.disco.logging.EventLoggingRegistry;
+import uk.co.exemel.disco.logging.records.EventLogRecord;
 
 @ManagedResource
 public class EventLoggerImpl implements EventLogger {
@@ -66,7 +66,7 @@ public class EventLoggerImpl implements EventLogger {
 		if (invokableLogger != null) {
 			LoggerFactory.getLogger(invokableLogger.getLogName()).info(eventLogRecord.getMessage());
 		} else {
-			throw new CougarFrameworkException("Logger "+eventLogRecord.getLoggerName()+" is not an event logger");
+			throw new DiscoFrameworkException("Logger "+eventLogRecord.getLoggerName()+" is not an event logger");
 		}
 	}
 

@@ -22,26 +22,26 @@
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 
-    <bean class="com.betfair.cougar.util.configuration.PropertyConfigurer">
-        <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
+    <bean class="uk.co.exemel.disco.util.configuration.PropertyConfigurer">
+        <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
 	    <property name="defaultConfig" value="classpath:conf/baseline-defaults.properties"/>
 	    <property name="configOverride" value="overrides.properties"/>
 	    <property name="placeholderPrefix" value="$BASELINE{"/>
 	</bean>
 
 	<!-- define a log file -->
-	<bean class="com.betfair.cougar.logging.EventLogDefinition" init-method="register">
+	<bean class="uk.co.exemel.disco.logging.EventLogDefinition" init-method="register">
 		<property name="logName" value="BASELINE-ASYNC-LOG"/>
 		<property name="registry" ref="eventLoggingRegistry"/>
         <property name="handler">
-            <bean factory-bean="cougar.core.logHandlerFactory" factory-method="registerLogHandler">
+            <bean factory-bean="disco.core.logHandlerFactory" factory-method="registerLogHandler">
                 <constructor-arg type="java.util.Map">
                     <util:map map-class="java.util.HashMap">
                         <entry key="logName" value="BASELINE-ASYNC-LOG"/>
-                        <entry key="fileName" value="$COUGAR{cougar.log.dir}/$COUGAR{system.hostname}-$COUGAR{cougar.app.name}-async-request.log"/>
-                        <entry key="flush" value="$BASELINE{cougar.log.BASELINE-ASYNC-LOG.flush}"/>
-                        <entry key="append" value="$BASELINE{cougar.log.BASELINE-ASYNC-LOG.append}"/>
-                        <entry key="rotation" value="$BASELINE{cougar.log.BASELINE-ASYNC-LOG.rotation}"/>
+                        <entry key="fileName" value="$COUGAR{disco.log.dir}/$COUGAR{system.hostname}-$COUGAR{disco.app.name}-async-request.log"/>
+                        <entry key="flush" value="$BASELINE{disco.log.BASELINE-ASYNC-LOG.flush}"/>
+                        <entry key="append" value="$BASELINE{disco.log.BASELINE-ASYNC-LOG.append}"/>
+                        <entry key="rotation" value="$BASELINE{disco.log.BASELINE-ASYNC-LOG.rotation}"/>
                         <entry key="abstractLogger" value="false"/>
                     </util:map>
                 </constructor-arg>
@@ -51,28 +51,28 @@
 
 
     <!-- Generate the service beans -->
-	<bean id="baselineAppService" class="com.betfair.cougar.baseline.BaselineServiceImpl">
+	<bean id="baselineAppService" class="uk.co.exemel.disco.baseline.BaselineServiceImpl">
         <property name="instance" value="1"/>
         <property name="baselineAsClient" ref="rescriptSyncClient"/>
         <property name="baselineAsyncClient" ref="directAsyncClient"/>
         <property name="inProcessSyncClient" ref="directSyncClient"/>
         <property name="socketSyncClient" ref="socketSyncClient"/>
         <property name="nonExistentServiceClient" ref="nonServiceSyncClient"/>
-        <property name="loggingControl" ref="cougar.core.LoggingControl"/>
+        <property name="loggingControl" ref="disco.core.LoggingControl"/>
 	</bean>
     <!-- Generate the service beans -->
-	<bean id="baselineAppService2" class="com.betfair.cougar.baseline.BaselineServiceImpl">
+	<bean id="baselineAppService2" class="uk.co.exemel.disco.baseline.BaselineServiceImpl">
         <property name="instance" value="2"/>
         <property name="baselineAsClient" ref="rescriptSyncClient"/>
         <property name="baselineAsyncClient" ref="directAsyncClient"/>
         <property name="inProcessSyncClient" ref="directSyncClient"/>
         <property name="socketSyncClient" ref="socketSyncClient"/>
-        <property name="loggingControl" ref="cougar.core.LoggingControl"/>
+        <property name="loggingControl" ref="disco.core.LoggingControl"/>
 	</bean>
 
 
 
-    <bean class="com.betfair.cougar.core.impl.ev.ServiceRegistration">
+    <bean class="uk.co.exemel.disco.core.impl.ev.ServiceRegistration">
         <property name="resolver">
             <bean class="com.betfair.baseline.v2.BaselineSyncServiceExecutableResolver">
                 <property name="service" ref="baselineAppService"/>
@@ -100,7 +100,7 @@
     </bean>
 
     <!-- second instance in order to ensure functionality in US52842 works (previous to change this would prevent startup -->
-    <bean class="com.betfair.cougar.core.impl.ev.ServiceRegistration">
+    <bean class="uk.co.exemel.disco.core.impl.ev.ServiceRegistration">
         <property name="resolver">
             <bean class="com.betfair.baseline.v2.BaselineSyncServiceExecutableResolver">
                 <property name="service" ref="baselineAppService2"/>
@@ -123,26 +123,26 @@
         <property name="namespace" value="secondServiceRegistration"/>
     </bean>
 
-    <bean parent="cougar.core.PreProcessorInterceptorRegistrationHelper">
+    <bean parent="disco.core.PreProcessorInterceptorRegistrationHelper">
         <property name="interceptorList">
             <util:list>
-                <bean class="com.betfair.cougar.baseline.BannedIPListInterceptor">
+                <bean class="uk.co.exemel.disco.baseline.BannedIPListInterceptor">
                     <constructor-arg value="192.168.0.1"/>
                 </bean>
-                <bean class="com.betfair.cougar.baseline.CheckedExceptionPreProcInterceptor"/>
+                <bean class="uk.co.exemel.disco.baseline.CheckedExceptionPreProcInterceptor"/>
             </util:list>
         </property>
     </bean>
 
-    <bean parent="cougar.core.PostProcessorInterceptorRegistrationHelper">
+    <bean parent="disco.core.PostProcessorInterceptorRegistrationHelper">
         <property name="interceptorList">
             <util:list>
-                <bean class="com.betfair.cougar.baseline.CheckedExceptionPostProcInterceptor"/>
+                <bean class="uk.co.exemel.disco.baseline.CheckedExceptionPostProcInterceptor"/>
             </util:list>
         </property>
     </bean>
 
-    <bean id="simpleInferredCountryResolver" class="com.betfair.cougar.baseline.location.SimpleInferredCountryResolver"/>
+    <bean id="simpleInferredCountryResolver" class="uk.co.exemel.disco.baseline.location.SimpleInferredCountryResolver"/>
 
 
 </beans>

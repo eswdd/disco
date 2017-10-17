@@ -31,9 +31,9 @@
     <!-- @Aspect is the easiest way to do things -->
     <aop:aspectj-autoproxy />
 
-    <bean id="aspect" class="com.betfair.cougar.core.impl.kpi.KPIAsyncTimer"/>
+    <bean id="aspect" class="uk.co.exemel.disco.core.impl.kpi.KPIAsyncTimer"/>
 
     <!-- must be a bean in order for Spring to see it and proxy it -->
-    <bean id="target" class="com.betfair.cougar.core.impl.kpi.TestAnnotation" />
+    <bean id="target" class="uk.co.exemel.disco.core.impl.kpi.TestAnnotation" />
 
 </beans>

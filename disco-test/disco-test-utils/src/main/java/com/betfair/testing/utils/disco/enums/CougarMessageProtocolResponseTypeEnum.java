@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.enums;
+package com.betfair.testing.utils.disco.enums;
 
 /**
  * Enum representing the protocol of a response to be recieved from a
- * Cougar container within the Betfair system.
+ * Disco container within the Betfair system.
  */
-public enum CougarMessageProtocolResponseTypeEnum {
+public enum DiscoMessageProtocolResponseTypeEnum {
 
 	RESTJSONJSON,
 	RESTJSONXML,

@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.client;
+package uk.co.exemel.disco.core.api.client;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.client.AbstractExceptionFactory;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.client.AbstractExceptionFactory;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
 import org.slf4j.LoggerFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class AbstractExceptionFactoryTest {
     private static class AEF extends AbstractExceptionFactory {
     };
 
-    private static class TestAppException extends CougarApplicationException {
+    private static class TestAppException extends DiscoApplicationException {
 
         public TestAppException() {
             super(ResponseCode.InternalError, "");
@@ -73,9 +73,9 @@ public class AbstractExceptionFactoryTest {
         String exceptionCode = "DSC-0013";
         AEF cut = new AEF();
         String reason = "too weak";
-        CougarException ce = (CougarException)cut.parseException(ResponseCode.Forbidden, exceptionCode, reason, null);
+        DiscoException ce = (DiscoException)cut.parseException(ResponseCode.Forbidden, exceptionCode, reason, null);
         assertNotNull(ce);
-        assertTrue(ce instanceof CougarClientException);
+        assertTrue(ce instanceof DiscoClientException);
         assertEquals(exceptionCode, ce.getServerFaultCode().getDetail());
         assertEquals(reason, ce.getMessage());
     }
@@ -84,7 +84,7 @@ public class AbstractExceptionFactoryTest {
     public void testParseExceptionWithUnknownPrefix() {
         String exceptionCode = "XXX-0013";
         AEF cut = new AEF();
-        CougarException ce = (CougarException)cut.parseException(ResponseCode.Forbidden, exceptionCode, null, null);
+        DiscoException ce = (DiscoException)cut.parseException(ResponseCode.Forbidden, exceptionCode, null, null);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class AbstractExceptionFactoryTest {
 
         cut.registerExceptionInstantiator("YYY", myEI);
 
-        CougarException ce = (CougarException)cut.parseException(ResponseCode.Forbidden, "DSC-0013", null, null);
+        DiscoException ce = (DiscoException)cut.parseException(ResponseCode.Forbidden, "DSC-0013", null, null);
         assertNotNull(ce);
 
         Exception exception = cut.parseException(ResponseCode.InternalError, code, null, null);

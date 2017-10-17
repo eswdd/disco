@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl;
+package uk.co.exemel.disco.core.impl;
 
-import com.betfair.cougar.core.api.CougarStartingGate;
-import com.betfair.cougar.core.api.GateListener;
+import uk.co.exemel.disco.core.api.DiscoStartingGate;
+import uk.co.exemel.disco.core.api.GateListener;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -29,7 +29,7 @@ import org.springframework.util.Assert;
 /**
  * Allows registering of gate listeners from code which may be used with a standalone-ev, which doesn't have a
  * starting gate.
- * @see com.betfair.cougar.core.api.GateRegisterer
+ * @see uk.co.exemel.disco.core.api.GateRegisterer
  */
 public class OptionalGateRegisterer implements BeanFactoryAware, InitializingBean {
 
@@ -54,7 +54,7 @@ public class OptionalGateRegisterer implements BeanFactoryAware, InitializingBea
     @Override
     public void afterPropertiesSet() throws Exception {
         try {
-            CougarStartingGate gate = (CougarStartingGate) beanFactory.getBean(gateBeanName);
+            DiscoStartingGate gate = (DiscoStartingGate) beanFactory.getBean(gateBeanName);
             for (GateListener listener : listeners) {
                 gate.registerStartingListener(listener);
             }

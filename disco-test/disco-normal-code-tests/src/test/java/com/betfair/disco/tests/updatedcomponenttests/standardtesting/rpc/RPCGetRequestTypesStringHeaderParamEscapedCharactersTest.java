@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/RPC/RPC_Get_RequestTypes_String_HeaderParam_EscapedCharacters.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.rpc;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.rpc;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 
@@ -32,15 +32,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that Cougar can correctly handle a string Header Param containing various encoded escaped characters (within a Batched JSON request)
+ * Ensure that Disco can correctly handle a string Header Param containing various encoded escaped characters (within a Batched JSON request)
  */
 public class RPCGetRequestTypesStringHeaderParamEscapedCharactersTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean callBean = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        CougarManager cougarManager = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean callBean = discoManager1.getNewHttpCallBean("87.248.113.14");
+        DiscoManager discoManager = discoManager1;
         // Set the call bean to use JSON batching
         callBean.setJSONRPC(true);
         // Set the list of requests to make a batched call to
@@ -70,12 +70,12 @@ public class RPCGetRequestTypesStringHeaderParamEscapedCharactersTest {
 
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
         // Make JSON call to the operation requesting a JSON response
-        cougarManager.makeRestCougarHTTPCall(callBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager.makeRestDiscoHTTPCall(callBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Get the response to the batched query (store the response for further comparison as order of batched responses cannot be relied on)
-        HttpResponseBean response = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         // Convert the returned json object to a map for comparison
-        CougarHelpers cougarHelpers4 = new CougarHelpers();
-        Map<String, Object> map5 = cougarHelpers4.convertBatchedResponseToMap(response);
+        DiscoHelpers discoHelpers4 = new DiscoHelpers();
+        Map<String, Object> map5 = discoHelpers4.convertBatchedResponseToMap(response);
         AssertionUtils.multiAssertEquals("{\"id\":\"And\",\"result\":{\"headerParameter\":\"this & that\",\"queryParameter\":\"qp\"},\"jsonrpc\":\"2.0\"}", map5.get("responseAnd"));
         AssertionUtils.multiAssertEquals("{\"id\":\"Colon\",\"result\":{\"headerParameter\":\"colon:\",\"queryParameter\":\"qp\"},\"jsonrpc\":\"2.0\"}", map5.get("responseColon"));
         AssertionUtils.multiAssertEquals("{\"id\":\"Combo\",\"result\":{\"headerParameter\":\"this & that is 100%\",\"queryParameter\":\"qp\"},\"jsonrpc\":\"2.0\"}", map5.get("responseCombo"));
@@ -87,9 +87,9 @@ public class RPCGetRequestTypesStringHeaderParamEscapedCharactersTest {
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
         
-        cougarManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "nonMandatoryParamsOperation"),new RequestLogRequirement("2.8", "nonMandatoryParamsOperation"),new RequestLogRequirement("2.8", "nonMandatoryParamsOperation"),new RequestLogRequirement("2.8", "nonMandatoryParamsOperation"),new RequestLogRequirement("2.8", "nonMandatoryParamsOperation") );
+        discoManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "nonMandatoryParamsOperation"),new RequestLogRequirement("2.8", "nonMandatoryParamsOperation"),new RequestLogRequirement("2.8", "nonMandatoryParamsOperation"),new RequestLogRequirement("2.8", "nonMandatoryParamsOperation"),new RequestLogRequirement("2.8", "nonMandatoryParamsOperation") );
         
-        cougarManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
+        discoManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
     }
 
 }

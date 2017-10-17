@@ -15,25 +15,25 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.exception;
+package uk.co.exemel.disco.core.api.exception;
 
 import java.util.logging.Level;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.fault.Fault;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.fault.Fault;
 
-public class CougarServiceException extends CougarException {
-	private CougarApplicationException dae;
+public class DiscoServiceException extends DiscoException {
+	private DiscoApplicationException dae;
 
-	public CougarServiceException(ServerFaultCode fault, String message) {
+	public DiscoServiceException(ServerFaultCode fault, String message) {
 		super(Level.FINE, fault, message);
         if (fault.getResponseCode() == null) {
             throw new IllegalArgumentException("Exception required for fault codes with a null response code");
         }
 	}
 
-	public CougarServiceException(ServerFaultCode fault, String message, CougarApplicationException dae) {
+	public DiscoServiceException(ServerFaultCode fault, String message, DiscoApplicationException dae) {
 		super(Level.FINE, fault, message, dae);
         if (dae == null && fault.getResponseCode() == null) {
             throw new IllegalArgumentException("Exception required for fault codes with a null response code");
@@ -41,7 +41,7 @@ public class CougarServiceException extends CougarException {
 		this.dae = dae;
 	}
 
-	public CougarServiceException(ServerFaultCode fault, String message, Throwable t) {
+	public DiscoServiceException(ServerFaultCode fault, String message, Throwable t) {
 		super(Level.FINE, fault, message, t);
         if (fault.getResponseCode() == null) {
             throw new IllegalArgumentException("Exception required for fault codes with a null response code");

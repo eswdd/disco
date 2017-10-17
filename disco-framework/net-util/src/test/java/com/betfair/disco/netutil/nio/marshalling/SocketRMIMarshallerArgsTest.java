@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.marshalling;
+package uk.co.exemel.disco.netutil.nio.marshalling;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,27 +25,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.betfair.cougar.netutil.nio.CougarProtocol;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.api.transcription.TranscriptionException;
-import com.betfair.cougar.marshalling.impl.to.ComplexTO;
-import com.betfair.cougar.marshalling.impl.to.EnumTO;
-import com.betfair.cougar.marshalling.impl.to.EnumType;
-import com.betfair.cougar.marshalling.impl.to.TO;
-import com.betfair.cougar.marshalling.impl.util.ByteArrayClassLoader;
-import com.betfair.cougar.marshalling.impl.util.ComplexObjectCreator;
-import com.betfair.cougar.marshalling.impl.util.EnumCreator;
-import com.betfair.cougar.marshalling.impl.util.Pair;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
-import com.betfair.cougar.netutil.nio.hessian.HessianObjectIOFactory;
-import com.betfair.cougar.netutil.nio.hessian.HessianObjectInput;
-import com.betfair.cougar.netutil.nio.hessian.HessianObjectOutput;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionException;
+import uk.co.exemel.disco.marshalling.impl.to.ComplexTO;
+import uk.co.exemel.disco.marshalling.impl.to.EnumTO;
+import uk.co.exemel.disco.marshalling.impl.to.EnumType;
+import uk.co.exemel.disco.marshalling.impl.to.TO;
+import uk.co.exemel.disco.marshalling.impl.util.ByteArrayClassLoader;
+import uk.co.exemel.disco.marshalling.impl.util.ComplexObjectCreator;
+import uk.co.exemel.disco.marshalling.impl.util.EnumCreator;
+import uk.co.exemel.disco.marshalling.impl.util.Pair;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
+import uk.co.exemel.disco.netutil.nio.hessian.HessianObjectIOFactory;
+import uk.co.exemel.disco.netutil.nio.hessian.HessianObjectInput;
+import uk.co.exemel.disco.netutil.nio.hessian.HessianObjectOutput;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -83,7 +83,7 @@ public class SocketRMIMarshallerArgsTest {
 	public void testAdditionalField() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SecurityException, NoSuchFieldException {
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ComplexObjectCreator complexObjectCreator = new ComplexObjectCreator("com.betfair.cougar.marshalling.impl.to.TO");
+		ComplexObjectCreator complexObjectCreator = new ComplexObjectCreator("uk.co.exemel.disco.marshalling.impl.to.TO");
 		complexObjectCreator.create(bos, new Pair[] {new Pair<String,String>(Integer.class.getName(),"i")});
 
 		ByteArrayClassLoader bcl = new ByteArrayClassLoader(complexObjectCreator.objectType, bos.toByteArray());
@@ -100,7 +100,7 @@ public class SocketRMIMarshallerArgsTest {
 		params[0] = new Parameter("TO", new ParameterType(TO.class,parameterTypes),false);
 
 		bos.reset();
-		CougarObjectOutput hoo = ioFactory.newCougarObjectOutput(bos, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+		DiscoObjectOutput hoo = ioFactory.newDiscoObjectOutput(bos, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
 		cut.writeArgs(params, new Object[] {o}, hoo);
 		hoo.flush();
 
@@ -110,7 +110,7 @@ public class SocketRMIMarshallerArgsTest {
 		parameterTypes[1] = new ParameterType(int.class,null);
 		toParameters[0] = new Parameter("TO", new ParameterType(TO.class,parameterTypes) ,false);
 
-		Object[] result = cut.readArgs(toParameters, ioFactory.newCougarObjectInput(new ByteArrayInputStream(bos.toByteArray()), CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED));
+		Object[] result = cut.readArgs(toParameters, ioFactory.newDiscoObjectInput(new ByteArrayInputStream(bos.toByteArray()), DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED));
 
 		Assert.assertEquals(1, result.length);
 		Assert.assertEquals(result[0].getClass(), TO.class);
@@ -128,7 +128,7 @@ public class SocketRMIMarshallerArgsTest {
 	public void testRemovedField() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SecurityException, NoSuchFieldException {
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ComplexObjectCreator complexObjectCreator = new ComplexObjectCreator("com.betfair.cougar.marshalling.impl.to.TO");
+		ComplexObjectCreator complexObjectCreator = new ComplexObjectCreator("uk.co.exemel.disco.marshalling.impl.to.TO");
 		complexObjectCreator.create(bos, new Pair[] {
 				new Pair<String,String>(Integer.class.getName(),"i"),
 				new Pair<String,String>(Integer.class.getName(),"j"),
@@ -151,14 +151,14 @@ public class SocketRMIMarshallerArgsTest {
 		params[0] = new Parameter("TO", new ParameterType(TO.class,null),false);
 
 		bos.reset();
-		CougarObjectOutput hoo = ioFactory.newCougarObjectOutput(bos, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+		DiscoObjectOutput hoo = ioFactory.newDiscoObjectOutput(bos, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
 		cut.writeArgs(params, new Object[] {o}, hoo);
 		hoo.flush();
 
 		params = new Parameter[1];
 		params[0] = new Parameter("TO", new ParameterType(TO.class,null) ,false);
 
-		Object[] result = cut.readArgs(params, ioFactory.newCougarObjectInput(new ByteArrayInputStream(bos.toByteArray()), CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED));
+		Object[] result = cut.readArgs(params, ioFactory.newDiscoObjectInput(new ByteArrayInputStream(bos.toByteArray()), DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED));
 
 		Assert.assertEquals(1, result.length);
 		Assert.assertEquals(result[0].getClass(), TO.class);
@@ -177,19 +177,19 @@ public class SocketRMIMarshallerArgsTest {
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-		EnumCreator enumCreator = new EnumCreator("com.betfair.cougar.marshalling.impl.to.EnumType" ,new String[] {"ONE","TWO"});
+		EnumCreator enumCreator = new EnumCreator("uk.co.exemel.disco.marshalling.impl.to.EnumType" ,new String[] {"ONE","TWO"});
 		enumCreator.create(bos);
 
 		ByteArrayClassLoader twoEnum = new ByteArrayClassLoader(EnumType.class.getName(), bos.toByteArray());
-		Class<Enum> twoEnumClass = (Class<Enum>) Class.forName("com.betfair.cougar.marshalling.impl.to.EnumType",true,twoEnum);
+		Class<Enum> twoEnumClass = (Class<Enum>) Class.forName("uk.co.exemel.disco.marshalling.impl.to.EnumType",true,twoEnum);
 		Enum TWO = Enum.valueOf(twoEnumClass, "TWO");
 		bos.reset();
 
-		ComplexObjectCreator complexObjectCreator = new ComplexObjectCreator("com.betfair.cougar.marshalling.impl.to.EnumTO");
-		complexObjectCreator.create(bos, new Pair[]{ new Pair<String,String>("com.betfair.cougar.marshalling.impl.to.EnumType","enumType")});
+		ComplexObjectCreator complexObjectCreator = new ComplexObjectCreator("uk.co.exemel.disco.marshalling.impl.to.EnumTO");
+		complexObjectCreator.create(bos, new Pair[]{ new Pair<String,String>("uk.co.exemel.disco.marshalling.impl.to.EnumType","enumType")});
 
-		ByteArrayClassLoader bcl = new ByteArrayClassLoader(twoEnum,"com.betfair.cougar.marshalling.impl.to.EnumTO", bos.toByteArray());
-		Class<?> enumTOClass = Class.forName("com.betfair.cougar.marshalling.impl.to.EnumTO", true, bcl);
+		ByteArrayClassLoader bcl = new ByteArrayClassLoader(twoEnum,"uk.co.exemel.disco.marshalling.impl.to.EnumTO", bos.toByteArray());
+		Class<?> enumTOClass = Class.forName("uk.co.exemel.disco.marshalling.impl.to.EnumTO", true, bcl);
 		Object enumTO = enumTOClass.newInstance();
 		Field f = enumTOClass.getField("enumType");
 		f.set(enumTO, TWO);
@@ -198,10 +198,10 @@ public class SocketRMIMarshallerArgsTest {
 		params[0] = new Parameter("EnumTO", new ParameterType(EnumTO.class,null),false);
 
 		bos.reset();
-		CougarObjectOutput hoo = ioFactory.newCougarObjectOutput(bos, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+		DiscoObjectOutput hoo = ioFactory.newDiscoObjectOutput(bos, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
 		cut.writeArgs(params, new Object[] {enumTO}, hoo);
 		hoo.flush();
-		Object[] result = cut.readArgs(params, ioFactory.newCougarObjectInput(new ByteArrayInputStream(bos.toByteArray()), CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED));
+		Object[] result = cut.readArgs(params, ioFactory.newDiscoObjectInput(new ByteArrayInputStream(bos.toByteArray()), DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED));
 
 		Assert.assertEquals(1, result.length);
 		Assert.assertEquals(result[0].getClass(), EnumTO.class);
@@ -220,20 +220,20 @@ public class SocketRMIMarshallerArgsTest {
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-		EnumCreator enumCreator = new EnumCreator("com.betfair.cougar.marshalling.impl.to.EnumType" ,new String[] {"ONE","TWO","THREE","FOUR"});
+		EnumCreator enumCreator = new EnumCreator("uk.co.exemel.disco.marshalling.impl.to.EnumType" ,new String[] {"ONE","TWO","THREE","FOUR"});
 		enumCreator.create(bos);
 
-		ByteArrayClassLoader enumCL = new ByteArrayClassLoader("com.betfair.cougar.marshalling.impl.to.EnumType",bos.toByteArray());
-		Class<Enum> enumClass = (Class<Enum>) Class.forName("com.betfair.cougar.marshalling.impl.to.EnumType",true,enumCL);
+		ByteArrayClassLoader enumCL = new ByteArrayClassLoader("uk.co.exemel.disco.marshalling.impl.to.EnumType",bos.toByteArray());
+		Class<Enum> enumClass = (Class<Enum>) Class.forName("uk.co.exemel.disco.marshalling.impl.to.EnumType",true,enumCL);
 		Enum FOUR = Enum.valueOf(enumClass, "FOUR");
 		bos.reset();
 
-		ComplexObjectCreator complex = new ComplexObjectCreator("com.betfair.cougar.marshalling.impl.to.EnumTO");
-		complex.create(bos, new Pair[] {new Pair<String,String>("com.betfair.cougar.marshalling.impl.to.EnumType","enumType")});
+		ComplexObjectCreator complex = new ComplexObjectCreator("uk.co.exemel.disco.marshalling.impl.to.EnumTO");
+		complex.create(bos, new Pair[] {new Pair<String,String>("uk.co.exemel.disco.marshalling.impl.to.EnumType","enumType")});
 
-		ByteArrayClassLoader bcl = new ByteArrayClassLoader(enumCL, "com.betfair.cougar.marshalling.impl.to.EnumTO", bos.toByteArray());
+		ByteArrayClassLoader bcl = new ByteArrayClassLoader(enumCL, "uk.co.exemel.disco.marshalling.impl.to.EnumTO", bos.toByteArray());
 
-		Class<?> clazz = Class.forName("com.betfair.cougar.marshalling.impl.to.EnumTO", true, bcl);
+		Class<?> clazz = Class.forName("uk.co.exemel.disco.marshalling.impl.to.EnumTO", true, bcl);
 		Object o = clazz.newInstance();
 		Field f = clazz.getField("enumType");
 		f.set(o, FOUR);
@@ -243,10 +243,10 @@ public class SocketRMIMarshallerArgsTest {
 		params[0] = new Parameter("EnumTO", new ParameterType(EnumTO.class,null),false);
 
 		bos.reset();
-		CougarObjectOutput hoo = ioFactory.newCougarObjectOutput(bos, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+		DiscoObjectOutput hoo = ioFactory.newDiscoObjectOutput(bos, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
 		cut.writeArgs(params, new Object[] {o}, hoo);
 		hoo.flush();
-		Object[] result = cut.readArgs(params, ioFactory.newCougarObjectInput(new ByteArrayInputStream(bos.toByteArray()), CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED));
+		Object[] result = cut.readArgs(params, ioFactory.newDiscoObjectInput(new ByteArrayInputStream(bos.toByteArray()), DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED));
 
 
 	}
@@ -257,7 +257,7 @@ public class SocketRMIMarshallerArgsTest {
 	 */
 	public void testFieldAdded() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, SecurityException, NoSuchFieldException {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ComplexObjectCreator complexObjectCreator = new ComplexObjectCreator("com.betfair.cougar.marshalling.impl.to.TO");
+		ComplexObjectCreator complexObjectCreator = new ComplexObjectCreator("uk.co.exemel.disco.marshalling.impl.to.TO");
 		complexObjectCreator.create(bos, new Pair[] {
 				new Pair<String,String>(Integer.class.getName(),"i"),
 				});
@@ -295,14 +295,14 @@ public class SocketRMIMarshallerArgsTest {
 		params[0] = new Parameter("ComplexTO", new ParameterType(clazz,null),false);
 
 		bos.reset();
-		CougarObjectOutput hoo = ioFactory.newCougarObjectOutput(bos, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+		DiscoObjectOutput hoo = ioFactory.newDiscoObjectOutput(bos, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
 		cut.writeArgs(params, new Object[]{o}, hoo);
 		hoo.flush();
 
 		params = new Parameter[1];
 		params[0] = new Parameter("ComplexTO", new ParameterType(ComplexTO.class,null),false);
 
-		Object[] result = cut.readArgs(params, ioFactory.newCougarObjectInput(new ByteArrayInputStream(bos.toByteArray()), CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED));
+		Object[] result = cut.readArgs(params, ioFactory.newDiscoObjectInput(new ByteArrayInputStream(bos.toByteArray()), DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED));
 
 		Assert.assertEquals(12, ((ComplexTO)result[0]).to.i);
 		Assert.assertEquals(0, ((ComplexTO)result[0]).to.j);

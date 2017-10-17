@@ -16,7 +16,7 @@
 
 package com.betfair.testing.utils;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.updatedcomponenttests.authentication.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.authentication.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -71,14 +71,14 @@ public class RESTAuthenticationErrorCodeTest {
 
     private void doTest(String username, String expectedResponseString, int httpErrorCode, String statusText, String responseText) throws Exception {
 
-        CougarManager manager = CougarManager.getInstance();
+        DiscoManager manager = DiscoManager.getInstance();
         HttpCallBean callBean = manager.getNewHttpCallBean("87.248.113.14");
-        // Set Cougar Fault Controller attributes
-        manager.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        // Set Disco Fault Controller attributes
+        manager.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
 
         callBean.setOperationName("testSimpleGet", "simple");
 
-        callBean.setServiceName("baseline", "cougarBaseline");
+        callBean.setServiceName("baseline", "discoBaseline");
 
         callBean.setVersion("v2");
 
@@ -93,30 +93,30 @@ public class RESTAuthenticationErrorCodeTest {
 
         Timestamp requestTime = new Timestamp(System.currentTimeMillis());
 
-        manager.makeRestCougarHTTPCalls(callBean);
+        manager.makeRestDiscoHTTPCalls(callBean);
 
         XMLHelpers xMLHelpers = new XMLHelpers();
         Document expectedResponse = xMLHelpers.getXMLObjectFromString(expectedResponseString);
 
-        Map<CougarMessageProtocolRequestTypeEnum, Object> expectedResponses = manager.convertResponseToRestTypes(expectedResponse, callBean);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> expectedResponses = manager.convertResponseToRestTypes(expectedResponse, callBean);
 
-        HttpResponseBean getResponseObjectsByEnum12 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
-        AssertionUtils.multiAssertEquals(expectedResponses.get(CougarMessageProtocolRequestTypeEnum.RESTXML), getResponseObjectsByEnum12.getResponseObject());
+        HttpResponseBean getResponseObjectsByEnum12 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
+        AssertionUtils.multiAssertEquals(expectedResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), getResponseObjectsByEnum12.getResponseObject());
         AssertionUtils.multiAssertEquals(httpErrorCode, getResponseObjectsByEnum12.getHttpStatusCode());
         AssertionUtils.multiAssertEquals(responseText, getResponseObjectsByEnum12.getHttpStatusText());
 
-        HttpResponseBean getResponseObjectsByEnum14 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
-        AssertionUtils.multiAssertEquals(expectedResponses.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), getResponseObjectsByEnum14.getResponseObject());
+        HttpResponseBean getResponseObjectsByEnum14 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        AssertionUtils.multiAssertEquals(expectedResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), getResponseObjectsByEnum14.getResponseObject());
         AssertionUtils.multiAssertEquals(httpErrorCode, getResponseObjectsByEnum14.getHttpStatusCode());
         AssertionUtils.multiAssertEquals(responseText, getResponseObjectsByEnum14.getHttpStatusText());
 
-        HttpResponseBean getResponseObjectsByEnum16 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
-        AssertionUtils.multiAssertEquals(expectedResponses.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), getResponseObjectsByEnum16.getResponseObject());
+        HttpResponseBean getResponseObjectsByEnum16 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        AssertionUtils.multiAssertEquals(expectedResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), getResponseObjectsByEnum16.getResponseObject());
         AssertionUtils.multiAssertEquals(httpErrorCode, getResponseObjectsByEnum16.getHttpStatusCode());
         AssertionUtils.multiAssertEquals(responseText, getResponseObjectsByEnum16.getHttpStatusText());
 
-        HttpResponseBean getResponseObjectsByEnum18 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
-        AssertionUtils.multiAssertEquals(expectedResponses.get(CougarMessageProtocolRequestTypeEnum.RESTXML), getResponseObjectsByEnum18.getResponseObject());
+        HttpResponseBean getResponseObjectsByEnum18 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
+        AssertionUtils.multiAssertEquals(expectedResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), getResponseObjectsByEnum18.getResponseObject());
         AssertionUtils.multiAssertEquals(httpErrorCode, getResponseObjectsByEnum18.getHttpStatusCode());
         AssertionUtils.multiAssertEquals(responseText, getResponseObjectsByEnum18.getHttpStatusText());
 

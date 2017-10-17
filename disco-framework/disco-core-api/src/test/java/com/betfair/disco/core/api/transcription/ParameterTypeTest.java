@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.transcription;
+package uk.co.exemel.disco.core.api.transcription;
 
 import java.util.ArrayList;
 

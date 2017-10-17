@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.jmx;
+package uk.co.exemel.disco.core.impl.jmx;
 
-import com.betfair.cougar.util.configuration.PropertyConfigurer;
+import uk.co.exemel.disco.util.configuration.PropertyConfigurer;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
 

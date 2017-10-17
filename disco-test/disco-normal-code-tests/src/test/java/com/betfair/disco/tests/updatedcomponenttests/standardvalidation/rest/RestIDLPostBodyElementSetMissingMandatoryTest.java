@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardValidation/REST/Rest_IDL_PostBodyElement_Set_MissingMandatory.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardvalidation.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardvalidation.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -34,30 +34,30 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Ensure that Cougar returns the correct fault, when a REST request is missing a mandatory Set body parameter
+ * Ensure that Disco returns the correct fault, when a REST request is missing a mandatory Set body parameter
  */
 public class RestIDLPostBodyElementSetMissingMandatoryTest {
     @Test
     public void doTest() throws Exception {
         // Create the HttpCallBean
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean httpCallBeanBaseline = cougarManager1.getNewHttpCallBean();
-        CougarManager cougarManagerBaseline = cougarManager1;
-        // Get the cougar logging attribute for getting log entries later
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean httpCallBeanBaseline = discoManager1.getNewHttpCallBean();
+        DiscoManager discoManagerBaseline = discoManager1;
+        // Get the disco logging attribute for getting log entries later
         // Point the created HttpCallBean at the correct service
-        httpCallBeanBaseline.setServiceName("baseline", "cougarBaseline");
+        httpCallBeanBaseline.setServiceName("baseline", "discoBaseline");
         
         httpCallBeanBaseline.setVersion("v2");
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean2 = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        cougarManager2 = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean2 = discoManager2.getNewHttpCallBean("87.248.113.14");
+        discoManager2 = discoManager2;
         
-        cougarManager2.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        discoManager2.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         
         getNewHttpCallBean2.setOperationName("simpleSetOperation");
         
-        getNewHttpCallBean2.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean2.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean2.setVersion("v2");
         // Set the Set body parameter, don't set the mandatory set parameter
@@ -66,38 +66,38 @@ public class RestIDLPostBodyElementSetMissingMandatoryTest {
 
         Timestamp getTimeAsTimeStamp9 = new Timestamp(System.currentTimeMillis());
         // Make the 4 REST calls to the operation
-        cougarManager2.makeRestCougarHTTPCalls(getNewHttpCallBean2);
+        discoManager2.makeRestDiscoHTTPCalls(getNewHttpCallBean2);
         // Create the expected response as an XML document (Fault)
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument11 = xMLHelpers4.getXMLObjectFromString("<fault><faultcode>Client</faultcode><faultstring>DSC-0018</faultstring><detail/></fault>");
         // Convert expected response to REST types for comparison with actual responses
-        Map<CougarMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes12 = cougarManager2.convertResponseToRestTypes(createAsDocument11, getNewHttpCallBean2);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> convertResponseToRestTypes12 = discoManager2.convertResponseToRestTypes(createAsDocument11, getNewHttpCallBean2);
         // Check the 4 responses are as expected (Bad Request)
-        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes12.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response5.getResponseObject());
+        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes12.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response5.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response5.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response5.getHttpStatusText());
         
-        HttpResponseBean response6 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes12.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response6.getResponseObject());
+        HttpResponseBean response6 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes12.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response6.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response6.getHttpStatusText());
         
-        HttpResponseBean response7 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes12.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response7.getResponseObject());
+        HttpResponseBean response7 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes12.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response7.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response7.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response7.getHttpStatusText());
         
-        HttpResponseBean response8 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
-        AssertionUtils.multiAssertEquals(convertResponseToRestTypes12.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response8.getResponseObject());
+        HttpResponseBean response8 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        AssertionUtils.multiAssertEquals(convertResponseToRestTypes12.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response8.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 400, response8.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Bad Request", response8.getHttpStatusText());
         
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
         
-        CougarManager cougarManager11 = CougarManager.getInstance();
-        cougarManager11.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9, new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/simpleSetOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/simpleSetOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/simpleSetOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/simpleSetOperation", "BadRequest") );
+        DiscoManager discoManager11 = DiscoManager.getInstance();
+        discoManager11.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9, new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/simpleSetOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/simpleSetOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/simpleSetOperation", "BadRequest"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/simpleSetOperation", "BadRequest") );
     }
 
 }

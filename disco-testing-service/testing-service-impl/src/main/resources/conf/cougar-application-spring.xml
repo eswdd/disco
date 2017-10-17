@@ -23,32 +23,32 @@
 
 	<!-- Generate the service beans -->
 	
-	<bean class="com.betfair.cougar.util.configuration.PropertyConfigurer">
-        <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
-        <property name="defaultConfig" value="classpath:conf/cougar-testing-service-defaults.properties" />
+	<bean class="uk.co.exemel.disco.util.configuration.PropertyConfigurer">
+        <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
+        <property name="defaultConfig" value="classpath:conf/disco-testing-service-defaults.properties" />
         <property name="configOverride" value="overrides.properties" />
         <property name="placeholderPrefix" value="$TESTINGSERVICE{" />
     </bean>
 	
-    <bean id="com.betfair.cougar.testing.testingService" class="com.betfair.cougar.testing.TestingServiceImpl">
-            <property name="cacheFrameworkRegistry" ref="cougar.caching.CacheFrameworkRegistry"/>
-			<property name="baseLogDirectory" value="$COUGAR{cougar.log.dir}"/>
-			<property name="doSkipLogLines" value="$TESTINGSERVICE{cougar.testingservice.skiploglines}"/>
-			<property name="maxMessageSize" value="$TESTINGSERVICE{cougar.testingservice.maxlogmessagesize}"/>
-			<property name="defaultMaxNumberOfResults" value="$TESTINGSERVICE{cougar.testingservice.defaultmaxlogmessages}"/>
-			<property name="logDateTimeFormat" value="$TESTINGSERVICE{cougar.testingservice.logdatetimeformat}"/>
+    <bean id="uk.co.exemel.disco.testing.testingService" class="uk.co.exemel.disco.testing.TestingServiceImpl">
+            <property name="cacheFrameworkRegistry" ref="disco.caching.CacheFrameworkRegistry"/>
+			<property name="baseLogDirectory" value="$COUGAR{disco.log.dir}"/>
+			<property name="doSkipLogLines" value="$TESTINGSERVICE{disco.testingservice.skiploglines}"/>
+			<property name="maxMessageSize" value="$TESTINGSERVICE{disco.testingservice.maxlogmessagesize}"/>
+			<property name="defaultMaxNumberOfResults" value="$TESTINGSERVICE{disco.testingservice.defaultmaxlogmessages}"/>
+			<property name="logDateTimeFormat" value="$TESTINGSERVICE{disco.testingservice.logdatetimeformat}"/>
 	</bean>
 
-    <bean class="com.betfair.cougar.core.impl.ev.ServiceRegistration">
+    <bean class="uk.co.exemel.disco.core.impl.ev.ServiceRegistration">
         <property name="resolver">
             <bean class="com.betfair.testingservice.v1.TestingSyncServiceExecutableResolver">
-                <property name="service" ref="com.betfair.cougar.testing.testingService"/>
+                <property name="service" ref="uk.co.exemel.disco.testing.testingService"/>
             </bean>
         </property>
         <property name="serviceDefinition">
             <bean class="com.betfair.testingservice.v1.TestingServiceDefinition"/>
         </property>
-        <property name="service" ref="com.betfair.cougar.testing.testingService"/>
+        <property name="service" ref="uk.co.exemel.disco.testing.testingService"/>
         <property name="bindingDescriptors">
             <util:set>
                 <bean class="com.betfair.testingservice.v1.rescript.TestingRescriptServiceBindingDescriptor"/>

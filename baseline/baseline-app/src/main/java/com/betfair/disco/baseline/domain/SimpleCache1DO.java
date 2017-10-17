@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline.domain;
+package uk.co.exemel.disco.baseline.domain;
 
 import java.io.Serializable;
 

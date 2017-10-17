@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.daos;
+package com.betfair.testing.utils.disco.daos;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import java.io.IOException;
 
-public interface ICougarDAO {
+public interface IDiscoDAO {
 
 	/*
 	 * Performed an http call on the passed method

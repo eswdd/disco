@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.codegen;
+package uk.co.exemel.disco.codegen;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,12 +24,12 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import com.betfair.cougar.codegen.resolver.DefaultSchemaCatalogSource;
+import uk.co.exemel.disco.codegen.resolver.DefaultSchemaCatalogSource;
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 
-import com.betfair.cougar.codegen.resolver.InterceptingResolver;
+import uk.co.exemel.disco.codegen.resolver.InterceptingResolver;
 
 /**
  * File-related util stuff

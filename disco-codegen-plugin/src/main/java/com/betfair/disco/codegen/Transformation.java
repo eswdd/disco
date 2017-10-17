@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.codegen;
+package uk.co.exemel.disco.codegen;
 
 public class Transformation {
     //Enum to determine the output domain - some transformations are applicable to

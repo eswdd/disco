@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.util.KeyStoreManagement;
+import uk.co.exemel.disco.util.KeyStoreManagement;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jetty.jmx.MBeanContainer;
 import org.eclipse.jetty.server.Connector;

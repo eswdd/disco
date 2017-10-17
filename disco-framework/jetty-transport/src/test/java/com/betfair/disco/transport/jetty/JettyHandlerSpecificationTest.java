@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.core.api.ServiceVersion;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.core.api.ServiceVersion;
 import junit.framework.Assert;
 import org.junit.Test;
 

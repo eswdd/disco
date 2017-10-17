@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.exception;
+package uk.co.exemel.disco.core.api.exception;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,11 +24,11 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Test;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.fault.CougarFault;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
 
-public class CougarServiceExceptionTest{
+public class DiscoServiceExceptionTest{
 
 	@After
 	public void tearDown(){
@@ -37,51 +37,51 @@ public class CougarServiceExceptionTest{
 
 	@Test
 	public void testGetFault() {
-		CougarServiceException dse = new CougarServiceException(ServerFaultCode.ResponseContentTypeNotValid,"message");
-		CougarFault fault = dse.getFault();
+		DiscoServiceException dse = new DiscoServiceException(ServerFaultCode.ResponseContentTypeNotValid,"message");
+		DiscoFault fault = dse.getFault();
 		assertEquals(ServerFaultCode.ResponseContentTypeNotValid.getResponseCode().getFaultCode(),fault.getFaultCode());
 	}
 
 	@Test
-	public void testCougarApplicationException() {
-		//CougarServiceException dse = new CougarServiceException(ServerFaultCode.FrameworkError,"messge", null);
-		CougarServiceException dse = new CougarServiceException(ServerFaultCode.FrameworkError,"messge", new MockException());
-		CougarFault fault = dse.getFault();
+	public void testDiscoApplicationException() {
+		//DiscoServiceException dse = new DiscoServiceException(ServerFaultCode.FrameworkError,"messge", null);
+		DiscoServiceException dse = new DiscoServiceException(ServerFaultCode.FrameworkError,"messge", new MockException());
+		DiscoFault fault = dse.getFault();
 		assertEquals(ResponseCode.InternalError.getFaultCode(), fault.getFaultCode());
 		assertEquals(ResponseCode.InternalError, dse.getResponseCode());
 	}
 
     @Test(expected = IllegalArgumentException.class)
     public void nullCheckedException() {
-        new CougarServiceException(ServerFaultCode.ServiceCheckedException, "wibble", null);
+        new DiscoServiceException(ServerFaultCode.ServiceCheckedException, "wibble", null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void missingCheckedException() {
-        new CougarServiceException(ServerFaultCode.ServiceCheckedException, "wibble");
+        new DiscoServiceException(ServerFaultCode.ServiceCheckedException, "wibble");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwableInsteadOfCheckedException() {
-        new CougarServiceException(ServerFaultCode.ServiceCheckedException, "wibble", new RuntimeException());
+        new DiscoServiceException(ServerFaultCode.ServiceCheckedException, "wibble", new RuntimeException());
     }
 
     @Test
     public void nullRuntimeException() {
-        new CougarServiceException(ServerFaultCode.ServiceRuntimeException, "wibble", null);
+        new DiscoServiceException(ServerFaultCode.ServiceRuntimeException, "wibble", null);
     }
 
     @Test
     public void missingRuntimeException() {
-        new CougarServiceException(ServerFaultCode.ServiceRuntimeException, "wibble");
+        new DiscoServiceException(ServerFaultCode.ServiceRuntimeException, "wibble");
     }
 
     @Test
     public void throwableInsteadOfRuntimeException() {
-        new CougarServiceException(ServerFaultCode.ServiceRuntimeException, "wibble", new RuntimeException());
+        new DiscoServiceException(ServerFaultCode.ServiceRuntimeException, "wibble", new RuntimeException());
     }
 
-	private static class MockException extends CougarApplicationException {
+	private static class MockException extends DiscoApplicationException {
 
 		public MockException() {
 			super(ResponseCode.InternalError, "DUMMY");

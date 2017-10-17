@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.activemq.monitoring;
+package uk.co.exemel.disco.transport.activemq.monitoring;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.springframework.jmx.export.annotation.ManagedAttribute;

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.query;
+package uk.co.exemel.disco.client.query;
 
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;

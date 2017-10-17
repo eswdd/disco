@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.fault;
+package uk.co.exemel.disco.core.api.fault;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -41,8 +41,8 @@ public class FaultDetail {
 
 	public FaultDetail(String detailMessage, Throwable exception) {
         this(detailMessage,
-            ((exception != null && (exception instanceof CougarApplicationException)) ?
-                ((CougarApplicationException)exception).getApplicationFaultMessages() : null));
+            ((exception != null && (exception instanceof DiscoApplicationException)) ?
+                ((DiscoApplicationException)exception).getApplicationFaultMessages() : null));
         this.exception = exception;
 	}
 
@@ -71,15 +71,15 @@ public class FaultDetail {
 	}
 
 	public String getFaultName() {
-		return exception == null || !(exception instanceof CougarApplicationException)
+		return exception == null || !(exception instanceof DiscoApplicationException)
 			? null
 			: exception.getClass().getSimpleName();
 	}
 
 	public String getFaultNamespace() {
-		return exception == null || !(exception instanceof CougarApplicationException)
+		return exception == null || !(exception instanceof DiscoApplicationException)
 			? null
-			: ((CougarApplicationException)exception).getApplicationFaultNamespace();
+			: ((DiscoApplicationException)exception).getApplicationFaultNamespace();
 	}
 
 	public Throwable getCause() {

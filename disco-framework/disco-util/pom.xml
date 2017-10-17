@@ -19,14 +19,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>cougar-framework</artifactId>
-		<groupId>com.betfair.cougar</groupId>
+		<artifactId>disco-framework</artifactId>
+		<groupId>uk.co.exemel.disco</groupId>
 		<version>3.3-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>cougar-util</artifactId>
+	<artifactId>disco-util</artifactId>
 	<packaging>jar</packaging>
-	<name>cougar-util</name>
+	<name>disco-util</name>
 
     <properties>
         <sonar.exclusions>com/maxmind/**/*.java</sonar.exclusions>
@@ -70,8 +70,8 @@
     </profiles>
 	<dependencies>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-api</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-api</artifactId>
             <version>${project.version}</version>
 		</dependency>
 

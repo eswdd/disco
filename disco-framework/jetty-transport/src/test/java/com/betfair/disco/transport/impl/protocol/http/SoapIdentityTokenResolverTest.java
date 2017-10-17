@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.core.api.builder.DehydratedExecutionContextBuilder;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.core.api.builder.DehydratedExecutionContextBuilder;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
 import org.apache.axiom.om.OMElement;
 import org.junit.Before;
 import org.junit.Test;

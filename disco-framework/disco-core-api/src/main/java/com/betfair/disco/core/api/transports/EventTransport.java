@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.transports;
+package uk.co.exemel.disco.core.api.transports;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.core.api.BindingDescriptor;
-import com.betfair.cougar.core.api.BindingDescriptorRegistrationListener;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.events.Event;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.core.api.BindingDescriptor;
+import uk.co.exemel.disco.core.api.BindingDescriptorRegistrationListener;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.events.Event;
 
 /**
  * This interface describes an implementation of an event based transport.  The two methods

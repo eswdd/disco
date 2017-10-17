@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
 import java.io.StringWriter;
 import java.io.Writer;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.betfair.cougar.test.CougarTestCase;
+import uk.co.exemel.disco.test.DiscoTestCase;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
-public class CougarErrorHandlerTest  {
+public class DiscoErrorHandlerTest  {
 
     @Test
     public void testErrorPage() throws Exception {
-        CougarErrorHandler err = new CougarErrorHandler();
+        DiscoErrorHandler err = new DiscoErrorHandler();
         final HttpServletRequest request = mock(HttpServletRequest.class);
         Writer writer = new StringWriter();
 
@@ -42,7 +42,7 @@ public class CougarErrorHandlerTest  {
 
     @Test
     public void testErrorPageNotFound() throws Exception {
-        CougarErrorHandler err = new CougarErrorHandler();
+        DiscoErrorHandler err = new DiscoErrorHandler();
         final HttpServletRequest request = mock(HttpServletRequest.class);
         Writer writer = new StringWriter();
 

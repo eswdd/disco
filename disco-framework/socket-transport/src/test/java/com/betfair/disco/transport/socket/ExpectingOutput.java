@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.netutil.nio.HeapDelta;
-import com.betfair.cougar.netutil.nio.TerminateSubscription;
-import com.betfair.cougar.netutil.nio.connected.InitialUpdate;
-import com.betfair.cougar.netutil.nio.connected.Update;
-import com.betfair.cougar.netutil.nio.connected.UpdateAction;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
+import uk.co.exemel.disco.netutil.nio.HeapDelta;
+import uk.co.exemel.disco.netutil.nio.TerminateSubscription;
+import uk.co.exemel.disco.netutil.nio.connected.InitialUpdate;
+import uk.co.exemel.disco.netutil.nio.connected.Update;
+import uk.co.exemel.disco.netutil.nio.connected.UpdateAction;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,9 +35,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
 /**
- * Implementation of CougarObjectOutput usable for using complex expectations on multi-threaded code
+ * Implementation of DiscoObjectOutput usable for using complex expectations on multi-threaded code
  */
-public class ExpectingOutput implements CougarObjectOutput, Runnable {
+public class ExpectingOutput implements DiscoObjectOutput, Runnable {
 
     private static Logger LOGGER = LoggerFactory.getLogger(ExpectingOutput.class);
 

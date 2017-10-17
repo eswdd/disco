@@ -21,7 +21,7 @@
 
 	<bean id="oldBaselineVersion" class="com.betfair.baseline.OldVersionBaselineServiceImpl"/>
 
-    <bean class="com.betfair.cougar.core.impl.ev.ServiceRegistration">
+    <bean class="uk.co.exemel.disco.core.impl.ev.ServiceRegistration">
         <property name="resolver">
             <bean class="com.betfair.baseline.v1.BaselineSyncServiceExecutableResolver">
                 <property name="service" ref="oldBaselineVersion"/>

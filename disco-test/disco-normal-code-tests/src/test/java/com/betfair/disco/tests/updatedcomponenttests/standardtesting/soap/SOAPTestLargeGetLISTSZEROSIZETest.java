@@ -16,14 +16,14 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/SOAP/SOAP_TestLargeGet_LISTS_ZEROSIZE.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.soap;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -32,7 +32,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Test to call the testLargeGetRequest operation to check that cougar can return a list containing the given number of items (zero items)
+ * Test to call the testLargeGetRequest operation to check that disco can return a list containing the given number of items (zero items)
  */
 public class SOAPTestLargeGetLISTSZEROSIZETest {
     @Test
@@ -41,11 +41,11 @@ public class SOAPTestLargeGetLISTSZEROSIZETest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document createAsDocument1 = xMLHelpers1.getXMLObjectFromString("<TestLargeGetRequest><size>0</size></TestLargeGetRequest>");
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean2 = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        cougarManager2 = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean2 = discoManager2.getNewHttpCallBean("87.248.113.14");
+        discoManager2 = discoManager2;
 
-        cougarManager2.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        discoManager2.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
 
         getNewHttpCallBean2.setServiceName("Baseline");
 
@@ -56,18 +56,18 @@ public class SOAPTestLargeGetLISTSZEROSIZETest {
 
         Timestamp getTimeAsTimeStamp8 = new Timestamp(System.currentTimeMillis());
         // Make the SOAP call to the operation
-        cougarManager2.makeSoapCougarHTTPCalls(getNewHttpCallBean2);
+        discoManager2.makeSoapDiscoHTTPCalls(getNewHttpCallBean2);
         // Create the expected response object as an XML document (A list with the request number of items in it)
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument10 = xMLHelpers4.getXMLObjectFromString("<response><size>0</size><objects/><oddOrEven>EVEN</oddOrEven></response>");
         // Check the response is as expected
-        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(createAsDocument10, response5.getResponseObject());
 
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
 
-        cougarManager2.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp8, new RequestLogRequirement("2.8", "testLargeGet") );
+        discoManager2.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp8, new RequestLogRequirement("2.8", "testLargeGet") );
     }
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.manager;
+package com.betfair.testing.utils.disco.manager;
 
 import java.io.File;
 import java.io.IOException;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api;
+package uk.co.exemel.disco.core.api;
 
 import java.lang.reflect.Method;
 
@@ -40,7 +40,7 @@ public class GateListenerAdapter implements GateListener {
 	}
 
 	@Override
-	public void onCougarStart() {
+	public void onDiscoStart() {
 
 		Assert.notNull(o, "Object to be invoked is null.");
 		Assert.notNull(methodName, "Method name is null.");

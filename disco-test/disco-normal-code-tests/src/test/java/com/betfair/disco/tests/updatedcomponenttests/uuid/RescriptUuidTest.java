@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.updatedcomponenttests.uuid;
+package uk.co.exemel.disco.tests.updatedcomponenttests.uuid;
 
-import com.betfair.testing.utils.cougar.CougarBaseline2_8TestingInvoker;
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
-import com.betfair.testing.utils.cougar.manager.LogTailer;
-import com.betfair.testing.utils.cougar.manager.RequestLogTailer;
+import com.betfair.testing.utils.disco.DiscoBaseline2_8TestingInvoker;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.manager.LogTailer;
+import com.betfair.testing.utils.disco.manager.RequestLogTailer;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -29,11 +29,11 @@ public class RescriptUuidTest {
     @Test
     public void noParentUuid() {
         LogTailer.LogLine[] requestLogEntries =
-                CougarBaseline2_8TestingInvoker.create()
+                DiscoBaseline2_8TestingInvoker.create()
                 .setOperation("testSimpleGet", "simple")
                 .addQueryParam("message", "MyMessage")
                 .setExpectedHttpResponse(200, "OK")
-                .makeMatrixRescriptCalls(CougarMessageContentTypeEnum.JSON, CougarMessageContentTypeEnum.XML)
+                .makeMatrixRescriptCalls(DiscoMessageContentTypeEnum.JSON, DiscoMessageContentTypeEnum.XML)
                 .verify()
                 .getRequestLogEntries();
         String uuid0 = (String) requestLogEntries[0].getFields().get(RequestLogTailer.REQUEST_UUID);
@@ -50,12 +50,12 @@ public class RescriptUuidTest {
     @Test
     public void withOldUuid() {
         LogTailer.LogLine[] requestLogEntries =
-                CougarBaseline2_8TestingInvoker.create()
+                DiscoBaseline2_8TestingInvoker.create()
                 .setOperation("testSimpleGet", "simple")
                 .addQueryParam("message", "MyMessage")
                 .addHeaderParam("X-UUID", "localhost-abc123-00001")
                 .setExpectedHttpResponse(200, "OK")
-                .makeMatrixRescriptCalls(CougarMessageContentTypeEnum.JSON, CougarMessageContentTypeEnum.XML)
+                .makeMatrixRescriptCalls(DiscoMessageContentTypeEnum.JSON, DiscoMessageContentTypeEnum.XML)
                 .verify()
                 .getRequestLogEntries();
         String uuid0 = (String) requestLogEntries[0].getFields().get(RequestLogTailer.REQUEST_UUID);
@@ -70,13 +70,13 @@ public class RescriptUuidTest {
     @Test
     public void withParentUuid() {
         LogTailer.LogLine[] requestLogEntries =
-                CougarBaseline2_8TestingInvoker.create()
+                DiscoBaseline2_8TestingInvoker.create()
                 .setOperation("testSimpleGet", "simple")
                 .addQueryParam("message", "MyMessage")
                 .addHeaderParam("X-UUID", "localhost-abc123-00001")
                 .addHeaderParam("X-UUID-Parents", "root-abcdef123-00001:prev-abcdef123-00001")
                 .setExpectedHttpResponse(200, "OK")
-                .makeMatrixRescriptCalls(CougarMessageContentTypeEnum.JSON, CougarMessageContentTypeEnum.XML)
+                .makeMatrixRescriptCalls(DiscoMessageContentTypeEnum.JSON, DiscoMessageContentTypeEnum.XML)
                 .verify()
                 .getRequestLogEntries();
 

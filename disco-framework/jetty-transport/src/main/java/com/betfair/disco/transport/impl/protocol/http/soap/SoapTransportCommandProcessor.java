@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http.soap;
+package uk.co.exemel.disco.transport.impl.protocol.http.soap;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceBindingDescriptor;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.exception.*;
-import com.betfair.cougar.core.api.fault.CougarFault;
-import com.betfair.cougar.core.api.fault.FaultController;
-import com.betfair.cougar.core.api.fault.FaultDetail;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.api.transcription.*;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceBindingDescriptor;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.exception.*;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
+import uk.co.exemel.disco.core.api.fault.FaultController;
+import uk.co.exemel.disco.core.api.fault.FaultDetail;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.api.transcription.*;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.marshalling.impl.databinding.xml.SchemaValidationFailureParser;
-import com.betfair.cougar.transport.api.CommandResolver;
-import com.betfair.cougar.transport.api.ExecutionCommand;
-import com.betfair.cougar.transport.api.TransportCommand.CommandStatus;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.api.protocol.http.soap.SoapIdentityTokenResolver;
-import com.betfair.cougar.transport.api.protocol.http.soap.SoapOperationBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.soap.SoapServiceBindingDescriptor;
-import com.betfair.cougar.transport.impl.protocol.http.AbstractTerminateableHttpCommandProcessor;
-import com.betfair.cougar.util.stream.ByteCountingInputStream;
-import com.betfair.cougar.util.stream.ByteCountingOutputStream;
+import uk.co.exemel.disco.marshalling.impl.databinding.xml.SchemaValidationFailureParser;
+import uk.co.exemel.disco.transport.api.CommandResolver;
+import uk.co.exemel.disco.transport.api.ExecutionCommand;
+import uk.co.exemel.disco.transport.api.TransportCommand.CommandStatus;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.api.protocol.http.soap.SoapIdentityTokenResolver;
+import uk.co.exemel.disco.transport.api.protocol.http.soap.SoapOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.soap.SoapServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.impl.protocol.http.AbstractTerminateableHttpCommandProcessor;
+import uk.co.exemel.disco.util.stream.ByteCountingInputStream;
+import uk.co.exemel.disco.util.stream.ByteCountingOutputStream;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNamespace;
@@ -114,7 +114,7 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
     }
 
     @Override
-    public void onCougarStart() {
+    public void onDiscoStart() {
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         for (ServiceBindingDescriptor sd : getServiceBindingDescriptors()) {
             SoapServiceBindingDescriptor soapServiceDesc = (SoapServiceBindingDescriptor) sd;
@@ -138,7 +138,7 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
                 }
             }
             catch (IOException | SAXException e) {
-                throw new CougarFrameworkException("Error loading schema", e);
+                throw new DiscoFrameworkException("Error loading schema", e);
             }
         }
     }
@@ -194,7 +194,7 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
                     }
                 };
             }
-        } catch (CougarException e) {
+        } catch (DiscoException e) {
             throw e;
         } catch (SAXException e) {
             if (e.getException() instanceof TransformerException) {
@@ -203,25 +203,25 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
                     XMLStreamException se = (XMLStreamException) te.getException();
                     if (se.getCause() instanceof SAXParseException) {
                         SAXParseException spe = (SAXParseException) se.getCause();
-                        CougarException ce = schemaValidationFailureParser.parse(spe, "soap", false);
+                        DiscoException ce = schemaValidationFailureParser.parse(spe, "soap", false);
                         if (ce != null) {
                             throw ce;
                         }
                     }
                 }
             }
-            throw CougarMarshallingException.unmarshallingException("soap", e, false);
+            throw DiscoMarshallingException.unmarshallingException("soap", e, false);
         } catch (Exception e) {
-            throw CougarMarshallingException.unmarshallingException("soap", e, false);
+            throw DiscoMarshallingException.unmarshallingException("soap", e, false);
         } finally {
             try {
                 if (in != null) in.close();
             } catch (IOException ie) {
-                throw CougarMarshallingException.unmarshallingException("soap", ie, false);
+                throw DiscoMarshallingException.unmarshallingException("soap", ie, false);
             }
         }
 
-        throw new CougarValidationException(ServerFaultCode.NoSuchOperation,
+        throw new DiscoValidationException(ServerFaultCode.NoSuchOperation,
                 "The SOAP request could not be resolved to an operation");
     }
 
@@ -264,7 +264,7 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
     }
 
     @Override
-    protected void writeErrorResponse(HttpCommand command, DehydratedExecutionContext context, CougarException e, boolean traceStarted) {
+    protected void writeErrorResponse(HttpCommand command, DehydratedExecutionContext context, DiscoException e, boolean traceStarted) {
         incrementErrorsWritten();
         if (command.getStatus() == CommandStatus.InProgress) {
             try {
@@ -289,11 +289,11 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
                 args[i] = readArg(in.readObject(params[i], false), params[i]);
             }
         } catch (EnumDerialisationException ce) {
-            throw CougarMarshallingException.unmarshallingException("soap", ce.getMessage(), ce.getCause(), false);
-        } catch (CougarException ce) {
+            throw DiscoMarshallingException.unmarshallingException("soap", ce.getMessage(), ce.getCause(), false);
+        } catch (DiscoException ce) {
             throw ce;
         } catch (Exception e) {
-            throw new CougarFrameworkException("Failed to unmarshall SOAP arguments", e);
+            throw new DiscoFrameworkException("Failed to unmarshall SOAP arguments", e);
         }
         return args;
     }
@@ -331,7 +331,7 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
         }
     }
 
-    private void writeResponse(HttpCommand command, SoapOperationBinding binding, Object result, CougarException error,
+    private void writeResponse(HttpCommand command, SoapOperationBinding binding, Object result, DiscoException error,
                                DehydratedExecutionContext context, long bytesRead) {
         MediaType mediaType = MediaType.TEXT_XML_TYPE;
         ByteCountingOutputStream out = null;
@@ -350,7 +350,7 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
             envelope.serialize(out);
             bytesWritten = out.getCount();
         } catch (Exception e) {
-            CougarException ce = handleResponseWritingIOException(e, result.getClass());
+            DiscoException ce = handleResponseWritingIOException(e, result.getClass());
 
             if (ce.getResponseCode() == ResponseCode.CantWriteToSocket) {
                 // Log in the access log what's happened and end it all.
@@ -432,7 +432,7 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
         }
     }
 
-    private void writeError(SOAPFactory factory, SoapOperationBinding binding, SOAPBody body, CougarException error) throws Exception {
+    private void writeError(SOAPFactory factory, SoapOperationBinding binding, SOAPBody body, DiscoException error) throws Exception {
         if (error != null) {
             SOAPFault soapFault = factory.createSOAPFault(body);
             if (error.getFault() != null) {
@@ -443,17 +443,17 @@ public class SoapTransportCommandProcessor extends AbstractTerminateableHttpComm
         }
     }
 
-    private void createFaultCode(SOAPFactory factory, SOAPFault soapFault, CougarFault fault) {
+    private void createFaultCode(SOAPFactory factory, SOAPFault soapFault, DiscoFault fault) {
         SOAPFaultCode code = factory.createSOAPFaultCode(soapFault);
         code.setText(factory.getNamespace().getPrefix() + ":" + fault.getFaultCode().name());
     }
 
-    private void createFaultString(SOAPFactory factory, SOAPFault soapFault, CougarFault fault) {
+    private void createFaultString(SOAPFactory factory, SOAPFault soapFault, DiscoFault fault) {
         SOAPFaultReason reason = factory.createSOAPFaultReason(soapFault);
         reason.setText(fault.getErrorCode());
     }
 
-    private void createFaultDetail(SOAPFactory factory, SOAPFault soapFault, CougarFault fault, SoapOperationBinding binding) throws Exception {
+    private void createFaultDetail(SOAPFactory factory, SOAPFault soapFault, DiscoFault fault, SoapOperationBinding binding) throws Exception {
         SOAPFaultDetail soapFaultDetail = factory.createSOAPFaultDetail(soapFault);
         FaultDetail detail = fault.getDetail();
         if (detail != null) {

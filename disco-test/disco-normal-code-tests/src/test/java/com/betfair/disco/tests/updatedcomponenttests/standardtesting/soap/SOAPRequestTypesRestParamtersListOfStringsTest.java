@@ -15,11 +15,11 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/SOAP/SOAP_RequestTypes_RestParamters_ListOfStrings.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.soap;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -29,19 +29,19 @@ import java.io.ByteArrayInputStream;
 import java.sql.Timestamp;
 
 /**
- * Ensure that when a Rest (XML) Post operation is performed, Cougar can correctly handle an empty simple Set in the post body
+ * Ensure that when a Rest (XML) Post operation is performed, Disco can correctly handle an empty simple Set in the post body
  */
 public class SOAPRequestTypesRestParamtersListOfStringsTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        discoManager1 = discoManager1;
         
         getNewHttpCallBean1.setOperationName("simpleSetOperation");
         
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean1.setVersion("v2");
         // Set the post body to contain an empty simple set
@@ -50,9 +50,9 @@ public class SOAPRequestTypesRestParamtersListOfStringsTest {
 
         Timestamp getTimeAsTimeStamp7 = new Timestamp(System.currentTimeMillis());
         // Make XML call to the operation requesting an XML response
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTXML, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.XML);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTXML, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.XML);
         // Make XML call to the operation requesting a JSON response
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTXML, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTXML, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Create the expected response as an XML document
         XMLHelpers xMLHelpers3 = new XMLHelpers();
         Document createAsDocument10 = xMLHelpers3.getXMLObjectFromString("<SimpleSetOperationResponse><SimpleSetOperationResponseObject><responseSet/></SimpleSetOperationResponseObject></SimpleSetOperationResponse>");

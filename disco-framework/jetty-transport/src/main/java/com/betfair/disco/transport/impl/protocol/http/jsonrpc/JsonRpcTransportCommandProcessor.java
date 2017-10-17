@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http.jsonrpc;
+package uk.co.exemel.disco.transport.impl.protocol.http.jsonrpc;
 
 import java.io.IOException;
 import java.security.cert.X509Certificate;
@@ -24,47 +24,47 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.*;
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceBindingDescriptor;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.*;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.api.transcription.EnumDerialisationException;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.impl.CougarInternalOperations;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.marshalling.impl.databinding.json.JSONBindingFactory;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.*;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceBindingDescriptor;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.*;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.api.transcription.EnumDerialisationException;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.impl.DiscoInternalOperations;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.marshalling.impl.databinding.json.JSONBindingFactory;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolution;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.transport.api.CommandResolver;
-import com.betfair.cougar.core.api.transcription.EnumUtils;
-import com.betfair.cougar.transport.api.protocol.http.ExecutionContextFactory;
-import com.betfair.cougar.transport.impl.protocol.http.AbstractHttpCommandProcessor;
+import uk.co.exemel.disco.transport.api.CommandResolver;
+import uk.co.exemel.disco.core.api.transcription.EnumUtils;
+import uk.co.exemel.disco.transport.api.protocol.http.ExecutionContextFactory;
+import uk.co.exemel.disco.transport.impl.protocol.http.AbstractHttpCommandProcessor;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.core.api.ev.OperationKey.Type;
-import com.betfair.cougar.core.api.fault.Fault;
-import com.betfair.cougar.core.api.fault.FaultController;
-import com.betfair.cougar.core.api.fault.FaultDetail;
-import com.betfair.cougar.transport.api.ExecutionCommand;
-import com.betfair.cougar.transport.api.TransportCommand;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.api.protocol.http.ResponseCodeMapper;
-import com.betfair.cougar.transport.impl.protocol.http.jsonrpc.JsonRpcOperationBinding.JsonRpcParam;
-import com.betfair.cougar.util.stream.ByteCountingInputStream;
-import com.betfair.cougar.util.stream.ByteCountingOutputStream;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.core.api.ev.OperationKey.Type;
+import uk.co.exemel.disco.core.api.fault.Fault;
+import uk.co.exemel.disco.core.api.fault.FaultController;
+import uk.co.exemel.disco.core.api.fault.FaultDetail;
+import uk.co.exemel.disco.transport.api.ExecutionCommand;
+import uk.co.exemel.disco.transport.api.TransportCommand;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.api.protocol.http.ResponseCodeMapper;
+import uk.co.exemel.disco.transport.impl.protocol.http.jsonrpc.JsonRpcOperationBinding.JsonRpcParam;
+import uk.co.exemel.disco.util.stream.ByteCountingInputStream;
+import uk.co.exemel.disco.util.stream.ByteCountingOutputStream;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
 @ManagedResource
@@ -89,7 +89,7 @@ public class JsonRpcTransportCommandProcessor extends AbstractHttpCommandProcess
     static final String IDENTITY_RESOLUTION_NAMESPACE = null;
     // package private for testing
     static final OperationDefinition IDENTITY_RESOLUTION_OPDEF = new SimpleOperationDefinition(
-            CougarInternalOperations.RESOLVE_IDENTITIES,
+            DiscoInternalOperations.RESOLVE_IDENTITIES,
             new Parameter[0], ParameterType.create(Void.class)
     );
     // package private for testing
@@ -114,7 +114,7 @@ public class JsonRpcTransportCommandProcessor extends AbstractHttpCommandProcess
 	}
 
 	@Override
-	public void onCougarStart() {
+	public void onDiscoStart() {
         boolean operationsBound = false;
 		for (ServiceBindingDescriptor bindingDescriptor : getServiceBindingDescriptors()) {
 			for (OperationBindingDescriptor opDesc : bindingDescriptor.getOperationBindings()) {
@@ -147,7 +147,7 @@ public class JsonRpcTransportCommandProcessor extends AbstractHttpCommandProcess
 	@Override
 	protected CommandResolver<HttpCommand> createCommandResolver(final HttpCommand http, final Tracer tracer) {
         final DehydratedExecutionContext context = resolveExecutionContext(http, null);
-        tracer.start(context.getRequestUUID(), CougarInternalOperations.BATCH_CALL);
+        tracer.start(context.getRequestUUID(), DiscoInternalOperations.BATCH_CALL);
 
 
 		final List<JsonRpcRequest> requests = new ArrayList<>();
@@ -171,7 +171,7 @@ public class JsonRpcTransportCommandProcessor extends AbstractHttpCommandProcess
                 }
 
                 if (requests.isEmpty()) {
-                    writeErrorResponse(http, context, new CougarValidationException(ServerFaultCode.NoRequestsFound, "No Requests found in rpc call"), true);
+                    writeErrorResponse(http, context, new DiscoValidationException(ServerFaultCode.NoRequestsFound, "No Requests found in rpc call"), true);
                 } else {
                     final TimeConstraints realTimeConstraints = DefaultTimeConstraints.rebaseFromNewStartTime(context.getRequestTime(), readRawTimeConstraints(http.getRequest()));
                     for (final JsonRpcRequest rpc : requests) {
@@ -230,7 +230,7 @@ public class JsonRpcTransportCommandProcessor extends AbstractHttpCommandProcess
             } catch (Exception ex) {
                 //This happens when there was a problem reading
                 //deal with case where every request was bad
-                writeErrorResponse(http, context, CougarMarshallingException.unmarshallingException("json",ex,false), true);
+                writeErrorResponse(http, context, DiscoMarshallingException.unmarshallingException("json",ex,false), true);
                 commands.clear();
             }
 
@@ -247,7 +247,7 @@ public class JsonRpcTransportCommandProcessor extends AbstractHttpCommandProcess
                 }
             };
 		} catch (Exception e) {
-            throw CougarMarshallingException.unmarshallingException("json", "Unable to resolve requests for json-rpc", e, false);
+            throw DiscoMarshallingException.unmarshallingException("json", "Unable to resolve requests for json-rpc", e, false);
 		} finally {
 			try {
                 if (iStream != null) {
@@ -311,7 +311,7 @@ public class JsonRpcTransportCommandProcessor extends AbstractHttpCommandProcess
                 }
             };
             executeCommand(resolveCommand, ctx);
-        } catch (CougarException ex) {
+        } catch (DiscoException ex) {
             //this indicates an exception beyond the normal flow occurred
             //We can only deal with this by sending a batch fail message
             //Normal business thrown exceptions should not be handled by this call
@@ -319,7 +319,7 @@ public class JsonRpcTransportCommandProcessor extends AbstractHttpCommandProcess
         } catch (Throwable ex) {
             //We cannot let any exception percolate beyond this point as the conventional error response
             //publication mechanism doesn't work cleanly for JSON-RPC
-            writeErrorResponse(command, ctx, new CougarServiceException(ServerFaultCode.ServiceRuntimeException, ex.getMessage()), traceStarted);
+            writeErrorResponse(command, ctx, new DiscoServiceException(ServerFaultCode.ServiceRuntimeException, ex.getMessage()), traceStarted);
         }
     }
 
@@ -404,7 +404,7 @@ public class JsonRpcTransportCommandProcessor extends AbstractHttpCommandProcess
      * @param traceStarted
      */
 	@Override
-	public void writeErrorResponse(HttpCommand command, DehydratedExecutionContext context, CougarException error, boolean traceStarted) {
+	public void writeErrorResponse(HttpCommand command, DehydratedExecutionContext context, DiscoException error, boolean traceStarted) {
         try {
             incrementErrorsWritten();
             final HttpServletResponse response = command.getResponse();

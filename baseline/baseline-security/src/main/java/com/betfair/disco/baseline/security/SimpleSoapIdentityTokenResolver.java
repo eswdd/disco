@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline.security;
+package uk.co.exemel.disco.baseline.security;
 
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.transport.api.protocol.http.soap.SoapIdentityTokenResolver;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.transport.api.protocol.http.soap.SoapIdentityTokenResolver;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 

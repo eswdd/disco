@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/IPBlacklist/REST/Rest_BlacklistedIP.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.ipblacklist;
+package uk.co.exemel.disco.tests.updatedcomponenttests.ipblacklist;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -34,7 +34,7 @@ import java.util.Map;
 
 
 /**
- * Test that the Cougar service forbids the access for the X-Forwarded-For  in the blacklist (REST)
+ * Test that the Disco service forbids the access for the X-Forwarded-For  in the blacklist (REST)
  */
 public class RestBlacklistedIPTest {
     String blackListedIP = "192.168.0.1";
@@ -71,14 +71,14 @@ public class RestBlacklistedIPTest {
     private void doTest_ExpectedResponse(String testIPAddress, boolean ok) throws Exception
     {
         // Get an HTTPCallBean
-        CougarManager cougarManager = CougarManager.getInstance();
-        HttpCallBean HTTPCallBean = cougarManager.getNewHttpCallBean(testIPAddress.replace(";",","));
-        // Set Cougar Fault Controller attributes
-        cougarManager.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        DiscoManager discoManager = DiscoManager.getInstance();
+        HttpCallBean HTTPCallBean = discoManager.getNewHttpCallBean(testIPAddress.replace(";",","));
+        // Set Disco Fault Controller attributes
+        discoManager.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         // Set operation  name
         HTTPCallBean.setOperationName("stringSimpleTypeEcho", "stringEcho");
         // Set service name to call
-        HTTPCallBean.setServiceName("baseline", "cougarBaseline");
+        HTTPCallBean.setServiceName("baseline", "discoBaseline");
         // Set service version to call
         HTTPCallBean.setVersion("v2");
         // Set Query parameter
@@ -89,7 +89,7 @@ public class RestBlacklistedIPTest {
 
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
         // Make Rest calls (makes 4 calls with different content/accept combinations of XML and JSON)
-        cougarManager.makeRestCougarHTTPCalls(HTTPCallBean);
+        discoManager.makeRestDiscoHTTPCalls(HTTPCallBean);
         // Create a REST response structure as a Document object
         XMLHelpers xMLHelpers4 = new XMLHelpers();
 
@@ -98,18 +98,18 @@ public class RestBlacklistedIPTest {
         String expectedResponseText = ok ? "Ok" : "Forbidden";
 
         // Get the 4 results from the Rest calls and compare to the expected XML and JSON responses
-        HttpResponseBean response5 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
-        HttpResponseBean response6 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
-        HttpResponseBean response7 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
-        HttpResponseBean response8 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
+        HttpResponseBean response5 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
+        HttpResponseBean response6 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response7 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        HttpResponseBean response8 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
         if (!ok) {
             Document responseDocument = xMLHelpers4.getXMLObjectFromString("<fault><faultcode>Client</faultcode><faultstring>DSC-0015</faultstring><detail/></fault>");
             // Convert the response document into Rest (XML and JSON) representations
-            Map<CougarMessageProtocolRequestTypeEnum, Object> convertedResponses = cougarManager.convertResponseToRestTypes(responseDocument, HTTPCallBean);
-            AssertionUtils.multiAssertEquals(convertedResponses.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response5.getResponseObject());
-            AssertionUtils.multiAssertEquals(convertedResponses.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response6.getResponseObject());
-            AssertionUtils.multiAssertEquals(convertedResponses.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response7.getResponseObject());
-            AssertionUtils.multiAssertEquals(convertedResponses.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response8.getResponseObject());
+            Map<DiscoMessageProtocolRequestTypeEnum, Object> convertedResponses = discoManager.convertResponseToRestTypes(responseDocument, HTTPCallBean);
+            AssertionUtils.multiAssertEquals(convertedResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response5.getResponseObject());
+            AssertionUtils.multiAssertEquals(convertedResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response6.getResponseObject());
+            AssertionUtils.multiAssertEquals(convertedResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response7.getResponseObject());
+            AssertionUtils.multiAssertEquals(convertedResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response8.getResponseObject());
         }
 
         AssertionUtils.multiAssertEquals(expectedHttpResponseCode, response5.getHttpStatusCode());
@@ -124,10 +124,10 @@ public class RestBlacklistedIPTest {
         AssertionUtils.multiAssertEquals(expectedHttpResponseCode, response8.getHttpStatusCode());
         AssertionUtils.multiAssertEquals(expectedHttpResponseText, response8.getHttpStatusText());
 
-        cougarManager.verifyAccessLogEntriesAfterDate(timeStamp,
-                new AccessLogRequirement(testIPAddress, "/cougarBaseline/v2/stringEcho", expectedResponseText),
-                new AccessLogRequirement(testIPAddress, "/cougarBaseline/v2/stringEcho", expectedResponseText),
-                new AccessLogRequirement(testIPAddress, "/cougarBaseline/v2/stringEcho", expectedResponseText),
-                new AccessLogRequirement(testIPAddress, "/cougarBaseline/v2/stringEcho", expectedResponseText));
+        discoManager.verifyAccessLogEntriesAfterDate(timeStamp,
+                new AccessLogRequirement(testIPAddress, "/discoBaseline/v2/stringEcho", expectedResponseText),
+                new AccessLogRequirement(testIPAddress, "/discoBaseline/v2/stringEcho", expectedResponseText),
+                new AccessLogRequirement(testIPAddress, "/discoBaseline/v2/stringEcho", expectedResponseText),
+                new AccessLogRequirement(testIPAddress, "/discoBaseline/v2/stringEcho", expectedResponseText));
     }
 }

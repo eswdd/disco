@@ -14,42 +14,42 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms;
+package uk.co.exemel.disco.transport.jms;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.Identity;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.core.api.BindingDescriptor;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.events.Event;
-import com.betfair.cougar.core.api.events.EventTransportIdentity;
-import com.betfair.cougar.core.api.events.EventTransportIdentityImpl;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.transports.AbstractRegisterableTransport;
-import com.betfair.cougar.core.api.transports.EventTransport;
-import com.betfair.cougar.core.api.transports.EventTransportMode;
-import com.betfair.cougar.core.impl.ev.DefaultSubscription;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.Identity;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.core.api.BindingDescriptor;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.events.Event;
+import uk.co.exemel.disco.core.api.events.EventTransportIdentity;
+import uk.co.exemel.disco.core.api.events.EventTransportIdentityImpl;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.transports.AbstractRegisterableTransport;
+import uk.co.exemel.disco.core.api.transports.EventTransport;
+import uk.co.exemel.disco.core.api.transports.EventTransportMode;
+import uk.co.exemel.disco.core.impl.ev.DefaultSubscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.transport.api.protocol.events.EventBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.events.EventErrorHandler;
-import com.betfair.cougar.transport.api.protocol.events.EventServiceBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.events.EventUnMarshaller;
-import com.betfair.cougar.transport.api.protocol.events.jms.JMSDestinationResolver;
-import com.betfair.cougar.transport.jms.monitoring.ConnectionMonitor;
-import com.betfair.cougar.transport.jms.monitoring.TopicPublisherPingMonitor;
-import com.betfair.cougar.transport.jms.monitoring.TopicSubscriberPingMonitor;
-import com.betfair.cougar.transport.jms.monitoring.PingEvent;
-import com.betfair.cougar.util.JMXReportingThreadPoolExecutor;
-import com.betfair.cougar.util.configuration.PropertyConfigurer;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.transport.api.protocol.events.EventBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.events.EventErrorHandler;
+import uk.co.exemel.disco.transport.api.protocol.events.EventServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.events.EventUnMarshaller;
+import uk.co.exemel.disco.transport.api.protocol.events.jms.JMSDestinationResolver;
+import uk.co.exemel.disco.transport.jms.monitoring.ConnectionMonitor;
+import uk.co.exemel.disco.transport.jms.monitoring.TopicPublisherPingMonitor;
+import uk.co.exemel.disco.transport.jms.monitoring.TopicSubscriberPingMonitor;
+import uk.co.exemel.disco.transport.jms.monitoring.PingEvent;
+import uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor;
+import uk.co.exemel.disco.util.configuration.PropertyConfigurer;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import com.betfair.tornjak.monitor.MonitorRegistry;
 import com.betfair.tornjak.monitor.Status;
 import org.springframework.beans.BeansException;
@@ -323,15 +323,15 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
      * will be derived using the plugged destination resolver.  If you want to implement different / more
      * advanced destination resolution, implement your own JMSDestinationResolver.  Note that obviously
      * both the publisher and consumer must arrive at the same destination name, so should be using the
-     * same convention (since they're unlikely to be running in the same Cougar instance)
+     * same convention (since they're unlikely to be running in the same Disco instance)
      * The event will be published using a thread from the pool and its associated jms session
      *
      * @param event
-     * @throws com.betfair.cougar.core.api.exception.CougarException
-     * @see com.betfair.cougar.transport.api.protocol.events.jms.JMSDestinationResolver
+     * @throws uk.co.exemel.disco.core.api.exception.DiscoException
+     * @see uk.co.exemel.disco.transport.api.protocol.events.jms.JMSDestinationResolver
      */
     @Override
-    public void publish(Event event) throws CougarException {
+    public void publish(Event event) throws DiscoException {
         String destinationName = destinationResolver.resolveDestination(event.getClass(), null);
         publish(event, destinationName, eventServiceBindingDescriptor);
     }
@@ -341,10 +341,10 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
      * The event will be published using a thread from the pool and its associated jms session
      *
      * @param event
-     * @throws com.betfair.cougar.core.api.exception.CougarException
-     * @see com.betfair.cougar.transport.api.protocol.events.jms.JMSDestinationResolver
+     * @throws uk.co.exemel.disco.core.api.exception.DiscoException
+     * @see uk.co.exemel.disco.transport.api.protocol.events.jms.JMSDestinationResolver
      */
-    public void publish(Event event, String destinationName, EventServiceBindingDescriptor eventServiceBindingDescriptor) throws CougarException {
+    public void publish(Event event, String destinationName, EventServiceBindingDescriptor eventServiceBindingDescriptor) throws DiscoException {
         try {
             EventPublisherRunnable publisherRunnable = new EventPublisherRunnable(event, destinationName, eventServiceBindingDescriptor);
             threadPool.execute(publisherRunnable); // Publish the event using a thread from the pool
@@ -353,11 +353,11 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
             if (!publisherRunnable.isSuccess()) { // If publication failed for any reason pass out the exception thrown
                 Exception e = publisherRunnable.getError();
                 LOGGER.error("Publication exception:", e);
-                throw new CougarFrameworkException("Sonic JMS publication exception", e);
+                throw new DiscoFrameworkException("Sonic JMS publication exception", e);
             }
         } catch (InterruptedException ex) { // Interrupted while waiting for event to be published
             LOGGER.error("Publication exception:", ex);
-            throw new CougarFrameworkException("Sonic JMS publication exception", ex);
+            throw new DiscoFrameworkException("Sonic JMS publication exception", ex);
         }
     }
 
@@ -405,7 +405,7 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
                 TextMessage textMessage = getEventMarshaller().marshallEvent(descriptor, event, session);
                 messageProducer.send(textMessage, textMessage.getJMSDeliveryMode(), textMessage.getJMSPriority(), textMessage.getJMSExpiration());
                 success = true;
-            } catch (CougarFrameworkException cfe) { // Catch possible exception thrown from session creation
+            } catch (DiscoFrameworkException cfe) { // Catch possible exception thrown from session creation
                 success = false;
                 error = cfe;
             } catch (JMSException ex) { // Catch any other exception thrown during message publication
@@ -439,14 +439,14 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
             return destination;
         }
         catch (InvalidDestinationException ide) {
-            throw new CougarFrameworkException("Error creating "+destinationType+" for destination name '"+destinationName+"'",ide);
+            throw new DiscoFrameworkException("Error creating "+destinationType+" for destination name '"+destinationName+"'",ide);
         }
     }
 
 
     private Class<? extends Event> getEventClass(String eventName) {
         if (!bindingDescriptorMap.containsKey(eventName.toLowerCase())) {
-            throw new CougarValidationException(ServerFaultCode.NoSuchOperation, "Unable to find binding for event named[" + eventName + "]");
+            throw new DiscoValidationException(ServerFaultCode.NoSuchOperation, "Unable to find binding for event named[" + eventName + "]");
         }
         EventBindingDescriptor eventBindingDescriptor = bindingDescriptorMap.get(eventName.toLowerCase());
         final Class<? extends Event> eventClass = eventBindingDescriptor.getEventClass();
@@ -542,7 +542,7 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
      * The destination address (to listen for events from) will be derived using the plugged destination resolver.
      * If you want to implement different / more advanced destination resolution, implement your own
      * JMSDestinationResolver.  Note that both the publisher and consumer must arrive at the same destination name,
-     * so should be using the same convention (since they're unlikely to be running in the same Cougar instance)
+     * so should be using the same convention (since they're unlikely to be running in the same Disco instance)
      *
      * @param eventName - the name of the event, matching the event name defined in the IDD
      * @param args      - subscription arguments, note that if you've asked for a durable subscription, then you MUST supply
@@ -558,7 +558,7 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
 
         if (destinationType == destinationType.DurableTopic) {
             if (args == null || "".equals(args[0])) {
-                observer.onResult(new ExecutionResult(new CougarFrameworkException("Durable subscription requires a subscription Identifier to be set as the zeroth arg!")));
+                observer.onResult(new ExecutionResult(new DiscoFrameworkException("Durable subscription requires a subscription Identifier to be set as the zeroth arg!")));
                 return;
             }
             subId = args[0].toString();
@@ -592,8 +592,8 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
                 }
             }));
         } catch (JMSException ex) {
-            observer.onResult(new ExecutionResult(new CougarFrameworkException("Subscription exception!", ex)));
-        } catch (CougarException ce) {
+            observer.onResult(new ExecutionResult(new DiscoFrameworkException("Subscription exception!", ex)));
+        } catch (DiscoException ce) {
             observer.onResult(new ExecutionResult(ce));
         }
     }
@@ -650,7 +650,7 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
                 type = m.getClass().getName();
             }
             try {
-                observer.onResult(new ExecutionResult(new CougarFrameworkException("Received message not a text message!",
+                observer.onResult(new ExecutionResult(new DiscoFrameworkException("Received message not a text message!",
                         new ClassCastException(
                                 "Could not convert received message from type [" + type + "] to TextMessage"))));
             } catch (Exception e) {
@@ -669,7 +669,7 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
                 try {
                     s = getConnection().createSession(false, acknowledgementMode);
                 } catch (JMSException ex) {
-                    throw new CougarFrameworkException("Error Creating Session", ex);
+                    throw new DiscoFrameworkException("Error Creating Session", ex);
                 }
                 sessionMap.put(t, s);
             }
@@ -770,7 +770,7 @@ public class JmsEventTransportImpl extends AbstractRegisterableTransport impleme
     }
 
     private String getMonitoringProperty(String eventName, String suffix, String defaultValue) {
-        String s = PropertyConfigurer.getAllLoadedProperties().get("cougar."+getTransportShortName()+".monitor."+eventName+suffix);
+        String s = PropertyConfigurer.getAllLoadedProperties().get("disco."+getTransportShortName()+".monitor."+eventName+suffix);
         if (s == null) {
             return defaultValue;
         }

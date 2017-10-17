@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.LogExtension;
-import com.betfair.cougar.api.LoggableEvent;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.core.api.RequestTimer;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.logging.EventLogger;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.impl.logging.RequestLogEvent;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.LogExtension;
+import uk.co.exemel.disco.api.LoggableEvent;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.core.api.RequestTimer;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.logging.EventLogger;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.impl.logging.RequestLogEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,11 +92,11 @@ public class ServiceExecutableResolver extends CompoundExecutableResolverImpl {
             final ExecutionContextAdapter ctxAdapter = new ExecutionContextAdapter(key, ctx, observer, manager, tracer);
             try {
                 executable.execute(ctxAdapter, key, args, ctxAdapter, executionVenue, timeConstraints);
-            } catch (CougarException e) {
+            } catch (DiscoException e) {
                 ctxAdapter.onResult(new ExecutionResult(e));
             } catch (Exception e) {
                 ctxAdapter.onResult(new ExecutionResult(
-                        new CougarServiceException(ServerFaultCode.ServiceRuntimeException,
+                        new DiscoServiceException(ServerFaultCode.ServiceRuntimeException,
                                 "Exception thrown by service method",
                                 e)));
             }
@@ -164,13 +164,13 @@ public class ServiceExecutableResolver extends CompoundExecutableResolverImpl {
             if (connectedObjectLogExtension == null) {
                 if (manager.getConnectedObjectLogExtensionClass() != null) {
                     if (executionResult.getResult() instanceof ConnectedResponse) {
-                        throw new CougarFrameworkException("Connected object log extension expected but not found for " + key);
+                        throw new DiscoFrameworkException("Connected object log extension expected but not found for " + key);
                     }
                 }
             }
             else {
                 if (manager.getNumConnectedObjectLogExtensionFields() != connectedObjectLogExtension.getFieldsToLog().length) {
-                    throw new CougarFrameworkException("Connected object log extension class defined "+
+                    throw new DiscoFrameworkException("Connected object log extension class defined "+
                             connectedObjectLogExtension.getFieldsToLog().length+" fields. Expected" + manager.getNumConnectedObjectLogExtensionFields());
                 }
             }
@@ -283,12 +283,12 @@ public class ServiceExecutableResolver extends CompoundExecutableResolverImpl {
                         // record, so we dummy one up with the correct number of fields
 						fieldsToLog = new Object[manager.getNumLogExtensionFields()];
 					} else {
-						throw new CougarFrameworkException("Log extension expected but not found for " + key);
+						throw new DiscoFrameworkException("Log extension expected but not found for " + key);
 					}
 				}
 			} else {
 				if (manager.getNumLogExtensionFields() != logExtension.getFieldsToLog().length) {
-					throw new CougarFrameworkException("Log extension class defined "+
+					throw new DiscoFrameworkException("Log extension class defined "+
 							logExtension.getFieldsToLog().length+" fields. Expected" + manager.getNumLogExtensionFields());
 				}
 				fieldsToLog = logExtension.getFieldsToLog();

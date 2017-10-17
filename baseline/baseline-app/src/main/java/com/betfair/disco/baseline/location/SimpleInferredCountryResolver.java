@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline.location;
+package uk.co.exemel.disco.baseline.location;
 
-import com.betfair.cougar.api.security.InferredCountryResolver;
-import com.betfair.cougar.util.HeaderUtils;
+import uk.co.exemel.disco.api.security.InferredCountryResolver;
+import uk.co.exemel.disco.util.HeaderUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;

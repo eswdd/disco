@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl;
+package uk.co.exemel.disco.core.impl;
 
-import com.betfair.cougar.core.impl.logging.LogBootstrap;
+import uk.co.exemel.disco.core.impl.logging.LogBootstrap;
 
 import java.io.IOException;
 import java.util.Properties;

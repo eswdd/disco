@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor.ParamSource;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor.ParamSource;
 
 /**
  * Constructs a Message object based on provided args[], Parameters and RescriptOperationBindingDescriptor.
@@ -48,7 +48,7 @@ public class MessageBuilder {
 			}
 
 			if (param.isMandatory() && currentArgument == null) {
-				throw new CougarValidationException(ServerFaultCode.MandatoryNotDefined,"MANDATORY parameter cannot be null: " + parameterName);
+				throw new DiscoValidationException(ServerFaultCode.MandatoryNotDefined,"MANDATORY parameter cannot be null: " + parameterName);
 			}
 
             switch (parameterSource) {

@@ -26,8 +26,8 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.transcription.TranscribableEnum;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.transcription.TranscribableEnum;
 
 /**
   * Enumeration of valid values

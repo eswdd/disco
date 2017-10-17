@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.marshalling;
+package uk.co.exemel.disco.netutil.nio.marshalling;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
 
 /**
  * receives parameter names and parameter values from a client and matches them to the expected parameters
@@ -39,7 +39,7 @@ public class ArgumentMatcher {
 	 * @param expectedArgs - arguments the server is expecting, as defined in the idd
 	 * @param availableArgNames - names of arguments supplied by the client
 	 * @param availableArgValues - values of arguments supplied by the client
-	 * @throws CougarValidationException if a mandatory parameter is not supplied
+	 * @throws DiscoValidationException if a mandatory parameter is not supplied
 	 * @return
 	 */
 	public static Object[] getArgumentValues(Parameter[] expectedArgs, String[] availableArgNames, Object[] availableArgValues) {

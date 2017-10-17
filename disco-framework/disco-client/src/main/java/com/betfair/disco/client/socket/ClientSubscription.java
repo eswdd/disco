@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket;
+package uk.co.exemel.disco.client.socket;
 
-import com.betfair.cougar.core.impl.ev.DefaultSubscription;
+import uk.co.exemel.disco.core.impl.ev.DefaultSubscription;
 import org.apache.mina.common.IoSession;
 
 public class ClientSubscription extends DefaultSubscription {

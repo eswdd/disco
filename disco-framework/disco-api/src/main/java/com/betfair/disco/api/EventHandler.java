@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api;
+package uk.co.exemel.disco.api;
 
 /**
  * This class defines a service to handle events.

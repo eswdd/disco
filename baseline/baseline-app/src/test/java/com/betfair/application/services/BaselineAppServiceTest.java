@@ -61,8 +61,8 @@ public class BaselineAppServiceTest extends XMLTestCase implements BaselineClien
             HOST = props.getProperty("HOST");
             PORT = Integer.parseInt(props.getProperty("PORT"));
             SOAP_ENDPOINT = "http://" + HOST + ":" + PORT + "/BaselineService/v2.0";
-            REST_BASE = "http://" + HOST + ":" + PORT + "/cougarBaseline/v2.0/";
-            REST_BASE_ALT = "http://" + HOST + ":" + PORT + "/www/cougarBaseline/v2.0/";
+            REST_BASE = "http://" + HOST + ":" + PORT + "/discoBaseline/v2.0/";
+            REST_BASE_ALT = "http://" + HOST + ":" + PORT + "/www/discoBaseline/v2.0/";
             RPC_ENDPOINT = "http://" + HOST + ":" + PORT + "/json-rpc";
             WSDL_ENDPOINT = "http://" + HOST + ":" + PORT + "/wsdl";
         } catch (Exception e) {

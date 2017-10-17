@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.collectionwrappers;
+package uk.co.exemel.disco.core.api.collectionwrappers;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import com.betfair.cougar.api.Result;
+import uk.co.exemel.disco.api.Result;
 
 /**
  * A delegating map implementing the Result interface.

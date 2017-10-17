@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.collectionwrappers;
+package uk.co.exemel.disco.core.api.collectionwrappers;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -22,7 +22,7 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-import com.betfair.cougar.api.Result;
+import uk.co.exemel.disco.api.Result;
 
 public class WrappedSetTest extends TestCase {
 	WrappedSet<String> ws = new WrappedSet<String>(new HashSet<String>());

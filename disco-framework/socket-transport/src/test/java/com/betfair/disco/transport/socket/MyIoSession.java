@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
 import org.apache.mina.common.CloseFuture;
 import org.apache.mina.common.IdleStatus;

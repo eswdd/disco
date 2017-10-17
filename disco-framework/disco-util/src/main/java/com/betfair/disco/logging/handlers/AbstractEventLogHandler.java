@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging.handlers;
+package uk.co.exemel.disco.logging.handlers;
 
 import java.io.IOException;
 import java.util.logging.Handler;
@@ -23,7 +23,7 @@ import java.util.logging.LogRecord;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.logging.records.EventLogRecord;
+import uk.co.exemel.disco.logging.records.EventLogRecord;
 
 /**
  * Superclass for all event logs handlers

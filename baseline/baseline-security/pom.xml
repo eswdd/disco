@@ -19,7 +19,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
+        <groupId>uk.co.exemel.disco</groupId>
         <artifactId>baseline</artifactId>
         <version>3.3-SNAPSHOT</version>
     </parent>
@@ -30,22 +30,22 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-marshalling-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-marshalling-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-util</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-util</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-transport-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-transport-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -57,8 +57,8 @@
             <artifactId>jsr311-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-marshalling-impl</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-marshalling-impl</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -69,8 +69,8 @@
             <scope>test</scope>
         </dependency>
             <dependency>
-                  <groupId>com.betfair.cougar</groupId>
-                  <artifactId>cougar-client</artifactId>
+                  <groupId>uk.co.exemel.disco</groupId>
+                  <artifactId>disco-client</artifactId>
                   <version>${project.version}</version>
             </dependency>
 

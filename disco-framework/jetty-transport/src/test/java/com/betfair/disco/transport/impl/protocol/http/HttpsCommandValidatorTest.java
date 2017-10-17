@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +55,7 @@ public class HttpsCommandValidatorTest {
             validator.validate(command);
             fail("validate should throw exception if not secured");
         }
-        catch (CougarException ce) {
+        catch (DiscoException ce) {
             // should have happened, so ok
         }
     }
@@ -83,7 +83,7 @@ public class HttpsCommandValidatorTest {
             validator.validate(command);
             fail("validate should throw exception if not secured");
         }
-        catch (CougarException ce) {
+        catch (DiscoException ce) {
             // should have happened, so ok
         }
     }

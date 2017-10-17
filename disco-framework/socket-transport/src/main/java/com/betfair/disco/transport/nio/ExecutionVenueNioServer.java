@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.nio;
+package uk.co.exemel.disco.transport.nio;
 
 
-import com.betfair.cougar.core.api.BindingDescriptor;
-import com.betfair.cougar.core.api.transports.AbstractRegisterableTransport;
+import uk.co.exemel.disco.core.api.BindingDescriptor;
+import uk.co.exemel.disco.core.api.transports.AbstractRegisterableTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.netutil.nio.NioConfig;
-import com.betfair.cougar.netutil.nio.TlsNioConfig;
-import com.betfair.cougar.transport.api.protocol.socket.SocketBindingDescriptor;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.netutil.nio.NioConfig;
+import uk.co.exemel.disco.netutil.nio.TlsNioConfig;
+import uk.co.exemel.disco.transport.api.protocol.socket.SocketBindingDescriptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
@@ -129,8 +129,8 @@ public class ExecutionVenueNioServer extends AbstractRegisterableTransport {
             LOGGER.info("setting protocol to " + (isHealthy ? "enabled" : "disabled"));
         }
         if (socketAcceptor != null) {
-            CougarProtocol cougarProtocol = (CougarProtocol) socketAcceptor.getDefaultConfig().getFilterChain().get("protocol");
-            cougarProtocol.setEnabled(isHealthy);
+            DiscoProtocol discoProtocol = (DiscoProtocol) socketAcceptor.getDefaultConfig().getFilterChain().get("protocol");
+            discoProtocol.setEnabled(isHealthy);
             if (!isHealthy) {
                 shutdownSessions(false);
             }
@@ -140,15 +140,15 @@ public class ExecutionVenueNioServer extends AbstractRegisterableTransport {
     @ManagedAttribute
     public synchronized Boolean isHealthState() {
         if (socketAcceptor != null) {
-            CougarProtocol cougarProtocol = (CougarProtocol) socketAcceptor.getDefaultConfig().getFilterChain().get("protocol");
-            return cougarProtocol.isEnabled();
+            DiscoProtocol discoProtocol = (DiscoProtocol) socketAcceptor.getDefaultConfig().getFilterChain().get("protocol");
+            return discoProtocol.isEnabled();
         }
         return null;
     }
 
     @ManagedAttribute
     public boolean isEnabled() {
-        final CougarProtocol protocol = (CougarProtocol) socketAcceptor.getDefaultConfig().getFilterChain().get("protocol");
+        final DiscoProtocol protocol = (DiscoProtocol) socketAcceptor.getDefaultConfig().getFilterChain().get("protocol");
         if (protocol != null) {
             return protocol.isEnabled();
         }
@@ -188,8 +188,8 @@ public class ExecutionVenueNioServer extends AbstractRegisterableTransport {
     }
 
     private void shutdownSessions(boolean blockUntilComplete) {
-        CougarProtocol cougarProtocol = (CougarProtocol) socketAcceptor.getDefaultConfig().getFilterChain().get("protocol");
-        sessionManager.shutdownSessions(socketAcceptor.getManagedSessions(socketAddress), cougarProtocol, this.serverHandler, blockUntilComplete);
+        DiscoProtocol discoProtocol = (DiscoProtocol) socketAcceptor.getDefaultConfig().getFilterChain().get("protocol");
+        sessionManager.shutdownSessions(socketAcceptor.getManagedSessions(socketAddress), discoProtocol, this.serverHandler, blockUntilComplete);
     }
 
     @ManagedAttribute

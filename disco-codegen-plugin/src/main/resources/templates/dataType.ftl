@@ -34,12 +34,12 @@ import javax.xml.bind.annotation.adapters.*;
 import java.util.*;
 import java.io.Externalizable;
 import java.io.IOException;
-import com.betfair.cougar.api.Result;
-import com.betfair.cougar.api.Validatable;
-import com.betfair.cougar.core.api.transcription.*;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.transcription.EnumUtils;
-import com.betfair.cougar.util.ValidationUtils;
+import uk.co.exemel.disco.api.Result;
+import uk.co.exemel.disco.api.Validatable;
+import uk.co.exemel.disco.core.api.transcription.*;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.transcription.EnumUtils;
+import uk.co.exemel.disco.util.ValidationUtils;
 import ${package}.${majorVersion}.enumerations.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -252,7 +252,7 @@ public class  ${dataTypeName} implements Result, Validatable, Transcribable {
     @XmlElement(name="${paramName}")
     </#if>
         <#if javaType=="Date">
-            @XmlJavaTypeAdapter(value=com.betfair.cougar.util.dates.XMLDateAdapter.class)
+            @XmlJavaTypeAdapter(value=uk.co.exemel.disco.util.dates.XMLDateAdapter.class)
         </#if>
     </#if>
 

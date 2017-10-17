@@ -15,7 +15,7 @@
  */
 
 // Originally from ClientTests/Transport/StandardTesting/Client_Rescript_Post_QueryParam_NonMandatory_NotSet.xls;
-package com.betfair.cougar.tests.clienttests.exceptions;
+package uk.co.exemel.disco.tests.clienttests.exceptions;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.exception.SimpleException;
@@ -23,9 +23,9 @@ import com.betfair.baseline.v2.to.MandatoryParamsOperationResponseObject;
 import com.betfair.baseline.v2.to.MandatoryParamsRequest;
 import com.betfair.baseline.v2.to.NonMandatoryParamsOperationResponseObject;
 import com.betfair.baseline.v2.to.NonMandatoryParamsRequest;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -33,12 +33,12 @@ import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.fail;
 
 /**
- * Ensure that when a request with a non mandatory query parameter not set is performed against cougar via a cougar client the request is sent and the response is handled correctly
+ * Ensure that when a request with a non mandatory query parameter not set is performed against disco via a disco client the request is sent and the response is handled correctly
  */
 public class ClientPostQueryParamMandatoryNotSetTest {
-    @Test(dataProvider = "TransportType", expectedExceptions = CougarValidationException.class)
-    public void headerNull(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+    @Test(dataProvider = "TransportType", expectedExceptions = DiscoValidationException.class)
+    public void headerNull(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
         // Create body parameter to be passed
         MandatoryParamsRequest request = new MandatoryParamsRequest();
         request.setBodyParameter1("postBodyParamString1");
@@ -48,9 +48,9 @@ public class ClientPostQueryParamMandatoryNotSetTest {
         wrapper.getClient().mandatoryParamsOperation(wrapper.getCtx(), null, "abc", request);
         fail("Expected an exception");
     }
-    @Test(dataProvider = "TransportType", expectedExceptions = CougarValidationException.class)
-    public void queryNull(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+    @Test(dataProvider = "TransportType", expectedExceptions = DiscoValidationException.class)
+    public void queryNull(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
         // Create body parameter to be passed
         MandatoryParamsRequest request = new MandatoryParamsRequest();
         request.setBodyParameter1("postBodyParamString1");
@@ -60,17 +60,17 @@ public class ClientPostQueryParamMandatoryNotSetTest {
         wrapper.getClient().mandatoryParamsOperation(wrapper.getCtx(), "abc", null, request);
         fail("Expected an exception");
     }
-    @Test(dataProvider = "TransportType", expectedExceptions = CougarValidationException.class)
-    public void bodyNull(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+    @Test(dataProvider = "TransportType", expectedExceptions = DiscoValidationException.class)
+    public void bodyNull(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
 
         // Make call to the method via client and validate the response is as expected
         wrapper.getClient().mandatoryParamsOperation(wrapper.getCtx(), "abc", "abc", null);
         fail("Expected an exception");
     }
-    @Test(dataProvider = "TransportType", expectedExceptions = CougarValidationException.class, enabled=false)
-    public void bodyParametersNull(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+    @Test(dataProvider = "TransportType", expectedExceptions = DiscoValidationException.class, enabled=false)
+    public void bodyParametersNull(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
         // null params within request
         MandatoryParamsRequest request = new MandatoryParamsRequest();
         // Make call to the method via client and validate the response is as expected

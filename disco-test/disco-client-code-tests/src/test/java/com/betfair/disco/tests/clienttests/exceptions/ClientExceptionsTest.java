@@ -16,19 +16,19 @@
  */
 
 // Originally from ClientTests/Transport/StandardTesting/Client_Rescript_Post_QueryParam_NonMandatory_NotSet.xls;
-package com.betfair.cougar.tests.clienttests.exceptions;
+package uk.co.exemel.disco.tests.clienttests.exceptions;
 
 import com.betfair.baseline.v2.enumerations.SimpleExceptionErrorCodeEnum;
 import com.betfair.baseline.v2.exception.SimpleException;
 import com.betfair.baseline.v2.to.MandatoryParamsRequest;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.WaitingObserver;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.WaitingObserver;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -38,13 +38,13 @@ import java.util.Arrays;
 import static org.testng.AssertJUnit.*;
 
 /**
- * Ensure that when a request with a non mandatory query parameter not set is performed against cougar via a cougar client the request is sent and the response is handled correctly
+ * Ensure that when a request with a non mandatory query parameter not set is performed against disco via a disco client the request is sent and the response is handled correctly
  */
 public class ClientExceptionsTest {
 
     @Test(dataProvider = "TransportType")
-    public void runtimeException(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+    public void runtimeException(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
         // Create body parameter to be passed
         MandatoryParamsRequest request = new MandatoryParamsRequest();
         request.setBodyParameter1("postBodyParamString1");
@@ -55,7 +55,7 @@ public class ClientExceptionsTest {
             wrapper.getClient().testException(wrapper.getCtx(), "abc", "throwRuntime");
             fail("Expected exception");
         }
-        catch (CougarClientException cse) {
+        catch (DiscoClientException cse) {
             assertEquals(ServerFaultCode.ServiceRuntimeException, cse.getServerFaultCode());
             assertEquals("Server fault received from remote server: ServiceRuntimeException(DSC-0005)", cse.getMessage());
             // this is optional
@@ -65,8 +65,8 @@ public class ClientExceptionsTest {
         }
     }
     @Test(dataProvider = "TransportType")
-    public void serviceException(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+    public void serviceException(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
         // Create body parameter to be passed
         MandatoryParamsRequest request = new MandatoryParamsRequest();
         request.setBodyParameter1("postBodyParamString1");
@@ -86,21 +86,21 @@ public class ClientExceptionsTest {
         }
     }
     @Test(dataProvider = "TransportType")
-    public void exceptionCallingOtherServiceNotPropagated(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+    public void exceptionCallingOtherServiceNotPropagated(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
         // Make call to the method via client and validate the response is as expected
         try {
             wrapper.getClient().callUnknownOperation(wrapper.getCtx());
             fail("Expected exception");
         }
-        catch (CougarClientException cce) {
+        catch (DiscoClientException cce) {
             assertEquals(ServerFaultCode.ServiceRuntimeException, cce.getServerFaultCode());
         }
     }
 
     @Test(dataProvider = "TransportType")
-    public void readTimedOut(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+    public void readTimedOut(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
         // Make call to the method via client and validate the response is as expected
         try {
             // this is gonna timeout - transport timeouts are set at 30s
@@ -108,7 +108,7 @@ public class ClientExceptionsTest {
             wrapper.getClient().testSleep(wrapper.getCtx(), 86400000L);
             fail("Expected exception");
         }
-        catch (CougarClientException cse) {
+        catch (DiscoClientException cse) {
             cse.printStackTrace();
             assertEquals(ServerFaultCode.Timeout, cse.getServerFaultCode());
 
@@ -124,11 +124,11 @@ public class ClientExceptionsTest {
     }
 
     @Test(dataProvider = "TransportType")
-    public void asyncZeroTimeout(CougarClientWrapper.TransportType tt) throws Exception {
+    public void asyncZeroTimeout(DiscoClientWrapper.TransportType tt) throws Exception {
         if (!tt.isAsync()) {
             return;
         }
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
         // Make call to the method via client and validate the response is as expected
         // this should fail to respond in time for the observer since 0 == no timeout
         // we have the timeout set at 24h so it doesn't randomly log in the middle of another test which doesn't expect it
@@ -160,14 +160,14 @@ public class ClientExceptionsTest {
         assertTrue("String '"+actual+"' not found in: "+prefix+"+"+ Arrays.toString(expected), found);
     }
 
-    private String[] getUrls(CougarClientWrapper.TransportType tt, String httpOperationPathAndParams) {
+    private String[] getUrls(DiscoClientWrapper.TransportType tt, String httpOperationPathAndParams) {
         switch (tt.getUnderlyingTransport()) {
             case HTTP:
                 if (tt.isSecure()) {
-                    return new String[] { "https://127.0.0.1:8443/cougarBaseline/v2/simple/"+httpOperationPathAndParams };
+                    return new String[] { "https://127.0.0.1:8443/discoBaseline/v2/simple/"+httpOperationPathAndParams };
                 }
                 else {
-                    return new String[] { "http://127.0.0.1:8080/cougarBaseline/v2/simple/"+httpOperationPathAndParams };
+                    return new String[] { "http://127.0.0.1:8080/discoBaseline/v2/simple/"+httpOperationPathAndParams };
                 }
             case Socket:
                 return new String[] {
@@ -181,8 +181,8 @@ public class ClientExceptionsTest {
     }
 
     @Test(dataProvider = "TransportType")
-    public void operationTimedOut(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+    public void operationTimedOut(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
         // Make call to the method via client and validate the response is as expected
         try {
             // this is gonna timeout!
@@ -191,7 +191,7 @@ public class ClientExceptionsTest {
                 fail("Expected exception");
             }
         }
-        catch (CougarClientException cce) {
+        catch (DiscoClientException cce) {
             assertEquals("Expected timeout fault code", ServerFaultCode.Timeout, cce.getServerFaultCode());
         }
     }

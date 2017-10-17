@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.xml;
+package uk.co.exemel.disco.marshalling.impl.databinding.xml;
 
-import com.betfair.cougar.marshalling.api.databinding.*;
+import uk.co.exemel.disco.marshalling.api.databinding.*;
 
 public class XMLDataBindingFactory implements DataBindingFactory{
 

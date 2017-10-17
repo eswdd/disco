@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging;
+package uk.co.exemel.disco.logging;
 
 import java.io.IOException;
 
-import com.betfair.cougar.CougarUtilTestCase;
-import com.betfair.cougar.logging.handlers.AbstractLogHandler;
+import uk.co.exemel.disco.DiscoUtilTestCase;
+import uk.co.exemel.disco.logging.handlers.AbstractLogHandler;
 import org.junit.Test;
 
 
-public class EventLogDefinitionTest extends CougarUtilTestCase {
+public class EventLogDefinitionTest extends DiscoUtilTestCase {
 
     EventLoggingRegistry registry = new EventLoggingRegistry();
 

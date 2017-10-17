@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.api.ContainerContext;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.Service;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.core.api.BindingDescriptor;
-import com.betfair.cougar.core.api.BindingDescriptorRegistrationListener;
-import com.betfair.cougar.core.api.ServiceDefinition;
-import com.betfair.cougar.core.api.ServiceRegistrar;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.transports.EventTransport;
+import uk.co.exemel.disco.api.ContainerContext;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.Service;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.core.api.BindingDescriptor;
+import uk.co.exemel.disco.core.api.BindingDescriptorRegistrationListener;
+import uk.co.exemel.disco.core.api.ServiceDefinition;
+import uk.co.exemel.disco.core.api.ServiceRegistrar;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.transports.EventTransport;
 import com.betfair.tornjak.monitor.*;
 
 import java.rmi.registry.Registry;
@@ -33,7 +33,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Instantiate one of these to introduce a service to cougar
+ * Instantiate one of these to introduce a service to disco
  */
 public class ClientServiceRegistration extends AbstractServiceRegistration {
 

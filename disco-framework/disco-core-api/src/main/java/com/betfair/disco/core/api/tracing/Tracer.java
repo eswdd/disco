@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.tracing;
+package uk.co.exemel.disco.core.api.tracing;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.core.api.ev.OperationKey;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
 
 /**
  * SPI for providing tracing implementations.
@@ -42,7 +42,7 @@ public interface Tracer {
 
     /**
      * Called when a request (or call within a batch request) is completed. Called at most one time (certain error conditions may result in this never being called, although in
-     * reality this would represent a bug in Cougar.
+     * reality this would represent a bug in Disco.
      */
     void end(RequestUUID uuid);
 

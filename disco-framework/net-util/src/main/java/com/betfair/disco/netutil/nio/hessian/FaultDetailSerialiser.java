@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.hessian;
+package uk.co.exemel.disco.netutil.nio.hessian;
 
 import java.io.IOException;
 import java.util.Set;
 
-import com.betfair.cougar.core.api.fault.FaultDetail;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.api.transcription.Transcribable;
-import com.betfair.cougar.core.api.transcription.TranscribableParams;
-import com.betfair.cougar.core.api.transcription.TranscriptionOutput;
+import uk.co.exemel.disco.core.api.fault.FaultDetail;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.api.transcription.Transcribable;
+import uk.co.exemel.disco.core.api.transcription.TranscribableParams;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionOutput;
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.Serializer;
 
 /**
- * A serialiser for serialising transcribable classes that are internal to cougar (specifically {@link FaultDetail})
+ * A serialiser for serialising transcribable classes that are internal to disco (specifically {@link FaultDetail})
  * </p>
  * This class doesn't conform to the contraints required by the {@link TranscribableSerialiser}.  As a consequence more control over the serialisation is
  * handed to these two classes.  The downside is that any changes to the transcription of these classes will break clients

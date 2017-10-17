@@ -15,33 +15,33 @@
  */
 
 // Originally from UpdatedComponentTests/Headers/StaticHTMLPageServed_SubFolderDir_Check_Headers.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.headers;
+package uk.co.exemel.disco.tests.updatedcomponenttests.headers;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.misc.DocumentHelpers;
-import com.betfair.testing.utils.cougar.misc.HttpService;
-import com.betfair.testing.utils.cougar.misc.HttptestPageBean;
-import com.betfair.testing.utils.cougar.misc.InputStreamHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.misc.DocumentHelpers;
+import com.betfair.testing.utils.disco.misc.HttpService;
+import com.betfair.testing.utils.disco.misc.HttptestPageBean;
+import com.betfair.testing.utils.disco.misc.InputStreamHelpers;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
 import java.io.InputStream;
 
 /**
- * Ensure that cougar correctly sets the cache headers and monitors for static content requests for an HTML resource stored in a sub folder
+ * Ensure that disco correctly sets the cache headers and monitors for static content requests for an HTML resource stored in a sub folder
  */
 public class StaticHTMLPageServedSubFolderDirCheckHeadersTest {
     @Test
     public void doTest() throws Exception {
         // Create the HttpCallBean
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean httpCallBeanBaseline = cougarManager1.getNewHttpCallBean();
-        CougarManager cougarManagerBaseline = cougarManager1;
-        // Get the cougar logging attribute for getting log entries later
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean httpCallBeanBaseline = discoManager1.getNewHttpCallBean();
+        DiscoManager discoManagerBaseline = discoManager1;
+        // Get the disco logging attribute for getting log entries later
         // Point the created HttpCallBean at the correct service
-        httpCallBeanBaseline.setServiceName("baseline", "cougarBaseline");
+        httpCallBeanBaseline.setServiceName("baseline", "discoBaseline");
         
         httpCallBeanBaseline.setVersion("v2");
         // Get Expected HTML Response as Input Stream from the given file
@@ -49,7 +49,7 @@ public class StaticHTMLPageServedSubFolderDirCheckHeadersTest {
         // Transfrom the input stream into a Document (XML) for assertion
         DocumentHelpers documentHelpers3 = new DocumentHelpers();
         Document expectedDocResponse = documentHelpers3.parseInputStreamToDocument(inputStream, false, false, true, "auto");
-        // Load the Static Page shipped from Cougar
+        // Load the Static Page shipped from Disco
         HttptestPageBean loadedPage = HttpService.loadPage("http://localhost:8080/static-html/subfolder/subfoo.html");
         // Get the loaded page as a document
         Document actualDocument = HttpService.getPageDom(loadedPage);

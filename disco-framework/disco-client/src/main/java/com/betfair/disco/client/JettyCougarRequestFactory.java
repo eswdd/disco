@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.client.api.ContextEmitter;
+import uk.co.exemel.disco.client.api.ContextEmitter;
 import org.apache.http.Header;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.util.StringContentProvider;
@@ -24,15 +24,15 @@ import org.eclipse.jetty.http.HttpHeader;
 import java.util.List;
 
 /**
- * {@code JettyCougarRequestFactory} is an implementation of {@link CougarRequestFactory} for asynchronous
+ * {@code JettyDiscoRequestFactory} is an implementation of {@link DiscoRequestFactory} for asynchronous
  * http client.
  * See {@link AsyncHttpExecutable}
  */
-class JettyCougarRequestFactory extends CougarRequestFactory<Request> {
+class JettyDiscoRequestFactory extends DiscoRequestFactory<Request> {
 
     private AsyncHttpExecutable executable;
 
-    public JettyCougarRequestFactory(ContextEmitter<Request,List<Header>> emission) {
+    public JettyDiscoRequestFactory(ContextEmitter<Request,List<Header>> emission) {
         super(emission);
     }
 

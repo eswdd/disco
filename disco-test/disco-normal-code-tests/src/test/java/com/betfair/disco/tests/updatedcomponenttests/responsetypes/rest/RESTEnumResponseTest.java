@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/ResponseTypes/REST/REST_EnumResponse.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.responsetypes.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.responsetypes.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -32,53 +32,53 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Test that the Cougar service allows to use enumerations in the response (REST)
+ * Test that the Disco service allows to use enumerations in the response (REST)
  */
 public class RESTEnumResponseTest {
     @Test
     public void doTest() throws Exception {
         // Get an HTTPCallBean
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean HTTPCallBean = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        CougarManager CougarManager = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean HTTPCallBean = discoManager1.getNewHttpCallBean("87.248.113.14");
+        DiscoManager DiscoManager = discoManager1;
         // Get LogManager JMX Attribute
-        // Set Cougar Fault Controller attributes
-        CougarManager.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        // Set Disco Fault Controller attributes
+        DiscoManager.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         // Set operation  name 
         HTTPCallBean.setOperationName("callWithEnumResponse", "callWithEnumResponse");
         // Set service name to call
-        HTTPCallBean.setServiceName("baseline", "cougarBaseline");
+        HTTPCallBean.setServiceName("baseline", "discoBaseline");
         // Set service version to call
         HTTPCallBean.setVersion("v2");
         // Get current time
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        // Make Cougar REST call
-        CougarManager.makeRestCougarHTTPCalls(HTTPCallBean);
+        // Make Disco REST call
+        DiscoManager.makeRestDiscoHTTPCalls(HTTPCallBean);
         // Create a REST response structure as a Document object
         XMLHelpers xMLHelpers3 = new XMLHelpers();
         Document responseDocument = xMLHelpers3.getXMLObjectFromString("<SimpleValidValue>WEASEL</SimpleValidValue>");
         // Convert the Document to REST
-        Map<CougarMessageProtocolRequestTypeEnum, Object> response5 = CougarManager.convertResponseToRestTypes(responseDocument, HTTPCallBean);
-        Object responseRESTXML = response5.get(CougarMessageProtocolRequestTypeEnum.RESTXML);
-        Object responseRESTJSON = response5.get(CougarMessageProtocolRequestTypeEnum.RESTJSON);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> response5 = DiscoManager.convertResponseToRestTypes(responseDocument, HTTPCallBean);
+        Object responseRESTXML = response5.get(DiscoMessageProtocolRequestTypeEnum.RESTXML);
+        Object responseRESTJSON = response5.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON);
         // Get the actual REST response and compare it to the expected response
-        HttpResponseBean response6 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
+        HttpResponseBean response6 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
         AssertionUtils.multiAssertEquals(responseRESTXML, response6.getResponseObject());
         // Get the actual REST response and compare it to the expected response
-        HttpResponseBean response7 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response7 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         AssertionUtils.multiAssertEquals(responseRESTJSON, response7.getResponseObject());
         // Get the actual REST response and compare it to the expected response
-        HttpResponseBean response8 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        HttpResponseBean response8 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
         AssertionUtils.multiAssertEquals(responseRESTJSON, response8.getResponseObject());
         // Get the actual REST response and compare it to the expected response
-        HttpResponseBean response9 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
+        HttpResponseBean response9 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
         AssertionUtils.multiAssertEquals(responseRESTXML, response9.getResponseObject());
         // Pause test
         // generalHelpers.pauseTest(500L);
         // Get Service log entries after the time recorded earlier in the test
         // Get request log entries after the time recorded earlier in the test
-        CougarManager.verifyRequestLogEntriesAfterDate(timestamp, new RequestLogRequirement("2.8", "callWithEnumResponse"),new RequestLogRequirement("2.8", "callWithEnumResponse"),new RequestLogRequirement("2.8", "callWithEnumResponse"),new RequestLogRequirement("2.8", "callWithEnumResponse") );
+        DiscoManager.verifyRequestLogEntriesAfterDate(timestamp, new RequestLogRequirement("2.8", "callWithEnumResponse"),new RequestLogRequirement("2.8", "callWithEnumResponse"),new RequestLogRequirement("2.8", "callWithEnumResponse"),new RequestLogRequirement("2.8", "callWithEnumResponse") );
     }
 
 }

@@ -15,12 +15,12 @@
  */
 
 // Originally from ClientTests/Transport/ImportSheets/CreateSomeComplexObjectsForComplexDelegate.xls;
-package com.betfair.cougar.tests.clienttests.importsheets;
+package uk.co.exemel.disco.tests.clienttests.importsheets;
 
 import com.betfair.baseline.v2.to.SomeComplexObject;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientResponseTypeUtils;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientResponseTypeUtils;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -35,21 +35,21 @@ import java.util.Map;
  */
 public class CreateSomeComplexObjectsForComplexDelegateTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Create a some complex object
         SomeComplexObject someComplexObject1 = new SomeComplexObject();
         someComplexObject1.setStringParameter("delegate1");
         SomeComplexObject someComplex1 = someComplexObject1;
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils2 = new CougarClientResponseTypeUtils();
-        Date dateParam1 = cougarClientResponseTypeUtils2.createDateFromString("1970-01-01T00:01:52.233+0100");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils2 = new DiscoClientResponseTypeUtils();
+        Date dateParam1 = discoClientResponseTypeUtils2.createDateFromString("1970-01-01T00:01:52.233+0100");
         
         someComplex1.setDateTimeParameter(dateParam1);
         
         someComplex1.setEnumParameter(com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum.BAR);
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils3 = new CougarClientResponseTypeUtils();
-        List<String> list1 = cougarClientResponseTypeUtils3.buildList("item1,item2");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils3 = new DiscoClientResponseTypeUtils();
+        List<String> list1 = discoClientResponseTypeUtils3.buildList("item1,item2");
         
         someComplex1.setListParameter(list1);
         // Create another some complex object
@@ -57,15 +57,15 @@ public class CreateSomeComplexObjectsForComplexDelegateTest {
         someComplexObject4.setStringParameter("delegate2");
         SomeComplexObject someComplex2 = someComplexObject4;
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils5 = new CougarClientResponseTypeUtils();
-        Date dateParam2 = cougarClientResponseTypeUtils5.createDateFromString("1970-01-01T00:01:52.233+0100");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils5 = new DiscoClientResponseTypeUtils();
+        Date dateParam2 = discoClientResponseTypeUtils5.createDateFromString("1970-01-01T00:01:52.233+0100");
         
         someComplex2.setDateTimeParameter(dateParam2);
         
         someComplex2.setEnumParameter(com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum.BAR);
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils6 = new CougarClientResponseTypeUtils();
-        List<String> list2 = cougarClientResponseTypeUtils6.buildList("item1,item2");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils6 = new DiscoClientResponseTypeUtils();
+        List<String> list2 = discoClientResponseTypeUtils6.buildList("item1,item2");
         
         someComplex2.setListParameter(list2);
         // Create another some complex object
@@ -73,34 +73,34 @@ public class CreateSomeComplexObjectsForComplexDelegateTest {
         someComplexObject7.setStringParameter("delegate3");
         SomeComplexObject someComplex3 = someComplexObject7;
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils8 = new CougarClientResponseTypeUtils();
-        Date dateParam3 = cougarClientResponseTypeUtils8.createDateFromString("1970-01-01T00:01:52.233+0100");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils8 = new DiscoClientResponseTypeUtils();
+        Date dateParam3 = discoClientResponseTypeUtils8.createDateFromString("1970-01-01T00:01:52.233+0100");
         
         someComplex3.setDateTimeParameter(dateParam3);
         
         someComplex3.setEnumParameter(com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum.BAR);
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils9 = new CougarClientResponseTypeUtils();
-        List<String> list3 = cougarClientResponseTypeUtils9.buildList("item1,item2");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils9 = new DiscoClientResponseTypeUtils();
+        List<String> list3 = discoClientResponseTypeUtils9.buildList("item1,item2");
         
         someComplex3.setListParameter(list3);
         // Put created objects in a map
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils10 = new CougarClientResponseTypeUtils();
-        Map<String, SomeComplexObject> expectedReturnMap = cougarClientResponseTypeUtils10.buildComplexDelegateReturnMap(Arrays.asList(someComplex1, someComplex2, someComplex3));
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils10 = new DiscoClientResponseTypeUtils();
+        Map<String, SomeComplexObject> expectedReturnMap = discoClientResponseTypeUtils10.buildComplexDelegateReturnMap(Arrays.asList(someComplex1, someComplex2, someComplex3));
         // Create a some complex object
         SomeComplexObject someComplexObject11 = new SomeComplexObject();
         someComplexObject11.setStringParameter("delegate1");
         someComplex1 = someComplexObject11;
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils12 = new CougarClientResponseTypeUtils();
-        dateParam1 = cougarClientResponseTypeUtils12.createDateFromString("1970-01-01T00:01:52.233+0100");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils12 = new DiscoClientResponseTypeUtils();
+        dateParam1 = discoClientResponseTypeUtils12.createDateFromString("1970-01-01T00:01:52.233+0100");
         
         someComplex1.setDateTimeParameter(dateParam1);
         
         someComplex1.setEnumParameter(com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum.BAR);
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils13 = new CougarClientResponseTypeUtils();
-        list1 = cougarClientResponseTypeUtils13.buildList("item1,item2");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils13 = new DiscoClientResponseTypeUtils();
+        list1 = discoClientResponseTypeUtils13.buildList("item1,item2");
         
         someComplex1.setListParameter(list1);
         // Create another some complex object
@@ -108,15 +108,15 @@ public class CreateSomeComplexObjectsForComplexDelegateTest {
         someComplexObject14.setStringParameter("delegate2");
         someComplex2 = someComplexObject14;
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils15 = new CougarClientResponseTypeUtils();
-        dateParam2 = cougarClientResponseTypeUtils15.createDateFromString("1970-01-01T00:01:52.233+0100");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils15 = new DiscoClientResponseTypeUtils();
+        dateParam2 = discoClientResponseTypeUtils15.createDateFromString("1970-01-01T00:01:52.233+0100");
         
         someComplex2.setDateTimeParameter(dateParam2);
         
         someComplex2.setEnumParameter(com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum.BAR);
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils16 = new CougarClientResponseTypeUtils();
-        list2 = cougarClientResponseTypeUtils16.buildList("item1,item2");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils16 = new DiscoClientResponseTypeUtils();
+        list2 = discoClientResponseTypeUtils16.buildList("item1,item2");
         
         someComplex2.setListParameter(list2);
         // Create another some complex object
@@ -124,20 +124,20 @@ public class CreateSomeComplexObjectsForComplexDelegateTest {
         someComplexObject17.setStringParameter("delegate3");
         someComplex3 = someComplexObject17;
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils18 = new CougarClientResponseTypeUtils();
-        dateParam3 = cougarClientResponseTypeUtils18.createDateFromString("1970-01-01T00:01:52.233+0100");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils18 = new DiscoClientResponseTypeUtils();
+        dateParam3 = discoClientResponseTypeUtils18.createDateFromString("1970-01-01T00:01:52.233+0100");
         
         someComplex3.setDateTimeParameter(dateParam3);
         
         someComplex3.setEnumParameter(com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum.BAR);
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils19 = new CougarClientResponseTypeUtils();
-        list3 = cougarClientResponseTypeUtils19.buildList("item1,item2");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils19 = new DiscoClientResponseTypeUtils();
+        list3 = discoClientResponseTypeUtils19.buildList("item1,item2");
         
         someComplex3.setListParameter(list3);
         // Put created objects in a map
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils20 = new CougarClientResponseTypeUtils();
-        expectedReturnMap = cougarClientResponseTypeUtils20.buildComplexDelegateReturnMap(Arrays.asList(someComplex1, someComplex2, someComplex3));
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils20 = new DiscoClientResponseTypeUtils();
+        expectedReturnMap = discoClientResponseTypeUtils20.buildComplexDelegateReturnMap(Arrays.asList(someComplex1, someComplex2, someComplex3));
     }
 
     @DataProvider(name="TransportType")

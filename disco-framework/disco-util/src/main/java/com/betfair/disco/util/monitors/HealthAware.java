@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.monitors;
+package uk.co.exemel.disco.util.monitors;
 
 /**
  * Allows domain components to report their healthy in simple yes/no terms, without being tied to

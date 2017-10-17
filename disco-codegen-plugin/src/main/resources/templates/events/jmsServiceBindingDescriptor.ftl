@@ -27,13 +27,13 @@ import java.util.List;
 
 import ${package}.${majorVersion}.${serviceName}ServiceDefinition;
 
-import com.betfair.cougar.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ServiceVersion;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.transport.api.protocol.events.EventServiceBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.events.jms.JMSEventBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.events.jms.JMSParamBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.events.jms.JMSParamBindingDescriptor.ParamSource;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.transport.api.protocol.events.EventServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.events.jms.JMSEventBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.events.jms.JMSParamBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.events.jms.JMSParamBindingDescriptor.ParamSource;
 
 public class ${serviceName}JMSServiceBindingDescriptor implements EventServiceBindingDescriptor {
 

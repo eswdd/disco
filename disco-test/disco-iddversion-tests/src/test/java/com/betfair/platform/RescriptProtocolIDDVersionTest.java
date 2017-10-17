@@ -17,7 +17,7 @@
 
 package com.betfair.platform;
 
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import uk.co.exemel.disco.logging.DiscoLoggingUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -31,9 +31,9 @@ public class RescriptProtocolIDDVersionTest extends TestSuite {
 
 
 	@BeforeClass
-	public void startCougarClient() {
+	public void startDiscoClient() {
         initSystemProperties();
-		CougarLoggingUtils.setTraceLogger(null);
+		DiscoLoggingUtils.setTraceLogger(null);
 		TestClientContextFactory context = new TestClientContextFactory();
 		springContext = (ClassPathXmlApplicationContext) context.create("conf/http-client-spring.xml");
 		BaselineSyncClient baselineClient = (BaselineSyncClient) springContext.getBean("baselineClient");
@@ -42,7 +42,7 @@ public class RescriptProtocolIDDVersionTest extends TestSuite {
 
 
 	@AfterClass
-	public void stopCougarClient() {
+	public void stopDiscoClient() {
 		springContext.getBeanFactory().destroySingletons();
 		springContext.stop();
 	}
@@ -54,6 +54,6 @@ public class RescriptProtocolIDDVersionTest extends TestSuite {
 
 
 	public static void main(String[] args) {
-		new RescriptProtocolIDDVersionTest().startCougarClient();
+		new RescriptProtocolIDDVersionTest().startDiscoClient();
 	}
 }

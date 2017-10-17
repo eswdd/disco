@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.ev;
+package uk.co.exemel.disco.core.api.ev;
 
-import com.betfair.cougar.api.LogExtension;
+import uk.co.exemel.disco.api.LogExtension;
 
 /**
  * Manages an execution resource such as a service or an operation.

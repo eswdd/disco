@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.api.security.InferredCountryResolver;
-import com.betfair.cougar.core.api.RequestTimer;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.transport.api.*;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.impl.DehydratedExecutionContextResolutionImpl;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
-import com.betfair.cougar.util.geolocation.GeoIPLocator;
-import com.betfair.cougar.util.geolocation.RemoteAddressUtils;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.api.security.InferredCountryResolver;
+import uk.co.exemel.disco.core.api.RequestTimer;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.transport.api.*;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.impl.DehydratedExecutionContextResolutionImpl;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.util.geolocation.GeoIPLocator;
+import uk.co.exemel.disco.util.geolocation.RemoteAddressUtils;
 import org.junit.Before;
 import org.junit.Test;
 

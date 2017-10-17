@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.hessian;
+package uk.co.exemel.disco.netutil.nio.hessian;
 
-import com.betfair.cougar.transport.api.protocol.CougarObjectInput;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectInput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -42,12 +42,12 @@ public class HessianObjectIOFactoryTest {
         originalObject.setField("foo");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        CougarObjectOutput out = target.newCougarObjectOutput(baos, PROTOCOL_VERSION);
+        DiscoObjectOutput out = target.newDiscoObjectOutput(baos, PROTOCOL_VERSION);
         out.writeObject(originalObject);
         out.close();
 
         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-        CougarObjectInput in = target.newCougarObjectInput(bais, PROTOCOL_VERSION);
+        DiscoObjectInput in = target.newDiscoObjectInput(bais, PROTOCOL_VERSION);
         AnObject deserializedObject = (AnObject) in.readObject();
         in.close();
 
@@ -65,7 +65,7 @@ public class HessianObjectIOFactoryTest {
     public void testDeserializationOfUnknownType() throws Exception {
 
         InputStream is = getClass().getClassLoader().getResourceAsStream("AnObjectThatDoesNotExist.ser");
-        CougarObjectInput in = target.newCougarObjectInput(is, PROTOCOL_VERSION);
+        DiscoObjectInput in = target.newDiscoObjectInput(is, PROTOCOL_VERSION);
         Map deserialized = (Map) in.readObject();
         in.close();
 

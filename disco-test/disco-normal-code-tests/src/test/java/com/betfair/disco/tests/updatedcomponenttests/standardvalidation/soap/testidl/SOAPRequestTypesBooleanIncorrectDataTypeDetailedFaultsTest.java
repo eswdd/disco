@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardValidation/SOAP/Test-IDL/SOAP_RequestTypes_Boolean_Incorrect_DataType_DetailedFaults.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardvalidation.soap.testidl;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardvalidation.soap.testidl;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -40,19 +40,19 @@ import static org.testng.AssertJUnit.assertTrue;
 public class SOAPRequestTypesBooleanIncorrectDataTypeDetailedFaultsTest {
     @Test(dataProvider = "SchemaValidationEnabled")
     public void doTest(boolean schemaValidationEnabled) throws Exception {
-        CougarHelpers helpers = new CougarHelpers();
+        DiscoHelpers helpers = new DiscoHelpers();
         try {
-            CougarManager cougarManager = CougarManager.getInstance();
+            DiscoManager discoManager = DiscoManager.getInstance();
             helpers.setSOAPSchemaValidationEnabled(schemaValidationEnabled);
             // Create the SOAP request as an XML Document (with an object with a different data type passed in a boolean parameter)
             XMLHelpers xMLHelpers1 = new XMLHelpers();
             Document createAsDocument2 = xMLHelpers1.getXMLObjectFromString("<BoolOperationRequest><headerParam>true</headerParam><queryParam>foo</queryParam><message><bodyParameter>true</bodyParameter></message></BoolOperationRequest>");
             // Set up the Http Call Bean to make the request
-            CougarManager cougarManager2 = CougarManager.getInstance();
-            HttpCallBean getNewHttpCallBean3 = cougarManager2.getNewHttpCallBean("87.248.113.14");
-            CougarManager cougarManager3 = cougarManager2;
+            DiscoManager discoManager2 = DiscoManager.getInstance();
+            HttpCallBean getNewHttpCallBean3 = discoManager2.getNewHttpCallBean("87.248.113.14");
+            DiscoManager discoManager3 = discoManager2;
             // Enable Detailed Faults
-            cougarManager3.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "true");
+            discoManager3.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "true");
 
             getNewHttpCallBean3.setServiceName("Baseline");
 
@@ -63,12 +63,12 @@ public class SOAPRequestTypesBooleanIncorrectDataTypeDetailedFaultsTest {
 
             Timestamp getTimeAsTimeStamp9 = new Timestamp(System.currentTimeMillis());
             // Make the SOAP call to the operation
-            cougarManager3.makeSoapCougarHTTPCalls(getNewHttpCallBean3);
+            discoManager3.makeSoapDiscoHTTPCalls(getNewHttpCallBean3);
             // Get the SOAP response to the call
-            HttpResponseBean actualResponse = getNewHttpCallBean3.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+            HttpResponseBean actualResponse = getNewHttpCallBean3.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
             // Convert the returned detailed fault object to a map for comparison with expected values
-            CougarHelpers cougarHelpers4 = new CougarHelpers();
-            Map<String, String> map5 = cougarHelpers4.convertFaultObjectToMap(actualResponse);
+            DiscoHelpers discoHelpers4 = new DiscoHelpers();
+            Map<String, String> map5 = discoHelpers4.convertFaultObjectToMap(actualResponse);
             AssertionUtils.multiAssertEquals("soapenv:Client", map5.get("faultCode"));
             AssertionUtils.multiAssertEquals("DSC-0044", map5.get("faultString"));
             if (schemaValidationEnabled) {
@@ -84,13 +84,13 @@ public class SOAPRequestTypesBooleanIncorrectDataTypeDetailedFaultsTest {
             // Check the log entries are as expected
 
 
-            CougarHelpers cougarHelpers9 = new CougarHelpers();
-            String JavaVersion = cougarHelpers9.getJavaVersion();
+            DiscoHelpers discoHelpers9 = new DiscoHelpers();
+            String JavaVersion = discoHelpers9.getJavaVersion();
 
-            CougarManager cougarManager10 = CougarManager.getInstance();
-            cougarManager10.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9, new AccessLogRequirement("87.248.113.14", "/BaselineService/v2", "BadRequest"));
+            DiscoManager discoManager10 = DiscoManager.getInstance();
+            discoManager10.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9, new AccessLogRequirement("87.248.113.14", "/BaselineService/v2", "BadRequest"));
             // Reset the Detailed Faults attribute for other tests
-            cougarManager3.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+            discoManager3.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         } finally {
             helpers.setSOAPSchemaValidationEnabled(true);
         }

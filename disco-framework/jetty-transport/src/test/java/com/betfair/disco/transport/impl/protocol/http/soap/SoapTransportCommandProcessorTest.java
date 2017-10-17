@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http.soap;
+package uk.co.exemel.disco.transport.impl.protocol.http.soap;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.security.*;
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.fault.FaultController;
-import com.betfair.cougar.marshalling.impl.databinding.xml.JdkEmbeddedXercesSchemaValidationFailureParser;
-import com.betfair.cougar.transport.api.CommandResolver;
-import com.betfair.cougar.transport.api.ExecutionCommand;
-import com.betfair.cougar.transport.api.TransportCommand;
-import com.betfair.cougar.transport.api.TransportCommand.CommandStatus;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.api.protocol.http.soap.SoapIdentityTokenResolver;
-import com.betfair.cougar.transport.api.protocol.http.soap.SoapOperationBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.soap.SoapServiceBindingDescriptor;
-import com.betfair.cougar.transport.impl.protocol.http.AbstractHttpCommandProcessorTest;
-import com.betfair.cougar.transport.impl.protocol.http.ContentTypeNormaliser;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.security.*;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.fault.FaultController;
+import uk.co.exemel.disco.marshalling.impl.databinding.xml.JdkEmbeddedXercesSchemaValidationFailureParser;
+import uk.co.exemel.disco.transport.api.CommandResolver;
+import uk.co.exemel.disco.transport.api.ExecutionCommand;
+import uk.co.exemel.disco.transport.api.TransportCommand;
+import uk.co.exemel.disco.transport.api.TransportCommand.CommandStatus;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.api.protocol.http.soap.SoapIdentityTokenResolver;
+import uk.co.exemel.disco.transport.api.protocol.http.soap.SoapOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.soap.SoapServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.impl.protocol.http.AbstractHttpCommandProcessorTest;
+import uk.co.exemel.disco.transport.impl.protocol.http.ContentTypeNormaliser;
 import junit.framework.AssertionFailedError;
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
@@ -171,7 +171,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
         soapCommandProcessor.setValidatorRegistry(validatorRegistry);
 
 		soapCommandProcessor.bind(serviceBinding);
-		soapCommandProcessor.onCougarStart();
+		soapCommandProcessor.onDiscoStart();
         command=super.createCommand(identityTokenResolver, Protocol.SOAP);
 
 	}
@@ -366,7 +366,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 		assertNotNull(ev.getObserver());
 
 		// Assert that the expected exception is sent
-		ev.getObserver().onResult(new ExecutionResult(new CougarServiceException(
+		ev.getObserver().onResult(new ExecutionResult(new DiscoServiceException(
 					ServerFaultCode.ServiceCheckedException, "Error in App",
 					new TestApplicationException(ResponseCode.Forbidden, "TestError-123",faultMessages))));
 		assertEquals(CommandStatus.Complete, command.getStatus());
@@ -399,7 +399,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
 
             // Assert that the expected exception is sent
             TestApplicationException tae = new TestApplicationException(ResponseCode.Forbidden, "TestError-123", faultMessages);
-            ev.getObserver().onResult(new ExecutionResult(new CougarServiceException(
+            ev.getObserver().onResult(new ExecutionResult(new DiscoServiceException(
                         ServerFaultCode.ServiceCheckedException, "Error in App",
                         tae)));
             assertEquals(CommandStatus.Complete, command.getStatus());
@@ -600,7 +600,7 @@ public class SoapTransportCommandProcessorTest extends AbstractHttpCommandProces
         ev.getObserver().onResult(new ExecutionResult("goodbye"));
         assertEquals(CommandStatus.Complete, command.getStatus());
         // note we don't check we got the right result
-        // cougar is just non-deterministic if you have validation disabled
+        // disco is just non-deterministic if you have validation disabled
         assertSoapyEquals(buildSoapMessage(null, firstOpOut, null, null), testOut.getOutput());
         verify(response).setContentType(MediaType.TEXT_XML);
         verify(logger).logAccess(eq(command), isA(ExecutionContext.class), anyLong(), anyLong(),

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.json;
+package uk.co.exemel.disco.marshalling.impl.databinding.json;
 
-import com.betfair.cougar.util.dates.DateTimeUtility;
+import uk.co.exemel.disco.util.dates.DateTimeUtility;
 
 import java.text.DateFormat;
 import java.text.FieldPosition;

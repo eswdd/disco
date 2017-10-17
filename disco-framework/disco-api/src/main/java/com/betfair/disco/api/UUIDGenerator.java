@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api;
+package uk.co.exemel.disco.api;
 
 /**
  * Responsible for generating valid and globally unique uuids. Implementations MUST be thread-safe.

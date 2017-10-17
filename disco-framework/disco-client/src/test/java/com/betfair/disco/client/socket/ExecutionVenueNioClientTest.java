@@ -15,21 +15,21 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket;
+package uk.co.exemel.disco.client.socket;
 
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.impl.transports.TransportRegistryImpl;
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.TlsNioConfig;
-import com.betfair.cougar.netutil.nio.message.ProtocolMessage;
-import com.betfair.cougar.netutil.nio.hessian.HessianObjectIOFactory;
-import com.betfair.cougar.transport.nio.ExecutionVenueNioServer;
-import com.betfair.cougar.transport.nio.IoSessionManager;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.impl.transports.TransportRegistryImpl;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.TlsNioConfig;
+import uk.co.exemel.disco.netutil.nio.message.ProtocolMessage;
+import uk.co.exemel.disco.netutil.nio.hessian.HessianObjectIOFactory;
+import uk.co.exemel.disco.transport.nio.ExecutionVenueNioServer;
+import uk.co.exemel.disco.transport.nio.IoSessionManager;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import org.apache.mina.common.IoSession;
 import org.junit.After;
 import org.junit.Before;
@@ -114,7 +114,7 @@ public class ExecutionVenueNioClientTest extends AbstractClientTest {
         timeoutClient.start().get(100, TimeUnit.SECONDS);
 
 
-        ClientTestExecutionObserver timeoutObserver = new ClientTestExecutionObserver(new CougarClientException(ServerFaultCode.Timeout, "Exception occurred in Client: Read timed out: tcp://"+InetAddress.getByName("localhost").getCanonicalHostName()+":"+server.getBoundPort()));
+        ClientTestExecutionObserver timeoutObserver = new ClientTestExecutionObserver(new DiscoClientException(ServerFaultCode.Timeout, "Exception occurred in Client: Read timed out: tcp://"+InetAddress.getByName("localhost").getCanonicalHostName()+":"+server.getBoundPort()));
 
         performRequestAsync(timeoutClient, timeoutObserver, new Object[]{true, ServerClientFactory.COMMAND_SLEEP_60S, "60s sleep"});
         assertNotNull(timeoutObserver.getExecutionResultFuture().get(2000, TimeUnit.MILLISECONDS));
@@ -278,7 +278,7 @@ public class ExecutionVenueNioClientTest extends AbstractClientTest {
         Object[] args = new Object[]{false, 999, ECHO_STRING};
         ClientTestExecutionObserver exceptionThrowingObserver =
                 new ClientTestExecutionObserver(
-                        new CougarFrameworkException(BANG));
+                        new DiscoFrameworkException(BANG));
         performRequest(exceptionThrowingObserver, args);
         nioLogger.log(NioLogger.LoggingLevel.SESSION, (String)null, "Stopping testClientWithException()");
     }
@@ -578,7 +578,7 @@ public class ExecutionVenueNioClientTest extends AbstractClientTest {
 
 
             assertFalse("There should be no connected sessions", testClient.getSessionFactory().isConnected());
-            assertEquals("SUSPEND message check", (serverVersion != CougarProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC), session.containsAttribute(ProtocolMessage.ProtocolMessageType.SUSPEND.name()));
+            assertEquals("SUSPEND message check", (serverVersion != DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC), session.containsAttribute(ProtocolMessage.ProtocolMessageType.SUSPEND.name()));
             assertTrue("DISCONNECT message should have been received", session.containsAttribute(ProtocolMessage.ProtocolMessageType.DISCONNECT.name()));
         } finally {
             if (testServer != null) {

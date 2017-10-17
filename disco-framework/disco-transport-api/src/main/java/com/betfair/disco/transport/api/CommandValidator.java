@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api;
+package uk.co.exemel.disco.transport.api;
 
-import com.betfair.cougar.core.api.exception.CougarException;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
 
 /**
  * Interface for classes which want to be able to validate (and potentially reject) commands prior to execution of them.
@@ -26,5 +26,5 @@ public interface CommandValidator<T extends TransportCommand> {
     /**
      * Called when validation required. Methods should throw an appropriate exception to prevent execution
      */
-    void validate(T command) throws CougarException;
+    void validate(T command) throws DiscoException;
 }

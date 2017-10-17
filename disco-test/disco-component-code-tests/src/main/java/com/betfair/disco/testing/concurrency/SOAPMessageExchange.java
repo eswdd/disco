@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.testing.concurrency;
+package uk.co.exemel.disco.testing.concurrency;
 
 import javax.xml.soap.SOAPMessage;
 

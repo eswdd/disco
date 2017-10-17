@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util;
+package uk.co.exemel.disco.util;
 
 import java.util.Map;
 
-import com.betfair.cougar.api.Validatable;
+import uk.co.exemel.disco.api.Validatable;
 
 public class ValidationUtils {
 	public static void validateMandatory(Object candidate) {

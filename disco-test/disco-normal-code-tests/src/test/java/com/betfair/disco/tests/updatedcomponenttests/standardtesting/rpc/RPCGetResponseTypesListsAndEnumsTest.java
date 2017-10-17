@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/RPC/RPC_Get_ResponseTypes_ListsAndEnums.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.rpc;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.rpc;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 
@@ -32,15 +32,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that cougar correctly serializes Rest (XML/JSON) responses holding lists and Enums.
+ * Ensure that disco correctly serializes Rest (XML/JSON) responses holding lists and Enums.
  */
 public class RPCGetResponseTypesListsAndEnumsTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean callBean = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        CougarManager cougarManager = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean callBean = discoManager1.getNewHttpCallBean("87.248.113.14");
+        DiscoManager discoManager = discoManager1;
         // Set the call bean to use JSON batching
         callBean.setJSONRPC(true);
         // Set the list of requests to make a batched call to
@@ -58,12 +58,12 @@ public class RPCGetResponseTypesListsAndEnumsTest {
 
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
         // Make JSON call to the operation requesting a JSON response
-        cougarManager.makeRestCougarHTTPCall(callBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager.makeRestDiscoHTTPCall(callBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Get the response to the batched query (store the response for further comparison as order of batched responses cannot be relied on)
-        HttpResponseBean response = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         // Convert the returned json object to a map for comparison
-        CougarHelpers cougarHelpers4 = new CougarHelpers();
-        Map<String, Object> map5 = cougarHelpers4.convertBatchedResponseToMap(response);
+        DiscoHelpers discoHelpers4 = new DiscoHelpers();
+        Map<String, Object> map5 = discoHelpers4.convertBatchedResponseToMap(response);
         AssertionUtils.multiAssertEquals("{\"id\":1,\"result\":{\"oddOrEven\":\"ODD\",\"objects\":[{\"name\":\"name 0\",\"value1\":0,\"value2\":1},{\"name\":\"name 1\",\"value1\":1,\"value2\":2},{\"name\":\"name 2\",\"value1\":2,\"value2\":3}],\"size\":3},\"jsonrpc\":\"2.0\"}", map5.get("response1"));
         AssertionUtils.multiAssertEquals("{\"id\":2,\"result\":{\"oddOrEven\":\"ODD\",\"objects\":[{\"name\":\"name 0\",\"value1\":0,\"value2\":1},{\"name\":\"name 1\",\"value1\":1,\"value2\":2},{\"name\":\"name 2\",\"value1\":2,\"value2\":3}],\"size\":3},\"jsonrpc\":\"2.0\"}", map5.get("response2"));
         AssertionUtils.multiAssertEquals(200, map5.get("httpStatusCode"));
@@ -72,9 +72,9 @@ public class RPCGetResponseTypesListsAndEnumsTest {
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
         
-        cougarManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "testLargeGet"),new RequestLogRequirement("2.8", "testLargeGet") );
+        discoManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "testLargeGet"),new RequestLogRequirement("2.8", "testLargeGet") );
         
-        cougarManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
+        discoManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
     }
 
 }

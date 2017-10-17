@@ -16,14 +16,14 @@
  */
 
 // Originally from UpdatedComponentTests/ResponseTypes/PrimitiveResponseTypes/datetime/SOAP/SOAP_dateTimeResponse.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.responsetypes.primitiveresponsetypes.datetime.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.responsetypes.primitiveresponsetypes.datetime.soap;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -32,7 +32,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Test that the Cougar service allows to use dateTime primitive type in the response (SOAP)
+ * Test that the Disco service allows to use dateTime primitive type in the response (SOAP)
  */
 public class SOAPdateTimeResponseTest {
     @Test
@@ -41,12 +41,12 @@ public class SOAPdateTimeResponseTest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document requestDocument = xMLHelpers1.getXMLObjectFromString("<DateTimeSimpleTypeEchoRequest><msg>2011-01-10T00:00:00.000Z</msg></DateTimeSimpleTypeEchoRequest>");
         // Get an HTTPCallBean
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean HTTPCallBean = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        CougarManager CougarManager = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean HTTPCallBean = discoManager2.getNewHttpCallBean("87.248.113.14");
+        DiscoManager DiscoManager = discoManager2;
         // Get LogManager JMX Attribute
-        // Set Cougar Fault Controller attributes
-        CougarManager.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        // Set Disco Fault Controller attributes
+        DiscoManager.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         // Set service name to call
         HTTPCallBean.setServiceName("Baseline");
         // Set service version to call
@@ -56,20 +56,20 @@ public class SOAPdateTimeResponseTest {
         // Get current time
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        // Make Cougar SOAP call
-        CougarManager.makeSoapCougarHTTPCalls(HTTPCallBean);
+        // Make Disco SOAP call
+        DiscoManager.makeSoapDiscoHTTPCalls(HTTPCallBean);
         // Create a soap response structure as a Document object
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document responseDocument = xMLHelpers4.getXMLObjectFromString("<response>2011-01-10T00:00:00.000Z</response>");
 
         // Get the actual SOAP response and compare it to the expected response
-        HttpResponseBean response6 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response6 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(responseDocument, response6.getResponseObject());
         // Pause test
         // generalHelpers.pauseTest(500L);
         // Get Service log entries after the time recorded earlier in the test
         // Get request log entries after the time recorded earlier in the test
-        CougarManager.verifyRequestLogEntriesAfterDate(timestamp, new RequestLogRequirement("2.8", "dateTimeSimpleTypeEcho") );
+        DiscoManager.verifyRequestLogEntriesAfterDate(timestamp, new RequestLogRequirement("2.8", "dateTimeSimpleTypeEcho") );
     }
 
 }

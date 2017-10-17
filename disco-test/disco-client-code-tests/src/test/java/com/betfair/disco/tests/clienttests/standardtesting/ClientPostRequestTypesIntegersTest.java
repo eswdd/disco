@@ -15,30 +15,30 @@
  */
 
 // Originally from ClientTests/Transport/StandardTesting/Client_Rescript_Post_RequestTypes_Integers.xls;
-package com.betfair.cougar.tests.clienttests.standardtesting;
+package uk.co.exemel.disco.tests.clienttests.standardtesting;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.to.BodyParamI32Object;
 import com.betfair.baseline.v2.to.I32OperationResponseObject;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
- * Ensure that when an Integer object is passed in parameters to cougar via a cougar client, the request is sent and the response is handled correctly
+ * Ensure that when an Integer object is passed in parameters to disco via a disco client, the request is sent and the response is handled correctly
  */
 public class ClientPostRequestTypesIntegersTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Set up the client to use rescript transport
-        CougarClientWrapper cougarClientWrapper1 = CougarClientWrapper.getInstance(tt);
-        CougarClientWrapper wrapper = cougarClientWrapper1;
-        BaselineSyncClient client = cougarClientWrapper1.getClient();
-        ExecutionContext context = cougarClientWrapper1.getCtx();
+        DiscoClientWrapper discoClientWrapper1 = DiscoClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = discoClientWrapper1;
+        BaselineSyncClient client = discoClientWrapper1.getClient();
+        ExecutionContext context = discoClientWrapper1.getCtx();
         // Create body parameter to be passed
         BodyParamI32Object bodyParamI32Object2 = new BodyParamI32Object();
         bodyParamI32Object2.setBodyParameter((int) 7);

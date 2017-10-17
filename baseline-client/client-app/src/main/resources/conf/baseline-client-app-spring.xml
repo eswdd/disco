@@ -22,22 +22,22 @@
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 
-    <bean name="asyncClient" class="com.betfair.baseline.v2.BaselineClientImpl" parent="cougar.client.AbstractClient">
+    <bean name="asyncClient" class="com.betfair.baseline.v2.BaselineClientImpl" parent="disco.client.AbstractClient">
         <constructor-arg value="trousers-static"/>
     </bean>
 
-    <bean name="syncClient" class="com.betfair.baseline.v2.BaselineSyncClientImpl" parent="cougar.client.AbstractSyncClient">
+    <bean name="syncClient" class="com.betfair.baseline.v2.BaselineSyncClientImpl" parent="disco.client.AbstractSyncClient">
         <constructor-arg value="trousers-static"/>
     </bean>
 
-    <bean id="eventExecutionContext" class="com.betfair.cougar.api.ExecutionContextImpl"/>
+    <bean id="eventExecutionContext" class="uk.co.exemel.disco.api.ExecutionContextImpl"/>
 
-    <bean id="clientIdentityResolver" class="com.betfair.cougar.baseline.security.GeneralIdentityResolver"/>
+    <bean id="clientIdentityResolver" class="uk.co.exemel.disco.baseline.security.GeneralIdentityResolver"/>
 
-    <bean class="com.betfair.cougar.core.impl.ev.ClientServiceRegistration">
+    <bean class="uk.co.exemel.disco.core.impl.ev.ClientServiceRegistration">
         <property name="resolver">
             <bean class="com.betfair.baseline.v2.BaselineClientExecutableResolver" init-method="init">
-                <property name="defaultOperationTransport" ref="$APPLICATION{cougar.client.transport}"/>
+                <property name="defaultOperationTransport" ref="$APPLICATION{disco.client.transport}"/>
                 <!--<property name="eventTransport" ref="activemqTransport"/>-->
             </bean>
         </property>
@@ -56,7 +56,7 @@
     <!-- Don't checkin with this there as it makes a mess of our tests -->
     <!-- Use one or the other flavour of sync client -->
     <!--
-    <bean class="com.betfair.platform.application.CougarToCougarCommsTester">
+    <bean class="com.betfair.platform.application.DiscoToDiscoCommsTester">
         <property name="client" ref="dynClient"/>
         <property name="client" ref="syncClient"/>
     </bean>
@@ -65,12 +65,12 @@
     <!-- These are needed to test the new client factory based clients -->
 
     <bean name="dynClient" factory-bean="baselineClientFactory" factory-method="createSyncHttpClient">
-        <constructor-arg index="0" value="$APPLICATION{cougar.client.rescript.remoteaddress}"/> <!-- endpoint -->
+        <constructor-arg index="0" value="$APPLICATION{disco.client.rescript.remoteaddress}"/> <!-- endpoint -->
         <constructor-arg index="1" value="trousers-dynamic"/> <!-- namespace -->
     </bean>
 
     <bean id="baselineClientFactory" class="com.betfair.baseline.v2.BaselineClientFactory"
-          parent="cougarClientFactory"/>
+          parent="discoClientFactory"/>
 
     <!--<bean id="eventHandler" class="com.betfair.platform.application.EventConsumer" destroy-method="destroy">-->
     <!--<property name="client" ref="asyncClient"/>-->

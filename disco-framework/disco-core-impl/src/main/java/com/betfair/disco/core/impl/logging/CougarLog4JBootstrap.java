@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.logging;
+package uk.co.exemel.disco.core.impl.logging;
 
-import com.betfair.cougar.core.api.exception.PanicInTheCougar;
-import com.betfair.cougar.logging.handlers.Log4JLogHandler;
+import uk.co.exemel.disco.core.api.exception.PanicInTheDisco;
+import uk.co.exemel.disco.logging.handlers.Log4JLogHandler;
 import org.apache.log4j.*;
 import org.slf4j.LoggerFactory;
 
@@ -29,16 +29,16 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- *  CougarLog4JBootstrap class is used to initialise the log4j's default appender
+ *  DiscoLog4JBootstrap class is used to initialise the log4j's default appender
  *  for the RootLogger. Users can override this class, and should if they don't
  *  want to use log4j, or their implementation already has a default appender
  *  configured for the RootLogger.
  *
  *  If you want to initialise something other than log4j, then initialise
- *  <code>cougar.core.log.bootstrap.class</code> System variable to point to your implementation
+ *  <code>disco.core.log.bootstrap.class</code> System variable to point to your implementation
  *
  */
-public class CougarLog4JBootstrap implements LogBootstrap {
+public class DiscoLog4JBootstrap implements LogBootstrap {
 
     public static final String DEFAULT_LOGGING_PATTERN     = "%d{yyyy-MM-dd HH:mm:ss.SSS}: %c %p - %m%n";
     public static final String DEFAULT_LOG_FILENAME_FORMAT = "{0}/{1}-{2}-server.log";
@@ -46,14 +46,14 @@ public class CougarLog4JBootstrap implements LogBootstrap {
     public static final String DEFAULT_LOG_LEVEL           = "INFO";
 
 
-    public static final String APP_NAME_PROPERTY               = "cougar.app.name";
-    public static final String LOG_DIR_PROPERTY                = "cougar.log.dir";
-    public static final String LOG_LEVEL_PROPERTY              = "cougar.log.level";
-    public static final String LOGGING_PATTERN_PROPERTY        = "cougar.log.SERVER.pattern";
-    public static final String FILENAME_FORMAT_PROPERTY        = "cougar.log.SERVER.filename.format";
-    public static final String ROTATION_POLICY_FORMAT_PROPERTY = "cougar.log.SERVER.rotation";
+    public static final String APP_NAME_PROPERTY               = "disco.app.name";
+    public static final String LOG_DIR_PROPERTY                = "disco.log.dir";
+    public static final String LOG_LEVEL_PROPERTY              = "disco.log.level";
+    public static final String LOGGING_PATTERN_PROPERTY        = "disco.log.SERVER.pattern";
+    public static final String FILENAME_FORMAT_PROPERTY        = "disco.log.SERVER.filename.format";
+    public static final String ROTATION_POLICY_FORMAT_PROPERTY = "disco.log.SERVER.rotation";
 
-    public static final String ECHO_TO_STDOUT_PROPERTY         = "cougar.log.echoToStdout";
+    public static final String ECHO_TO_STDOUT_PROPERTY         = "disco.log.echoToStdout";
 
     private String getValueOrDefault(Properties properties, String propertyName, String defaultValue) {
         if (properties.containsKey(propertyName)) {
@@ -78,7 +78,7 @@ public class CougarLog4JBootstrap implements LogBootstrap {
         Level logLevel = Level.toLevel(log4jLogLevelString);
 
         if (logDir == null) {
-            throw new PanicInTheCougar("Cannot start with " + LOG_DIR_PROPERTY + " being set - value is currently null");
+            throw new PanicInTheDisco("Cannot start with " + LOG_DIR_PROPERTY + " being set - value is currently null");
         }
 
         Boolean echoToStdOut = Boolean.parseBoolean(getValueOrDefault(properties, ECHO_TO_STDOUT_PROPERTY, "false"));

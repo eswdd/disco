@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms;
+package uk.co.exemel.disco.transport.jms;
 
-import com.betfair.cougar.core.api.events.Event;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
+import uk.co.exemel.disco.core.api.events.Event;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
-import com.betfair.cougar.transport.api.protocol.events.AbstractEvent;
-import com.betfair.cougar.transport.api.protocol.events.EventUnMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.transport.api.protocol.events.AbstractEvent;
+import uk.co.exemel.disco.transport.api.protocol.events.EventUnMarshaller;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.jms.JMSException;
@@ -49,7 +49,7 @@ public class JMSEventUnMarshaller implements EventUnMarshaller<TextMessage> {
     private String encodingType = DEFAULT_ENCODING_TYPE;
 
     @Override
-    public Event unmarshallEvent(List<Class<? extends Event>> eventBodyClasses, Class<? extends Event> defaultBodyClass, TextMessage transportEvent) throws CougarException {
+    public Event unmarshallEvent(List<Class<? extends Event>> eventBodyClasses, Class<? extends Event> defaultBodyClass, TextMessage transportEvent) throws DiscoException {
         InputStream is = null;
         try {
             String messageText = ((TextMessage)transportEvent).getText();
@@ -65,13 +65,13 @@ public class JMSEventUnMarshaller implements EventUnMarshaller<TextMessage> {
                 }
             }
             if (correctClass == null) {
-                throw new CougarFrameworkException("Can't find event class for event named '"+eventNameFromMessage+"'");
+                throw new DiscoFrameworkException("Can't find event class for event named '"+eventNameFromMessage+"'");
             }
 
             AbstractEvent event = (AbstractEvent) dataBindingFactory.getUnMarshaller().unmarshall(is, correctClass, encodingType, true);
 
             event.setMessageId(transportEvent.getStringProperty(JMSPropertyConstants.MESSAGE_ID_FIELD_NAME));
-            event.setCougarMessageRouteString(transportEvent.getStringProperty(JMSPropertyConstants.MESSAGE_ROUTING_FIELD_NAME));
+            event.setDiscoMessageRouteString(transportEvent.getStringProperty(JMSPropertyConstants.MESSAGE_ROUTING_FIELD_NAME));
 
             //When other types of JMS field types (eg, not stored in the message body) become necessary
             //This is where they'll be added
@@ -79,9 +79,9 @@ public class JMSEventUnMarshaller implements EventUnMarshaller<TextMessage> {
             return event;
         } catch (UnsupportedEncodingException ex) {
             //This is never going to happen in a month of Sundays
-            throw new CougarFrameworkException("Unsupported encoding exception for JMS Event", ex);
+            throw new DiscoFrameworkException("Unsupported encoding exception for JMS Event", ex);
         } catch (JMSException jmsex) {
-            throw new CougarFrameworkException("Unsupported encoding exception for JMS Event", jmsex);
+            throw new DiscoFrameworkException("Unsupported encoding exception for JMS Event", jmsex);
         }
     }
 

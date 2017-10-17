@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
-import com.betfair.cougar.core.api.transcription.TranscribableParams;
-import com.betfair.cougar.netutil.nio.message.*;
-import com.betfair.cougar.util.jmx.Exportable;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.core.api.transcription.TranscribableParams;
+import uk.co.exemel.disco.netutil.nio.message.*;
+import uk.co.exemel.disco.util.jmx.Exportable;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import org.apache.mina.common.*;
 import org.apache.mina.filter.SSLFilter;
 import org.slf4j.Logger;
@@ -35,21 +35,21 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.betfair.cougar.netutil.nio.NioLogger.LoggingLevel.PROTOCOL;
-import static com.betfair.cougar.netutil.nio.NioLogger.LoggingLevel.SESSION;
+import static uk.co.exemel.disco.netutil.nio.NioLogger.LoggingLevel.PROTOCOL;
+import static uk.co.exemel.disco.netutil.nio.NioLogger.LoggingLevel.SESSION;
 
 @ManagedResource
-public class CougarProtocol extends IoFilterAdapter implements Exportable {
+public class DiscoProtocol extends IoFilterAdapter implements Exportable {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CougarProtocol.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DiscoProtocol.class);
 
     private static final KeepAliveMessage KEEP_ALIVE = new KeepAliveMessage();
 
-    public static final String PROTOCOL_VERSION_ATTR_NAME = "CougarProtocol.sessionProtocolVersion";
-    public static final String IS_SERVER_ATTR_NAME = "CougarProtocol.isServer";
-    public static final String NEGOTIATED_TLS_LEVEL_ATTR_NAME = "CougarProtocol.negotiatedTlsLevel";
-    public static final String CLIENT_CERTS_ATTR_NAME = "CougarProtocol.clientCertificateChain";
-    public static final String TSSF_ATTR_NAME = "CougarProtocol.transportSecurityStrengthFactor";
+    public static final String PROTOCOL_VERSION_ATTR_NAME = "DiscoProtocol.sessionProtocolVersion";
+    public static final String IS_SERVER_ATTR_NAME = "DiscoProtocol.isServer";
+    public static final String NEGOTIATED_TLS_LEVEL_ATTR_NAME = "DiscoProtocol.negotiatedTlsLevel";
+    public static final String CLIENT_CERTS_ATTR_NAME = "DiscoProtocol.clientCertificateChain";
+    public static final String TSSF_ATTR_NAME = "DiscoProtocol.transportSecurityStrengthFactor";
 
     public static final byte TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC = 1;
     public static final byte TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC = 2;
@@ -67,19 +67,19 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
     private static byte minClientProtocolVersion = TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED;
 
     public static void setMaxServerProtocolVersion(byte maxServerProtocolVersion) {
-        CougarProtocol.maxServerProtocolVersion = maxServerProtocolVersion;
+        DiscoProtocol.maxServerProtocolVersion = maxServerProtocolVersion;
     }
 
     public static void setMaxClientProtocolVersion(byte maxClientProtocolVersion) {
-        CougarProtocol.maxClientProtocolVersion = maxClientProtocolVersion;
+        DiscoProtocol.maxClientProtocolVersion = maxClientProtocolVersion;
     }
 
     public static void setMinServerProtocolVersion(byte minServerProtocolVersion) {
-        CougarProtocol.minServerProtocolVersion = minServerProtocolVersion;
+        DiscoProtocol.minServerProtocolVersion = minServerProtocolVersion;
     }
 
     public static void setMinClientProtocolVersion(byte minClientProtocolVersion) {
-        CougarProtocol.minClientProtocolVersion = minClientProtocolVersion;
+        DiscoProtocol.minClientProtocolVersion = minClientProtocolVersion;
     }
 
     private byte[] getServerAcceptableVersions() {
@@ -139,15 +139,15 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
 
     private final long rpcTimeoutMillis;
 
-    public static CougarProtocol getClientInstance(NioLogger nioLogger, int keepAliveInterval, int keepAliveTimeout, SSLFilter sslFilter, boolean supportsTls, boolean requiresTls, long rpcTimeoutMillis) {
-        return new CougarProtocol(false, nioLogger, keepAliveInterval, keepAliveTimeout, sslFilter, supportsTls, requiresTls, rpcTimeoutMillis);
+    public static DiscoProtocol getClientInstance(NioLogger nioLogger, int keepAliveInterval, int keepAliveTimeout, SSLFilter sslFilter, boolean supportsTls, boolean requiresTls, long rpcTimeoutMillis) {
+        return new DiscoProtocol(false, nioLogger, keepAliveInterval, keepAliveTimeout, sslFilter, supportsTls, requiresTls, rpcTimeoutMillis);
     }
 
-    public static CougarProtocol getServerInstance(NioLogger nioLogger, int keepAliveInterval, int keepAliveTimeout, SSLFilter sslFilter, boolean supportsTls, boolean requiresTls) {
-        return new CougarProtocol(true, nioLogger, keepAliveInterval, keepAliveTimeout, sslFilter, supportsTls, requiresTls, 0);
+    public static DiscoProtocol getServerInstance(NioLogger nioLogger, int keepAliveInterval, int keepAliveTimeout, SSLFilter sslFilter, boolean supportsTls, boolean requiresTls) {
+        return new DiscoProtocol(true, nioLogger, keepAliveInterval, keepAliveTimeout, sslFilter, supportsTls, requiresTls, 0);
     }
 
-    protected CougarProtocol(boolean server, NioLogger nioLogger, int keepAliveInterval, int keepAliveTimeout, SSLFilter sslFilter, boolean supportsTls, boolean requiresTls, long rpcTimeoutMillis) {
+    protected DiscoProtocol(boolean server, NioLogger nioLogger, int keepAliveInterval, int keepAliveTimeout, SSLFilter sslFilter, boolean supportsTls, boolean requiresTls, long rpcTimeoutMillis) {
         this.isServer = server;
         this.nioLogger = nioLogger;
         this.interval = keepAliveInterval;
@@ -171,7 +171,7 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
 
             @Override
             public void operationComplete(IoFuture future) {
-                nioLogger.log(NioLogger.LoggingLevel.SESSION, ioSession, "CougarProtocol - Closing session after disconnection");
+                nioLogger.log(NioLogger.LoggingLevel.SESSION, ioSession, "DiscoProtocol - Closing session after disconnection");
                 closeFuture.set(future.getSession().close());
                 latch.countDown();
 
@@ -200,7 +200,7 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
 
             @Override
             public void operationComplete(IoFuture future) {
-                nioLogger.log(NioLogger.LoggingLevel.SESSION, ioSession, "CougarProtocol - Suspended session");
+                nioLogger.log(NioLogger.LoggingLevel.SESSION, ioSession, "DiscoProtocol - Suspended session");
             }
         });
 
@@ -222,11 +222,11 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
     public void sessionIdle(NextFilter nextFilter, IoSession session, IdleStatus status) throws Exception {
         try {
             if (status == IdleStatus.WRITER_IDLE) {
-                nioLogger.log(PROTOCOL, session, "CougarProtocolCodecFilter: sending KEEP_ALIVE");
+                nioLogger.log(PROTOCOL, session, "DiscoProtocolCodecFilter: sending KEEP_ALIVE");
                 session.write(KEEP_ALIVE);
                 heartbeatsSent.incrementAndGet();
             } else {
-                nioLogger.log(PROTOCOL, session, "CougarProtocolCodecFilter: KEEP_ALIVE timeout closing session");
+                nioLogger.log(PROTOCOL, session, "DiscoProtocolCodecFilter: KEEP_ALIVE timeout closing session");
                 session.close();
                 heartbeatsMissed.incrementAndGet();
             }
@@ -241,7 +241,7 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
         session.setIdleTime(IdleStatus.WRITER_IDLE, interval);
         nextFilter.sessionCreated(session);
 
-        nioLogger.log(SESSION, session, "CougarProtocolCodecFilter: Created session at %s from %s", session.getCreationTime(), session.getRemoteAddress());
+        nioLogger.log(SESSION, session, "DiscoProtocolCodecFilter: Created session at %s from %s", session.getCreationTime(), session.getRemoteAddress());
         sessionsCreated.incrementAndGet();
         lastSessionFrom = session.getRemoteAddress().toString();
     }
@@ -275,12 +275,12 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
                         if (protocolVersionToUse >= minServerProtocolVersion) {
                             // older versions of the protocol don't support TLS, so if we require it, then we have to stop here
                             if (protocolVersionToUse < TRANSPORT_PROTOCOL_VERSION_START_TLS && requiresTls) {
-                                nioLogger.log(PROTOCOL, session, "CougarProtocol: REJECTing connection request with version %s since we require TLS, which is not supported on this version", protocolVersionToUse);
+                                nioLogger.log(PROTOCOL, session, "DiscoProtocol: REJECTing connection request with version %s since we require TLS, which is not supported on this version", protocolVersionToUse);
                                 session.write(new RejectMessage(RejectMessageReason.INCOMPATIBLE_VERSION, getServerAcceptableVersions()));
                                 session.close();
                             }
                             else {
-                                nioLogger.log(PROTOCOL, session, "CougarProtocol: ACCEPTing connection request with version %s", protocolVersionToUse);
+                                nioLogger.log(PROTOCOL, session, "DiscoProtocol: ACCEPTing connection request with version %s", protocolVersionToUse);
                                 session.setAttribute(PROTOCOL_VERSION_ATTR_NAME, protocolVersionToUse);
                                 session.setAttribute(IS_SERVER_ATTR_NAME, true);
                                 // this is used for all writes to the session after the initial handshaking
@@ -289,7 +289,7 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
                             }
                         } else {
                             //we don't speak your language. goodbye
-                            nioLogger.log(PROTOCOL, session, "CougarProtocol: REJECTing connection request with versions %s", getAsString(connectMessage.getApplicationVersions()));
+                            nioLogger.log(PROTOCOL, session, "DiscoProtocol: REJECTing connection request with versions %s", getAsString(connectMessage.getApplicationVersions()));
                             LOG.info("REJECTing connection request from session " + session.getRemoteAddress() + " with versions " + getAsString(connectMessage.getApplicationVersions()));
                             session.write(new RejectMessage(RejectMessageReason.INCOMPATIBLE_VERSION, getServerAcceptableVersions()));
                             session.close();
@@ -309,7 +309,7 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
                         session.close();
                         throw new IllegalStateException("Protocol version mismatch - client version is " + maxClientProtocolVersion + ", server has accepted " + acceptMessage.getAcceptedVersion());
                     }
-                    nioLogger.log(PROTOCOL, session, "CougarProtocol: ACCEPT received for with version %s", acceptMessage.getAcceptedVersion());
+                    nioLogger.log(PROTOCOL, session, "DiscoProtocol: ACCEPT received for with version %s", acceptMessage.getAcceptedVersion());
 
                     session.setAttribute(IS_SERVER_ATTR_NAME, false);
                     session.setAttribute(PROTOCOL_VERSION_ATTR_NAME, acceptMessage.getAcceptedVersion());
@@ -327,12 +327,12 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
                         else {
                             requirement = TLSRequirement.NONE;
                         }
-                        nioLogger.log(PROTOCOL, session, "CougarProtocol: Server version supports TLS, sending requirement of %s", requirement);
+                        nioLogger.log(PROTOCOL, session, "DiscoProtocol: Server version supports TLS, sending requirement of %s", requirement);
                         session.write(new StartTLSRequestMessage(requirement));
                     }
                     // if we had to have tls, but the server is running an old version then we need to disconnect
                     else if (requiresTls) {
-                        nioLogger.log(PROTOCOL, session, "CougarProtocol: Server version doesn't support TLS, sending DISCONNECT");
+                        nioLogger.log(PROTOCOL, session, "DiscoProtocol: Server version doesn't support TLS, sending DISCONNECT");
                         session.write(new DisconnectMessage());
                         ClientHandshake handshake = (ClientHandshake) session.getAttribute(ClientHandshake.HANDSHAKE);
                         if (handshake != null) {
@@ -350,7 +350,7 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
                 case REJECT:
                     //Client Side - server has said foxtrot oscar
                     RejectMessage rejectMessage = (RejectMessage) protocolMessage;
-                    nioLogger.log(PROTOCOL, session, "CougarProtocol: REJECT received: versions accepted are %s", getAsString(rejectMessage.getAcceptableVersions()));
+                    nioLogger.log(PROTOCOL, session, "DiscoProtocol: REJECT received: versions accepted are %s", getAsString(rejectMessage.getAcceptableVersions()));
                     ClientHandshake handshake2 = (ClientHandshake) session.getAttribute(ClientHandshake.HANDSHAKE);
                     if (handshake2 != null) {
                         handshake2.reject();
@@ -360,7 +360,7 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
                 case START_TLS_REQUEST:
                     // server side - client has sent it's tls requirements
                     StartTLSRequestMessage tlsRequestMessage = (StartTLSRequestMessage) protocolMessage;
-                    nioLogger.log(PROTOCOL, session, "CougarProtocol: START_TLS_REQUEST - requirement is %s", tlsRequestMessage.getRequirement());
+                    nioLogger.log(PROTOCOL, session, "DiscoProtocol: START_TLS_REQUEST - requirement is %s", tlsRequestMessage.getRequirement());
                     TLSResult result;
                     switch (tlsRequestMessage.getRequirement()) {
                         case NONE:
@@ -392,8 +392,8 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
                     }
                     StartTLSResponseMessage tlsResponseMessage = new StartTLSResponseMessage(result);
                     if (result != TLSResult.FAILED_NEGOTIATION) {
-                        session.setAttribute(CougarProtocol.NEGOTIATED_TLS_LEVEL_ATTR_NAME, result);
-                        nioLogger.log(PROTOCOL, session, "CougarProtocol: START_TLS_REQUEST - successfully negotiated %s comms", result);
+                        session.setAttribute(DiscoProtocol.NEGOTIATED_TLS_LEVEL_ATTR_NAME, result);
+                        nioLogger.log(PROTOCOL, session, "DiscoProtocol: START_TLS_REQUEST - successfully negotiated %s comms", result);
                         if (result == TLSResult.SSL) {
                             // Insert SSLFilter to get ready for handshaking
                             session.getFilterChain().addFirst("ssl", sslFilter);
@@ -410,7 +410,7 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
                         assert session.getAttribute(SSLFilter.DISABLE_ENCRYPTION_ONCE) == null;
                     }
                     else if (result == TLSResult.FAILED_NEGOTIATION) {
-                        nioLogger.log(PROTOCOL, session, "CougarProtocol: START_TLS_REQUEST - negotiation failed, closing session");
+                        nioLogger.log(PROTOCOL, session, "DiscoProtocol: START_TLS_REQUEST - negotiation failed, closing session");
                         session.close();
                     }
 
@@ -419,7 +419,7 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
                     // client side - server has determined our TLS settings for this connection
                     StartTLSResponseMessage responseMessage = (StartTLSResponseMessage) protocolMessage;
                     if (responseMessage.getResult() == TLSResult.FAILED_NEGOTIATION) {
-                        nioLogger.log(PROTOCOL, session, "CougarProtocol: START_TLS_RESPONSE - FAILED_NEGOTIATION received");
+                        nioLogger.log(PROTOCOL, session, "DiscoProtocol: START_TLS_RESPONSE - FAILED_NEGOTIATION received");
                         ClientHandshake handshake3 = (ClientHandshake) session.getAttribute(ClientHandshake.HANDSHAKE);
                         if (handshake3 != null) {
                             handshake3.reject();
@@ -427,8 +427,8 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
                         session.close();
                     }
                     else {
-                        session.setAttribute(CougarProtocol.NEGOTIATED_TLS_LEVEL_ATTR_NAME, responseMessage.getResult());
-                        nioLogger.log(PROTOCOL, session, "CougarProtocol: Starting %s comms following successful TLS negotiation", responseMessage.getResult());
+                        session.setAttribute(DiscoProtocol.NEGOTIATED_TLS_LEVEL_ATTR_NAME, responseMessage.getResult());
+                        nioLogger.log(PROTOCOL, session, "DiscoProtocol: Starting %s comms following successful TLS negotiation", responseMessage.getResult());
 
                         if (responseMessage.getResult() == TLSResult.SSL) {
                             // Insert SSLFilter to get ready for handshaking
@@ -445,18 +445,18 @@ public class CougarProtocol extends IoFilterAdapter implements Exportable {
 
                 case KEEP_ALIVE:
                     //Both sides keep alive received, which is ignored
-                    nioLogger.log(PROTOCOL, session, "CougarProtocol: KEEP_ALIVE received");
+                    nioLogger.log(PROTOCOL, session, "DiscoProtocol: KEEP_ALIVE received");
                     break;
                 case DISCONNECT:
                     //Client Side - server doesn't love us anymore
                     session.setAttribute(ProtocolMessage.ProtocolMessageType.DISCONNECT.name());
-                    nioLogger.log(PROTOCOL, session, "CougarProtocol: DISCONNECT received");
+                    nioLogger.log(PROTOCOL, session, "DiscoProtocol: DISCONNECT received");
                     session.close();
                     break;
                 case SUSPEND:
                     //Client Side - this session is about to be closed
                     session.setAttribute(ProtocolMessage.ProtocolMessageType.SUSPEND.name());
-                    nioLogger.log(PROTOCOL, session, "CougarProtocol: SUSPEND received");
+                    nioLogger.log(PROTOCOL, session, "DiscoProtocol: SUSPEND received");
                     break;
                 case MESSAGE_REQUEST:
                 case MESSAGE_RESPONSE:

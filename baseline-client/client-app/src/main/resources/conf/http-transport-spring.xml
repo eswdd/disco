@@ -21,114 +21,114 @@
 
 
 
-    <bean id="rescriptTransport" parent="cougar.client.AbstractRescriptTransport">
+    <bean id="rescriptTransport" parent="disco.client.AbstractRescriptTransport">
         <constructor-arg>
             <bean class="com.betfair.baseline.v2.rescript.BaselineRescriptServiceBindingDescriptor"/>
         </constructor-arg>
-        <property name="remoteAddress" value="$APPLICATION{cougar.client.rescript.remoteaddress}"/>
+        <property name="remoteAddress" value="$APPLICATION{disco.client.rescript.remoteaddress}"/>
         <property name="exceptionFactory">
             <bean class="com.betfair.baseline.v2.exception.BaselineExceptionFactory"/>
         </property>
         <property name="identityTokenResolver">
-            <bean class="com.betfair.cougar.baseline.security.BaselineClientIdentityTokenResolver"/>
+            <bean class="uk.co.exemel.disco.baseline.security.BaselineClientIdentityTokenResolver"/>
         </property>
         <property name="identityResolver" ref="clientIdentityResolver"/>
         <!-- SSL ARGS -->
         <property name="transportSSLEnabled" value="false"/>
     </bean>
 
-    <bean id="secureRescriptTransport" parent="cougar.client.AbstractRescriptTransport">
+    <bean id="secureRescriptTransport" parent="disco.client.AbstractRescriptTransport">
         <constructor-arg>
             <bean class="com.betfair.baseline.v2.rescript.BaselineRescriptServiceBindingDescriptor"/>
         </constructor-arg>
-        <property name="remoteAddress" value="$APPLICATION{cougar.client.rescript.secureremoteaddress}"/>
+        <property name="remoteAddress" value="$APPLICATION{disco.client.rescript.secureremoteaddress}"/>
         <property name="exceptionFactory">
             <bean class="com.betfair.baseline.v2.exception.BaselineExceptionFactory"/>
         </property>
         <property name="identityTokenResolver">
-            <bean class="com.betfair.cougar.baseline.security.BaselineClientIdentityTokenResolver"/>
+            <bean class="uk.co.exemel.disco.baseline.security.BaselineClientIdentityTokenResolver"/>
         </property>
         <property name="identityResolver" ref="clientIdentityResolver"/>
         <!-- SSL ARGS -->
         <property name="transportSSLEnabled" value="true"/>
-        <property name="httpsTruststore" value="classpath:cougar_server_ca.jks"/>
+        <property name="httpsTruststore" value="classpath:disco_server_ca.jks"/>
         <property name="httpsTrustPassword" value="password"/>
         <property name="hostnameVerificationDisabled" value="true"/>
     </bean>
 
-    <bean id="secureRescriptTransportWithClientAuth" parent="cougar.client.AbstractRescriptTransport">
+    <bean id="secureRescriptTransportWithClientAuth" parent="disco.client.AbstractRescriptTransport">
         <constructor-arg>
             <bean class="com.betfair.baseline.v2.rescript.BaselineRescriptServiceBindingDescriptor"/>
         </constructor-arg>
-        <property name="remoteAddress" value="$APPLICATION{cougar.client.rescript.secureremoteaddress}"/>
+        <property name="remoteAddress" value="$APPLICATION{disco.client.rescript.secureremoteaddress}"/>
         <property name="exceptionFactory">
             <bean class="com.betfair.baseline.v2.exception.BaselineExceptionFactory"/>
         </property>
         <property name="identityTokenResolver">
-            <bean class="com.betfair.cougar.baseline.security.BaselineClientIdentityTokenResolver"/>
+            <bean class="uk.co.exemel.disco.baseline.security.BaselineClientIdentityTokenResolver"/>
         </property>
         <property name="identityResolver" ref="clientIdentityResolver"/>
         <!-- SSL ARGS -->
         <property name="transportSSLEnabled" value="true"/>
-        <property name="httpsKeystore" value="classpath:cougar_client_cert.jks"/>
+        <property name="httpsKeystore" value="classpath:disco_client_cert.jks"/>
         <property name="httpsKeyPassword" value="password"/>
-        <property name="httpsTruststore" value="classpath:cougar_server_ca.jks"/>
+        <property name="httpsTruststore" value="classpath:disco_server_ca.jks"/>
         <property name="httpsTrustPassword" value="password"/>
         <property name="hostnameVerificationDisabled" value="true"/>
     </bean>
 
-    <bean id="asyncRescriptTransport" parent="cougar.client.AbstractAsyncRescriptTransport">
+    <bean id="asyncRescriptTransport" parent="disco.client.AbstractAsyncRescriptTransport">
         <constructor-arg>
             <bean class="com.betfair.baseline.v2.rescript.BaselineRescriptServiceBindingDescriptor"/>
         </constructor-arg>
-        <property name="remoteAddress" value="$APPLICATION{cougar.client.rescript.remoteaddress}"/>
+        <property name="remoteAddress" value="$APPLICATION{disco.client.rescript.remoteaddress}"/>
         <property name="exceptionFactory">
             <bean class="com.betfair.baseline.v2.exception.BaselineExceptionFactory"/>
         </property>
         <property name="identityTokenResolver">
-            <bean class="com.betfair.cougar.baseline.security.BaselineAsyncClientIdentityTokenResolver"/>
+            <bean class="uk.co.exemel.disco.baseline.security.BaselineAsyncClientIdentityTokenResolver"/>
         </property>
         <property name="identityResolver" ref="clientIdentityResolver"/>
 
         <property name="transportSSLEnabled" value="false"/>
     </bean>
 
-    <bean id="secureAsyncRescriptTransport" parent="cougar.client.AbstractAsyncRescriptTransport">
+    <bean id="secureAsyncRescriptTransport" parent="disco.client.AbstractAsyncRescriptTransport">
         <constructor-arg>
             <bean class="com.betfair.baseline.v2.rescript.BaselineRescriptServiceBindingDescriptor"/>
         </constructor-arg>
-        <property name="remoteAddress" value="$APPLICATION{cougar.client.rescript.secureremoteaddress}"/>
+        <property name="remoteAddress" value="$APPLICATION{disco.client.rescript.secureremoteaddress}"/>
         <property name="exceptionFactory">
             <bean class="com.betfair.baseline.v2.exception.BaselineExceptionFactory"/>
         </property>
         <property name="identityTokenResolver">
-            <bean class="com.betfair.cougar.baseline.security.BaselineAsyncClientIdentityTokenResolver"/>
+            <bean class="uk.co.exemel.disco.baseline.security.BaselineAsyncClientIdentityTokenResolver"/>
         </property>
         <property name="identityResolver" ref="clientIdentityResolver"/>
 
         <property name="transportSSLEnabled" value="true"/>
-        <property name="httpsTruststore" value="classpath:cougar_server_ca.jks"/>
+        <property name="httpsTruststore" value="classpath:disco_server_ca.jks"/>
         <property name="httpsTrustPassword" value="password"/>
         <property name="hostnameVerificationDisabled" value="true"/>
     </bean>
 
-    <bean id="secureAsyncRescriptTransportWithClientAuth" parent="cougar.client.AbstractAsyncRescriptTransport">
+    <bean id="secureAsyncRescriptTransportWithClientAuth" parent="disco.client.AbstractAsyncRescriptTransport">
         <constructor-arg>
             <bean class="com.betfair.baseline.v2.rescript.BaselineRescriptServiceBindingDescriptor"/>
         </constructor-arg>
-        <property name="remoteAddress" value="$APPLICATION{cougar.client.rescript.secureremoteaddress}"/>
+        <property name="remoteAddress" value="$APPLICATION{disco.client.rescript.secureremoteaddress}"/>
         <property name="exceptionFactory">
             <bean class="com.betfair.baseline.v2.exception.BaselineExceptionFactory"/>
         </property>
         <property name="identityTokenResolver">
-            <bean class="com.betfair.cougar.baseline.security.BaselineAsyncClientIdentityTokenResolver"/>
+            <bean class="uk.co.exemel.disco.baseline.security.BaselineAsyncClientIdentityTokenResolver"/>
         </property>
         <property name="identityResolver" ref="clientIdentityResolver"/>
 
         <property name="transportSSLEnabled" value="true"/>
-        <property name="httpsKeystore" value="classpath:cougar_client_cert.jks"/>
+        <property name="httpsKeystore" value="classpath:disco_client_cert.jks"/>
         <property name="httpsKeyPassword" value="password"/>
-        <property name="httpsTruststore" value="classpath:cougar_server_ca.jks"/>
+        <property name="httpsTruststore" value="classpath:disco_server_ca.jks"/>
         <property name="httpsTrustPassword" value="password"/>
         <property name="hostnameVerificationDisabled" value="true"/>
     </bean>

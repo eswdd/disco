@@ -22,9 +22,9 @@
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-    <bean class="com.betfair.cougar.util.configuration.PropertyConfigurer">
-        <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
-        <property name="defaultConfig" value="classpath:conf/cougar-marshalling-defaults.properties"/>
+    <bean class="uk.co.exemel.disco.util.configuration.PropertyConfigurer">
+        <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
+        <property name="defaultConfig" value="classpath:conf/disco-marshalling-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
         <property name="placeholderPrefix" value="$COUGAR_MARSHALLING{"/>
     </bean>
@@ -35,23 +35,23 @@
         <value>text/json</value>
     </util:set>
 
-    <bean id="jsonBindingMap" class="com.betfair.cougar.marshalling.impl.databinding.DataBindingMap">
+    <bean id="jsonBindingMap" class="uk.co.exemel.disco.marshalling.impl.databinding.DataBindingMap">
         <property name="factory" ref="jsonBindingFactory"/>
         <property name="contentTypes" ref="json-validContentTypes"/>
         <property name="preferredContentType" value="application/json"/>
     </bean>
 
-    <bean id="jsonBindingFactory" class="com.betfair.cougar.marshalling.impl.databinding.kpi.KPITimingDataBindingFactory">
+    <bean id="jsonBindingFactory" class="uk.co.exemel.disco.marshalling.impl.databinding.kpi.KPITimingDataBindingFactory">
         <constructor-arg ref="kpiMonitor"/>
         <constructor-arg value="json"/>
         <constructor-arg ref="rawJsonBindingFactory"/>
     </bean>
 
 
-    <bean id="rawJsonBindingFactory" class="com.betfair.cougar.marshalling.impl.databinding.json.JSONBindingFactory">
-        <property name="enableAfterburner" value="$COUGAR_MARSHALLING{cougar.marshalling.json.afterburner.enabled}"/>
-        <property name="useOptimizedBeanDeserializer" value="$COUGAR_MARSHALLING{cougar.marshalling.json.afterburner.useOptimizedBeanDeserializer}"/>
-        <property name="useValueClassLoader" value="$COUGAR_MARSHALLING{cougar.marshalling.json.afterburner.useValueClassLoader}"/>
+    <bean id="rawJsonBindingFactory" class="uk.co.exemel.disco.marshalling.impl.databinding.json.JSONBindingFactory">
+        <property name="enableAfterburner" value="$COUGAR_MARSHALLING{disco.marshalling.json.afterburner.enabled}"/>
+        <property name="useOptimizedBeanDeserializer" value="$COUGAR_MARSHALLING{disco.marshalling.json.afterburner.useOptimizedBeanDeserializer}"/>
+        <property name="useValueClassLoader" value="$COUGAR_MARSHALLING{disco.marshalling.json.afterburner.useValueClassLoader}"/>
     </bean>
 
     <!-- XML Configuration -->
@@ -62,20 +62,20 @@
         <value>text/xml</value>
     </util:set>
 
-    <bean id="xmlBindingMap" class="com.betfair.cougar.marshalling.impl.databinding.DataBindingMap">
+    <bean id="xmlBindingMap" class="uk.co.exemel.disco.marshalling.impl.databinding.DataBindingMap">
         <property name="factory" ref="xmlBindingFactory"/>
         <property name="contentTypes" ref="xml-validContentTypes"/>
         <property name="preferredContentType" value="application/xml"/>
     </bean>
 
-    <bean id="jdkEmbeddedXercesSchemaValidationFailureParser" class="com.betfair.cougar.marshalling.impl.databinding.xml.JdkEmbeddedXercesSchemaValidationFailureParser"/>
+    <bean id="jdkEmbeddedXercesSchemaValidationFailureParser" class="uk.co.exemel.disco.marshalling.impl.databinding.xml.JdkEmbeddedXercesSchemaValidationFailureParser"/>
 
-    <bean id="xmlBindingFactory" class="com.betfair.cougar.marshalling.impl.databinding.kpi.KPITimingDataBindingFactory">
+    <bean id="xmlBindingFactory" class="uk.co.exemel.disco.marshalling.impl.databinding.kpi.KPITimingDataBindingFactory">
         <constructor-arg ref="kpiMonitor"/>
         <constructor-arg value="xml"/>
         <constructor-arg>
-            <bean class="com.betfair.cougar.marshalling.impl.databinding.xml.XMLDataBindingFactory">
-                <constructor-arg index="0" ref="$COUGAR_MARSHALLING{cougar.marshalling.xml.schemaValidationFailureParserBean}"/>
+            <bean class="uk.co.exemel.disco.marshalling.impl.databinding.xml.XMLDataBindingFactory">
+                <constructor-arg index="0" ref="$COUGAR_MARSHALLING{disco.marshalling.xml.schemaValidationFailureParserBean}"/>
             </bean>
         </constructor-arg>
     </bean>
@@ -86,10 +86,10 @@
          <value>utf-8</value>
     </util:set>
 
-	<bean id="dataBindingManager" class="com.betfair.cougar.marshalling.impl.databinding.DataBindingManager" factory-method="getInstance"/>
+	<bean id="dataBindingManager" class="uk.co.exemel.disco.marshalling.impl.databinding.DataBindingManager" factory-method="getInstance"/>
 
 
-	<bean class="com.betfair.cougar.marshalling.impl.databinding.DataBindingManagerHelper">
+	<bean class="uk.co.exemel.disco.marshalling.impl.databinding.DataBindingManagerHelper">
 		<property name="dataBindingManager" ref="dataBindingManager"/>
 		<property name="dataBindingMaps" >
 			<list>
@@ -99,7 +99,7 @@
 		</property>
 	</bean>
 
-    <alias name="jsonBindingFactory" alias="cougar.marshalling.JSONBindingFactory"/>
+    <alias name="jsonBindingFactory" alias="disco.marshalling.JSONBindingFactory"/>
 
 
 </beans>

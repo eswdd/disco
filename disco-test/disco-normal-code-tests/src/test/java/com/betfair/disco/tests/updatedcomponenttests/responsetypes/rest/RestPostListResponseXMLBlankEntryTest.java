@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/ResponseTypes/REST/Rest_Post_ListResponse_XML_BlankEntry.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.responsetypes.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.responsetypes.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -34,20 +34,20 @@ import java.io.ByteArrayInputStream;
 import java.sql.Timestamp;
 
 /**
- * Ensure that when a Rest (XML) Post operation is performed against Cougar, passing a Set with a blank entry in the post body, it is correctly de-serialized, processed, returned the correct response.
+ * Ensure that when a Rest (XML) Post operation is performed against Disco, passing a Set with a blank entry in the post body, it is correctly de-serialized, processed, returned the correct response.
  */
 public class RestPostListResponseXMLBlankEntryTest {
     @Test
     public void doTest() throws Exception {
         
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean();
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean();
+        discoManager1 = discoManager1;
         
         
         getNewHttpCallBean1.setOperationName("TestSimpleListGet", "simpleListGet");
         
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean1.setVersion("v2");
         
@@ -56,9 +56,9 @@ public class RestPostListResponseXMLBlankEntryTest {
 
         Timestamp getTimeAsTimeStamp7 = new Timestamp(System.currentTimeMillis());
         
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTXML, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.XML);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTXML, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.XML);
         
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTXML, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTXML, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         
         XMLHelpers xMLHelpers3 = new XMLHelpers();
         Document createAsDocument10 = xMLHelpers3.getXMLObjectFromString("<TestSimpleListGetResponse><String>bbb string</String><String/><String>ddd string</String><String>ccc string</String></TestSimpleListGetResponse>");
@@ -66,12 +66,12 @@ public class RestPostListResponseXMLBlankEntryTest {
         JSONHelpers jSONHelpers4 = new JSONHelpers();
         JSONObject createAsJSONObject11 = jSONHelpers4.createAsJSONObject(new JSONObject("{\"response\": [\"bbb string\",\"\",\"ddd string\",\"ccc string\"]}"));
         
-        HttpResponseBean response5 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
+        HttpResponseBean response5 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
         AssertionUtils.multiAssertEquals(createAsDocument10, response5.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response5.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response5.getHttpStatusText());
         
-        HttpResponseBean response6 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        HttpResponseBean response6 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
         AssertionUtils.multiAssertEquals(createAsJSONObject11, response6.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response6.getHttpStatusText());
@@ -79,7 +79,7 @@ public class RestPostListResponseXMLBlankEntryTest {
         // generalHelpers.pauseTest(500L);
         
         
-        cougarManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "testSimpleListGet"),new RequestLogRequirement("2.8", "testSimpleListGet") );
+        discoManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "testSimpleListGet"),new RequestLogRequirement("2.8", "testSimpleListGet") );
     }
 
 }

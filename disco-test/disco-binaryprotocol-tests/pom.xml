@@ -18,13 +18,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>cougar-test</artifactId>
-    <groupId>com.betfair.cougar</groupId>
+    <artifactId>disco-test</artifactId>
+    <groupId>uk.co.exemel.disco</groupId>
     <version>3.3-SNAPSHOT</version>
   </parent>
   
-  <artifactId>cougar-binaryprotocol-tests</artifactId>
-  <name>cougar-binaryprotocol-tests</name>
+  <artifactId>disco-binaryprotocol-tests</artifactId>
+  <name>disco-binaryprotocol-tests</name>
   <url>http://maven.apache.org</url>
 
     <profiles>
@@ -89,42 +89,42 @@
   <dependencies>
   
     <dependency>
-      <groupId>com.betfair.cougar</groupId>
-        <artifactId>cougar-client</artifactId>
+      <groupId>uk.co.exemel.disco</groupId>
+        <artifactId>disco-client</artifactId>
         <version>${project.version}</version>
         <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>com.betfair.cougar</groupId>
-        <artifactId>cougar-standalone-ev</artifactId>
+      <groupId>uk.co.exemel.disco</groupId>
+        <artifactId>disco-standalone-ev</artifactId>
         <version>${project.version}</version>
         <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>com.betfair.cougar</groupId>
-        <artifactId>cougar-null-geoip-locator</artifactId>
+      <groupId>uk.co.exemel.disco</groupId>
+        <artifactId>disco-null-geoip-locator</artifactId>
         <version>${project.version}</version>
         <scope>test</scope>
     </dependency>
     
     <dependency>
-    	<groupId>com.betfair.cougar</groupId>
+    	<groupId>uk.co.exemel.disco</groupId>
 		<artifactId>client-idd</artifactId>
 		<version>${project.version}</version>
         <scope>test</scope>
 	</dependency>
 	
 	<dependency>
-		<groupId>com.betfair.cougar</groupId>
+		<groupId>uk.co.exemel.disco</groupId>
 	    <artifactId>baseline-security</artifactId>
 	    <version>${project.version}</version>
         <scope>test</scope>
  	</dependency>
 	<dependency>
-		<groupId>com.betfair.cougar</groupId>
-	    <artifactId>cougar-marshalling-impl</artifactId>
+		<groupId>uk.co.exemel.disco</groupId>
+	    <artifactId>disco-marshalling-impl</artifactId>
 	    <version>${project.version}</version>
         <scope>test</scope>
  	</dependency>	

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.core.api.GateListener;
-import com.betfair.cougar.core.api.security.IdentityResolverFactory;
-import com.betfair.cougar.util.jmx.Exportable;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.core.api.GateListener;
+import uk.co.exemel.disco.core.api.security.IdentityResolverFactory;
+import uk.co.exemel.disco.util.jmx.Exportable;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import com.betfair.tornjak.monitor.MonitorRegistry;
 import com.betfair.tornjak.monitor.Status;
 import com.betfair.tornjak.monitor.StatusAggregator;
@@ -73,8 +73,8 @@ public class ContainerAwareExecutionVenueTest {
 		verify(exportable2).export(jmxControl);
 
 		//Verify that all registered gate listeners have been notified
-		verify(gateListener1).onCougarStart();
-		verify(gateListener2).onCougarStart();
+		verify(gateListener1).onDiscoStart();
+		verify(gateListener2).onDiscoStart();
 	}
 
 	private void setupGateListeners() {

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.hessian;
+package uk.co.exemel.disco.netutil.nio.hessian;
 
-import com.betfair.cougar.core.api.transcription.TranscribableParams;
+import uk.co.exemel.disco.core.api.transcription.TranscribableParams;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.SerializerFactory;
@@ -25,18 +25,18 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CougarSerializerFactory extends SerializerFactory {
+public class DiscoSerializerFactory extends SerializerFactory {
 
     private Set<TranscribableParams> transcriptionParams;
 
     private Set<String> missingTypes = Collections.newSetFromMap(new ConcurrentHashMap());
 
-    public CougarSerializerFactory(Set<TranscribableParams> transcriptionParams) {
+    public DiscoSerializerFactory(Set<TranscribableParams> transcriptionParams) {
         this.transcriptionParams = transcriptionParams;
     }
 
-    public static CougarSerializerFactory createInstance(Set<TranscribableParams> transcriptionParams) {
-        return new CougarSerializerFactory(transcriptionParams);
+    public static DiscoSerializerFactory createInstance(Set<TranscribableParams> transcriptionParams) {
+        return new DiscoSerializerFactory(transcriptionParams);
     }
 
     /**
@@ -58,7 +58,7 @@ public class CougarSerializerFactory extends SerializerFactory {
     }
 
     /**
-     * If a Cougar server response contains a class the client doesn't know about (which is legal and backwards compatible
+     * If a Disco server response contains a class the client doesn't know about (which is legal and backwards compatible
      * in cases) then the default behavior of Hessian is to perform a lookup, fail, throw an exception and log it.
      * This has been measured at about 25 times slower than the happy path, and Hessian does not negatively cache 'misses',
      * so this is a per-response slowdown. This implementation caches type lookup misses, and so eradicates the problem.

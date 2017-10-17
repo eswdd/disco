@@ -15,13 +15,13 @@
  */
 
 // Originally from UpdatedComponentTests/StaticHTML/HTMLPageServed_Basic.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.statichtml;
+package uk.co.exemel.disco.tests.updatedcomponenttests.statichtml;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.misc.*;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.misc.*;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
@@ -32,38 +32,38 @@ import java.io.InputStream;
 import java.sql.Timestamp;
 
 /**
- * Ensure that Cougar can ship static html files: handle basic html
+ * Ensure that Disco can ship static html files: handle basic html
  */
 public class WSDLExposedTest {
     @Test
     public void doTest() throws Exception {
         // Create the HttpCallBean
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean httpCallBeanBaseline = cougarManager1.getNewHttpCallBean();
-        CougarManager cougarManagerBaseline = cougarManager1;
-        // Get the cougar logging attribute for getting log entries later
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean httpCallBeanBaseline = discoManager1.getNewHttpCallBean();
+        DiscoManager discoManagerBaseline = discoManager1;
+        // Get the disco logging attribute for getting log entries later
         // Point the created HttpCallBean at the correct service
-        httpCallBeanBaseline.setServiceName("baseline", "cougarBaseline");
+        httpCallBeanBaseline.setServiceName("baseline", "discoBaseline");
         
         httpCallBeanBaseline.setVersion("v2");
         // Get current time for getting log entries later
 
         Timestamp getTimeAsTimeStamp1 = new Timestamp(System.currentTimeMillis());
-        CougarManager cougarManager3 = CougarManager.getInstance();
-        CougarManager cougarManager2 = cougarManager3;
+        DiscoManager discoManager3 = DiscoManager.getInstance();
+        DiscoManager discoManager2 = discoManager3;
         // Get Expected HTML Response as Input Stream from the given file
         InputStream inputStream = InputStreamHelpers.getInputStreamForResource("wsdl/Baseline_v2.8.wsdl");
         // Transfrom the input stream into a Document (XML) for assertion
 
         DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document expectedDocResponse = documentBuilder.parse(inputStream);
-        // Load the Static Page shipped from Cougar
+        // Load the Static Page shipped from Disco
         HttptestPageBean loadedPage = HttpService.loadPage("http://localhost:8080/wsdl/Baseline_v2.8.wsdl");
         // Get the loaded page as a document
         Document actualDocument = documentBuilder.parse(new ByteArrayInputStream(loadedPage.getPageText().getBytes()));
         AssertionUtils.multiAssertEquals(expectedDocResponse, actualDocument);
         // Check the log entries are as expected
-        cougarManager2.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp1, new AccessLogRequirement(null, "/wsdl/Baseline_v2.8.wsdl", "Ok") );
+        discoManager2.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp1, new AccessLogRequirement(null, "/wsdl/Baseline_v2.8.wsdl", "Ok") );
     }
 
 }

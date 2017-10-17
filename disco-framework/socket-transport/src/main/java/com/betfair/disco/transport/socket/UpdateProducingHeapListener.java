@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
-import com.betfair.cougar.netutil.nio.connected.InstallField;
-import com.betfair.cougar.netutil.nio.connected.InstallIndex;
-import com.betfair.cougar.netutil.nio.connected.InstallRoot;
-import com.betfair.cougar.netutil.nio.connected.RemoveChildren;
-import com.betfair.cougar.netutil.nio.connected.RemoveField;
-import com.betfair.cougar.netutil.nio.connected.RemoveIndex;
-import com.betfair.cougar.netutil.nio.connected.SetScalar;
-import com.betfair.cougar.netutil.nio.connected.TerminateHeap;
-import com.betfair.cougar.netutil.nio.connected.Update;
-import com.betfair.cougar.netutil.nio.connected.UpdateAction;
+import uk.co.exemel.disco.netutil.nio.connected.InstallField;
+import uk.co.exemel.disco.netutil.nio.connected.InstallIndex;
+import uk.co.exemel.disco.netutil.nio.connected.InstallRoot;
+import uk.co.exemel.disco.netutil.nio.connected.RemoveChildren;
+import uk.co.exemel.disco.netutil.nio.connected.RemoveField;
+import uk.co.exemel.disco.netutil.nio.connected.RemoveIndex;
+import uk.co.exemel.disco.netutil.nio.connected.SetScalar;
+import uk.co.exemel.disco.netutil.nio.connected.TerminateHeap;
+import uk.co.exemel.disco.netutil.nio.connected.Update;
+import uk.co.exemel.disco.netutil.nio.connected.UpdateAction;
 import com.betfair.platform.virtualheap.HeapListener;
 import com.betfair.platform.virtualheap.NodeType;
 import com.betfair.platform.virtualheap.updates.UpdateBlock;

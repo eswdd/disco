@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.client.api.ContextEmitter;
-import com.betfair.cougar.core.api.client.TransportMetrics;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
-import com.betfair.cougar.util.KeyStoreManagement;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.client.api.ContextEmitter;
+import uk.co.exemel.disco.core.api.client.TransportMetrics;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.util.KeyStoreManagement;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpResponse;
@@ -58,7 +58,7 @@ public class HttpClientExecutable extends AbstractHttpExecutable<HttpUriRequest>
 
     private HttpClient client;
     private HttpRequestRetryHandler retryHandler;
-    private CougarClientConnManager clientConnectionManager;
+    private DiscoClientConnManager clientConnectionManager;
     private String beanName;
     private JMXControl jmxControl;
     private UserTokenHandler userTokenHandler;
@@ -68,12 +68,12 @@ public class HttpClientExecutable extends AbstractHttpExecutable<HttpUriRequest>
     public HttpClientExecutable(final HttpServiceBindingDescriptor bindingDescriptor,
                                 final ContextEmitter emission,
                                 final Tracer tracer) {
-        this(bindingDescriptor, emission, tracer, new CougarClientConnManager());
+        this(bindingDescriptor, emission, tracer, new DiscoClientConnManager());
     }
 
 
-    public HttpClientExecutable(final HttpServiceBindingDescriptor bindingDescriptor, ContextEmitter emission, Tracer tracer, CougarClientConnManager clientConnectionManager) {
-        super(bindingDescriptor, new HttpClientCougarRequestFactory(emission), tracer);
+    public HttpClientExecutable(final HttpServiceBindingDescriptor bindingDescriptor, ContextEmitter emission, Tracer tracer, DiscoClientConnManager clientConnectionManager) {
+        super(bindingDescriptor, new HttpClientDiscoRequestFactory(emission), tracer);
         this.clientConnectionManager = clientConnectionManager;
     }
 
@@ -141,7 +141,7 @@ public class HttpClientExecutable extends AbstractHttpExecutable<HttpUriRequest>
                 LOGGER.debug("Received http response code of " + statusCode +
                         " in reply to request to " + httpMethod.getURI());
             }
-            processResponse(new CougarHttpResponse(response), obs, operationDefinition);
+            processResponse(new DiscoHttpResponse(response), obs, operationDefinition);
         } catch (Exception e) {
             processException(obs, e, httpMethod.getURI().toString());
         }
@@ -165,10 +165,10 @@ public class HttpClientExecutable extends AbstractHttpExecutable<HttpUriRequest>
         this.userTokenHandler = userTokenHandler;
     }
 
-    private static final class CougarHttpResponse implements AbstractHttpExecutable.CougarHttpResponse {
+    private static final class DiscoHttpResponse implements AbstractHttpExecutable.DiscoHttpResponse {
         private final HttpResponse delegate;
 
-        private CougarHttpResponse(HttpResponse delegate) {
+        private DiscoHttpResponse(HttpResponse delegate) {
             this.delegate = delegate;
         }
 

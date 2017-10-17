@@ -18,13 +18,13 @@
 
 <interface name="Health"
 		   version="3.0"
-		   namespace="com.betfair.cougar.health.service"
+		   namespace="uk.co.exemel.disco.health.service"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:noNamespaceSchemaLocation="http://www.betfair.com/BSIDL/4.0.xsd">
     <authors>
         <author name="Simon Matic Langford"/>
     </authors>
-    <description>The Cougar Health Service</description>
+    <description>The Disco Health Service</description>
     <operation name="isHealthy" since="1.0.0">
         <description>returns a String to indicate whether system is "OK" or "FAIL"</description>
         <parameters>
@@ -72,7 +72,7 @@
     <dataType name="HealthSummaryResponse">
         <description>The simplest health check possible, intended for use by Hardware load balancers</description>
         <parameter name="healthy" type="RestrictedHealthStatus">
-            <description>Status of this Cougar instance</description>
+            <description>Status of this Disco instance</description>
         </parameter>
     </dataType>
 
@@ -124,10 +124,10 @@
     <simpleType name="RestrictedHealthStatus" type="string">
         <validValues>
             <value name="OK">
-                <description>This Cougar instance is UP</description>
+                <description>This Disco instance is UP</description>
             </value>
             <value name="FAIL">
-                <description>This Cougar instance DOWN</description>
+                <description>This Disco instance DOWN</description>
             </value>
         </validValues>
     </simpleType>
@@ -135,16 +135,16 @@
     <simpleType name="HealthStatus" type="string">
         <validValues>
             <value name="OK">
-                <description>This Cougar instance is UP</description>
+                <description>This Disco instance is UP</description>
             </value>
             <value name="WARN">
-                <description>This Cougar instance is UP but has had some minor issues recently</description>
+                <description>This Disco instance is UP but has had some minor issues recently</description>
             </value>
             <value name="FAIL">
-                <description>This Cougar instance is DOWN (due to failure)</description>
+                <description>This Disco instance is DOWN (due to failure)</description>
             </value>
             <value name="OUT_OF_SERVICE">
-                <description>This Cougar instance is DOWN (due to being manually flagged as out of service)</description>
+                <description>This Disco instance is DOWN (due to being manually flagged as out of service)</description>
             </value>
         </validValues>
     </simpleType>

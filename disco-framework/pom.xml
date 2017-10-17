@@ -16,15 +16,15 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>com.betfair.cougar</groupId>
-		<artifactId>cougar-master-pom</artifactId>
+		<groupId>uk.co.exemel.disco</groupId>
+		<artifactId>disco-master-pom</artifactId>
 		<version>3.3-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>cougar-framework</artifactId>
-	<name>cougar-pom</name>
+	<artifactId>disco-framework</artifactId>
+	<name>disco-pom</name>
 	<packaging>pom</packaging>
 
     <properties>
@@ -54,32 +54,32 @@
 	</reporting>
 
 	<modules>
-		<module>cougar-api</module>
-		<module>cougar-core-api</module>
-		<module>cougar-config-bootstrap</module>
-		<module>cougar-core-impl</module>
-		<module>cougar-null-geoip-locator</module>
-		<module>cougar-caching</module>
-        <module>cougar-ev</module>
-        <module>cougar-marshalling-api</module>
-        <module>cougar-marshalling-impl</module>
-        <module>cougar-standalone-ev</module>
-		<module>cougar-test-mocks</module>
-		<module>cougar-transport-api</module>
-		<module>cougar-transport-impl</module>
-		<module>cougar-util</module>
+		<module>disco-api</module>
+		<module>disco-core-api</module>
+		<module>disco-config-bootstrap</module>
+		<module>disco-core-impl</module>
+		<module>disco-null-geoip-locator</module>
+		<module>disco-caching</module>
+        <module>disco-ev</module>
+        <module>disco-marshalling-api</module>
+        <module>disco-marshalling-impl</module>
+        <module>disco-standalone-ev</module>
+		<module>disco-test-mocks</module>
+		<module>disco-transport-api</module>
+		<module>disco-transport-impl</module>
+		<module>disco-util</module>
         <module>net-util</module>
         <module>jetty-transport</module>
         <module>socket-transport</module>
         <module>jms-transport</module>
         <module>activemq-transport</module>
-        <module>cougar-client</module>
-        <module>cougar-zipkin-common</module>
-        <module>cougar-zipkin-server-common</module>
-        <module>cougar-zipkin-server-http</module>
-        <module>cougar-zipkin-server-socket</module>
-		<module>cougar-zipkin-client-http</module>
-		<module>cougar-zipkin-client-socket</module>
+        <module>disco-client</module>
+        <module>disco-zipkin-common</module>
+        <module>disco-zipkin-server-common</module>
+        <module>disco-zipkin-server-http</module>
+        <module>disco-zipkin-server-socket</module>
+		<module>disco-zipkin-client-http</module>
+		<module>disco-zipkin-client-socket</module>
 	</modules>
 
 </project>

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.events;
+package uk.co.exemel.disco.core.api.events;
 
-import com.betfair.cougar.api.security.Identity;
+import uk.co.exemel.disco.api.security.Identity;
 
 import java.security.Principal;
 

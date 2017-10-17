@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api;
+package uk.co.exemel.disco.api;
 
 /**
  * A set of fields that should be appended to the request log

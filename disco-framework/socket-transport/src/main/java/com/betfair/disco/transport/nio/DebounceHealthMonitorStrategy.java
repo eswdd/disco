@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.nio;
+package uk.co.exemel.disco.transport.nio;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

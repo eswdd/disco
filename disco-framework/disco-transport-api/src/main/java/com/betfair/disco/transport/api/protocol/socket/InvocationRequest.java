@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.socket;
+package uk.co.exemel.disco.transport.api.protocol.socket;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.transcription.Parameter;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
 
 public interface InvocationRequest {
     public Object[] getArgs();

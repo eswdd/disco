@@ -15,19 +15,19 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar;
+package com.betfair.testing.utils.disco;
 
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.LogTailer;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.LogTailer;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 
@@ -37,9 +37,9 @@ import java.util.*;
 /**
  * New utility for writing integration tests via. Initially just delegates to old code.
  */
-class LegacyCougarTestingInvoker implements CougarTestingInvoker {
+class LegacyDiscoTestingInvoker implements DiscoTestingInvoker {
 
-    private CougarManager cougarManager = CougarManager.getInstance();
+    private DiscoManager discoManager = DiscoManager.getInstance();
     private HttpCallBean httpCallBeanBaseline;
 
     private String version;
@@ -57,48 +57,48 @@ class LegacyCougarTestingInvoker implements CougarTestingInvoker {
     private List<Map<String, String>> jsonCalls;
     private List<String> expectedResponsesJsonRpc;
 
-    public LegacyCougarTestingInvoker() {
-        httpCallBeanBaseline = cougarManager.getNewHttpCallBean();
+    public LegacyDiscoTestingInvoker() {
+        httpCallBeanBaseline = discoManager.getNewHttpCallBean();
         jsonCalls = new LinkedList<>();
         expectedResponsesJsonRpc = new ArrayList<>();
     }
 
-    public static LegacyCougarTestingInvoker create() {
-        return new LegacyCougarTestingInvoker();
+    public static LegacyDiscoTestingInvoker create() {
+        return new LegacyDiscoTestingInvoker();
     }
 
 
-    public CougarTestingInvoker setService(String serviceName) {
+    public DiscoTestingInvoker setService(String serviceName) {
         return setService(serviceName, serviceName);
     }
 
-    public CougarTestingInvoker setService(String serviceName, String path) {
+    public DiscoTestingInvoker setService(String serviceName, String path) {
         httpCallBeanBaseline.setServiceName(serviceName, path);
         return this;
     }
 
-    public CougarTestingInvoker setVersion(String version) {
+    public DiscoTestingInvoker setVersion(String version) {
         httpCallBeanBaseline.setVersion("v"+(version.substring(0,version.indexOf("."))));
         this.version = version;
         return this;
     }
 
-    public CougarTestingInvoker setOperation(String operation) {
+    public DiscoTestingInvoker setOperation(String operation) {
         return setOperation(operation,operation);
     }
 
-    public CougarTestingInvoker setOperation(String operation, String operationPath) {
+    public DiscoTestingInvoker setOperation(String operation, String operationPath) {
         httpCallBeanBaseline.setOperationName(operationPath);
         this.operation = operation;
         return this;
     }
 
-    public CougarTestingInvoker addHeaderParam(String key, String value) {
+    public DiscoTestingInvoker addHeaderParam(String key, String value) {
         headerParams.put(key, value);
         return this;
     }
 
-    public CougarTestingInvoker addQueryParam(String key, String value) {
+    public DiscoTestingInvoker addQueryParam(String key, String value) {
         queryParams.put(key, value);
         return this;
     }
@@ -106,7 +106,7 @@ class LegacyCougarTestingInvoker implements CougarTestingInvoker {
 
 
     @Override
-    public CougarTestingInvoker makeSoapCall() {
+    public DiscoTestingInvoker makeSoapCall() {
         this.timestamp = new Timestamp(System.currentTimeMillis());
         this.numCalls = 1;
 
@@ -114,12 +114,12 @@ class LegacyCougarTestingInvoker implements CougarTestingInvoker {
         Document request = new XMLHelpers().getXMLObjectFromString(soapBody);
         httpCallBeanBaseline.setPostObjectForRequestType(request, "SOAP");
 
-        cougarManager.makeSoapCougarHTTPCalls(httpCallBeanBaseline);
+        discoManager.makeSoapDiscoHTTPCalls(httpCallBeanBaseline);
 
         return this;
     }
 
-    public CougarTestingInvoker makeMatrixRescriptCalls(CougarMessageContentTypeEnum... mediaTypes) {
+    public DiscoTestingInvoker makeMatrixRescriptCalls(DiscoMessageContentTypeEnum... mediaTypes) {
         this.timestamp = new Timestamp(System.currentTimeMillis());
         this.numCalls = mediaTypes.length*mediaTypes.length;
 
@@ -133,13 +133,13 @@ class LegacyCougarTestingInvoker implements CougarTestingInvoker {
 
         // Make the 4 REST calls to the operation
         // this ignores the media types that have been set
-        cougarManager.makeRestCougarHTTPCalls(httpCallBeanBaseline);
+        discoManager.makeRestDiscoHTTPCalls(httpCallBeanBaseline);
 
         return this;
     }
 
     @Override
-    public CougarTestingInvoker makeJsonRpcCalls() {
+    public DiscoTestingInvoker makeJsonRpcCalls() {
         this.timestamp = new Timestamp(System.currentTimeMillis());
         this.numCalls = 1;
 
@@ -148,19 +148,19 @@ class LegacyCougarTestingInvoker implements CougarTestingInvoker {
         Map<String,String>[] mapArray = jsonCalls.toArray(new Map[jsonCalls.size()]);
         httpCallBeanBaseline.setBatchedRequests(mapArray);
 
-        cougarManager.makeRestCougarHTTPCall(httpCallBeanBaseline, CougarMessageProtocolRequestTypeEnum.RESTJSON, CougarMessageContentTypeEnum.JSON);
+        discoManager.makeRestDiscoHTTPCall(httpCallBeanBaseline, DiscoMessageProtocolRequestTypeEnum.RESTJSON, DiscoMessageContentTypeEnum.JSON);
 
         return this;
     }
 
     @Override
-    public CougarTestingInvoker setSoapBody(String body) {
+    public DiscoTestingInvoker setSoapBody(String body) {
         this.soapBody = body;
         return this;
     }
 
     @Override
-    public CougarTestingInvoker addJsonRpcMethodCall(String id, String method, String body) {
+    public DiscoTestingInvoker addJsonRpcMethodCall(String id, String method, String body) {
         Map<String,String> call = new HashMap<>();
         call.put("id",id);
         call.put("method",method);
@@ -170,16 +170,16 @@ class LegacyCougarTestingInvoker implements CougarTestingInvoker {
     }
 
     @Override
-    public CougarTestingInvoker addJsonRpcExpectedResponse(String body) {
+    public DiscoTestingInvoker addJsonRpcExpectedResponse(String body) {
         expectedResponsesJsonRpc.add(body);
         return this;
     }
 
-    public CougarTestingInvoker setExpectedResponse(CougarMessageContentTypeEnum mediaType, String response) {
-        if (mediaType == CougarMessageContentTypeEnum.XML) {
+    public DiscoTestingInvoker setExpectedResponse(DiscoMessageContentTypeEnum mediaType, String response) {
+        if (mediaType == DiscoMessageContentTypeEnum.XML) {
             expectedResponseXML = new XMLHelpers().getXMLObjectFromString(response);
         }
-        else if (mediaType == CougarMessageContentTypeEnum.JSON) {
+        else if (mediaType == DiscoMessageContentTypeEnum.JSON) {
             try {
                 expectedResponseJson = new JSONHelpers().createAsJSONObject(new JSONObject(response));
             }
@@ -193,33 +193,33 @@ class LegacyCougarTestingInvoker implements CougarTestingInvoker {
         return this;
     }
 
-    public CougarTestingInvoker setExpectedHttpResponse(int code, String text) {
+    public DiscoTestingInvoker setExpectedHttpResponse(int code, String text) {
         expectedHttpStatusCode = code;
         expectedHttpStatusText = text;
         return this;
     }
 
-    public CougarTestingInvoker verify() {
+    public DiscoTestingInvoker verify() {
         if (expectedResponseXML != null) {
             // Check the 4 responses are as expected
-            HttpResponseBean response7 = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
+            HttpResponseBean response7 = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
             AssertionUtils.multiAssertEquals(expectedResponseXML, response7.getResponseObject());
             AssertionUtils.multiAssertEquals(expectedHttpStatusCode, response7.getHttpStatusCode());
             AssertionUtils.multiAssertEquals(expectedHttpStatusText, response7.getHttpStatusText());
 
-            HttpResponseBean response10 = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
+            HttpResponseBean response10 = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
             AssertionUtils.multiAssertEquals(expectedResponseXML, response10.getResponseObject());
             AssertionUtils.multiAssertEquals(expectedHttpStatusCode, response10.getHttpStatusCode());
             AssertionUtils.multiAssertEquals(expectedHttpStatusText, response10.getHttpStatusText());
         }
 
         if (expectedResponseJson != null) {
-            HttpResponseBean response8 = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+            HttpResponseBean response8 = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
             AssertionUtils.multiAssertEquals(expectedResponseJson, response8.getResponseObject());
             AssertionUtils.multiAssertEquals(expectedHttpStatusCode, response8.getHttpStatusCode());
             AssertionUtils.multiAssertEquals(expectedHttpStatusText, response8.getHttpStatusText());
 
-            HttpResponseBean response9 = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
+            HttpResponseBean response9 = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
             AssertionUtils.multiAssertEquals(expectedResponseJson, response9.getResponseObject());
             AssertionUtils.multiAssertEquals(expectedHttpStatusCode, response9.getHttpStatusCode());
             AssertionUtils.multiAssertEquals(expectedHttpStatusText, response9.getHttpStatusText());
@@ -227,10 +227,10 @@ class LegacyCougarTestingInvoker implements CougarTestingInvoker {
 
         if (!expectedResponsesJsonRpc.isEmpty()) {
             try {
-                HttpResponseBean response = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+                HttpResponseBean response = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
                 // Convert the returned json object to a map for comparison
-                CougarHelpers cougarHelpers = new CougarHelpers();
-                Map<String, Object> map5 = cougarHelpers.convertBatchedResponseToMap(response);
+                DiscoHelpers discoHelpers = new DiscoHelpers();
+                Map<String, Object> map5 = discoHelpers.convertBatchedResponseToMap(response);
                 for (int i=0; i<expectedResponsesJsonRpc.size(); i++) {
                     AssertionUtils.multiAssertEquals(expectedResponsesJsonRpc.get(i), map5.get("response"+(i+1)));
                 }
@@ -254,7 +254,7 @@ class LegacyCougarTestingInvoker implements CougarTestingInvoker {
                 for (int i=0; i<numCalls; i++) {
                     reqs[i] = new RequestLogRequirement(version, operation);
                 }
-                requestLogEntries = CougarManager.getInstance().verifyRequestLogEntriesAfterDate(timestamp, reqs);
+                requestLogEntries = DiscoManager.getInstance().verifyRequestLogEntriesAfterDate(timestamp, reqs);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);

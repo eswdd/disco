@@ -18,14 +18,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>com.betfair.cougar</groupId>
-		<artifactId>cougar-health-service</artifactId>
+		<groupId>uk.co.exemel.disco</groupId>
+		<artifactId>disco-health-service</artifactId>
 		<version>3.3-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>cougar-health-service-idd</artifactId>
+	<artifactId>disco-health-service-idd</artifactId>
 	<packaging>jar</packaging>
-	<name>cougar-health-service-idd</name>
+	<name>disco-health-service-idd</name>
 	
 	<build>
 		<resources>

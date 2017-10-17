@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api.fault;
+package uk.co.exemel.disco.api.fault;
 
 /**
  * Denotes who is the causer of a particular fault.

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.security;
+package uk.co.exemel.disco.core.impl.security;
 
 import javax.naming.NamingException;
 import javax.naming.ldap.Rdn;

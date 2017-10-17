@@ -16,15 +16,15 @@
  */
 
 // Originally from UpdatedComponentTests/ResponseTypes/RPC/RPC_Post_SetResponse.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.responsetypes.rpc;
+package uk.co.exemel.disco.tests.updatedcomponenttests.responsetypes.rpc;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -34,15 +34,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that when a Batched JSON request is performed against Cougar, passing a Set in the post body, it is correctly de-serialized, processed, returned the correct response.
+ * Ensure that when a Batched JSON request is performed against Disco, passing a Set in the post body, it is correctly de-serialized, processed, returned the correct response.
  */
 public class RPCPostSetResponseTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean callBean = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        CougarManager cougarManager = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean callBean = discoManager1.getNewHttpCallBean("87.248.113.14");
+        DiscoManager discoManager = discoManager1;
         // Set the call bean to use JSON batching
         callBean.setJSONRPC(true);
         // Set the list of requests to make a batched call to
@@ -60,12 +60,12 @@ public class RPCPostSetResponseTest {
 
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
         // Make JSON call to the operation requesting a JSON response
-        cougarManager.makeRestCougarHTTPCall(callBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager.makeRestDiscoHTTPCall(callBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Get the response to the batched query (store the response for further comparison as order of batched responses cannot be relied on)
-        HttpResponseBean response = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         // Convert the returned json object to a map for comparison
-        CougarHelpers cougarHelpers4 = new CougarHelpers();
-        Map<String, Object> map5 = cougarHelpers4.convertBatchedResponseToMap(response);
+        DiscoHelpers discoHelpers4 = new DiscoHelpers();
+        Map<String, Object> map5 = discoHelpers4.convertBatchedResponseToMap(response);
         AssertionUtils.multiAssertEquals(new JSONObject("{\"id\":1,\"result\":[\"Value a\",\"Value b\"],\"jsonrpc\":\"2.0\"}"), new JSONObject((String)map5.get("response1")), "/result");
         AssertionUtils.multiAssertEquals(new JSONObject("{\"id\":2,\"result\":[\"Value c\",\"Value d\"],\"jsonrpc\":\"2.0\"}"), new JSONObject((String)map5.get("response2")), "/result");
         AssertionUtils.multiAssertEquals(200, map5.get("httpStatusCode"));
@@ -74,9 +74,9 @@ public class RPCPostSetResponseTest {
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
 
-        cougarManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "testSimpleSetGet"),new RequestLogRequirement("2.8", "testSimpleSetGet") );
+        discoManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "testSimpleSetGet"),new RequestLogRequirement("2.8", "testSimpleSetGet") );
 
-        cougarManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
+        discoManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
     }
 
 }

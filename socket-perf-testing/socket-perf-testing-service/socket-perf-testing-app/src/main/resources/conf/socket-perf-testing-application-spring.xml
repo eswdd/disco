@@ -22,26 +22,26 @@
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 
-    <bean class="com.betfair.cougar.util.configuration.PropertyConfigurer">
-        <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
+    <bean class="uk.co.exemel.disco.util.configuration.PropertyConfigurer">
+        <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
 	    <property name="defaultConfig" value="classpath:conf/socket-perf-testing-defaults.properties"/>
 	    <property name="configOverride" value="overrides.properties"/>
 	    <property name="placeholderPrefix" value="$PUSH{"/>
 	</bean>
 
 	<!-- define a log file -->
-	<bean class="com.betfair.cougar.logging.EventLogDefinition" init-method="register">
+	<bean class="uk.co.exemel.disco.logging.EventLogDefinition" init-method="register">
 		<property name="logName" value="PUSH-ASYNC-LOG"/>
 		<property name="registry" ref="eventLoggingRegistry"/>
         <property name="handler">
-            <bean factory-bean="cougar.core.logHandlerFactory" factory-method="registerLogHandler">
+            <bean factory-bean="disco.core.logHandlerFactory" factory-method="registerLogHandler">
                 <constructor-arg type="java.util.Map">
                     <util:map map-class="java.util.HashMap">
                         <entry key="logName" value="PUSH-ASYNC-LOG"/>
-                        <entry key="fileName" value="$COUGAR{cougar.log.dir}/$COUGAR{system.hostname}-$COUGAR{cougar.app.name}-async-request.log"/>
-                        <entry key="flush" value="$PUSH{cougar.log.PUSH-ASYNC-LOG.flush}"/>
-                        <entry key="append" value="$PUSH{cougar.log.PUSH-ASYNC-LOG.append}"/>
-                        <entry key="rotation" value="$PUSH{cougar.log.PUSH-ASYNC-LOG.rotation}"/>
+                        <entry key="fileName" value="$COUGAR{disco.log.dir}/$COUGAR{system.hostname}-$COUGAR{disco.app.name}-async-request.log"/>
+                        <entry key="flush" value="$PUSH{disco.log.PUSH-ASYNC-LOG.flush}"/>
+                        <entry key="append" value="$PUSH{disco.log.PUSH-ASYNC-LOG.append}"/>
+                        <entry key="rotation" value="$PUSH{disco.log.PUSH-ASYNC-LOG.rotation}"/>
                         <entry key="abstractLogger" value="false"/>
                     </util:map>
                 </constructor-arg>
@@ -51,8 +51,8 @@
 
 
     <!-- Generate the service beans -->
-	<bean id="socketPerfTestingService" class="com.betfair.cougar.perf.socket.SocketPerfTestingServiceImpl">
-        <constructor-arg ref="cougar.core.MonitorRegistry"/>
+	<bean id="socketPerfTestingService" class="uk.co.exemel.disco.perf.socket.SocketPerfTestingServiceImpl">
+        <constructor-arg ref="disco.core.MonitorRegistry"/>
         <property name="concurrency" value="$PUSH{perftest.concurrency}"/>
         <property name="numHeapsForTest" value="$PUSH{perftest.numHeapsForTest}"/>
         <property name="numUpdates" value="$PUSH{perftest.numUpdates}"/>
@@ -60,20 +60,20 @@
 
 
 
-    <bean class="com.betfair.cougar.core.impl.ev.ServiceRegistration">
+    <bean class="uk.co.exemel.disco.core.impl.ev.ServiceRegistration">
         <property name="resolver">
-            <bean class="com.betfair.cougar.perf.socket.v1.SocketPerfTestingSyncServiceExecutableResolver">
+            <bean class="uk.co.exemel.disco.perf.socket.v1.SocketPerfTestingSyncServiceExecutableResolver">
                 <property name="service" ref="socketPerfTestingService"/>
             </bean>
         </property>
         <property name="serviceDefinition">
-            <bean class="com.betfair.cougar.perf.socket.v1.SocketPerfTestingServiceDefinition"/>
+            <bean class="uk.co.exemel.disco.perf.socket.v1.SocketPerfTestingServiceDefinition"/>
         </property>
         <property name="service" ref="socketPerfTestingService"/>
         <property name="bindingDescriptors">
             <util:set>
-                <bean class="com.betfair.cougar.perf.socket.v1.rescript.SocketPerfTestingRescriptServiceBindingDescriptor"/>
-                <bean class="com.betfair.cougar.perf.socket.v1.socket.SocketPerfTestingSocketServiceBindingDescriptor"/>
+                <bean class="uk.co.exemel.disco.perf.socket.v1.rescript.SocketPerfTestingRescriptServiceBindingDescriptor"/>
+                <bean class="uk.co.exemel.disco.perf.socket.v1.socket.SocketPerfTestingSocketServiceBindingDescriptor"/>
             </util:set>
         </property>
     </bean>

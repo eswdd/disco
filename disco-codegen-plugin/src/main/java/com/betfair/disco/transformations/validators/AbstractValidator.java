@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transformations.validators;
+package uk.co.exemel.disco.transformations.validators;
 
-import com.betfair.cougar.transformations.AbstractTransformer;
-import com.betfair.cougar.codegen.Validator;
+import uk.co.exemel.disco.transformations.AbstractTransformer;
+import uk.co.exemel.disco.codegen.Validator;
 
 public abstract class AbstractValidator extends AbstractTransformer implements Validator {
 	// Well this does nowt after a refactor. But it might. So leave it in.

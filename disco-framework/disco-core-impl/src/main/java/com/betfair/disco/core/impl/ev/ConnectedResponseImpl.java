@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.core.api.ev.ConnectedResponse;
-import com.betfair.cougar.core.api.ev.Subscription;
+import uk.co.exemel.disco.core.api.ev.ConnectedResponse;
+import uk.co.exemel.disco.core.api.ev.Subscription;
 import com.betfair.platform.virtualheap.Heap;
 import com.betfair.platform.virtualheap.ImmutableHeap;
 

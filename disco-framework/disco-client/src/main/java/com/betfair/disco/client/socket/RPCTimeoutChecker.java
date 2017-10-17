@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket;
+package uk.co.exemel.disco.client.socket;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.netutil.nio.HandlerListener;
-import com.betfair.cougar.netutil.nio.NioUtils;
-import com.betfair.cougar.netutil.nio.RequestResponseManager;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.netutil.nio.HandlerListener;
+import uk.co.exemel.disco.netutil.nio.NioUtils;
+import uk.co.exemel.disco.netutil.nio.RequestResponseManager;
 import org.apache.mina.common.IoSession;
 
 import java.util.LinkedList;

@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.exception;
+package uk.co.exemel.disco.core.api.exception;
 
-import com.betfair.cougar.core.api.fault.CougarFault;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
 
 import java.util.logging.Level;
 
 /**
- * Default Cougar 1.3 compatibility mode Exception
+ * Default Disco 1.3 compatibility mode Exception
  */
-public class CompatabilityServiceException extends CougarException {
+public class CompatabilityServiceException extends DiscoException {
 
-    public CompatabilityServiceException(CougarFault fault) {
+    public CompatabilityServiceException(DiscoFault fault) {
         super(Level.SEVERE, fault.getErrorCode().startsWith("DSC") ?  ServerFaultCode.ServiceCheckedException : ServerFaultCode.ServiceRuntimeException,
-           "Compatability Mode exception received (Cougar 2 client of Cougar 1.3 service) :  " + fault.getDetail().getDetailMessage());
+           "Compatability Mode exception received (Disco 2 client of Disco 1.3 service) :  " + fault.getDetail().getDetailMessage());
     }
 
 }

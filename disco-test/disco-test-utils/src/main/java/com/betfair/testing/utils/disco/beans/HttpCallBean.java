@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.beans;
+package com.betfair.testing.utils.disco.beans;
 
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum;
-import com.betfair.testing.utils.cougar.helpers.SOAPRequestBuilder;
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum;
+import com.betfair.testing.utils.disco.helpers.SOAPRequestBuilder;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
@@ -43,7 +43,7 @@ public class HttpCallBean {
 	private String serviceName;
 	private String serviceExtension;
 	private String version;
-	private Map<CougarMessageProtocolRequestTypeEnum, Object> postQueryObjects = new HashMap<CougarMessageProtocolRequestTypeEnum,Object>();
+	private Map<DiscoMessageProtocolRequestTypeEnum, Object> postQueryObjects = new HashMap<DiscoMessageProtocolRequestTypeEnum,Object>();
 	private Map<String, String> pathParams = null;
 	private Map<String, String> queryParams = null;
 	private List<BatchedRequestBean> batchedRequests = null;
@@ -54,7 +54,7 @@ public class HttpCallBean {
 	private JSONHelpers jHelpers = new JSONHelpers();
 	private XMLHelpers xHelpers = new XMLHelpers();
 	
-	private Map<CougarMessageProtocolResponseTypeEnum, HttpResponseBean> responses = new HashMap<CougarMessageProtocolResponseTypeEnum, HttpResponseBean>();
+	private Map<DiscoMessageProtocolResponseTypeEnum, HttpResponseBean> responses = new HashMap<DiscoMessageProtocolResponseTypeEnum, HttpResponseBean>();
 		
 	private String baseNameSpace = "http://www.betfair.com/servicetypes";
 	private String nameSpaceVersion;
@@ -121,10 +121,10 @@ public class HttpCallBean {
 	public void setPathParams(Map<String, String> pathParams) {
 		this.pathParams = pathParams;
 	}
-	public Map<CougarMessageProtocolRequestTypeEnum,Object> getPostQueryObjects() {
+	public Map<DiscoMessageProtocolRequestTypeEnum,Object> getPostQueryObjects() {
 		return postQueryObjects;
 	}
-	public Object getPostQueryObjectsByEnum(CougarMessageProtocolRequestTypeEnum protocolRequestType) {
+	public Object getPostQueryObjectsByEnum(DiscoMessageProtocolRequestTypeEnum protocolRequestType) {
 		if (postQueryObjects==null) {
 			return null;
 		} else {
@@ -135,13 +135,13 @@ public class HttpCallBean {
 	public void setRestPostQueryObjects(Document document) {
 		
 		if (document==null) {
-			postQueryObjects.put(CougarMessageProtocolRequestTypeEnum.RESTJSON, null);
-			postQueryObjects.put(CougarMessageProtocolRequestTypeEnum.RESTXML, null);
+			postQueryObjects.put(DiscoMessageProtocolRequestTypeEnum.RESTJSON, null);
+			postQueryObjects.put(DiscoMessageProtocolRequestTypeEnum.RESTXML, null);
 		} else {
 			Document newDocument = null;
 			try {
 				/* 
-				 * Changes to the existing cougar interface - now all REST requests are wrapped in 
+				 * Changes to the existing disco interface - now all REST requests are wrapped in 
 				 * OperationNameRequest tag. This wraps existing test inputs to conform to new standards. 
 				 */
 				DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -153,7 +153,7 @@ public class HttpCallBean {
 				newDocument.appendChild(root);
 				
 				/* 
-				 * Due to changes in the main cougar engine where it expects the operation names
+				 * Due to changes in the main disco engine where it expects the operation names
 				 * to start in lowercase, a bit of string handling to convert old tests' XML to 
 				 * conform to the new standard. 
 				 */
@@ -185,8 +185,8 @@ public class HttpCallBean {
 			jHelpers.removeJSONObjectHoldingSameTypeList(jsonRequest);
 			String jsonString = jsonRequest.toString();
 			
-			postQueryObjects.put(CougarMessageProtocolRequestTypeEnum.RESTJSON, jsonString);					
-			postQueryObjects.put(CougarMessageProtocolRequestTypeEnum.RESTXML, xmlString.split("\\?>")[1]);
+			postQueryObjects.put(DiscoMessageProtocolRequestTypeEnum.RESTJSON, jsonString);					
+			postQueryObjects.put(DiscoMessageProtocolRequestTypeEnum.RESTXML, xmlString.split("\\?>")[1]);
 		}
 	}
 	
@@ -199,7 +199,7 @@ public class HttpCallBean {
 	{
 		SOAPRequestBuilder requestBuilder = new SOAPRequestBuilder();
 		
-		postQueryObjects.put(CougarMessageProtocolRequestTypeEnum.SOAP, requestBuilder.buildSOAPRequest(document, this));
+		postQueryObjects.put(DiscoMessageProtocolRequestTypeEnum.SOAP, requestBuilder.buildSOAPRequest(document, this));
 	}
 	
 	
@@ -210,7 +210,7 @@ public class HttpCallBean {
 	 */
 	public void setSOAPMessage(SOAPMessage soapMessage)
 	{
-		postQueryObjects.put(CougarMessageProtocolRequestTypeEnum.SOAP, soapMessage);
+		postQueryObjects.put(DiscoMessageProtocolRequestTypeEnum.SOAP, soapMessage);
 	}
 	
 	public String getAuthority() {
@@ -225,12 +225,12 @@ public class HttpCallBean {
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-	public Map<CougarMessageProtocolResponseTypeEnum, HttpResponseBean> getResponses() {
+	public Map<DiscoMessageProtocolResponseTypeEnum, HttpResponseBean> getResponses() {
 		return responses;
 	}
 	
-	public HttpResponseBean getResponseObjectsByEnum(CougarMessageProtocolResponseTypeEnum protocolResponseType) {
-		//return responses.get(CougarMessageProtocolResponseTypeEnum.valueOf(protocolResponseType.toString()));
+	public HttpResponseBean getResponseObjectsByEnum(DiscoMessageProtocolResponseTypeEnum protocolResponseType) {
+		//return responses.get(DiscoMessageProtocolResponseTypeEnum.valueOf(protocolResponseType.toString()));
 		switch (protocolResponseType) {
 		case SOAP:
 			return responses.get(protocolResponseType);
@@ -249,7 +249,7 @@ public class HttpCallBean {
 		}
 	}
 	
-	private HttpResponseBean createRestJSONResponseBean(CougarMessageProtocolResponseTypeEnum protocolResponseType){
+	private HttpResponseBean createRestJSONResponseBean(DiscoMessageProtocolResponseTypeEnum protocolResponseType){
 		
 		HttpResponseBean jsonResponseBean = responses.get(protocolResponseType);
 		String responseString = (String)jsonResponseBean.getResponseObject();
@@ -282,7 +282,7 @@ public class HttpCallBean {
 		}
 	}
 	
-	private HttpResponseBean createRestXMLResponseBean(CougarMessageProtocolResponseTypeEnum protocolResponseType){
+	private HttpResponseBean createRestXMLResponseBean(DiscoMessageProtocolResponseTypeEnum protocolResponseType){
 		
 		HttpResponseBean xmlResponseBean = responses.get(protocolResponseType);
 		String responseString = (String)xmlResponseBean.getResponseObject();
@@ -306,7 +306,7 @@ public class HttpCallBean {
 		}
 	}
 	
-	private HttpResponseBean createRestDefaultResponseBean(CougarMessageProtocolResponseTypeEnum protocolResponseType){
+	private HttpResponseBean createRestDefaultResponseBean(DiscoMessageProtocolResponseTypeEnum protocolResponseType){
 		HttpResponseBean unknownResponseBean = responses.get(protocolResponseType);
 		HttpResponseBean returnUnknownResponseBean = new HttpResponseBean();
 		String unknownResponseString = (String)unknownResponseBean.getResponseObject();
@@ -324,7 +324,7 @@ public class HttpCallBean {
 		returnUnknownResponseBean.setResponseObject(castedResponseObject);
 		return returnUnknownResponseBean;
 	}
-	public void setResponseByEnum(CougarMessageProtocolResponseTypeEnum protocolResponseType, HttpResponseBean response) {
+	public void setResponseByEnum(DiscoMessageProtocolResponseTypeEnum protocolResponseType, HttpResponseBean response) {
 		responses.put(protocolResponseType, response);
 	}
 	
@@ -335,9 +335,9 @@ public class HttpCallBean {
 	 */
 	public void setPostObjectForRequestType(Document document, Object protocolRequestType)
 	{
-		postQueryObjects = new HashMap<CougarMessageProtocolRequestTypeEnum,Object>();
+		postQueryObjects = new HashMap<DiscoMessageProtocolRequestTypeEnum,Object>();
 		
-		CougarMessageProtocolRequestTypeEnum type = CougarMessageProtocolRequestTypeEnum.valueOf(protocolRequestType.toString());
+		DiscoMessageProtocolRequestTypeEnum type = DiscoMessageProtocolRequestTypeEnum.valueOf(protocolRequestType.toString());
 		
 		switch(type)
 		{
@@ -389,13 +389,13 @@ public class HttpCallBean {
 	public void setPostQueryObjects(
 			Map<Object, Object> postQueryObjects) {
 		
-		Map<CougarMessageProtocolRequestTypeEnum, Object> castedMap = new HashMap<CougarMessageProtocolRequestTypeEnum, Object>();
-		CougarMessageProtocolRequestTypeEnum newKey;
+		Map<DiscoMessageProtocolRequestTypeEnum, Object> castedMap = new HashMap<DiscoMessageProtocolRequestTypeEnum, Object>();
+		DiscoMessageProtocolRequestTypeEnum newKey;
 		Object value;
 		for (Map.Entry<Object, Object> entry:postQueryObjects.entrySet()) {
 			Object key = entry.getKey();
-			if (key.getClass()!=CougarMessageProtocolRequestTypeEnum.class) {
-				newKey = CougarMessageProtocolRequestTypeEnum.valueOf(key.toString());
+			if (key.getClass()!=DiscoMessageProtocolRequestTypeEnum.class) {
+				newKey = DiscoMessageProtocolRequestTypeEnum.valueOf(key.toString());
 				value = entry.getValue();
 				castedMap.put(newKey, value);
 			}

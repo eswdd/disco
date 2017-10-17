@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.ev;
+package uk.co.exemel.disco.core.api.ev;
 
-import com.betfair.cougar.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ServiceVersion;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.springframework.jmx.export.annotation.ManagedAttribute;

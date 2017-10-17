@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,8 +29,8 @@ import org.eclipse.jetty.server.handler.ErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CougarErrorHandler extends ErrorHandler {
-	private final static Logger LOGGER = LoggerFactory.getLogger(CougarErrorHandler.class);
+public class DiscoErrorHandler extends ErrorHandler {
+	private final static Logger LOGGER = LoggerFactory.getLogger(DiscoErrorHandler.class);
 
 	public static final int BUFFSIZE = 1024;
 

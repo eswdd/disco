@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api;
+package uk.co.exemel.disco.core.api;
 
 
 public interface GateListener {
@@ -22,6 +22,6 @@ public interface GateListener {
 	 * The priority of the gate Listener - higher numbers will run earlier
 	 */
 	public int getPriority();
-	public void onCougarStart();
+	public void onDiscoStart();
 	public String getName();
 }

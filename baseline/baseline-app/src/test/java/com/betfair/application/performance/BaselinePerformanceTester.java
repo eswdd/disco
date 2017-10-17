@@ -311,7 +311,7 @@ public class BaselinePerformanceTester implements BaselineClientConstants {
             bytesReceived.addAndGet(baos.toByteArray().length);
             
             if (CHECK_LOG && NUM_THREADS == 1) {
-            	File logFile = new File("C:\\perforce\\se\\development\\HEAD\\cougar\\cougar-framework\\baseline\\baseline-launch\\logs\\request-Baseline.log");
+            	File logFile = new File("C:\\perforce\\se\\development\\HEAD\\disco\\disco-framework\\baseline\\baseline-launch\\logs\\request-Baseline.log");
             	String lastLine = getLastLine(logFile);
             	int tries = 0;
             	while (!lastLine.contains(METHOD_NAMES.get(call.getName()))) {

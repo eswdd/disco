@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline.security;
+package uk.co.exemel.disco.baseline.security;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.security.*;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.security.*;
 
 import java.security.Principal;
 import java.util.ArrayList;

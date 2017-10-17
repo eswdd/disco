@@ -19,15 +19,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
-        <artifactId>cougar-framework</artifactId>
+        <groupId>uk.co.exemel.disco</groupId>
+        <artifactId>disco-framework</artifactId>
         <version>3.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cougar-client</artifactId>
+    <artifactId>disco-client</artifactId>
     <packaging>jar</packaging>
 
-    <name>cougar-client</name>
+    <name>disco-client</name>
     <build>
         <resources>
             <resource>
@@ -50,8 +50,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-core-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-core-api</artifactId>
             <version>${project.version}</version>
             <exclusions>
                 <exclusion>
@@ -62,36 +62,36 @@
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-marshalling-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-marshalling-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-transport-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-transport-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-core-impl</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-core-impl</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>net-util</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-util</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-util</artifactId>
         </dependency>
 
         <dependency>
@@ -102,7 +102,7 @@
         <!-- Test dependencies -->
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>socket-transport</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
@@ -110,8 +110,8 @@
 
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-transport-impl</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-transport-impl</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -137,8 +137,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-test-mocks</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-test-mocks</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

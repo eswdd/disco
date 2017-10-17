@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.testing.concurrency;
+package uk.co.exemel.disco.testing.concurrency;
 
-import com.betfair.testing.utils.cougar.beans.BatchedRequestBean;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.beans.BatchedRequestBean;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 import org.json.JSONException;
 
 import java.sql.Timestamp;
@@ -107,8 +107,8 @@ public class RPCConcurrentBatchedRequests {
 			this.identifier = identifier;
 		}
 
-		private CougarManager cougarManager = CougarManager.getInstance();
-		private CougarHelpers cougarHelpers = new CougarHelpers();
+		private DiscoManager discoManager = DiscoManager.getInstance();
+		private DiscoHelpers discoHelpers = new DiscoHelpers();
 
 		private String identifier;
 		private int numberOfRequests;
@@ -176,7 +176,7 @@ public class RPCConcurrentBatchedRequests {
 				Date time = new Date();
 				//System.out.println("Making call: " + identifier + "-" + "Response " + loopCounter + " at: " + time.getTime()) ;
 				expectedRequestTimes.put(identifier + "Response " + loopCounter, new Timestamp(time.getTime()));
-				cougarManager.makeRestCougarHTTPCall(callBean, CougarMessageProtocolRequestTypeEnum.RESTJSON, CougarMessageContentTypeEnum.JSON);
+				discoManager.makeRestDiscoHTTPCall(callBean, DiscoMessageProtocolRequestTypeEnum.RESTJSON, DiscoMessageContentTypeEnum.JSON);
 				loopCounter++;
 			}
 
@@ -184,9 +184,9 @@ public class RPCConcurrentBatchedRequests {
 			//Get actual responses
 			loopCounter=0;
 			for (HttpCallBean httpCallBean: httpCallBeans) {
-				HttpResponseBean responseBean = httpCallBean.getResponseObjectsByEnum(CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+				HttpResponseBean responseBean = httpCallBean.getResponseObjectsByEnum(DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
 				responseBean.clearResponseHeaders();
-				Map<String,Object> responseMap = cougarHelpers.convertBatchedResponseToMap(responseBean);
+				Map<String,Object> responseMap = discoHelpers.convertBatchedResponseToMap(responseBean);
 				actualResponses.put(identifier + "Response " + loopCounter, responseMap);
 				loopCounter++;
 			}

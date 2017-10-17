@@ -14,44 +14,44 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.security.IdentityResolverFactory;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.logging.EventLoggingRegistry;
-import com.betfair.cougar.marshalling.api.socket.RemotableMethodInvocationMarshaller;
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.transport.api.CommandResolver;
-import com.betfair.cougar.transport.api.CommandValidator;
-import com.betfair.cougar.transport.api.ExecutionCommand;
-import com.betfair.cougar.transport.api.protocol.CougarObjectInput;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
-import com.betfair.cougar.netutil.nio.hessian.HessianObjectIOFactory;
-import com.betfair.cougar.transport.api.protocol.socket.InvocationResponse;
-import com.betfair.cougar.transport.api.protocol.socket.SocketOperationBindingDescriptor;
-import com.betfair.cougar.transport.impl.AbstractCommandProcessor;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.security.IdentityResolverFactory;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.logging.EventLoggingRegistry;
+import uk.co.exemel.disco.marshalling.api.socket.RemotableMethodInvocationMarshaller;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.transport.api.CommandResolver;
+import uk.co.exemel.disco.transport.api.CommandValidator;
+import uk.co.exemel.disco.transport.api.ExecutionCommand;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectInput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
+import uk.co.exemel.disco.netutil.nio.hessian.HessianObjectIOFactory;
+import uk.co.exemel.disco.transport.api.protocol.socket.InvocationResponse;
+import uk.co.exemel.disco.transport.api.protocol.socket.SocketOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.impl.AbstractCommandProcessor;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.*;
@@ -221,12 +221,12 @@ public class SocketTransportCommandProcessorTest {
             try {
                 final String success="success";
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                CougarObjectOutput dos = new HessianObjectIOFactory(false).newCougarObjectOutput(bos, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+                DiscoObjectOutput dos = new HessianObjectIOFactory(false).newDiscoObjectOutput(bos, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
                 dos.flush();
                 //Test onResult
                 cmd.onResult(new ExecutionResult(success));
                 assertArrayEquals("CorrelationId wasn't written to the output stream correctly", bos.toByteArray(), out.toByteArray());
-                verify(marshaller).writeInvocationResponse(argThat(matchesSuccessResponse(success)), any(CougarObjectOutput.class),anyByte());
+                verify(marshaller).writeInvocationResponse(argThat(matchesSuccessResponse(success)), any(DiscoObjectOutput.class),anyByte());
 
                 out.reset();
                 //This is necessary because the mockito gubbins that records an operation cannot handle
@@ -237,10 +237,10 @@ public class SocketTransportCommandProcessorTest {
                 commandProcessor.setMarshaller(marshaller);
 
                 //Test onException
-                CougarException ex = new CougarServiceException(ServerFaultCode.AcceptTypeNotValid, "BANG!");
+                DiscoException ex = new DiscoServiceException(ServerFaultCode.AcceptTypeNotValid, "BANG!");
                 cmd.onResult(new ExecutionResult(ex));
                 assertArrayEquals("CorrelationId wasn't written to the output stream correctly", bos.toByteArray(), out.toByteArray());
-                verify(marshaller).writeInvocationResponse(argThat(matchesExceptionalResponse(ex)), any(CougarObjectOutput.class),anyByte());
+                verify(marshaller).writeInvocationResponse(argThat(matchesExceptionalResponse(ex)), any(DiscoObjectOutput.class),anyByte());
 
 
             } catch (IOException ex) {
@@ -294,7 +294,7 @@ public class SocketTransportCommandProcessorTest {
         }
 
         @Override
-        public void writeErrorResponse(SocketTransportCommand command, DehydratedExecutionContext context, CougarException e, boolean traceStarted) {
+        public void writeErrorResponse(SocketTransportCommand command, DehydratedExecutionContext context, DiscoException e, boolean traceStarted) {
         }
 
         @Override
@@ -311,22 +311,22 @@ public class SocketTransportCommandProcessorTest {
         public void setExecutor(Executor executor) {
         }
 
-        public void onCougarStart() {
-            commandProcessor.onCougarStart();
+        public void onDiscoStart() {
+            commandProcessor.onDiscoStart();
         }
     }
 
     private CommandResolver<SocketTransportCommand> createCommandResolver(TimeConstraints toReturn, Tracer tracer) throws IOException {
         SocketTransportRPCCommand command = Mockito.mock(SocketTransportRPCCommand.class);
-        when(command.getOutput()).thenReturn(new HessianObjectIOFactory(false).newCougarObjectOutput(out, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED));
+        when(command.getOutput()).thenReturn(new HessianObjectIOFactory(false).newDiscoObjectOutput(out, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED));
         MyIoSession session = new MyIoSession("abc");
-        session.setAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME, CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        session.setAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME, DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         when(command.getSession()).thenReturn(session);
 
-        when(marshaller.readExecutionContext(any(CougarObjectInput.class), any(String.class), any(X509Certificate[].class), anyInt(), anyByte())).thenReturn(ctx);
-        when(marshaller.readOperationKey(any(CougarObjectInput.class))).thenReturn(key);
-        when(marshaller.readArgs(any(Parameter[].class), any(CougarObjectInput.class))).thenReturn(args);
-        when(marshaller.readTimeConstraintsIfPresent(any(CougarObjectInput.class), anyByte())).thenReturn(toReturn);
+        when(marshaller.readExecutionContext(any(DiscoObjectInput.class), any(String.class), any(X509Certificate[].class), anyInt(), anyByte())).thenReturn(ctx);
+        when(marshaller.readOperationKey(any(DiscoObjectInput.class))).thenReturn(key);
+        when(marshaller.readArgs(any(Parameter[].class), any(DiscoObjectInput.class))).thenReturn(args);
+        when(marshaller.readTimeConstraintsIfPresent(any(DiscoObjectInput.class), anyByte())).thenReturn(toReturn);
 
         final OperationKey opKey = new OperationKey(new ServiceVersion(1,0), "TestingService", "TestCall");
         OperationDefinition opDef = Mockito.mock(OperationDefinition.class);
@@ -344,7 +344,7 @@ public class SocketTransportCommandProcessorTest {
         when(desc.getServiceName()).thenReturn(opKey.getServiceName());
         when(desc.getServiceVersion()).thenReturn(opKey.getVersion());
         d.bind(desc);
-        d.onCougarStart();
+        d.onDiscoStart();
         return d.createCommandResolver(command, tracer);
     }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.json;
+package uk.co.exemel.disco.marshalling.impl.databinding.json;
 
 
 import java.io.IOException;
@@ -22,15 +22,15 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.marshalling.api.databinding.FaultMarshaller;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.betfair.cougar.core.api.fault.CougarFault;
-import com.betfair.cougar.core.api.fault.FaultController;
-import com.betfair.cougar.core.api.fault.FaultDetail;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
+import uk.co.exemel.disco.core.api.fault.FaultController;
+import uk.co.exemel.disco.core.api.fault.FaultDetail;
 
 public class JSONMarshaller implements Marshaller, FaultMarshaller {
 	private final ObjectMapper objectMapper;
@@ -49,14 +49,14 @@ public class JSONMarshaller implements Marshaller, FaultMarshaller {
 		try {
 			objectMapper.writeValue(outputStream, result);
 		} catch (JsonProcessingException e) {
-            throw CougarMarshallingException.marshallingException(getFormat(), "Failed to marshall object of class "+result.getClass().getCanonicalName()+" to JSON", e, client);
+            throw DiscoMarshallingException.marshallingException(getFormat(), "Failed to marshall object of class "+result.getClass().getCanonicalName()+" to JSON", e, client);
 		} catch (IOException e) {
-            throw CougarMarshallingException.marshallingException(getFormat(), "Failed to write JSON object to stream", e, client);
+            throw DiscoMarshallingException.marshallingException(getFormat(), "Failed to write JSON object to stream", e, client);
         }
 	}
 
 	@Override
-	public void marshallFault(OutputStream outputStream, CougarFault fault, String encoding) {
+	public void marshallFault(OutputStream outputStream, DiscoFault fault, String encoding) {
 		HashMap<String,Object> faultMap = new HashMap<>();
 		HashMap<String,Object> detailMap = new HashMap<>();
 		faultMap.put("faultcode", fault.getFaultCode().name());

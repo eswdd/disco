@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api;
+package uk.co.exemel.disco.core.api;
 
 import java.util.Set;
 
-import com.betfair.cougar.api.Service;
+import uk.co.exemel.disco.api.Service;
 
 /**
  * Interface to be implemented by any object that wishes to be notified
- * of the {@link com.betfair.cougar.api.Service}s hosted in the cougar container
+ * of the {@link uk.co.exemel.disco.api.Service}s hosted in the disco container
  *
  */
 public interface ServiceAware {

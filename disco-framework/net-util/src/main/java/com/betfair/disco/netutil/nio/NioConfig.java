@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
-import com.betfair.cougar.netutil.nio.monitoring.SessionWriteQueueMonitoring;
+import uk.co.exemel.disco.netutil.nio.monitoring.SessionWriteQueueMonitoring;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.ThreadModel;
 import org.apache.mina.common.support.BaseIoServiceConfig;
@@ -95,12 +95,12 @@ public class NioConfig {
 
         config.getFilterChain().addLast("slowHandling", new SessionWriteQueueMonitoring(nioLogger, maxWriteQueueSize));
         config.getFilterChain().addLast("codec",
-                new ProtocolCodecFilter(new CougarProtocolEncoder(nioLogger), new CougarProtocolDecoder(nioLogger)));
+                new ProtocolCodecFilter(new DiscoProtocolEncoder(nioLogger), new DiscoProtocolDecoder(nioLogger)));
         if (isServer) {
-            config.getFilterChain().addLast("protocol", CougarProtocol.getServerInstance(nioLogger, keepAliveInterval, keepAliveTimeout, null, false, false));
+            config.getFilterChain().addLast("protocol", DiscoProtocol.getServerInstance(nioLogger, keepAliveInterval, keepAliveTimeout, null, false, false));
         }
         else {
-            config.getFilterChain().addLast("protocol", CougarProtocol.getClientInstance(nioLogger, keepAliveInterval, keepAliveTimeout, null, false, false, rpcTimeoutMillis));
+            config.getFilterChain().addLast("protocol", DiscoProtocol.getClientInstance(nioLogger, keepAliveInterval, keepAliveTimeout, null, false, false, rpcTimeoutMillis));
         }
 
         config.setThreadModel(ThreadModel.MANUAL);

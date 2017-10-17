@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.assertions;
+package com.betfair.testing.utils.disco.assertions;
 
 
-import com.betfair.testing.utils.cougar.misc.AggregatedStepExpectedOutputMetaData;
-import com.betfair.testing.utils.cougar.misc.NameValuePair;
+import com.betfair.testing.utils.disco.misc.AggregatedStepExpectedOutputMetaData;
+import com.betfair.testing.utils.disco.misc.NameValuePair;
 
 import java.util.List;
 

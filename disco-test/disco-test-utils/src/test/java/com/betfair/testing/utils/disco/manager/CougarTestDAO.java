@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.manager;
+package com.betfair.testing.utils.disco.manager;
 
-import com.betfair.testing.utils.cougar.daos.ICougarDAO;
+import com.betfair.testing.utils.disco.daos.IDiscoDAO;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -28,7 +28,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CougarTestDAO implements ICougarDAO {
+public class DiscoTestDAO implements IDiscoDAO {
 	
 	public List<HttpUriRequest> methods = new ArrayList<HttpUriRequest>();
 

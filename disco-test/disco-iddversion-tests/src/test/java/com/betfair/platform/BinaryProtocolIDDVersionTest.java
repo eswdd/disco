@@ -19,7 +19,7 @@ package com.betfair.platform;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import uk.co.exemel.disco.logging.DiscoLoggingUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -31,7 +31,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
-import com.betfair.cougar.client.socket.ExecutionVenueNioClient;
+import uk.co.exemel.disco.client.socket.ExecutionVenueNioClient;
 import org.slf4j.LoggerFactory;
 
 public class BinaryProtocolIDDVersionTest extends TestSuite{
@@ -41,11 +41,11 @@ public class BinaryProtocolIDDVersionTest extends TestSuite{
 
 
 	@BeforeClass
-	public void startCougarClient() throws ClientProtocolException, IOException, InterruptedException {
+	public void startDiscoClient() throws ClientProtocolException, IOException, InterruptedException {
         initSystemProperties();
 		httpClient = new DefaultHttpClient();
 		setServerHealth(OK);
-		CougarLoggingUtils.setTraceLogger(null); //because trace log is static and multiple spring contexts will try to set it
+		DiscoLoggingUtils.setTraceLogger(null); //because trace log is static and multiple spring contexts will try to set it
 		TestClientContextFactory context = new TestClientContextFactory();
 		springContext = (ClassPathXmlApplicationContext) context.create("conf/binary-client-spring.xml");
 		BaselineSyncClient baselineClient = (BaselineSyncClient) springContext.getBean("baselineClient");
@@ -56,14 +56,14 @@ public class BinaryProtocolIDDVersionTest extends TestSuite{
 
 
 	@AfterClass
-	public void stopCougarClient() {
+	public void stopDiscoClient() {
 		((ExecutionVenueNioClient)springContext.getBean("socketTransport")).stop();
 		springContext.getBeanFactory().destroySingletons();
 		springContext.stop();
 	}
 
 	private void setServerHealth(String health) throws ClientProtocolException, IOException, InterruptedException {
-		HttpPost post = new HttpPost("http://localhost:8080/www/cougarBaseline/v2.0/setHealthStatusInfo");
+		HttpPost post = new HttpPost("http://localhost:8080/www/discoBaseline/v2.0/setHealthStatusInfo");
 		post.setEntity(new StringEntity(health));
 		post.setHeader("Content-type", "application/json");
 		releaseConnection(httpClient.execute(post));

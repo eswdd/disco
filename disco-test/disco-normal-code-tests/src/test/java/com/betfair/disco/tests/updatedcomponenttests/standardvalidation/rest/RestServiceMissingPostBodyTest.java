@@ -15,43 +15,43 @@
  */
 
 // Originally from UpdatedComponentTests/StandardValidation/REST/Rest_Service_MissingPostBody.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardvalidation.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardvalidation.rest;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 
 import java.sql.Timestamp;
 
 /**
- * Ensure that Cougar returns the correct fault, when a REST POST request is made with a missing post body
+ * Ensure that Disco returns the correct fault, when a REST POST request is made with a missing post body
  */
 public class RestServiceMissingPostBodyTest {
     @Test
     public void doTest() throws Exception {
         // Create the HttpCallBean
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean httpCallBeanBaseline = cougarManager1.getNewHttpCallBean();
-        CougarManager cougarManagerBaseline = cougarManager1;
-        // Get the cougar logging attribute for getting log entries later
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean httpCallBeanBaseline = discoManager1.getNewHttpCallBean();
+        DiscoManager discoManagerBaseline = discoManager1;
+        // Get the disco logging attribute for getting log entries later
         // Point the created HttpCallBean at the correct service
-        httpCallBeanBaseline.setServiceName("baseline", "cougarBaseline");
+        httpCallBeanBaseline.setServiceName("baseline", "discoBaseline");
         
         httpCallBeanBaseline.setVersion("v2");
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean2 = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        cougarManager2 = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean2 = discoManager2.getNewHttpCallBean("87.248.113.14");
+        discoManager2 = discoManager2;
         
-        cougarManager2.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        discoManager2.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         
         getNewHttpCallBean2.setOperationName("testLargePost");
         
-        getNewHttpCallBean2.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean2.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean2.setVersion("v2");
         // Don't set the post body to anything
@@ -60,27 +60,27 @@ public class RestServiceMissingPostBodyTest {
 
         Timestamp getTimeAsTimeStamp9 = new Timestamp(System.currentTimeMillis());
         // Make the 4 REST calls to the invalid operation
-        cougarManager2.makeRestCougarHTTPCalls(getNewHttpCallBean2);
+        discoManager2.makeRestDiscoHTTPCalls(getNewHttpCallBean2);
         // Check the 4 responses are as expected (Not Found)
-        HttpResponseBean response4 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
+        HttpResponseBean response4 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
         AssertionUtils.multiAssertEquals((int) 404, response4.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Not Found", response4.getHttpStatusText());
         
-        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         AssertionUtils.multiAssertEquals((int) 404, response5.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Not Found", response5.getHttpStatusText());
         
-        HttpResponseBean response6 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        HttpResponseBean response6 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
         AssertionUtils.multiAssertEquals((int) 404, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Not Found", response6.getHttpStatusText());
         
-        HttpResponseBean response7 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
+        HttpResponseBean response7 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
         AssertionUtils.multiAssertEquals((int) 404, response7.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Not Found", response7.getHttpStatusText());
         // Check the log entries are as expected
         
-        CougarManager cougarManager9 = CougarManager.getInstance();
-        cougarManager9.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9, new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/testLargePost", "NotFound"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/testLargePost", "NotFound"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/testLargePost", "NotFound"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/testLargePost", "NotFound") );
+        DiscoManager discoManager9 = DiscoManager.getInstance();
+        discoManager9.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9, new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/testLargePost", "NotFound"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/testLargePost", "NotFound"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/testLargePost", "NotFound"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/testLargePost", "NotFound") );
     }
 
 }

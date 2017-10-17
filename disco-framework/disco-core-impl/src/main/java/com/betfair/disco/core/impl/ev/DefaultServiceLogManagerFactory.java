@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.core.api.ServiceDefinition;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.ServiceLogManager;
-import com.betfair.cougar.core.api.ev.ServiceLogManagerFactory;
-import com.betfair.cougar.logging.EventLoggingRegistry;
+import uk.co.exemel.disco.core.api.ServiceDefinition;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.ServiceLogManager;
+import uk.co.exemel.disco.core.api.ev.ServiceLogManagerFactory;
+import uk.co.exemel.disco.logging.EventLoggingRegistry;
 
 /**
  *

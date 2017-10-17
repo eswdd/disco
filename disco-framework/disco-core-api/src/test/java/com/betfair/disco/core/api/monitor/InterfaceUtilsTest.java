@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.monitor;
+package uk.co.exemel.disco.core.api.monitor;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,8 +23,8 @@ import java.io.Serializable;
 import com.betfair.tornjak.monitor.MonitorRegistry;
 import org.junit.Test;
 
-import com.betfair.cougar.api.ContainerContext;
-import com.betfair.cougar.api.Service;
+import uk.co.exemel.disco.api.ContainerContext;
+import uk.co.exemel.disco.api.Service;
 
 public class InterfaceUtilsTest{
 

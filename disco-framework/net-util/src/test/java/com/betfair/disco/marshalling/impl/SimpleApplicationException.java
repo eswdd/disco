@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl;
+package uk.co.exemel.disco.marshalling.impl;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.api.transcription.Transcribable;
-import com.betfair.cougar.core.api.transcription.TranscribableParams;
-import com.betfair.cougar.core.api.transcription.TranscriptionInput;
-import com.betfair.cougar.core.api.transcription.TranscriptionOutput;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.api.transcription.Transcribable;
+import uk.co.exemel.disco.core.api.transcription.TranscribableParams;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionInput;
+import uk.co.exemel.disco.core.api.transcription.TranscriptionOutput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ import java.util.Set;
 /**
  *
  */
-public class SimpleApplicationException extends CougarApplicationException implements Transcribable {
+public class SimpleApplicationException extends DiscoApplicationException implements Transcribable {
 
     private static final Parameter __responseCodeParameter = new Parameter("responseCode",new ParameterType(ResponseCode.class, null ),false);
 	private static final Parameter __stackSizeParameter = new Parameter("stackSize",new ParameterType(Integer.class, null ),false);

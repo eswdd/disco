@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.monitoring;
+package uk.co.exemel.disco.netutil.nio.monitoring;
 
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.NioUtils;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.NioUtils;
 import org.apache.mina.common.IoFilterAdapter;
 import org.apache.mina.common.IoSession;
 import org.slf4j.Logger;

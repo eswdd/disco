@@ -16,15 +16,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/SOAP/SOAP_TestParameterStyles_ENUM_VALID_3.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.soap;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -36,23 +36,23 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * Test that Cougar can correctly handle a valid ENUM. In this case HeaderParam is FooBar
+ * Test that Disco can correctly handle a valid ENUM. In this case HeaderParam is FooBar
  */
 public class SOAPTestParameterStylesENUMVALID3Test {
     @Test
     public void doTest() throws Exception {
         // Convert the time to system TimeZone
-        CougarHelpers cougarHelpers1 = new CougarHelpers();
-        Date convertedDate1 = cougarHelpers1.convertToSystemTimeZone("2009-06-01T13:50:00.0Z");
+        DiscoHelpers discoHelpers1 = new DiscoHelpers();
+        Date convertedDate1 = discoHelpers1.convertToSystemTimeZone("2009-06-01T13:50:00.0Z");
         // Create the SOAP request as an XML Document
         XMLHelpers xMLHelpers2 = new XMLHelpers();
         Document createAsDocument1 = xMLHelpers2.getXMLObjectFromString("<TestParameterStylesQARequest><HeaderParam>FooBar</HeaderParam><queryParam>qp1</queryParam><dateQueryParam>2009-06-01T13:50:00.0Z</dateQueryParam></TestParameterStylesQARequest>");
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager3 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean2 = cougarManager3.getNewHttpCallBean("87.248.113.14");
-        CougarManager cougarManager2 = cougarManager3;
+        DiscoManager discoManager3 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean2 = discoManager3.getNewHttpCallBean("87.248.113.14");
+        DiscoManager discoManager2 = discoManager3;
 
-        cougarManager2.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        discoManager2.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
 
         getNewHttpCallBean2.setServiceName("Baseline");
 
@@ -63,18 +63,18 @@ public class SOAPTestParameterStylesENUMVALID3Test {
 
         Timestamp getTimeAsTimeStamp8 = new Timestamp(System.currentTimeMillis());
         // Make the SOAP call to the operation
-        cougarManager2.makeSoapCougarHTTPCalls(getNewHttpCallBean2);
+        discoManager2.makeSoapDiscoHTTPCalls(getNewHttpCallBean2);
         // Create the expected response object as an XML document (A message stating if the number of items in the list was correct)
         XMLHelpers xMLHelpers5 = new XMLHelpers();
-        Document createAsDocument10 = xMLHelpers5.createAsDocument(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(("<response><message>headerParam=FooBar,queryParam=qp1,dateQueryParam="+cougarHelpers1.dateInUTC(convertedDate1)+"</message></response>").getBytes())));
+        Document createAsDocument10 = xMLHelpers5.createAsDocument(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(("<response><message>headerParam=FooBar,queryParam=qp1,dateQueryParam="+discoHelpers1.dateInUTC(convertedDate1)+"</message></response>").getBytes())));
         // Check the response is as expected
-        HttpResponseBean response6 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response6 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(createAsDocument10, response6.getResponseObject());
 
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
 
-        cougarManager2.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp8, new RequestLogRequirement("2.8", "testParameterStylesQA") );
+        discoManager2.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp8, new RequestLogRequirement("2.8", "testParameterStylesQA") );
     }
 
 }

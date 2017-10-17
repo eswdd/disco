@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api;
+package uk.co.exemel.disco.core.api;
 
-import com.betfair.cougar.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
 
 public interface OperationBindingDescriptor {
 

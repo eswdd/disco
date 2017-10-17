@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.clienttests;
+package uk.co.exemel.disco.tests.clienttests;
 
 import com.betfair.baseline.v2.enumerations.SimpleEnum;
 import com.betfair.baseline.v2.to.BodyParamByteObject;
@@ -34,12 +34,12 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class CougarClientResponseTypeUtilsTest {
+public class DiscoClientResponseTypeUtilsTest {
 	
 	@Test
 	public void buildMapTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		Map<String, String> returnedMap = utils.buildMap("1,2,3,4","a,b,c,d");
 		
@@ -52,7 +52,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void buildIntMapTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		Map<Integer, Integer> returnedMap = utils.buildIntMap("1,2,3,4","11,22,33,44");
 		
@@ -65,7 +65,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void buildListTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		List<String> returnedList = utils.buildList("a,b,c,d");
 		
@@ -78,7 +78,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void buildIntListTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		List<Integer> returnedList = utils.buildIntList("1,2,3,4");
 		
@@ -91,7 +91,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void buildEnumListTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		List<SimpleEnum> returnedList = utils.buildEnumList("FOO,BAR,FOOBAR");
 		
@@ -104,7 +104,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void buildSetTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		Set<String> returnedSet = utils.buildSet("a,b,c,d");
 		
@@ -117,7 +117,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void buildIntSetTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		Set<Integer> returnedSet = utils.buildIntSet("1,2,3,4");
 		
@@ -130,7 +130,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void buildEnumSetTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		Set<SimpleEnum> returnedSet = utils.buildEnumSet("FOO,BAR,FOOBAR");
 		
@@ -142,7 +142,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void buildComplexMapTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		SomeComplexObject obj1 = new SomeComplexObject();
 		obj1.setStringParameter("obj1");
@@ -163,7 +163,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void compareComplexMapTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		SomeComplexObject obj1 = new SomeComplexObject();
 		obj1.setStringParameter("String value for aaa");
@@ -189,7 +189,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void buildComplexDelegateMapTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		Map<String,SomeComplexObject> returnedMap = utils.buildComplexDelegateMap();
 		
@@ -199,7 +199,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void buildComplexDelegateReturnMapTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		SomeComplexObject obj1 = new SomeComplexObject();
 		obj1.setStringParameter("obj1");
@@ -225,7 +225,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void compareComplexDelegateMapsTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		SomeComplexObject obj1 = new SomeComplexObject();
 		obj1.setStringParameter("obj1");
@@ -251,7 +251,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void buildComplexSetTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		SomeComplexObject obj1 = new SomeComplexObject();
 		obj1.setStringParameter("obj1");
@@ -272,7 +272,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void createEmptyComplexListTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		List<ComplexObject> returnedList = utils.createEmptyComplexList();
 		
@@ -282,7 +282,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void createSetOfDatesTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		Date date1 = new Date();
 		Date date2 = new Date();
@@ -300,7 +300,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void createMapOfDatesTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		Date date1 = new Date();
 		Date date2 = new Date();
@@ -319,7 +319,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void buildByteBodyParamObjectTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		String bytes = "-1,2,127";
 		BodyParamByteObject responseBody = utils.buildByteBodyParamObject(bytes);
@@ -333,7 +333,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void compareByteArraysTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		byte[] byteArray = new byte[3];
 		byteArray[0] = Byte.valueOf("1");
@@ -354,7 +354,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void compareSetsTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		Set<String> set1 = new HashSet<String>();
 		set1.add("a");
@@ -374,7 +374,7 @@ public class CougarClientResponseTypeUtilsTest {
 	@Test
 	public void compareMapTest(){
 		
-		CougarClientResponseTypeUtils utils = new CougarClientResponseTypeUtils();
+		DiscoClientResponseTypeUtils utils = new DiscoClientResponseTypeUtils();
 		
 		Map<String,String> map1 = new HashMap<String,String>();
 		map1.put("a","value for a");

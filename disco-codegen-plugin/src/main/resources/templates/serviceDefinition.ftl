@@ -21,11 +21,11 @@ package ${package}.${majorVersion};
 
 import ${package}.${majorVersion}.to.*;
 import ${package}.${majorVersion}.enumerations.*;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.transcription.*;
-import com.betfair.cougar.core.api.client.EnumWrapper;
-import com.betfair.cougar.core.api.*;
-import com.betfair.cougar.core.api.ev.ConnectedResponse;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.transcription.*;
+import uk.co.exemel.disco.core.api.client.EnumWrapper;
+import uk.co.exemel.disco.core.api.*;
+import uk.co.exemel.disco.core.api.ev.ConnectedResponse;
 import java.util.*;
 
 <#assign parsedInterface=parseInterface(doc)>

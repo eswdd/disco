@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.codegen;
+package uk.co.exemel.disco.codegen;
 
 import java.io.File;
 import java.io.InputStream;
@@ -25,7 +25,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 
-import com.betfair.cougar.codegen.except.PluginException;
+import uk.co.exemel.disco.codegen.except.PluginException;
 
 
 public class XmlUtil {

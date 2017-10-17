@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.xml;
+package uk.co.exemel.disco.marshalling.impl.databinding.xml;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,7 +35,7 @@ import javax.xml.validation.SchemaFactory;
 import org.apache.commons.io.FileUtils;
 import org.xml.sax.SAXException;
 
-import com.betfair.cougar.core.api.exception.PanicInTheCougar;
+import uk.co.exemel.disco.core.api.exception.PanicInTheDisco;
 
 public class XMLUtils {
 
@@ -102,9 +102,9 @@ public class XMLUtils {
                 return sf.newSchema(new StreamSource(new StringReader(content)));
             }
         } catch (IOException e) {
-            throw new PanicInTheCougar(e);
+            throw new PanicInTheDisco(e);
         } catch (SAXException e) {
-            throw new PanicInTheCougar(e);
+            throw new PanicInTheDisco(e);
         } finally {
             if(tempFile!=null)tempFile.delete();
         }

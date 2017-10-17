@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline;
+package uk.co.exemel.disco.baseline;
 
 import com.betfair.baseline.v2.BaselineClient;
 import com.betfair.baseline.v2.BaselineService;
@@ -26,7 +26,7 @@ import com.betfair.baseline.v2.co.server.SimpleConnectedObjectServerCO;
 import com.betfair.baseline.v2.co.server.VeryComplexObjectServerCO;
 import com.betfair.baseline.v2.enumerations.AsyncBehaviour;
 import com.betfair.baseline.v2.enumerations.ClientServerEnum;
-import com.betfair.baseline.v2.enumerations.CougarComponentStatuses;
+import com.betfair.baseline.v2.enumerations.DiscoComponentStatuses;
 import com.betfair.baseline.v2.enumerations.EnumHandling3BodyParameterEnum;
 import com.betfair.baseline.v2.enumerations.EnumHandling3WrappedValueEnum;
 import com.betfair.baseline.v2.enumerations.EnumHandlingParam2Enum;
@@ -57,29 +57,29 @@ import com.betfair.baseline.v2.events.TimeTick;
 import com.betfair.baseline.v2.exception.SimpleException;
 import com.betfair.baseline.v2.exception.WotsitException;
 import com.betfair.baseline.v2.to.*;
-import com.betfair.cougar.api.ContainerContext;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.security.Identity;
-import com.betfair.cougar.core.api.GateListener;
-import com.betfair.cougar.core.api.ev.ConnectedResponse;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.Subscription;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.events.EventTransportIdentity;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.builder.SetBuilder;
-import com.betfair.cougar.core.impl.ev.ConnectedResponseImpl;
-import com.betfair.cougar.core.impl.ev.DefaultSubscription;
-import com.betfair.cougar.core.impl.logging.AbstractLoggingControl;
-import com.betfair.cougar.core.impl.security.SSLAwareTokenResolver;
+import uk.co.exemel.disco.api.ContainerContext;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.security.Identity;
+import uk.co.exemel.disco.core.api.GateListener;
+import uk.co.exemel.disco.core.api.ev.ConnectedResponse;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.Subscription;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.events.EventTransportIdentity;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.builder.SetBuilder;
+import uk.co.exemel.disco.core.impl.ev.ConnectedResponseImpl;
+import uk.co.exemel.disco.core.impl.ev.DefaultSubscription;
+import uk.co.exemel.disco.core.impl.logging.AbstractLoggingControl;
+import uk.co.exemel.disco.core.impl.security.SSLAwareTokenResolver;
 import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.util.configuration.PropertyConfigurer;
+import uk.co.exemel.disco.util.configuration.PropertyConfigurer;
 import com.betfair.nonservice.v3.NonSyncClient;
 import com.betfair.tornjak.kpi.aop.KPITimedEvent;
 import com.betfair.platform.virtualheap.HListComplex;
@@ -190,7 +190,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 	}
 
     @Override
-    public String echoCougarPropertyValue(RequestContext ctx, String propertyName, TimeConstraints timeConstraints){
+    public String echoDiscoPropertyValue(RequestContext ctx, String propertyName, TimeConstraints timeConstraints){
         ctx.setRequestLogExtension(new BaselineLogExtension(propertyName, null, null));
 
         final Map<String,String> props = PropertyConfigurer.getAllLoadedProperties();
@@ -545,10 +545,10 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 	}
 
-    @KPITimedEvent(value = "Baseline.service.testNamedCougarException", catchFailures = true)
+    @KPITimedEvent(value = "Baseline.service.testNamedDiscoException", catchFailures = true)
     @Override
-    public SimpleResponse testNamedCougarException(RequestContext ctx, String errorCodeName, TimeConstraints timeConstraints) {
-        throw new CougarServiceException(ServerFaultCode.valueOf(errorCodeName), "Test throwing an exception with error code: "+errorCodeName);
+    public SimpleResponse testNamedDiscoException(RequestContext ctx, String errorCodeName, TimeConstraints timeConstraints) {
+        throw new DiscoServiceException(ServerFaultCode.valueOf(errorCodeName), "Test throwing an exception with error code: "+errorCodeName);
     }
 
     @KPITimedEvent(value = "Baseline.service.testSleep", catchFailures = true)
@@ -1024,11 +1024,11 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
 
 		ctx.setRequestLogExtension(new BaselineLogExtension(message, null, null));
 
-		CougarComponentStatuses cacheAccessStatusDetail = message
+		DiscoComponentStatuses cacheAccessStatusDetail = message
 				.getCacheAccessStatusDetail();
-		CougarComponentStatuses dbConnectionStatusDetail = message
+		DiscoComponentStatuses dbConnectionStatusDetail = message
 				.getDBConnectionStatusDetail();
-		CougarComponentStatuses serviceStatusDetail = message
+		DiscoComponentStatuses serviceStatusDetail = message
 				.getServiceStatusDetail();
 		Boolean initialiseHealthStatusDetail = message.getInitialiseHealthStatusObject();
 
@@ -1974,7 +1974,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
     }
 
     @Override
-    public void onCougarStart() {
+    public void onDiscoStart() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -2124,7 +2124,7 @@ public class BaselineServiceImpl implements BaselineService, GateListener {
         }
         else {
             // implement other protocols when we have the transports
-            throw new CougarServiceException(ServerFaultCode.FrameworkError, "Unsupported protocol: "+protocol);
+            throw new DiscoServiceException(ServerFaultCode.FrameworkError, "Unsupported protocol: "+protocol);
         }
 
         return ConnectedObjectTestingUtils.testConnectedObjects(ctx, client, protocol);

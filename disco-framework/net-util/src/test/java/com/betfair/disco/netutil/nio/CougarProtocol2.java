@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
-import com.betfair.cougar.netutil.nio.message.*;
-import com.betfair.cougar.util.jmx.Exportable;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.netutil.nio.message.*;
+import uk.co.exemel.disco.util.jmx.Exportable;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import org.apache.mina.common.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,21 +28,21 @@ import org.springframework.jmx.export.annotation.ManagedResource;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.betfair.cougar.netutil.nio.NioLogger.LoggingLevel.PROTOCOL;
-import static com.betfair.cougar.netutil.nio.NioLogger.LoggingLevel.SESSION;
+import static uk.co.exemel.disco.netutil.nio.NioLogger.LoggingLevel.PROTOCOL;
+import static uk.co.exemel.disco.netutil.nio.NioLogger.LoggingLevel.SESSION;
 
 /**
- * CougarProtocol for version 2 of the protocol
+ * DiscoProtocol for version 2 of the protocol
  */
 @ManagedResource
-public class CougarProtocol2 extends IoFilterAdapter implements Exportable, ICougarProtocol {
+public class DiscoProtocol2 extends IoFilterAdapter implements Exportable, IDiscoProtocol {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CougarProtocol2.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DiscoProtocol2.class);
 
     private static final KeepAliveMessage KEEP_ALIVE = new KeepAliveMessage();
 
-    public static final String PROTOCOL_VERSION_ATTR_NAME = "CougarProtocol.sessionProtocolVersion";
-    public static final String IS_SERVER_ATTR_NAME = "CougarProtocol.isServer";
+    public static final String PROTOCOL_VERSION_ATTR_NAME = "DiscoProtocol.sessionProtocolVersion";
+    public static final String IS_SERVER_ATTR_NAME = "DiscoProtocol.isServer";
 
     public static final byte APPLICATION_PROTOCOL_VERSION_CLIENT_ONLY_RPC = 1;
     public static final byte APPLICATION_PROTOCOL_VERSION_BIDIRECTION_RPC = 2;
@@ -57,19 +57,19 @@ public class CougarProtocol2 extends IoFilterAdapter implements Exportable, ICou
     private static byte minClientProtocolVersion = APPLICATION_PROTOCOL_VERSION_MIN_SUPPORTED;
 
     public static void setMaxServerProtocolVersion(byte maxServerProtocolVersion) {
-        CougarProtocol2.maxServerProtocolVersion = maxServerProtocolVersion;
+        DiscoProtocol2.maxServerProtocolVersion = maxServerProtocolVersion;
     }
 
     public static void setMaxClientProtocolVersion(byte maxClientProtocolVersion) {
-        CougarProtocol2.maxClientProtocolVersion = maxClientProtocolVersion;
+        DiscoProtocol2.maxClientProtocolVersion = maxClientProtocolVersion;
     }
 
     public static void setMinServerProtocolVersion(byte minServerProtocolVersion) {
-        CougarProtocol2.minServerProtocolVersion = minServerProtocolVersion;
+        DiscoProtocol2.minServerProtocolVersion = minServerProtocolVersion;
     }
 
     public static void setMinClientProtocolVersion(byte minClientProtocolVersion) {
-        CougarProtocol2.minClientProtocolVersion = minClientProtocolVersion;
+        DiscoProtocol2.minClientProtocolVersion = minClientProtocolVersion;
     }
 
     private byte[] getServerAcceptableVersions() {
@@ -104,7 +104,7 @@ public class CougarProtocol2 extends IoFilterAdapter implements Exportable, ICou
 
     private String lastSessionFrom = null;
 
-    public CougarProtocol2(boolean server, NioLogger nioLogger, int keepAliveInterval, int keepAliveTimeout) {
+    public DiscoProtocol2(boolean server, NioLogger nioLogger, int keepAliveInterval, int keepAliveTimeout) {
         this.isServer = server;
         this.nioLogger = nioLogger;
         this.interval = keepAliveInterval;
@@ -119,7 +119,7 @@ public class CougarProtocol2 extends IoFilterAdapter implements Exportable, ICou
 
             @Override
             public void operationComplete(IoFuture future) {
-                nioLogger.log(NioLogger.LoggingLevel.SESSION, ioSession, "CougarProtocol - Closing session after disconnection");
+                nioLogger.log(NioLogger.LoggingLevel.SESSION, ioSession, "DiscoProtocol - Closing session after disconnection");
                 future.getSession().close();
 
             }
@@ -137,7 +137,7 @@ public class CougarProtocol2 extends IoFilterAdapter implements Exportable, ICou
 
             @Override
             public void operationComplete(IoFuture future) {
-                nioLogger.log(NioLogger.LoggingLevel.SESSION, ioSession, "CougarProtocol - Suspended session");
+                nioLogger.log(NioLogger.LoggingLevel.SESSION, ioSession, "DiscoProtocol - Suspended session");
             }
         });
 
@@ -159,11 +159,11 @@ public class CougarProtocol2 extends IoFilterAdapter implements Exportable, ICou
     public void sessionIdle(NextFilter nextFilter, IoSession session, IdleStatus status) throws Exception {
         try {
             if (status == IdleStatus.WRITER_IDLE) {
-                nioLogger.log(PROTOCOL, session, "CougarProtocolCodecFilter: sending KEEP_ALIVE");
+                nioLogger.log(PROTOCOL, session, "DiscoProtocolCodecFilter: sending KEEP_ALIVE");
                 session.write(KEEP_ALIVE);
                 heartbeatsSent.incrementAndGet();
             } else {
-                nioLogger.log(PROTOCOL, session, "CougarProtocolCodecFilter: KEEP_ALIVE timeout closing session");
+                nioLogger.log(PROTOCOL, session, "DiscoProtocolCodecFilter: KEEP_ALIVE timeout closing session");
                 session.close();
                 heartbeatsMissed.incrementAndGet();
             }
@@ -178,7 +178,7 @@ public class CougarProtocol2 extends IoFilterAdapter implements Exportable, ICou
         session.setIdleTime(IdleStatus.WRITER_IDLE, interval);
         nextFilter.sessionCreated(session);
 
-        nioLogger.log(SESSION, session, "CougarProtocolCodecFilter: Created session at %s from %s", session.getCreationTime(), session.getRemoteAddress());
+        nioLogger.log(SESSION, session, "DiscoProtocolCodecFilter: Created session at %s from %s", session.getCreationTime(), session.getRemoteAddress());
         sessionsCreated.incrementAndGet();
         lastSessionFrom = session.getRemoteAddress().toString();
     }
@@ -201,7 +201,7 @@ public class CougarProtocol2 extends IoFilterAdapter implements Exportable, ICou
                             }
                         }
                         if (protocolVersionToUse >= minServerProtocolVersion) {
-                            nioLogger.log(PROTOCOL, session, "CougarProtocolDecoder: ACCEPTing connection request with version %s", protocolVersionToUse);
+                            nioLogger.log(PROTOCOL, session, "DiscoProtocolDecoder: ACCEPTing connection request with version %s", protocolVersionToUse);
                             session.setAttribute(PROTOCOL_VERSION_ATTR_NAME, protocolVersionToUse);
                             session.setAttribute(IS_SERVER_ATTR_NAME, true);
                             // this is used for all writes to the session after the initial handshaking
@@ -209,7 +209,7 @@ public class CougarProtocol2 extends IoFilterAdapter implements Exportable, ICou
                             session.write(new AcceptMessage(protocolVersionToUse));
                         } else {
                             //we don't speak your language. goodbye
-                            nioLogger.log(PROTOCOL, session, "CougarProtocolDecoder: REJECTing connection request with versions %s", getAsString(connectMessage.getApplicationVersions()));
+                            nioLogger.log(PROTOCOL, session, "DiscoProtocolDecoder: REJECTing connection request with versions %s", getAsString(connectMessage.getApplicationVersions()));
                             LOG.info("REJECTing connection request from session " + session.getRemoteAddress() + " with versions " + getAsString(connectMessage.getApplicationVersions()));
                             session.write(new RejectMessage(RejectMessageReason.INCOMPATIBLE_VERSION, getServerAcceptableVersions()));
                             session.close();
@@ -229,7 +229,7 @@ public class CougarProtocol2 extends IoFilterAdapter implements Exportable, ICou
                         session.close();
                         throw new IllegalStateException("Protocol version mismatch - client version is " + maxClientProtocolVersion + ", server has accepted " + acceptMessage.getAcceptedVersion());
                     }
-                    nioLogger.log(PROTOCOL, session, "CougarProtocolDecoder: ACCEPT received for with version %s", acceptMessage.getAcceptedVersion());
+                    nioLogger.log(PROTOCOL, session, "DiscoProtocolDecoder: ACCEPT received for with version %s", acceptMessage.getAcceptedVersion());
                     session.setAttribute(IS_SERVER_ATTR_NAME, false);
                     session.setAttribute(PROTOCOL_VERSION_ATTR_NAME, acceptMessage.getAcceptedVersion());
                     session.setAttribute(RequestResponseManager.SESSION_KEY, new RequestResponseManagerImpl(session, nioLogger, 0));
@@ -241,7 +241,7 @@ public class CougarProtocol2 extends IoFilterAdapter implements Exportable, ICou
                 case REJECT:
                     //Client Side - server has said foxtrot oscar
                     RejectMessage rejectMessage = (RejectMessage) protocolMessage;
-                    nioLogger.log(PROTOCOL, session, "CougarProtocolDecoder: REJECT received: versions accepted are %s", getAsString(rejectMessage.getAcceptableVersions()));
+                    nioLogger.log(PROTOCOL, session, "DiscoProtocolDecoder: REJECT received: versions accepted are %s", getAsString(rejectMessage.getAcceptableVersions()));
                     ClientHandshake handshake2 = (ClientHandshake) session.getAttribute(ClientHandshake.HANDSHAKE);
                     if (handshake2 != null) {
                         handshake2.reject();
@@ -249,18 +249,18 @@ public class CougarProtocol2 extends IoFilterAdapter implements Exportable, ICou
                     break;
                 case KEEP_ALIVE:
                     //Both sides keep alive received, which is ignored
-                    nioLogger.log(PROTOCOL, session, "CougarProtocolDecoder: KEEP_ALIVE received");
+                    nioLogger.log(PROTOCOL, session, "DiscoProtocolDecoder: KEEP_ALIVE received");
                     break;
                 case DISCONNECT:
                     //Client Side - server doesn't love us anymore
                     session.setAttribute(ProtocolMessage.ProtocolMessageType.DISCONNECT.name());
-                    nioLogger.log(PROTOCOL, session, "CougarProtocolDecoder: DISCONNECT received");
+                    nioLogger.log(PROTOCOL, session, "DiscoProtocolDecoder: DISCONNECT received");
                     session.close();
                     break;
                 case SUSPEND:
                     //Client Side - this session is about to be closed
                     session.setAttribute(ProtocolMessage.ProtocolMessageType.SUSPEND.name());
-                    nioLogger.log(PROTOCOL, session, "CougarProtocolDecoder: SUSPEND received");
+                    nioLogger.log(PROTOCOL, session, "DiscoProtocolDecoder: SUSPEND received");
                     break;
                 case MESSAGE_REQUEST:
                 case MESSAGE_RESPONSE:

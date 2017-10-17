@@ -625,7 +625,7 @@
       </operation>
 
     <operation name="testSimpleTypeReplacement" since="2.0.0">
-            <description>Test that simple types are handled by Cougar</description>
+            <description>Test that simple types are handled by Disco</description>
             <parameters>
 	            <request>
 					<parameter name="simpleInt" type="SimpleInt" mandatory="true">
@@ -1875,7 +1875,7 @@
 
 	<exceptionType name="SimpleException" prefix="SEX">
 		<!-- 
-			Cougar currently requires that all Exceptions have a first parameter
+			Disco currently requires that all Exceptions have a first parameter
 			that is defined by its valid values, all defined by an incrementing id 
 		-->
 		<description>This exception is thrown when an operation fails</description>
@@ -1902,7 +1902,7 @@
 	</exceptionType>
 	<exceptionType name="WotsitException" prefix="WEX">
 		<!-- 
-			Cougar currently requires that all Exceptions have a first parameter
+			Disco currently requires that all Exceptions have a first parameter
 			that is defined by its valid values, all defined by an incrementing id 
 		-->
 		<description>This exception might be thrown when an operation fails</description>

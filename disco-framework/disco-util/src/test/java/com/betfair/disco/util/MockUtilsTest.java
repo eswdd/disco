@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util;
+package uk.co.exemel.disco.util;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.api.Result;
-import com.betfair.cougar.api.fault.FaultCode;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.api.Result;
+import uk.co.exemel.disco.api.fault.FaultCode;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;

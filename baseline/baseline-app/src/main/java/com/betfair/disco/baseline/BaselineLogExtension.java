@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline;
+package uk.co.exemel.disco.baseline;
 
-import com.betfair.cougar.api.LogExtension;
+import uk.co.exemel.disco.api.LogExtension;
 
 public final class BaselineLogExtension implements LogExtension {
 

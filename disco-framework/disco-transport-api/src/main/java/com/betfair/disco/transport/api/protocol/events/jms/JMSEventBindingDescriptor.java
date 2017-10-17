@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.events.jms;
+package uk.co.exemel.disco.transport.api.protocol.events.jms;
 
-import com.betfair.cougar.core.api.events.Event;
-import com.betfair.cougar.transport.api.protocol.events.EventBindingDescriptor;
+import uk.co.exemel.disco.core.api.events.Event;
+import uk.co.exemel.disco.transport.api.protocol.events.EventBindingDescriptor;
 
 import java.util.List;
 

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.netutil.nio.message.RequestMessage;
-import com.betfair.cougar.netutil.nio.message.ResponseMessage;
+import uk.co.exemel.disco.netutil.nio.message.RequestMessage;
+import uk.co.exemel.disco.netutil.nio.message.ResponseMessage;
 import org.apache.mina.common.IoHandlerAdapter;
 import org.apache.mina.common.IoSession;
 

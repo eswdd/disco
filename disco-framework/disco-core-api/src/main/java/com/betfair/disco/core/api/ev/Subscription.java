@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.ev;
+package uk.co.exemel.disco.core.api.ev;
 
 /**
  * Represents a subscription, either to a push stream (connected object/operation) or a blind subscription to an event destination

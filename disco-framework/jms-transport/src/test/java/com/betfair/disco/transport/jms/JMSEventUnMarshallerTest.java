@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms;
+package uk.co.exemel.disco.transport.jms;
 
-import com.betfair.cougar.core.api.events.Event;
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
-import com.betfair.cougar.marshalling.api.databinding.UnMarshaller;
+import uk.co.exemel.disco.core.api.events.Event;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.marshalling.api.databinding.UnMarshaller;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
@@ -76,7 +76,7 @@ public class JMSEventUnMarshallerTest {
 
         unMarshaller.unmarshallEvent(eventBodyClasses, ExpectedEvent.class, message);
 
-        Mockito.verify(e).setCougarMessageRouteString(expectedRoutingString);
+        Mockito.verify(e).setDiscoMessageRouteString(expectedRoutingString);
         Mockito.verify(e).setMessageId(expectedMessageId);
     }
 

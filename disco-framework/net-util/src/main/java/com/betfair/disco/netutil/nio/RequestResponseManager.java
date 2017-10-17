@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
-import com.betfair.cougar.netutil.nio.message.ResponseMessage;
+import uk.co.exemel.disco.netutil.nio.message.ResponseMessage;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoSession;
 

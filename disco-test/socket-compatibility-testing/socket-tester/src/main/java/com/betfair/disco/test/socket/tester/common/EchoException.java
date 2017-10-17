@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.common;
+package uk.co.exemel.disco.test.socket.tester.common;
 
 /**
  *
  */
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.transcription.*;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.transcription.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ import java.util.Set;
  * This exception is thrown when an operation fails
  */
 @SuppressWarnings("all")
-public class EchoException extends CougarApplicationException implements Transcribable {
+public class EchoException extends DiscoApplicationException implements Transcribable {
     private static final String prefix = "EEX-";
 
     private static final Parameter __responseCodeParameter = new Parameter("responseCode",new ParameterType(ResponseCode.class, null ),false);

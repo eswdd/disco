@@ -13,4 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-curl --header "Accept: application/xml" "http://localhost:8080/cougarBaseline/v2.0/testConnectedObjects?protocol=$1" 2>/dev/null | sed -e 's/<TestResult>/\n <TestResult>\n  /g' -e 's/\/description>/\/description>\n  /g' -e 's/Response>/Response>\n/' -e 's/<\/TestResult>/\n<\/TestResult>/g' -e 's/<\/results>/\n<\/results>\n\n/' -e 's/<\/TestResults>/\n\n<\/TestResults>/'
+curl --header "Accept: application/xml" "http://localhost:8080/discoBaseline/v2.0/testConnectedObjects?protocol=$1" 2>/dev/null | sed -e 's/<TestResult>/\n <TestResult>\n  /g' -e 's/\/description>/\/description>\n  /g' -e 's/Response>/Response>\n/' -e 's/<\/TestResult>/\n<\/TestResult>/g' -e 's/<\/results>/\n<\/results>\n\n/' -e 's/<\/TestResults>/\n\n<\/TestResults>/'

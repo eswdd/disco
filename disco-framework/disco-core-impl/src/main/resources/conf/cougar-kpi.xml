@@ -21,17 +21,17 @@
 
 
     <!-- =======================================================================================
-            KPI configuration for Cougar.
+            KPI configuration for Disco.
 
             (This files mirrors the standard kpi-all, except for the jmx tweaks below.)
          ======================================================================================= -->
 
     <!-- previously loaded via kpi-beans.xml -->
-    <bean id="kpiMonitor" class="com.betfair.cougar.core.impl.kpi.ConfigurableKPIRepeater">
+    <bean id="kpiMonitor" class="uk.co.exemel.disco.core.impl.kpi.ConfigurableKPIRepeater">
         <property name="kpiMonitors">
             <map key-type="java.lang.String" value-type="java.lang.Boolean">
-                <entry key="simpleKPIMonitor" value="$COUGAR{cougar.kpis.simple.enabled}"/>
-                <entry key="statsEMonitor" value="$COUGAR{cougar.kpis.statse.enabled}"/>
+                <entry key="simpleKPIMonitor" value="$COUGAR{disco.kpis.simple.enabled}"/>
+                <entry key="statsEMonitor" value="$COUGAR{disco.kpis.statse.enabled}"/>
             </map>
         </property>
     </bean>
@@ -44,16 +44,16 @@
     </bean>
 
     <bean id="statsESender" class="com.betfair.sre.statse.client.StatsESender" init-method="start" destroy-method="stop">
-        <property name="enabled" value="$COUGAR{cougar.kpis.statse.enabled}"/>
-        <property name="queueSize" value="$COUGAR{cougar.kpi.eventQueueSize}"/>
-        <property name="agentAddress" value="$COUGAR{cougar.kpi.statsEAgent}"/>
-        <property name="cleaner" ref="$COUGAR{cougar.kpi.tsdbCleanerBean}"/>
+        <property name="enabled" value="$COUGAR{disco.kpis.statse.enabled}"/>
+        <property name="queueSize" value="$COUGAR{disco.kpi.eventQueueSize}"/>
+        <property name="agentAddress" value="$COUGAR{disco.kpi.statsEAgent}"/>
+        <property name="cleaner" ref="$COUGAR{disco.kpi.tsdbCleanerBean}"/>
     </bean>
 
     <bean id="defaultTsdbCleaner" class="com.betfair.sre.statse.client.NoOpTsdbCleaner"/>
 
     <import resource="classpath:kpi-annotations.xml"/>      <!-- annotation-based KPIs -->
-    <bean id="aspect" class="com.betfair.cougar.core.impl.kpi.KPIAsyncTimer">
+    <bean id="aspect" class="uk.co.exemel.disco.core.impl.kpi.KPIAsyncTimer">
         <property name="monitor" ref="kpiMonitor"/>
     </bean>
 
@@ -61,8 +61,8 @@
     <!--    replaces kpi-jmx.xml, mainly because injecting an MBean name is redundant -->
 
     <!-- JMX hookup for StatsE-->
-    <bean class="com.betfair.cougar.core.impl.jmx.ToggledAnnotationMBeanExporter" lazy-init="false">
-        <property name="enabled" value="$COUGAR{cougar.kpis.statse.enabled}"/>
+    <bean class="uk.co.exemel.disco.core.impl.jmx.ToggledAnnotationMBeanExporter" lazy-init="false">
+        <property name="enabled" value="$COUGAR{disco.kpis.statse.enabled}"/>
         <property name="autodetectModeName" value="AUTODETECT_NONE"/>
 		<property name="registrationBehavior">
 		  <bean class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">

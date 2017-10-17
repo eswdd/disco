@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline;
+package uk.co.exemel.disco.baseline;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.core.api.ev.ExecutionPreProcessor;
-import com.betfair.cougar.core.api.ev.ExecutionRequirement;
-import com.betfair.cougar.core.api.ev.InterceptorResult;
-import com.betfair.cougar.core.api.ev.InterceptorState;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.core.api.ev.ExecutionPreProcessor;
+import uk.co.exemel.disco.core.api.ev.ExecutionRequirement;
+import uk.co.exemel.disco.core.api.ev.InterceptorResult;
+import uk.co.exemel.disco.core.api.ev.InterceptorState;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,10 +47,10 @@ public class BannedIPListInterceptor implements ExecutionPreProcessor {
             GeoLocationDetails geoDetails = ctx.getLocation();
             if (geoDetails == null) {
                 return new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION,
-                        new CougarServiceException(ServerFaultCode.SecurityException, "Geo location details were not provided"));
+                        new DiscoServiceException(ServerFaultCode.SecurityException, "Geo location details were not provided"));
             } else if (banList.contains(geoDetails.getResolvedAddresses().get(0))) {
                 return new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION,
-                        new CougarServiceException(ServerFaultCode.SecurityException, "The IP Address [" + geoDetails.getRemoteAddr() + "] is not permitted to access to this service"));
+                        new DiscoServiceException(ServerFaultCode.SecurityException, "The IP Address [" + geoDetails.getRemoteAddr() + "] is not permitted to access to this service"));
             }
         }
         return new InterceptorResult(InterceptorState.CONTINUE);

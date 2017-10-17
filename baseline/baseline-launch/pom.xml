@@ -18,7 +18,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.betfair.cougar</groupId>
+		<groupId>uk.co.exemel.disco</groupId>
 		<artifactId>baseline</artifactId>
 		<version>3.3-SNAPSHOT</version>
 	</parent>
@@ -43,7 +43,7 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.1.1</version>
 				<configuration>
-					<mainClass>com.betfair.cougar.core.impl.Main</mainClass>
+					<mainClass>uk.co.exemel.disco.core.impl.Main</mainClass>
 					<classpathScope>runtime</classpathScope>
                     <systemProperties>
                         <systemProperty>
@@ -55,24 +55,24 @@
                             <value>UTC</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.log.CONSOLE.level</key>
+                            <key>disco.log.CONSOLE.level</key>
                             <value>INFO</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.log.echoToStdout</key>
+                            <key>disco.log.echoToStdout</key>
                             <value>true</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.maxmind.useDefault</key>
+                            <key>disco.maxmind.useDefault</key>
                             <value>true</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.fault.detailed</key>
+                            <key>disco.fault.detailed</key>
                             <value>true</value>
                         </systemProperty>
                         <systemProperty>
                             <key>jmx.html.keystore.filepath</key>
-                            <value>classpath:cougar_server_cert.jks</value>
+                            <value>classpath:disco_server_cert.jks</value>
                         </systemProperty>
                         <systemProperty>
                             <key>jmx.html.keystore.password</key>
@@ -83,68 +83,68 @@
                             <value>ENC(iTXZuGkVHRJoOrDQ548Ua8TZw7998U+h)</value> <!-- "password" encrypted with algorithm=PBEWithMD5AndDES and password=baseline -->
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.healthStateRepeatsBeforeUpdate</key>
+                            <key>disco.socket.healthStateRepeatsBeforeUpdate</key>
                             <value>1</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.healthMonitorStrategy</key>
+                            <key>disco.socket.healthMonitorStrategy</key>
                             <value>active</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.healthMonitorInterval</key>
+                            <key>disco.socket.healthMonitorInterval</key>
                             <value>2</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.logLevel</key>
+                            <key>disco.socket.logLevel</key>
                             <value>TRANSPORT</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.client.socket.logLevel</key>
+                            <key>disco.client.socket.logLevel</key>
                             <value>TRANSPORT</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.client.socket.clientExecutor.processorThreads</key>
+                            <key>disco.client.socket.clientExecutor.processorThreads</key>
                             <value>2</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.log.SESSION-LOG.format</key>
+                            <key>disco.socket.log.SESSION-LOG.format</key>
                             <value>%d{HH:mm:ss.SSS}: %t %m%n</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.client.socket.ssl.supportsTls</key>
+                            <key>disco.client.socket.ssl.supportsTls</key>
                             <value>false</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.client.socket.ssl.requiresTls</key>
+                            <key>disco.client.socket.ssl.requiresTls</key>
                             <value>false</value>
                         </systemProperty>
                         <!-- override default so we can test insecure clients -->
                         <systemProperty>
-                            <key>cougar.socket.ssl.requiresTls</key>
+                            <key>disco.socket.ssl.requiresTls</key>
                             <value>false</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.ssl.supportsTls</key>
+                            <key>disco.socket.ssl.supportsTls</key>
                             <value>true</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.ssl.wantClientAuth</key>
+                            <key>disco.socket.ssl.wantClientAuth</key>
                             <value>true</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.ssl.keystore</key>
-                            <value>classpath:cougar_server_cert.jks</value>
+                            <key>disco.socket.ssl.keystore</key>
+                            <value>classpath:disco_server_cert.jks</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.ssl.keystorePassword</key>
+                            <key>disco.socket.ssl.keystorePassword</key>
                             <value>ENC(iTXZuGkVHRJoOrDQ548Ua8TZw7998U+h)</value> <!-- "password" encrypted with algorithm=PBEWithMD5AndDES and password=baseline -->
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.ssl.truststore</key>
-                            <value>classpath:cougar_client_ca.jks</value>
+                            <key>disco.socket.ssl.truststore</key>
+                            <value>classpath:disco_client_ca.jks</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.ssl.truststorePassword</key>
+                            <key>disco.socket.ssl.truststorePassword</key>
                             <value>ENC(iTXZuGkVHRJoOrDQ548Ua8TZw7998U+h)</value> <!-- "password" encrypted with algorithm=PBEWithMD5AndDES and password=baseline -->
                         </systemProperty>
                         <systemProperty>
@@ -161,7 +161,7 @@
                         </systemProperty>
                         <systemProperty>
                             <key>jetty.https.keystore</key>
-                            <value>classpath:cougar_server_cert.jks</value>
+                            <value>classpath:disco_server_cert.jks</value>
                         </systemProperty>
                         <systemProperty>
                             <key>jetty.https.keyPassword</key>
@@ -169,22 +169,22 @@
                         </systemProperty>
                         <systemProperty>
                             <key>jetty.https.truststore</key>
-                            <value>classpath:cougar_client_ca.jks</value>
+                            <value>classpath:disco_client_ca.jks</value>
                         </systemProperty>
                         <systemProperty>
                             <key>jetty.https.trustPassword</key>
                             <value>ENC(iTXZuGkVHRJoOrDQ548Ua8TZw7998U+h)</value> <!-- "password" encrypted with algorithm=PBEWithMD5AndDES and password=baseline -->
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.app.name</key>
-                            <value>cougar-baseline</value>
+                            <key>disco.app.name</key>
+                            <value>disco-baseline</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.kpis.simple.enabled</key>
+                            <key>disco.kpis.simple.enabled</key>
                             <value>true</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.kpis.statse.enabled</key>
+                            <key>disco.kpis.statse.enabled</key>
                             <value>true</value>
                         </systemProperty>
                         <systemProperty>
@@ -193,7 +193,7 @@
                         </systemProperty>
                         <!-- allows us to work when a machine roaming - only useful in dev/test -->
                         <systemProperty>
-                            <key>cougar.addressUtils.allowLoopBackIfNoOthers</key>
+                            <key>disco.addressUtils.allowLoopBackIfNoOthers</key>
                             <value>true</value>
                         </systemProperty>
                         <!--<systemProperty>-->
@@ -217,105 +217,105 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-util</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-util</artifactId>
 			<scope>runtime</scope>
 		</dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>net-util</artifactId>
             <scope>runtime</scope>
         </dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-api</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-api</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-core-api</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-core-api</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-core-impl</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-core-impl</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-ev</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-ev</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-null-geoip-locator</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-null-geoip-locator</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-marshalling-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-marshalling-api</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-marshalling-impl</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-marshalling-impl</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-transport-impl</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-transport-impl</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-caching</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-caching</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>activemq-transport</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>jetty-transport</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>socket-transport</artifactId>
             <version>${project.version}</version>
         </dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
+			<groupId>uk.co.exemel.disco</groupId>
 			<artifactId>baseline-app</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>baseline-oldversionservice</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
 		<dependency>
-			<groupId>com.betfair.cougar</groupId>
-			<artifactId>cougar-health-service-app</artifactId>
+			<groupId>uk.co.exemel.disco</groupId>
+			<artifactId>disco-health-service-app</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-testing-service-impl</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-testing-service-impl</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>

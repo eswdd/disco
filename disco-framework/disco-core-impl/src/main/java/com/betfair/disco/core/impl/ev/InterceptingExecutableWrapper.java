@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,12 +60,12 @@ public class InterceptingExecutableWrapper implements ExecutableWrapper {
                             executionVenue,
                             timeConstraints);
 
-                } catch (CougarException e) {
+                } catch (DiscoException e) {
                     newObserver.onResult(new ExecutionResult(e));
                 }
                 catch (Exception e) {
                     newObserver.onResult(new ExecutionResult(
-                            new CougarFrameworkException(ServerFaultCode.ServiceRuntimeException, "Exception thrown by service method", e)));
+                            new DiscoFrameworkException(ServerFaultCode.ServiceRuntimeException, "Exception thrown by service method", e)));
                 }
             }
         };

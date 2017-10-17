@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.server;
+package uk.co.exemel.disco.test.socket.tester.server;
 
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.test.socket.tester.common.ClientAuthRequirement;
-import com.betfair.cougar.test.socket.tester.common.ServerConfigurations;
-import com.betfair.cougar.test.socket.tester.common.SslRequirement;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.test.socket.tester.common.ClientAuthRequirement;
+import uk.co.exemel.disco.test.socket.tester.common.ServerConfigurations;
+import uk.co.exemel.disco.test.socket.tester.common.SslRequirement;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class ServerMain {
     public static void main(String[] args) throws IOException {
-        System.setProperty("cougar.addressUtils.allowLoopBackIfNoOthers","true");
+        System.setProperty("disco.addressUtils.allowLoopBackIfNoOthers","true");
         // server starts and exposes on 1+ ports.
         // exports to test app the list of ports, with the min protocol version each supports
         // clients then connect to each port they support
@@ -58,8 +58,8 @@ public class ServerMain {
         String sep = "";
         StringBuilder debugBuffer = new StringBuilder();
         for (ServerInstance server : servers) {
-            System.out.println("SERVER: "+server.getName()+","+server.getPort()+","+ CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED+","+CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
-            debugBuffer.append(sep).append(server.getName()).append(" ").append(server.getPort()).append(" ").append(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED).append(" ").append(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+            System.out.println("SERVER: "+server.getName()+","+server.getPort()+","+ DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED+","+DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+            debugBuffer.append(sep).append(server.getName()).append(" ").append(server.getPort()).append(" ").append(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED).append(" ").append(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
             sep = " ";
         }
         System.out.println("SERVERS STARTED");

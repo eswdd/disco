@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.client;
+package uk.co.exemel.disco.core.api.client;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,12 +47,12 @@ public abstract class AbstractExceptionFactory implements ExceptionFactory {
     }
 
     public AbstractExceptionFactory() {
-        //Registers the CougarException exception instantiator...
+        //Registers the DiscoException exception instantiator...
         registerExceptionInstantiator(ServerFaultCode.COUGAR_EXCEPTION_PREFIX, new ExceptionInstantiator() {
             @Override
             public Exception createException(ResponseCode responseCode, String prefix, String reason, Map<String,String> exceptionParams) {
                 ServerFaultCode sfc = ServerFaultCode.getByDetailCode(prefix);
-                return new CougarClientException(sfc, reason);
+                return new DiscoClientException(sfc, reason);
             }
         });
     }

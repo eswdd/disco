@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.kpi;
+package uk.co.exemel.disco.core.impl.kpi;
 
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
 import com.betfair.tornjak.kpi.KPIMonitor;
 import com.betfair.tornjak.kpi.aop.KPIAsyncTimedEvent;
 import org.junit.Before;

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.exception;
+package uk.co.exemel.disco.core.api.exception;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.security.CredentialFaultCode;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.security.CredentialFaultCode;
 
 // todo: would love to rename this to FaultCode (and FaultCode to FaultOrigin), but that would break hessian enum serialisation.
 //       we really need to takeover hessian enum serialisation to allow us to change internal structures
@@ -70,7 +70,7 @@ public enum ServerFaultCode {
      */
     RescriptDeserialisationFailure(ResponseCode.BadRequest, 24), // not used - kept for compatibility with old client/servers
     JMSTransportCommunicationFailure(ResponseCode.InternalError, 25),
-	RemoteCougarCommunicationFailure(ResponseCode.ServiceUnavailable, 26),
+	RemoteDiscoCommunicationFailure(ResponseCode.ServiceUnavailable, 26),
     OutputChannelClosedCantWrite(ResponseCode.CantWriteToSocket, 27),
     /**
      * @deprecated Replaced by either {@link ServerFaultCode.ClientSerialisationFailure} or

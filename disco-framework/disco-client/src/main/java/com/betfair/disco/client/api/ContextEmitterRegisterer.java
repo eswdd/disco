@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.api;
+package uk.co.exemel.disco.client.api;
 
 /**
  * Utility to aid adding emitters to an existing compound emitter.

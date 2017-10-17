@@ -16,25 +16,25 @@
  */
 
 // Originally from ClientTests/Transport/Concurrency/Client_Rescript_ConcurrentRequests.xls;
-package com.betfair.cougar.tests.clienttests.concurrency;
+package uk.co.exemel.disco.tests.clienttests.concurrency;
 
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientConcurrencyTestUtils;
-import com.betfair.cougar.tests.clienttests.CougarClientConcurrencyTestUtils.ClientConcurrencyTestResultBean;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientConcurrencyTestUtils;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientConcurrencyTestUtils.ClientConcurrencyTestResultBean;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.AssertJUnit;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Ensure that when concurrent requests are made via a cougar client, the requests are handled correctly and the correct response is returned to each request
+ * Ensure that when concurrent requests are made via a disco client, the requests are handled correctly and the correct response is returned to each request
  */
 public class ClientConcurrentRequestsTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
-        // Set up and make the concurrent calls to the cougar client
-        CougarClientConcurrencyTestUtils cougarClientConcurrencyTestUtils1 = new CougarClientConcurrencyTestUtils();
-        ClientConcurrencyTestResultBean responses = cougarClientConcurrencyTestUtils1.executeTest(tt);
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
+        // Set up and make the concurrent calls to the disco client
+        DiscoClientConcurrencyTestUtils discoClientConcurrencyTestUtils1 = new DiscoClientConcurrencyTestUtils();
+        ClientConcurrencyTestResultBean responses = discoClientConcurrencyTestUtils1.executeTest(tt);
 
         responses.assertOutcome(new ClientConcurrencyTestResultBean.AssertionWrapper() {
             @Override

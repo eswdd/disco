@@ -19,7 +19,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
+        <groupId>uk.co.exemel.disco</groupId>
         <artifactId>socket-perf-testing</artifactId>
         <version>3.0-SNAPSHOT</version>
     </parent>
@@ -51,28 +51,28 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.1.1</version>
                 <configuration>
-                    <mainClass>com.betfair.cougar.core.impl.Main</mainClass>
+                    <mainClass>uk.co.exemel.disco.core.impl.Main</mainClass>
                     <classpathScope>runtime</classpathScope>
                     <commandlineArgs>-verbose:gc -Xmn256m -Xmx1g -Xms1g -XX:PermSize=128m -XX:MaxPermSize=128m -XX:SurvivorRatio=16 -XX:MaxTenuringThreshold=4 -XX:+CMSScavengeBeforeRemark -XX:CMSWaitDuration=15000 -XX:CMSInitiatingOccupancyFraction=70 -XX:+HeapDumpOnOutOfMemoryError -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -Xloggc:logs/gc.log</commandlineArgs>
                     <systemProperties>
                         <systemProperty>
-                            <key>cougar.log.CONSOLE.level</key>
+                            <key>disco.log.CONSOLE.level</key>
                             <value>INFO</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.log.echoToStdout</key>
+                            <key>disco.log.echoToStdout</key>
                             <value>true</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.geoip.useDefault</key>
+                            <key>disco.geoip.useDefault</key>
                             <value>true</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.security.AuthenticationProvider</key>
-                            <value>cougar.security.NullAuthenticationProvider</value>
+                            <key>disco.security.AuthenticationProvider</key>
+                            <value>disco.security.NullAuthenticationProvider</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.fault.detailed</key>
+                            <key>disco.fault.detailed</key>
                             <value>true</value>
                         </systemProperty>
                         <systemProperty>
@@ -80,23 +80,23 @@
                             <value>false</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.healthStateRepeatsBeforeUpdate</key>
+                            <key>disco.socket.healthStateRepeatsBeforeUpdate</key>
                             <value>1</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.healthMonitorStrategy</key>
+                            <key>disco.socket.healthMonitorStrategy</key>
                             <value>active</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.healthMonitorInterval</key>
+                            <key>disco.socket.healthMonitorInterval</key>
                             <value>2</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.logLevel</key>
+                            <key>disco.socket.logLevel</key>
                             <value>ALL</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.log.SESSION-LOG.format</key>
+                            <key>disco.socket.log.SESSION-LOG.format</key>
                             <value>%d{HH:mm:ss.SSS}: %t %m%n</value>
                         </systemProperty>
                         <systemProperty>
@@ -112,7 +112,7 @@
                             <value>${perftest.numUpdates}</value>
                         </systemProperty>
                         <systemProperty>
-                            <key>cougar.socket.push.processingThreads</key>
+                            <key>disco.socket.push.processingThreads</key>
                             <value>${perftest.pushThreads}</value>
                         </systemProperty>
                     </systemProperties>
@@ -132,14 +132,14 @@
                         <configuration>
                             <programs>
                                 <program>
-                                    <mainClass>com.betfair.cougar.core.impl.Main</mainClass>
+                                    <mainClass>uk.co.exemel.disco.core.impl.Main</mainClass>
                                     <name>socketTestServer.sh</name>
                                 </program>
                             </programs>
                             <platforms>
                                 <platform>unix</platform>
                             </platforms>
-                            <extraJvmArguments>-verbose:gc -Xmn256m -Xmx1g -Xms1g -XX:PermSize=128m -XX:MaxPermSize=128m -XX:SurvivorRatio=16 -XX:MaxTenuringThreshold=4 -XX:+CMSScavengeBeforeRemark -XX:CMSWaitDuration=15000 -XX:CMSInitiatingOccupancyFraction=70 -XX:+HeapDumpOnOutOfMemoryError -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -Xloggc:logs/gc.log -Dperftest.concurrency=$1 -Dperftest.numHeapsForTest=$2 -Dperftest.numUpdates=$3 -Dcougar.socket.push.processingThreads=$4 -Dcougar.socket.serverExecutor.maximumPoolSize=$5 -Dcougar.commandProcessor.maximumPoolSize=$5</extraJvmArguments>
+                            <extraJvmArguments>-verbose:gc -Xmn256m -Xmx1g -Xms1g -XX:PermSize=128m -XX:MaxPermSize=128m -XX:SurvivorRatio=16 -XX:MaxTenuringThreshold=4 -XX:+CMSScavengeBeforeRemark -XX:CMSWaitDuration=15000 -XX:CMSInitiatingOccupancyFraction=70 -XX:+HeapDumpOnOutOfMemoryError -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -Xloggc:logs/gc.log -Dperftest.concurrency=$1 -Dperftest.numHeapsForTest=$2 -Dperftest.numUpdates=$3 -Ddisco.socket.push.processingThreads=$4 -Ddisco.socket.serverExecutor.maximumPoolSize=$5 -Ddisco.commandProcessor.maximumPoolSize=$5</extraJvmArguments>
                             <assembleDirectory>${project.build.directory}/sockettest-server-${project.version}</assembleDirectory>
                         </configuration>
                     </execution>
@@ -168,74 +168,74 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-util</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-util</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>net-util</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-api</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-core-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-core-api</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-core-impl</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-core-impl</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-ev</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-ev</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-marshalling-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-marshalling-api</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-marshalling-impl</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-marshalling-impl</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-transport-impl</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-transport-impl</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>jetty-transport</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>socket-transport</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>socket-perf-testing-app</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-health-service-app</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-health-service-app</artifactId>
             <version>${project.version}</version>
             <scope>runtime</scope>
         </dependency>

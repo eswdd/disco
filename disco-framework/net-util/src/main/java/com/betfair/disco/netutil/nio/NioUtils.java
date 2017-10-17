@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
-import com.betfair.cougar.netutil.nio.message.EventMessage;
-import com.betfair.cougar.netutil.nio.message.ProtocolMessage;
-import com.betfair.cougar.transport.api.protocol.CougarObjectIOFactory;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
-import com.betfair.cougar.netutil.nio.message.TLSResult;
+import uk.co.exemel.disco.netutil.nio.message.EventMessage;
+import uk.co.exemel.disco.netutil.nio.message.ProtocolMessage;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectIOFactory;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
+import uk.co.exemel.disco.netutil.nio.message.TLSResult;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
 import java.awt.*;
@@ -31,7 +31,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.betfair.cougar.netutil.nio.message.ProtocolMessage.ProtocolMessageType;
+import static uk.co.exemel.disco.netutil.nio.message.ProtocolMessage.ProtocolMessageType;
 
 /**
  * Utilities for managing the session and binary protocol.
@@ -61,7 +61,7 @@ public class NioUtils {
     }
 
     public static boolean isSecure(IoSession session) {
-        TLSResult result = (TLSResult) session.getAttribute(CougarProtocol.NEGOTIATED_TLS_LEVEL_ATTR_NAME);
+        TLSResult result = (TLSResult) session.getAttribute(DiscoProtocol.NEGOTIATED_TLS_LEVEL_ATTR_NAME);
         return result != null && result == TLSResult.SSL;
     }
 
@@ -76,9 +76,9 @@ public class NioUtils {
         return bb;
     }
 
-    public static void writeEventMessageToSession(IoSession session, Object obj, CougarObjectIOFactory objectIOFactory) throws IOException {
+    public static void writeEventMessageToSession(IoSession session, Object obj, DiscoObjectIOFactory objectIOFactory) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        CougarObjectOutput out = objectIOFactory.newCougarObjectOutput(baos, CougarProtocol.getProtocolVersion(session));
+        DiscoObjectOutput out = objectIOFactory.newDiscoObjectOutput(baos, DiscoProtocol.getProtocolVersion(session));
         out.writeObject(obj);
         out.flush();
 

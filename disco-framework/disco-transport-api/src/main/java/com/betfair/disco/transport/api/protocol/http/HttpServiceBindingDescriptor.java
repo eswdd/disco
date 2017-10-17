@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.http;
+package uk.co.exemel.disco.transport.api.protocol.http;
 
-import com.betfair.cougar.core.api.ServiceBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceBindingDescriptor;
 
 public interface HttpServiceBindingDescriptor extends ServiceBindingDescriptor {
 

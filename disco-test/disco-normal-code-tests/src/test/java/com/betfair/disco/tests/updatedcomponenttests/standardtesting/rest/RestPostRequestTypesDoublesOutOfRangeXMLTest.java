@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/REST/Rest_Post_RequestTypes_Doubles_OutOfRange_XML.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -34,19 +34,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that Cougar can handle out of range Doubles in the post body, header params and query params (Testing for XML requests)
+ * Ensure that Disco can handle out of range Doubles in the post body, header params and query params (Testing for XML requests)
  */
 public class RestPostRequestTypesDoublesOutOfRangeXMLTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        discoManager1 = discoManager1;
         
         getNewHttpCallBean1.setOperationName("doubleOperation");
         
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean1.setVersion("v2");
         // Set each of the parameter types to contain an out of range double datatype object
@@ -66,9 +66,9 @@ public class RestPostRequestTypesDoublesOutOfRangeXMLTest {
 
         Timestamp getTimeAsTimeStamp10 = new Timestamp(System.currentTimeMillis());
         // Make an XML call to the operation requesting XML response type
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTXML, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.XML);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTXML, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.XML);
         // Make an XML call to the operation requesting JSON response type
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTXML, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTXML, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Create the expected response as an XML document
         XMLHelpers xMLHelpers6 = new XMLHelpers();
         Document createAsDocument13 = xMLHelpers6.getXMLObjectFromString("<DoubleOperationResponse><DoubleOperationResponseObject><bodyParameter>-INF</bodyParameter><headerParameter>INF</headerParameter><queryParameter>-INF</queryParameter></DoubleOperationResponseObject></DoubleOperationResponse>");
@@ -76,12 +76,12 @@ public class RestPostRequestTypesDoublesOutOfRangeXMLTest {
         JSONHelpers jSONHelpers7 = new JSONHelpers();
         JSONObject createAsJSONObject14 = jSONHelpers7.createAsJSONObject(new JSONObject("{bodyParameter:\"-Infinity\",headerParameter:\"Infinity\",queryParameter:\"-Infinity\"}"));
         // Check the 4 responses are as expected
-        HttpResponseBean response8 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
+        HttpResponseBean response8 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
         AssertionUtils.multiAssertEquals(createAsDocument13, response8.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response8.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response8.getHttpStatusText());
         
-        HttpResponseBean response9 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        HttpResponseBean response9 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
         AssertionUtils.multiAssertEquals(createAsJSONObject14, response9.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response9.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response9.getHttpStatusText());
@@ -89,7 +89,7 @@ public class RestPostRequestTypesDoublesOutOfRangeXMLTest {
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
         
-        cougarManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp10, new RequestLogRequirement("2.8", "doubleOperation"),new RequestLogRequirement("2.8", "doubleOperation") );
+        discoManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp10, new RequestLogRequirement("2.8", "doubleOperation"),new RequestLogRequirement("2.8", "doubleOperation") );
     }
 
 }

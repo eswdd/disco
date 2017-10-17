@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.ev;
+package uk.co.exemel.disco.core.api.ev;
 
-import com.betfair.cougar.core.api.transports.EventTransport;
+import uk.co.exemel.disco.core.api.transports.EventTransport;
 
 /**
  * Interface that a client executable resolver needs to implement in order
- * for the cougar client to be registered with EV dynamically i.e.
+ * for the disco client to be registered with EV dynamically i.e.
  * programmatically at runtime as opposed to via static spring config
  */
 public interface RegisterableClientExecutableResolver extends ExecutableResolver {

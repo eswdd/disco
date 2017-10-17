@@ -15,27 +15,27 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket;
+package uk.co.exemel.disco.client.socket;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.ExecutionResult.ResultType;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.core.impl.transports.TransportRegistryImpl;
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.netutil.nio.NioConfig;
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.transport.nio.ExecutionVenueNioServer;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult.ResultType;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.core.impl.transports.TransportRegistryImpl;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.netutil.nio.NioConfig;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.transport.nio.ExecutionVenueNioServer;
 import org.junit.BeforeClass;
 
 import java.io.IOException;
@@ -57,11 +57,11 @@ public abstract class AbstractClientTest {
     private NioConfig cfg = new NioConfig();
 
     public static Collection<Object[]> protocolVersionParams() {
-        byte minVersion = Byte.parseByte(System.getProperty("test.cougar.client.minVersion",String.valueOf(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED)));
+        byte minVersion = Byte.parseByte(System.getProperty("test.disco.client.minVersion",String.valueOf(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED)));
         if (minVersion < 0) {
-            minVersion = (byte) (CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED - minVersion);
+            minVersion = (byte) (DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED - minVersion);
         }
-        byte maxVersion = Byte.parseByte(System.getProperty("test.cougar.client.maxVersion",String.valueOf(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED)));
+        byte maxVersion = Byte.parseByte(System.getProperty("test.disco.client.maxVersion",String.valueOf(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED)));
 
         List<Object[]> ret = new ArrayList<>();
         for (byte b=minVersion; b<=maxVersion; b++) {
@@ -177,7 +177,7 @@ public abstract class AbstractClientTest {
 
     @BeforeClass
     public static void suppressLogs() {
-//        CougarLoggingUtils.suppressAllRootLoggerOutput();
+//        DiscoLoggingUtils.suppressAllRootLoggerOutput();
     }
 
     volatile int boundToPort;
@@ -217,10 +217,10 @@ public abstract class AbstractClientTest {
     	client.stop();
 
         // reset protocol versions
-        CougarProtocol.setMinServerProtocolVersion(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED);
-        CougarProtocol.setMinClientProtocolVersion(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED);
-        CougarProtocol.setMaxServerProtocolVersion(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
-        CougarProtocol.setMaxClientProtocolVersion(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        DiscoProtocol.setMinServerProtocolVersion(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED);
+        DiscoProtocol.setMinClientProtocolVersion(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED);
+        DiscoProtocol.setMaxServerProtocolVersion(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+        DiscoProtocol.setMaxClientProtocolVersion(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
     }
 
     void performRequestAsync(ExecutionVenueNioClient client, ClientTestExecutionObserver observer, Object[] args) throws IOException, InterruptedException {
@@ -261,7 +261,7 @@ public abstract class AbstractClientTest {
     public class ClientTestExecutionObserver implements ExecutionObserver {
         private volatile ExecutionResult executionResult;
         private String expectedString;
-        private CougarException expectedException;
+        private DiscoException expectedException;
         private final Lock lock = new ReentrantLock();
         private Condition hasResult = lock.newCondition();
 
@@ -273,7 +273,7 @@ public abstract class AbstractClientTest {
             this.expectedString = expected;
         }
 
-        public ClientTestExecutionObserver(CougarException expectedException) {
+        public ClientTestExecutionObserver(DiscoException expectedException) {
             this.expectedException = expectedException;
         }
 

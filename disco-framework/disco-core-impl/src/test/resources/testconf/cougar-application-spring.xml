@@ -19,9 +19,9 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-	<bean id="myApplicationObject" class="com.betfair.cougar.core.impl.SpringStaticTester" />
+	<bean id="myApplicationObject" class="uk.co.exemel.disco.core.impl.SpringStaticTester" />
 
 	<!-- Some application context, so these will not be instantiated -->
-	<bean id="myCoreObject" class="com.betfair.cougar.core.impl.SpringStaticTester" />
-	<bean id="myModuleObject" class="com.betfair.cougar.core.impl.SpringStaticTester" />
+	<bean id="myCoreObject" class="uk.co.exemel.disco.core.impl.SpringStaticTester" />
+	<bean id="myModuleObject" class="uk.co.exemel.disco.core.impl.SpringStaticTester" />
 </beans>

@@ -15,12 +15,12 @@
  */
 
 // Originally from ClientTests/Transport/ImportSheets/CreateLargeRequest.xls;
-package com.betfair.cougar.tests.clienttests.importsheets;
+package uk.co.exemel.disco.tests.clienttests.importsheets;
 
 import com.betfair.baseline.v2.to.ComplexObject;
 import com.betfair.baseline.v2.to.LargeRequest;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -32,7 +32,7 @@ import java.util.Arrays;
  */
 public class CreateLargeRequestTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Create a complex object
         ComplexObject complexObject1 = new ComplexObject();
         complexObject1.setName("ssasdf");

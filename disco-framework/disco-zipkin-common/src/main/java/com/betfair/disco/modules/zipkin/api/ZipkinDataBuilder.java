@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.api;
+package uk.co.exemel.disco.modules.zipkin.api;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Builder interface for ZipkinData (@see com.betfair.cougar.modules.zipkin.api.ZipkinData).
+ * Builder interface for ZipkinData (@see uk.co.exemel.disco.modules.zipkin.api.ZipkinData).
  */
 public interface ZipkinDataBuilder {
 

@@ -23,54 +23,54 @@
 
 
     <bean id="SimpleRescriptIdentityTokenResolver"
-          class="com.betfair.cougar.baseline.security.SimpleRescriptIdentityTokenResolver"/>
+          class="uk.co.exemel.disco.baseline.security.SimpleRescriptIdentityTokenResolver"/>
 
-    <bean parent="cougar.transport.AbstractProtocolBinding" scope="singleton">
+    <bean parent="disco.transport.AbstractProtocolBinding" scope="singleton">
         <property name="contextRoot" value=""/>
         <property name="identityTokenResolver" ref="SimpleRescriptIdentityTokenResolver"/>
         <property name="protocol" value="RESCRIPT"/>
     </bean>
 
-    <bean parent="cougar.transport.AbstractProtocolBinding" scope="singleton">
+    <bean parent="disco.transport.AbstractProtocolBinding" scope="singleton">
         <property name="contextRoot" value="www"/>
         <property name="identityTokenResolver">
-            <bean class="com.betfair.cougar.baseline.security.AlternativeRescriptIdentityTokenResolver"/>
+            <bean class="uk.co.exemel.disco.baseline.security.AlternativeRescriptIdentityTokenResolver"/>
         </property>
         <property name="protocol" value="RESCRIPT"/>
         <property name="enabled" value="true"/>
     </bean>
 
-    <bean parent="cougar.transport.AbstractProtocolBinding" scope="singleton">
+    <bean parent="disco.transport.AbstractProtocolBinding" scope="singleton">
         <property name="contextRoot" value="cookie"/>
         <property name="identityTokenResolver">
-            <bean class="com.betfair.cougar.baseline.security.HttpCookieIdentityResolver"/>
+            <bean class="uk.co.exemel.disco.baseline.security.HttpCookieIdentityResolver"/>
         </property>
         <property name="protocol" value="RESCRIPT"/>
     </bean>
 
-    <bean parent="cougar.transport.AbstractProtocolBinding" scope="singleton">
+    <bean parent="disco.transport.AbstractProtocolBinding" scope="singleton">
         <property name="contextRoot" value=""/>
         <property name="identityTokenResolver">
-            <bean class="com.betfair.cougar.baseline.security.SimpleSoapIdentityTokenResolver"/>
+            <bean class="uk.co.exemel.disco.baseline.security.SimpleSoapIdentityTokenResolver"/>
         </property>
         <property name="protocol" value="SOAP"/>
     </bean>
 
-    <bean parent="cougar.transport.AbstractProtocolBinding" scope="singleton">
+    <bean parent="disco.transport.AbstractProtocolBinding" scope="singleton">
         <property name="contextRoot" value="json-rpc"/>
         <property name="identityTokenResolver" ref="SimpleRescriptIdentityTokenResolver"/>
         <property name="protocol" value="JSON_RPC"/>
     </bean>
 
 
-    <bean parent="cougar.core.AbstractIdentityResolver">
+    <bean parent="disco.core.AbstractIdentityResolver">
         <constructor-arg>
-            <bean class="com.betfair.cougar.baseline.security.GeneralIdentityResolver"/>
+            <bean class="uk.co.exemel.disco.baseline.security.GeneralIdentityResolver"/>
         </constructor-arg>
     </bean>
 
     <!-- add a path alias to the jetty transport -->
-    <bean parent="cougar.transport.HttpPathAliasIntroducer">
+    <bean parent="disco.transport.HttpPathAliasIntroducer">
         <constructor-arg index="1" value="/webping"/>
         <constructor-arg index="2" value="/www/healthcheck/v3/summary"/>
     </bean>

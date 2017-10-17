@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.nio;
+package uk.co.exemel.disco.transport.nio;
 
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.message.DisconnectMessage;
-import com.betfair.cougar.netutil.nio.message.SuspendMessage;
-import com.betfair.cougar.transport.api.TransportCommandProcessor;
-import com.betfair.cougar.transport.socket.SocketTransportCommand;
-import com.betfair.cougar.transport.socket.SocketTransportCommandProcessor;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.message.DisconnectMessage;
+import uk.co.exemel.disco.netutil.nio.message.SuspendMessage;
+import uk.co.exemel.disco.transport.api.TransportCommandProcessor;
+import uk.co.exemel.disco.transport.socket.SocketTransportCommand;
+import uk.co.exemel.disco.transport.socket.SocketTransportCommandProcessor;
 import org.apache.mina.common.IoSession;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 
-import static com.betfair.cougar.netutil.nio.CougarProtocol.TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC;
-import static com.betfair.cougar.netutil.nio.CougarProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC;
-import static com.betfair.cougar.transport.nio.SessionTestUtil.newSession;
+import static uk.co.exemel.disco.netutil.nio.DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC;
+import static uk.co.exemel.disco.netutil.nio.DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC;
+import static uk.co.exemel.disco.transport.nio.SessionTestUtil.newSession;
 import static java.util.Collections.singleton;
 import static org.mockito.Mockito.*;
 
@@ -42,7 +42,7 @@ public class IoSessionManagerTest {
     public static final byte V1 = TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC;
     public static final byte V2 = TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC;
     IoSessionManager sessionManager;
-    private CougarProtocol cougarProtocol;
+    private DiscoProtocol discoProtocol;
     private NioLogger nioLogger;
     private ExecutionVenueServerHandler serverHandler;
 
@@ -52,7 +52,7 @@ public class IoSessionManagerTest {
         sessionManager = new IoSessionManager();
         sessionManager.setMaxTimeToWaitForRequestCompletion(5000);
         sessionManager.setNioLogger(nioLogger);
-        cougarProtocol = CougarProtocol.getServerInstance( nioLogger, 5000, 10000, null, false, false);
+        discoProtocol = DiscoProtocol.getServerInstance( nioLogger, 5000, 10000, null, false, false);
         TransportCommandProcessor<SocketTransportCommand> processor = new SocketTransportCommandProcessor();
         serverHandler = mock(ExecutionVenueServerHandler.class);
         when(serverHandler.getOutstandingRequests()).thenReturn(0l);
@@ -62,7 +62,7 @@ public class IoSessionManagerTest {
     public void testSuspendMessageIsNotWrittenForV1Sessions() {
         final IoSession ioSession = newSession(V1);
 
-        sessionManager.shutdownSessions(singleton(ioSession), cougarProtocol, serverHandler);
+        sessionManager.shutdownSessions(singleton(ioSession), discoProtocol, serverHandler);
 
         verify(ioSession, never()).write(isA(SuspendMessage.class));
         verify(ioSession).write(isA(DisconnectMessage.class));
@@ -72,7 +72,7 @@ public class IoSessionManagerTest {
     public void testSuspendAndDisconnectMessagesAreWrittenForV2Sessions() {
         final IoSession ioSession = newSession(V2);
 
-        sessionManager.shutdownSessions(singleton(ioSession), cougarProtocol, serverHandler);
+        sessionManager.shutdownSessions(singleton(ioSession), discoProtocol, serverHandler);
 
         verify(ioSession).write(isA(SuspendMessage.class));
         verify(ioSession).write(isA(DisconnectMessage.class));
@@ -84,7 +84,7 @@ public class IoSessionManagerTest {
         ExecutionVenueServerHandler serverHandler = mock(ExecutionVenueServerHandler.class);
         when(serverHandler.getOutstandingRequests()).thenReturn(2l, 1l, 0l); // Counting down
 
-        sessionManager.shutdownSessions(singleton(ioSession), cougarProtocol, serverHandler);
+        sessionManager.shutdownSessions(singleton(ioSession), discoProtocol, serverHandler);
 
         final InOrder inOrder = inOrder(ioSession, serverHandler);
         inOrder.verify(ioSession).write(isA(SuspendMessage.class));

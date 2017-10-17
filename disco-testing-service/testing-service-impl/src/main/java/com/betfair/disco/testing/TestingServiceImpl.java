@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.testing;
+package uk.co.exemel.disco.testing;
 
-import com.betfair.cougar.api.ContainerContext;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.caching.CacheFrameworkIntegration;
-import com.betfair.cougar.caching.CacheFrameworkRegistry;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.api.ContainerContext;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.caching.CacheFrameworkIntegration;
+import uk.co.exemel.disco.caching.CacheFrameworkRegistry;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.betfair.testingservice.v1.TestingService;

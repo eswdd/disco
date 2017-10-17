@@ -19,7 +19,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
+        <groupId>uk.co.exemel.disco</groupId>
         <artifactId>socket-perf-testing</artifactId>
         <version>3.0-SNAPSHOT</version>
     </parent>

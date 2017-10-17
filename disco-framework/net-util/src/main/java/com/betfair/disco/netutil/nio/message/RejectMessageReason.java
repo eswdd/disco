@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.message;
+package uk.co.exemel.disco.netutil.nio.message;
 
 /**
  * This class represents the reason a connection request was rejected

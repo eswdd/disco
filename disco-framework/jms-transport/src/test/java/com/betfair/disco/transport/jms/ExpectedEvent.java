@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms;
+package uk.co.exemel.disco.transport.jms;
 
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.transcription.*;
-import com.betfair.cougar.transport.api.protocol.events.AbstractEvent;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.transcription.*;
+import uk.co.exemel.disco.transport.api.protocol.events.AbstractEvent;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Set;

@@ -21,17 +21,17 @@ package ${package}.${majorVersion};
 import ${package}.${majorVersion}.*;
 import ${package}.${majorVersion}.exception.*;
 import ${package}.${majorVersion}.rescript.*;
-import com.betfair.cougar.api.Service;
-import com.betfair.cougar.client.factory.AbstractCougarClientFactory;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.api.security.IdentityResolver;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.api.Service;
+import uk.co.exemel.disco.client.factory.AbstractDiscoClientFactory;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.api.security.IdentityResolver;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
 
 /**
- * Convenience factory that generates instances of cougar clients and introduces them to EV
+ * Convenience factory that generates instances of disco clients and introduces them to EV
  */
 @SuppressWarnings("all")
-public class ${service}ClientFactory extends AbstractCougarClientFactory {<#t>
+public class ${service}ClientFactory extends AbstractDiscoClientFactory {<#t>
 
     public ${service}SyncClient createSyncHttpClient(String host, String namespace) {
         return createSyncHttpClient(host, namespace, null, null);
@@ -39,7 +39,7 @@ public class ${service}ClientFactory extends AbstractCougarClientFactory {<#t>
 
     public ${service}SyncClient createSyncHttpClient(String host, String namespace, IdentityResolver identityResolver, IdentityTokenResolver identityTokenResolver) {
         final ${service}SyncClient syncClient = getSyncClient(namespace);
-        registerCougarServiceClient(syncClient, host, namespace, identityResolver, identityTokenResolver);
+        registerDiscoServiceClient(syncClient, host, namespace, identityResolver, identityTokenResolver);
         return syncClient;
     }
 
@@ -49,11 +49,11 @@ public class ${service}ClientFactory extends AbstractCougarClientFactory {<#t>
 
     public ${service}Client createASyncHttpClient(String host, String namespace, IdentityResolver identityResolver, IdentityTokenResolver identityTokenResolver) {
         final ${service}Client aSyncClient = getASyncClient(namespace);
-        registerCougarServiceClient(aSyncClient, host, namespace, identityResolver, identityTokenResolver);
+        registerDiscoServiceClient(aSyncClient, host, namespace, identityResolver, identityTokenResolver);
         return aSyncClient;
     }
 
-    private void registerCougarServiceClient(Service serviceClient, String host, String namespace, IdentityResolver identityResolver, IdentityTokenResolver identityTokenResolver) {
+    private void registerDiscoServiceClient(Service serviceClient, String host, String namespace, IdentityResolver identityResolver, IdentityTokenResolver identityTokenResolver) {
         super.registerClient(serviceClient, host, namespace,
                 new ${service}RescriptServiceBindingDescriptor(),
                 new ${service}ExceptionFactory(),
@@ -68,7 +68,7 @@ public class ${service}ClientFactory extends AbstractCougarClientFactory {<#t>
 
     private ${service}Client getASyncClient(String namespace) {
         if (executor == null) {
-            throw new CougarFrameworkException("ASync cougar client cannot be created when no custom executor is defined");
+            throw new DiscoFrameworkException("ASync disco client cannot be created when no custom executor is defined");
         }
         return new ${service}ClientImpl(executionVenue, executor, namespace);
     }

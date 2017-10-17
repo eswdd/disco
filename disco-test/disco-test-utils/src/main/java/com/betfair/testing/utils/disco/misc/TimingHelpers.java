@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.misc;
+package com.betfair.testing.utils.disco.misc;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,7 +25,7 @@ import java.util.TimeZone;
  */
 public class TimingHelpers {
 
-    public static String convertUTCDateTimeToCougarFormat(int year, int month, int day, int hour, int minute, int second, int millis) {
+    public static String convertUTCDateTimeToDiscoFormat(int year, int month, int day, int hour, int minute, int second, int millis) {
         /*
         Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         c.set(Calendar.YEAR, year);
@@ -72,6 +72,6 @@ public class TimingHelpers {
     }
 
     public static String convertUTCDateTimeToLocalTimezoneXMLSchema2(int year, int month, int day, int hour, int minute, int second, int millis) {
-        return convertUTCDateTimeToCougarFormat(year, month, day, hour, minute, second, millis);
+        return convertUTCDateTimeToDiscoFormat(year, month, day, hour, minute, second, millis);
     }
 }

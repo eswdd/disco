@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline;
+package uk.co.exemel.disco.baseline;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.co.LessComplexObjectCO;
@@ -25,10 +25,10 @@ import com.betfair.baseline.v2.co.client.VeryComplexObjectClientCO;
 import com.betfair.baseline.v2.enumerations.TestConnectedObjectsProtocolEnum;
 import com.betfair.baseline.v2.enumerations.VeryComplexObjectEnumParameterEnum;
 import com.betfair.baseline.v2.to.*;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.client.socket.ClientSubscription;
-import com.betfair.cougar.core.api.ev.ConnectedResponse;
-import com.betfair.cougar.core.api.ev.Subscription;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.client.socket.ClientSubscription;
+import uk.co.exemel.disco.core.api.ev.ConnectedResponse;
+import uk.co.exemel.disco.core.api.ev.Subscription;
 import com.betfair.platform.virtualheap.*;
 import com.betfair.platform.virtualheap.HCollection;
 import com.betfair.platform.virtualheap.projection.ScalarProjection;
@@ -57,7 +57,7 @@ public class ConnectedObjectTestingUtils {
     public static TestResults testConnectedObjects(RequestContext ctx, BaselineSyncClient client, TestConnectedObjectsProtocolEnum protocol){
         boolean socketProtocol = false;
         String file = "";
-        String fileSuffix = "-cougar-baseline-push-subscription.log";
+        String fileSuffix = "-disco-baseline-push-subscription.log";
 
         try {
             file = logpath + InetAddress.getLocalHost().getHostName() + fileSuffix;

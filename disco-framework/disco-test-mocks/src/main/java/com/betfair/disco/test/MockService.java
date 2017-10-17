@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test;
+package uk.co.exemel.disco.test;
 
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.api.Result;
-import com.betfair.cougar.api.Service;
-import com.betfair.cougar.api.annotations.IDLService;
-import com.betfair.cougar.api.fault.CougarApplicationException;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.api.Result;
+import uk.co.exemel.disco.api.Service;
+import uk.co.exemel.disco.api.annotations.IDLService;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
 
 
 @IDLService(name="MockService", version="v1.0")
 public interface MockService extends Service {
-    public Result testMethod(RequestContext ctx, String name) throws CougarApplicationException;
+    public Result testMethod(RequestContext ctx, String name) throws DiscoApplicationException;
 }

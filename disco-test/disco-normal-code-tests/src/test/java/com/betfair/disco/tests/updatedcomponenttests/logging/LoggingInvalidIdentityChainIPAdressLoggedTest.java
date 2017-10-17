@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/Logging/Logging_InvalidIdentityChain_IPAdressLogged.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.logging;
+package uk.co.exemel.disco.tests.updatedcomponenttests.logging;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that when a cougar request is made, using an invalid identity chain, the IP address is still recorded in the access log
+ * Ensure that when a disco request is made, using an invalid identity chain, the IP address is still recorded in the access log
  */
 public class LoggingInvalidIdentityChainIPAdressLoggedTest {
     String validIPaddress = "87.248.113.14";
@@ -60,14 +60,14 @@ public class LoggingInvalidIdentityChainIPAdressLoggedTest {
     }
 
     public void doTest(String testIPAddress, String expectedIPAddress) throws Exception {
-        CougarManager cougarManager = CougarManager.getInstance();
+        DiscoManager discoManager = DiscoManager.getInstance();
         // Turn off detailed faults
-        cougarManager.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        discoManager.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
 
         // Set up the Http Call Bean to make the request
-        HttpCallBean callBean = cougarManager.getNewHttpCallBean(testIPAddress);
+        HttpCallBean callBean = discoManager.getNewHttpCallBean(testIPAddress);
         callBean.setOperationName("testSimpleGet", "simple");
-        callBean.setServiceName("baseline", "cougarBaseline");
+        callBean.setServiceName("baseline", "discoBaseline");
         callBean.setVersion("v2");
         Map<String,String> map2 = new HashMap<String,String>();
         map2.put("message","foo");
@@ -83,38 +83,38 @@ public class LoggingInvalidIdentityChainIPAdressLoggedTest {
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
 
         // Make the 4 REST calls to the operation
-        cougarManager.makeRestCougarHTTPCalls(callBean);
+        discoManager.makeRestDiscoHTTPCalls(callBean);
 
         // Create the expected response as an XML document (Fault)
         XMLHelpers xMLHelpers5 = new XMLHelpers();
         Document xmlDocument = xMLHelpers5.getXMLObjectFromString("<fault><faultcode>Client</faultcode><faultstring>DSC-0015</faultstring><detail/></fault>");
 
         // Convert the expected response to REST types for comparison with actual responses
-        Map<CougarMessageProtocolRequestTypeEnum, Object> restResponses = cougarManager.convertResponseToRestTypes(xmlDocument, callBean);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> restResponses = discoManager.convertResponseToRestTypes(xmlDocument, callBean);
 
         // Check the 4 responses are as expected (access was forbidden as the identity chain was invalid)
-        HttpResponseBean response6 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
-        AssertionUtils.multiAssertEquals(restResponses.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response6.getResponseObject());
+        HttpResponseBean response6 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
+        AssertionUtils.multiAssertEquals(restResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response6.getResponseObject());
         AssertionUtils.multiAssertEquals(403, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Forbidden", response6.getHttpStatusText());
         
-        HttpResponseBean response7 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
-        AssertionUtils.multiAssertEquals(restResponses.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response7.getResponseObject());
+        HttpResponseBean response7 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        AssertionUtils.multiAssertEquals(restResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response7.getResponseObject());
         AssertionUtils.multiAssertEquals(403, response7.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Forbidden", response7.getHttpStatusText());
         
-        HttpResponseBean response8 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
-        AssertionUtils.multiAssertEquals(restResponses.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response8.getResponseObject());
+        HttpResponseBean response8 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        AssertionUtils.multiAssertEquals(restResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response8.getResponseObject());
         AssertionUtils.multiAssertEquals(403, response8.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Forbidden", response8.getHttpStatusText());
         
-        HttpResponseBean response9 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
-        AssertionUtils.multiAssertEquals(restResponses.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response9.getResponseObject());
+        HttpResponseBean response9 = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
+        AssertionUtils.multiAssertEquals(restResponses.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response9.getResponseObject());
         AssertionUtils.multiAssertEquals(403, response9.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Forbidden", response9.getHttpStatusText());
         
         // Check that the IP address has still be logged in the access log
-        cougarManager.verifyAccessLogEntriesAfterDate(timeStamp
+        discoManager.verifyAccessLogEntriesAfterDate(timeStamp
                 , new AccessLogRequirement(expectedIPAddress, null, null)
                 , new AccessLogRequirement(expectedIPAddress, null, null)
                 , new AccessLogRequirement(expectedIPAddress, null, null)

@@ -29,25 +29,25 @@
         <property name="systemPropertiesMode" value="1"/>
     </bean>
 
-    <bean name="perfTestClient" class="com.betfair.cougar.perf.socket.v1.SocketPerfTestingSyncClientImpl">
-        <constructor-arg ref="cougar.core.ExecutionVenue"/>
+    <bean name="perfTestClient" class="uk.co.exemel.disco.perf.socket.v1.SocketPerfTestingSyncClientImpl">
+        <constructor-arg ref="disco.core.ExecutionVenue"/>
         <constructor-arg value="SOCKET-CLI"/>
     </bean>
 
-    <!-- Register the client with Cougar -->
-    <bean class="com.betfair.cougar.core.impl.ev.ClientServiceRegistration" id="eroRegistration">
+    <!-- Register the client with Disco -->
+    <bean class="uk.co.exemel.disco.core.impl.ev.ClientServiceRegistration" id="eroRegistration">
         <property name="resolver">
-            <bean class="com.betfair.cougar.perf.socket.v1.SocketPerfTestingClientExecutableResolver" init-method="init">
+            <bean class="uk.co.exemel.disco.perf.socket.v1.SocketPerfTestingClientExecutableResolver" init-method="init">
                 <property name="defaultOperationTransport">
                     <!--Transport-->
-                    <bean parent="cougar.client.AbstractSocketTransport">
+                    <bean parent="disco.client.AbstractSocketTransport">
                         <constructor-arg index="5" value="${server.address}"/>
                     </bean>
                 </property>
             </bean>
         </property>
         <property name="serviceDefinition">
-            <bean class="com.betfair.cougar.perf.socket.v1.SocketPerfTestingServiceDefinition"/>
+            <bean class="uk.co.exemel.disco.perf.socket.v1.SocketPerfTestingServiceDefinition"/>
         </property>
         <property name="namespace" value="SOCKET-CLI"/>
     </bean>

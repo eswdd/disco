@@ -15,29 +15,29 @@
  */
 
 // Originally from ClientTests/Transport/StandardTesting/Client_Rescript_Get_SimpleOperation_DelegateResponse.xls;
-package com.betfair.cougar.tests.clienttests.standardtesting;
+package uk.co.exemel.disco.tests.clienttests.standardtesting;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.to.SimpleResponse;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
- * Ensure that when a request is made to cougar via a cougar client, the response map can be populated by a delegate
+ * Ensure that when a request is made to disco via a disco client, the response map can be populated by a delegate
  */
 public class ClientGetSimpleOperationDelegateResponseTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Set up the client to use rescript transport
-        CougarClientWrapper cougarClientWrapper1 = CougarClientWrapper.getInstance(tt);
-        CougarClientWrapper wrapper = cougarClientWrapper1;
-        BaselineSyncClient client = cougarClientWrapper1.getClient();
-        ExecutionContext context = cougarClientWrapper1.getCtx();
+        DiscoClientWrapper discoClientWrapper1 = DiscoClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = discoClientWrapper1;
+        BaselineSyncClient client = discoClientWrapper1.getClient();
+        ExecutionContext context = discoClientWrapper1.getCtx();
         // Make call to the method via client and validate the response is as expected
         SimpleResponse response2 = client.testSimpleGetQA(context, "DELEGATE");
         assertEquals("Hardcoded delegate response", response2.getMessage());

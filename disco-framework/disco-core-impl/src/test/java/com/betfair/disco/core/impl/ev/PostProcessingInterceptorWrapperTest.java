@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
 import org.slf4j.LoggerFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -84,7 +84,7 @@ public class PostProcessingInterceptorWrapperTest {
         ppiw.onResult(new ExecutionResult("String"));
 
         //Pass in an exception result
-        CougarFrameworkException cfe = new CougarFrameworkException("Mr Blobby");
+        DiscoFrameworkException cfe = new DiscoFrameworkException("Mr Blobby");
         VerifyingExecutionObserver exceptionObserver = new VerifyingExecutionObserver(ExecutionResult.ResultType.Fault);
         ppiw = new PostProcessingInterceptorWrapper(exceptionObserver, pp, ctx, key, new Object[] {});
         ppiw.onResult(new ExecutionResult(cfe));
@@ -114,7 +114,7 @@ public class PostProcessingInterceptorWrapperTest {
         //Pass in an exception result
         obs = new VerifyingExecutionObserver(ExecutionResult.ResultType.Fault);
         ppiw = new PostProcessingInterceptorWrapper(obs, pp, ctx, key, new Object[] {});
-        ppiw.onResult(new ExecutionResult(new CougarFrameworkException("Mr Blobby")));
+        ppiw.onResult(new ExecutionResult(new DiscoFrameworkException("Mr Blobby")));
 
         //Pass in a subscription result and check for exception result
         obs = new VerifyingExecutionObserver(ExecutionResult.ResultType.Fault);
@@ -141,7 +141,7 @@ public class PostProcessingInterceptorWrapperTest {
         //Pass in an exception result
         obs = new VerifyingExecutionObserver(ExecutionResult.ResultType.Success);
         ppiw = new PostProcessingInterceptorWrapper(obs, pp, ctx, key, new Object[] {});
-        ppiw.onResult(new ExecutionResult(new CougarFrameworkException("Mr Blobby")));
+        ppiw.onResult(new ExecutionResult(new DiscoFrameworkException("Mr Blobby")));
 
         //Pass in a subscription result and check for exception result
         obs = new VerifyingExecutionObserver(ExecutionResult.ResultType.Success);

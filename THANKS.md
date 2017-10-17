@@ -1,4 +1,4 @@
-Many people have contributed to Cougar over the years at Betfair, we want to call out those who have made the greatest contributions internally before it was released since those contributions aren't visible on Github. Authors are those who made >50 individual commits. Names are in decreasing order of number of individual commits.
+Many people have contributed to Disco over the years at Betfair, we want to call out those who have made the greatest contributions internally before it was released since those contributions aren't visible on Github. Authors are those who made >50 individual commits. Names are in decreasing order of number of individual commits.
 
 Where just initials are presented it's because we haven't been able to obtain permission from the individual to publish their name.
 

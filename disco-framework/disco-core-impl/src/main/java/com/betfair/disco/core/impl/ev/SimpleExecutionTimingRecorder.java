@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.core.api.ev.ExecutionTimingRecorder;
+import uk.co.exemel.disco.core.api.ev.ExecutionTimingRecorder;
 import com.betfair.tornjak.kpi.KPIMonitor;
 
 /**

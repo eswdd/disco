@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.codegen;
+package uk.co.exemel.disco.codegen;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -24,8 +24,8 @@ import java.io.File;
 
 import org.junit.Test;
 
-import com.betfair.cougar.codegen.except.PluginException;
-import com.betfair.cougar.codegen.resolver.InterceptingResolver;
+import uk.co.exemel.disco.codegen.except.PluginException;
+import uk.co.exemel.disco.codegen.resolver.InterceptingResolver;
 
 /**
  * Unit test {@link InterceptingResolver}.

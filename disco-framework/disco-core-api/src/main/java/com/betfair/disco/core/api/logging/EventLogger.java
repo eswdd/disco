@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.logging;
+package uk.co.exemel.disco.core.api.logging;
 
-import com.betfair.cougar.api.LoggableEvent;
+import uk.co.exemel.disco.api.LoggableEvent;
 
 public interface EventLogger {
 

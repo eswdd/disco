@@ -15,48 +15,48 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar;
+package com.betfair.testing.utils.disco;
 
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
-import com.betfair.testing.utils.cougar.manager.LogTailer;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.manager.LogTailer;
 
 
 /**
  * New interface for writing integration tests via.
  */
-public interface CougarTestingInvoker {
+public interface DiscoTestingInvoker {
 
 
-    CougarTestingInvoker setService(String serviceName);
+    DiscoTestingInvoker setService(String serviceName);
 
-    CougarTestingInvoker setService(String serviceName, String path);
+    DiscoTestingInvoker setService(String serviceName, String path);
 
-    CougarTestingInvoker setVersion(String version);
+    DiscoTestingInvoker setVersion(String version);
 
-    CougarTestingInvoker setOperation(String operation);
+    DiscoTestingInvoker setOperation(String operation);
 
-    CougarTestingInvoker setOperation(String operation, String operationPath);
+    DiscoTestingInvoker setOperation(String operation, String operationPath);
 
-    CougarTestingInvoker addHeaderParam(String key, String value);
+    DiscoTestingInvoker addHeaderParam(String key, String value);
 
-    CougarTestingInvoker addQueryParam(String key, String value);
+    DiscoTestingInvoker addQueryParam(String key, String value);
 
-    CougarTestingInvoker makeMatrixRescriptCalls(CougarMessageContentTypeEnum... mediaTypes);
+    DiscoTestingInvoker makeMatrixRescriptCalls(DiscoMessageContentTypeEnum... mediaTypes);
 
-    CougarTestingInvoker setExpectedResponse(CougarMessageContentTypeEnum mediaType, String response);
+    DiscoTestingInvoker setExpectedResponse(DiscoMessageContentTypeEnum mediaType, String response);
 
-    CougarTestingInvoker setExpectedHttpResponse(int code, String text);
+    DiscoTestingInvoker setExpectedHttpResponse(int code, String text);
 
-    CougarTestingInvoker verify();
+    DiscoTestingInvoker verify();
 
     LogTailer.LogLine[] getRequestLogEntries();
 
-    CougarTestingInvoker setSoapBody(String body);
+    DiscoTestingInvoker setSoapBody(String body);
 
-    CougarTestingInvoker makeSoapCall();
+    DiscoTestingInvoker makeSoapCall();
 
-    CougarTestingInvoker addJsonRpcMethodCall(String id, String method, String body);
-    CougarTestingInvoker addJsonRpcExpectedResponse(String body);
+    DiscoTestingInvoker addJsonRpcMethodCall(String id, String method, String body);
+    DiscoTestingInvoker addJsonRpcExpectedResponse(String body);
 
-    CougarTestingInvoker makeJsonRpcCalls();
+    DiscoTestingInvoker makeJsonRpcCalls();
 }

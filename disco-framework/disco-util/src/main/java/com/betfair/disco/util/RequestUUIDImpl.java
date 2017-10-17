@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util;
+package uk.co.exemel.disco.util;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.UUIDGenerator;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.UUIDGenerator;
 
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -67,7 +67,7 @@ public class RequestUUIDImpl implements RequestUUID {
     }
 
     @Override
-    public String toCougarLogString() {
+    public String toDiscoLogString() {
         return internalGetUuidString();
     }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transformations.manglers;
+package uk.co.exemel.disco.transformations.manglers;
 
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.betfair.cougar.codegen.ValidationException;
+import uk.co.exemel.disco.codegen.ValidationException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 

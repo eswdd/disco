@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar;
+package uk.co.exemel.disco;
 
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,15 +26,15 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CougarVersion {
+public class DiscoVersion {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(CougarVersion.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(DiscoVersion.class);
 
     private static String VERSION;
     private static String MAJOR_MINOR_VERSION;
 
     static {
-        init("/version/CougarVersion.properties");
+        init("/version/DiscoVersion.properties");
     }
 
     static void init(String properties) {
@@ -42,13 +42,13 @@ public class CougarVersion {
         MAJOR_MINOR_VERSION = null;
         InputStream is = null;
         try {
-            is = new CougarVersion().getClass().getResourceAsStream(properties);
+            is = new DiscoVersion().getClass().getResourceAsStream(properties);
             Properties prop = new Properties();
             prop.load(is);
             VERSION = prop.getProperty("version");
-            LOGGER.info("Labeled Cougar version is "+VERSION);
+            LOGGER.info("Labeled Disco version is "+VERSION);
         } catch (Exception e) {
-            LOGGER.warn("Failed to read Cougar version", e);
+            LOGGER.warn("Failed to read Disco version", e);
         } finally {
             if (is != null) {
                 try {
@@ -67,7 +67,7 @@ public class CougarVersion {
             MAJOR_MINOR_VERSION = matcher.group();
         }
         else {
-            throw new CougarFrameworkException("Cannot resolve Cougar's version, something is seriously amiss");
+            throw new DiscoFrameworkException("Cannot resolve Disco's version, something is seriously amiss");
         }
     }
 

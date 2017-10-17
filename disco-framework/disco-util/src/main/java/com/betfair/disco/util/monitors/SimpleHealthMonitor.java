@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.monitors;
+package uk.co.exemel.disco.util.monitors;
 
 import com.betfair.tornjak.monitor.MonitorRegistry;
 import com.betfair.tornjak.monitor.OnDemandMonitor;

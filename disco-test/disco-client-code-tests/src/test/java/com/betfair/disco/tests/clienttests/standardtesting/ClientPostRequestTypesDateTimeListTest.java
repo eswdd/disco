@@ -15,16 +15,16 @@
  */
 
 // Originally from ClientTests/Transport/StandardTesting/Client_Rescript_Post_RequestTypes_DateTimeList.xls;
-package com.betfair.cougar.tests.clienttests.standardtesting;
+package uk.co.exemel.disco.tests.clienttests.standardtesting;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.to.BodyParamDateTimeListObject;
 import com.betfair.baseline.v2.to.DateTimeListOperationResponseObject;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientResponseTypeUtils;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientResponseTypeUtils;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -34,25 +34,25 @@ import java.util.Date;
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
- * Ensure that when a dateTimeList is passed in a body parameter to cougar via a cougar client the request is sent and the response is handled correctly
+ * Ensure that when a dateTimeList is passed in a body parameter to disco via a disco client the request is sent and the response is handled correctly
  */
 public class ClientPostRequestTypesDateTimeListTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Set up the client to use rescript transport
-        CougarClientWrapper cougarClientWrapper1 = CougarClientWrapper.getInstance(tt);
-        CougarClientWrapper wrapper = cougarClientWrapper1;
-        BaselineSyncClient client = cougarClientWrapper1.getClient();
-        ExecutionContext context = cougarClientWrapper1.getCtx();
+        DiscoClientWrapper discoClientWrapper1 = DiscoClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = discoClientWrapper1;
+        BaselineSyncClient client = discoClientWrapper1.getClient();
+        ExecutionContext context = discoClientWrapper1.getCtx();
         // Create date to be put in list
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils2 = new CougarClientResponseTypeUtils();
-        Date dateParam1 = cougarClientResponseTypeUtils2.createDateFromString("2009-06-01T13:50:00.0Z");
-        CougarHelpers helper = new CougarHelpers();
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils2 = new DiscoClientResponseTypeUtils();
+        Date dateParam1 = discoClientResponseTypeUtils2.createDateFromString("2009-06-01T13:50:00.0Z");
+        DiscoHelpers helper = new DiscoHelpers();
         Date convertedDate1 = helper.convertToSystemTimeZone("2009-06-01T13:50:00.0Z");
 
         // Create date to be put in list
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils3 = new CougarClientResponseTypeUtils();
-        Date dateParam2 = cougarClientResponseTypeUtils3.createDateFromString("2009-06-01T14:50:00.0Z");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils3 = new DiscoClientResponseTypeUtils();
+        Date dateParam2 = discoClientResponseTypeUtils3.createDateFromString("2009-06-01T14:50:00.0Z");
          Date convertedDate2 = helper.convertToSystemTimeZone("2009-06-01T14:50:00.0Z");
 
         // Create date list object to pass as parameter (using previously created dates)
@@ -64,8 +64,8 @@ public class ClientPostRequestTypesDateTimeListTest {
         Date localTime = response6.getResponseList().get(0);
         Date localTime2 = response6.getResponseList().get(1);
         // Validate the response is as expected
-        assertEquals(cougarClientResponseTypeUtils2.formatDateToString(localTime),cougarClientResponseTypeUtils2.formatDateToString(localTime));
-        assertEquals(cougarClientResponseTypeUtils2.formatDateToString(localTime2) ,cougarClientResponseTypeUtils2.formatDateToString(localTime2));
+        assertEquals(discoClientResponseTypeUtils2.formatDateToString(localTime),discoClientResponseTypeUtils2.formatDateToString(localTime));
+        assertEquals(discoClientResponseTypeUtils2.formatDateToString(localTime2) ,discoClientResponseTypeUtils2.formatDateToString(localTime2));
     }
 
     @DataProvider(name="TransportType")

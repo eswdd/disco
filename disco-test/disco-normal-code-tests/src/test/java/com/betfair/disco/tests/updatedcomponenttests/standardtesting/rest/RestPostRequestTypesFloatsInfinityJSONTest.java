@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/REST/Rest_Post_RequestTypes_Floats_Infinity_JSON.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -34,19 +34,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that for JSON requests Cougar can handle Floats in the post body, header params and query params that are infinity
+ * Ensure that for JSON requests Disco can handle Floats in the post body, header params and query params that are infinity
  */
 public class RestPostRequestTypesFloatsInfinityJSONTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        discoManager1 = discoManager1;
         
         getNewHttpCallBean1.setOperationName("floatOperation");
         
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean1.setVersion("v2");
         // Set each of the parameter types to contain a float datatype object that is infinity
@@ -65,9 +65,9 @@ public class RestPostRequestTypesFloatsInfinityJSONTest {
 
         Timestamp getTimeAsTimeStamp9 = new Timestamp(System.currentTimeMillis());
         // Make a JSON call to the operation requesting an XML response
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.XML);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.XML);
         // Make a JSON call to the operation requesting an JSON response
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Create the expected response as an XML document
         XMLHelpers xMLHelpers6 = new XMLHelpers();
         Document createAsDocument12 = xMLHelpers6.getXMLObjectFromString("<FloatOperationResponse><FloatOperationResponseObject><bodyParameter>-INF</bodyParameter><headerParameter>INF</headerParameter><queryParameter>-INF</queryParameter></FloatOperationResponseObject></FloatOperationResponse>");
@@ -75,12 +75,12 @@ public class RestPostRequestTypesFloatsInfinityJSONTest {
         JSONHelpers jSONHelpers7 = new JSONHelpers();
         JSONObject createAsJSONObject13 = jSONHelpers7.createAsJSONObject(new JSONObject("{bodyParameter:\"-Infinity\",headerParameter:\"Infinity\",queryParameter:\"-Infinity\"}"));
         // Check the XML response is as expected
-        HttpResponseBean response8 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
+        HttpResponseBean response8 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
         AssertionUtils.multiAssertEquals(createAsDocument12, response8.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response8.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response8.getHttpStatusText());
         // Check the JSON response is as expected
-        HttpResponseBean response9 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response9 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         AssertionUtils.multiAssertEquals(createAsJSONObject13, response9.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response9.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response9.getHttpStatusText());
@@ -88,7 +88,7 @@ public class RestPostRequestTypesFloatsInfinityJSONTest {
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
         
-        cougarManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp9, new RequestLogRequirement("2.8", "floatOperation"),new RequestLogRequirement("2.8", "floatOperation") );
+        discoManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp9, new RequestLogRequirement("2.8", "floatOperation"),new RequestLogRequirement("2.8", "floatOperation") );
     }
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.nio;
+package uk.co.exemel.disco.transport.nio;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -26,15 +26,15 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.TlsNioConfig;
-import com.betfair.cougar.transport.api.TransportCommandProcessor;
-import com.betfair.cougar.transport.api.protocol.CougarObjectIOFactory;
-import com.betfair.cougar.transport.socket.SocketTransportCommand;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.TlsNioConfig;
+import uk.co.exemel.disco.transport.api.TransportCommandProcessor;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectIOFactory;
+import uk.co.exemel.disco.transport.socket.SocketTransportCommand;
 import org.apache.mina.common.IoHandlerAdapter;
 import org.apache.mina.common.IoSession;
 
-import com.betfair.cougar.netutil.nio.NioConfig;
+import uk.co.exemel.disco.netutil.nio.NioConfig;
 
 public class TestServerHandler extends ExecutionVenueServerHandler {
 

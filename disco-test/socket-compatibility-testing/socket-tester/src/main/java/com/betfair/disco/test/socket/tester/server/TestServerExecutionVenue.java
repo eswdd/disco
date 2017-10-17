@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.server;
+package uk.co.exemel.disco.test.socket.tester.server;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.security.*;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.impl.security.IdentityChainImpl;
-import com.betfair.cougar.test.socket.tester.common.SimpleCredential;
-import com.betfair.cougar.test.socket.tester.common.SimplePrincipal;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.security.*;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.impl.security.IdentityChainImpl;
+import uk.co.exemel.disco.test.socket.tester.common.SimpleCredential;
+import uk.co.exemel.disco.test.socket.tester.common.SimplePrincipal;
 
 import java.security.Principal;
 import java.util.*;

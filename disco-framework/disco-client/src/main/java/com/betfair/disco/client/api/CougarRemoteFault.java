@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.api;
+package uk.co.exemel.disco.client.api;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class CougarRemoteFault {
+public class DiscoRemoteFault {
 
 	private LinkedHashMap<String, Object> faultMap;
 
-	public CougarRemoteFault(LinkedHashMap<String, Object> faultMap) {
+	public DiscoRemoteFault(LinkedHashMap<String, Object> faultMap) {
 		this.faultMap = faultMap;
 	}
 

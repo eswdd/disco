@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.client.api.GeoLocationSerializer;
-import com.betfair.cougar.util.geolocation.RemoteAddressUtils;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.client.api.GeoLocationSerializer;
+import uk.co.exemel.disco.util.geolocation.RemoteAddressUtils;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 

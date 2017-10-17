@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.events;
+package uk.co.exemel.disco.transport.api.protocol.events;
 
-import com.betfair.cougar.core.api.events.Event;
+import uk.co.exemel.disco.core.api.events.Event;
 
 /**
  * Abstract baseclass for Event transfer objects
  */
 public abstract class AbstractEvent implements Event {
     private String messageId;
-    private String cougarMessageRouteString;
+    private String discoMessageRouteString;
 
     public String getMessageId() {
         return messageId;
@@ -33,12 +33,12 @@ public abstract class AbstractEvent implements Event {
         this.messageId = messageId;
     }
 
-    public String getCougarMessageRouteString() {
-        return cougarMessageRouteString;
+    public String getDiscoMessageRouteString() {
+        return discoMessageRouteString;
     }
 
-    public void setCougarMessageRouteString(String cougarMessageRouteString) {
-        this.cougarMessageRouteString = cougarMessageRouteString;
+    public void setDiscoMessageRouteString(String discoMessageRouteString) {
+        this.discoMessageRouteString = discoMessageRouteString;
     }
 }
 

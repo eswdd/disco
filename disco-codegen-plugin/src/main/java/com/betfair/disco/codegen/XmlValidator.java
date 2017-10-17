@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.codegen;
+package uk.co.exemel.disco.codegen;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.dom.DOMSource;
@@ -23,8 +23,8 @@ import javax.xml.validation.SchemaFactory;
 
 import org.w3c.dom.Document;
 
-import com.betfair.cougar.codegen.except.PluginException;
-import com.betfair.cougar.codegen.resolver.InterceptingResolver;
+import uk.co.exemel.disco.codegen.except.PluginException;
+import uk.co.exemel.disco.codegen.resolver.InterceptingResolver;
 
 /**
  * Does schema validation of XML documents (replacing xml-maven-plugin, which can't handle

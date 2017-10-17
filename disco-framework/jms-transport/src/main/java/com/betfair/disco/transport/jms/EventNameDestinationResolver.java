@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms;
+package uk.co.exemel.disco.transport.jms;
 
-import com.betfair.cougar.core.api.events.Event;
-import com.betfair.cougar.transport.api.protocol.events.jms.JMSDestinationResolver;
+import uk.co.exemel.disco.core.api.events.Event;
+import uk.co.exemel.disco.transport.api.protocol.events.jms.JMSDestinationResolver;
 
 /**
  * This simple destination resolver constructs a JMS destination name as a string

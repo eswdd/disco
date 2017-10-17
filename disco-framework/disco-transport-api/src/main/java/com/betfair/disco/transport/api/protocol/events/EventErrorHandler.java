@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.events;
+package uk.co.exemel.disco.transport.api.protocol.events;
 
 /**
  * This interface describes an implementation of an error handler for the supplied Event based

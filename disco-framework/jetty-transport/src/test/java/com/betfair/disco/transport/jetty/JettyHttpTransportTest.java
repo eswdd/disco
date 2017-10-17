@@ -15,23 +15,23 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.impl.transports.TransportRegistryImpl;
-import com.betfair.cougar.transport.api.TransportCommandProcessorFactory;
-import com.betfair.cougar.transport.api.protocol.ProtocolBinding;
-import com.betfair.cougar.transport.api.protocol.ProtocolBindingRegistry;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommandProcessor;
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.jsonrpc.JsonRpcOperationBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
-import com.betfair.cougar.transport.impl.protocol.http.DefaultGeoLocationDeserializer;
-import com.betfair.cougar.transport.jetty.jmx.JettyEndpoints;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.impl.transports.TransportRegistryImpl;
+import uk.co.exemel.disco.transport.api.TransportCommandProcessorFactory;
+import uk.co.exemel.disco.transport.api.protocol.ProtocolBinding;
+import uk.co.exemel.disco.transport.api.protocol.ProtocolBindingRegistry;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommandProcessor;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.jsonrpc.JsonRpcOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
+import uk.co.exemel.disco.transport.impl.protocol.http.DefaultGeoLocationDeserializer;
+import uk.co.exemel.disco.transport.jetty.jmx.JettyEndpoints;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -232,7 +232,7 @@ public class JettyHttpTransportTest {
         transport.initialiseStaticJettyConfig();
         populateTransportWithCORSEnabled(transport);
 
-        transport.onCougarStart();
+        transport.onDiscoStart();
 
         assertEquals(3, transport.getHandlerCollection().getChildHandlersByClass(CrossOriginHandler.class).length);
 
@@ -268,7 +268,7 @@ public class JettyHttpTransportTest {
         transport.initialiseStaticJettyConfig();
 
         populateTransport(transport);
-        transport.onCougarStart();
+        transport.onDiscoStart();
 
         assertEquals(0, transport.getHandlerCollection().getChildHandlersByClass(CrossOriginHandler.class).length);
 
@@ -304,7 +304,7 @@ public class JettyHttpTransportTest {
 
         transport.initialiseStaticJettyConfig();
 
-        transport.onCougarStart();
+        transport.onDiscoStart();
 
         verify(endpoints).setEndPoints(captor.capture());
 
@@ -360,21 +360,21 @@ public class JettyHttpTransportTest {
 
     private String getServerKeystorePath() throws IOException {
         String userDir = new File(System.getProperty("user.dir")).getCanonicalPath();
-        final String subDir = SEP + "cougar-framework" + SEP + "jetty-transport";
+        final String subDir = SEP + "disco-framework" + SEP + "jetty-transport";
         if (userDir.endsWith(subDir)) {
             userDir = userDir.substring(0, userDir.indexOf(subDir));
         }
-        final String cert = SEP + "src" + SEP + "test" + SEP + "resources" + SEP + "cougar_server_cert.jks";
+        final String cert = SEP + "src" + SEP + "test" + SEP + "resources" + SEP + "disco_server_cert.jks";
         return new File(userDir, subDir + cert).getCanonicalPath();
     }
 
     private String getServerTruststorePath() throws IOException {
         String userDir = new File(System.getProperty("user.dir")).getCanonicalPath();
-        final String subDir = SEP + "cougar-framework" + SEP + "jetty-transport";
+        final String subDir = SEP + "disco-framework" + SEP + "jetty-transport";
         if (userDir.endsWith(subDir)) {
             userDir = userDir.substring(0, userDir.indexOf(subDir));
         }
-        final String cert = SEP + "src" + SEP + "test" + SEP + "resources" + SEP + "cougar_client_ca.jks";
+        final String cert = SEP + "src" + SEP + "test" + SEP + "resources" + SEP + "disco_client_ca.jks";
         return new File(userDir, subDir + cert).getCanonicalPath();
     }
 
@@ -442,7 +442,7 @@ public class JettyHttpTransportTest {
 
         transport.initialiseStaticJettyConfig();
         transport.getServerWrapper().setThreadPoolName("testThreadCounts");
-        transport.onCougarStart();
+        transport.onDiscoStart();
 
         long startTime = System.currentTimeMillis();
         ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.misc;
+package com.betfair.testing.utils.disco.misc;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;

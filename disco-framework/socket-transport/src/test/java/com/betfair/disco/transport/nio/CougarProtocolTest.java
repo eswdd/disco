@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.nio;
+package uk.co.exemel.disco.transport.nio;
 
-import com.betfair.cougar.core.impl.transports.TransportRegistryImpl;
-import com.betfair.cougar.netutil.nio.ClientHandshake;
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.netutil.nio.NioConfig;
-import com.betfair.cougar.netutil.nio.NioLogger;
-import com.betfair.cougar.netutil.nio.TlsNioConfig;
-import com.betfair.cougar.netutil.nio.message.ProtocolMessage;
-import com.betfair.cougar.netutil.nio.message.RequestMessage;
-import com.betfair.cougar.netutil.nio.message.SuspendMessage;
-import com.betfair.cougar.transport.api.TransportCommandProcessor;
-import com.betfair.cougar.transport.api.protocol.CougarObjectIOFactory;
-import com.betfair.cougar.netutil.nio.hessian.HessianObjectIOFactory;
-import com.betfair.cougar.transport.socket.SocketTransportCommand;
-import com.betfair.cougar.transport.socket.SocketTransportCommandProcessor;
+import uk.co.exemel.disco.core.impl.transports.TransportRegistryImpl;
+import uk.co.exemel.disco.netutil.nio.ClientHandshake;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.netutil.nio.NioConfig;
+import uk.co.exemel.disco.netutil.nio.NioLogger;
+import uk.co.exemel.disco.netutil.nio.TlsNioConfig;
+import uk.co.exemel.disco.netutil.nio.message.ProtocolMessage;
+import uk.co.exemel.disco.netutil.nio.message.RequestMessage;
+import uk.co.exemel.disco.netutil.nio.message.SuspendMessage;
+import uk.co.exemel.disco.transport.api.TransportCommandProcessor;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectIOFactory;
+import uk.co.exemel.disco.netutil.nio.hessian.HessianObjectIOFactory;
+import uk.co.exemel.disco.transport.socket.SocketTransportCommand;
+import uk.co.exemel.disco.transport.socket.SocketTransportCommandProcessor;
 import org.apache.mina.common.ConnectFuture;
 import org.apache.mina.common.IoHandler;
 import org.apache.mina.common.IoHandlerAdapter;
@@ -44,9 +44,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static com.betfair.cougar.transport.nio.SessionTestUtil.newV1Session;
-import static com.betfair.cougar.transport.nio.SessionTestUtil.newV2Session;
-import static com.betfair.cougar.transport.nio.SessionTestUtil.newV3Session;
+import static uk.co.exemel.disco.transport.nio.SessionTestUtil.newV1Session;
+import static uk.co.exemel.disco.transport.nio.SessionTestUtil.newV2Session;
+import static uk.co.exemel.disco.transport.nio.SessionTestUtil.newV3Session;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -57,7 +57,7 @@ import static org.mockito.Mockito.verify;
 /**
 
  */
-public class CougarProtocolTest {
+public class DiscoProtocolTest {
 
     private TlsNioConfig defaultServerConfig;
     private TlsNioConfig defaultClientConfig;
@@ -91,7 +91,7 @@ public class CougarProtocolTest {
         server.setNioConfig(cfg);
         NioLogger sessionLogger = new NioLogger("ALL");
         TransportCommandProcessor<SocketTransportCommand> processor = new SocketTransportCommandProcessor();
-        CougarObjectIOFactory objectIOFactory = new HessianObjectIOFactory(false);
+        DiscoObjectIOFactory objectIOFactory = new HessianObjectIOFactory(false);
         ExecutionVenueServerHandler serverHandler = new ExecutionVenueServerHandler(sessionLogger, processor, objectIOFactory) {
             @Override
             public void messageReceived(IoSession session, Object message) throws Exception {
@@ -221,8 +221,8 @@ public class CougarProtocolTest {
     @Test
     public void testReject() throws IOException {
         // force version to an unsupported one (the next one)
-        CougarProtocol.setMinClientProtocolVersion((byte) (CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED + 1));
-        CougarProtocol.setMaxClientProtocolVersion((byte) (CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED + 1));
+        DiscoProtocol.setMinClientProtocolVersion((byte) (DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED + 1));
+        DiscoProtocol.setMaxClientProtocolVersion((byte) (DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED + 1));
         try {
             TlsNioConfig nioConfig = new TlsNioConfig();
             nioConfig.setNioLogger(new NioLogger("ALL"));
@@ -249,8 +249,8 @@ public class CougarProtocolTest {
 
             assertEquals("connection shouldn't have been successful", false, success);
         } finally {
-            CougarProtocol.setMinClientProtocolVersion(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
-            CougarProtocol.setMaxClientProtocolVersion(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+            DiscoProtocol.setMinClientProtocolVersion(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
+            DiscoProtocol.setMaxClientProtocolVersion(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED);
         }
 
     }
@@ -339,7 +339,7 @@ public class CougarProtocolTest {
 
     @Test
     public void testSuspendMessagesAreSkippedForV1Sessions() {
-        CougarProtocol protocol = CougarProtocol.getServerInstance(new NioLogger("NONE"), 5000, 5000, null, false, false);
+        DiscoProtocol protocol = DiscoProtocol.getServerInstance(new NioLogger("NONE"), 5000, 5000, null, false, false);
         IoSession ioSession = newV1Session();
         protocol.suspendSession(ioSession);
         verify(ioSession, never()).write(isA(SuspendMessage.class));
@@ -347,7 +347,7 @@ public class CougarProtocolTest {
 
     @Test
     public void testSuspendMessagesAreWrittenForV2Sessions() {
-        CougarProtocol protocol = CougarProtocol.getServerInstance(new NioLogger("NONE"), 5000, 5000, null, false, false);
+        DiscoProtocol protocol = DiscoProtocol.getServerInstance(new NioLogger("NONE"), 5000, 5000, null, false, false);
         IoSession ioSession = newV2Session();
         protocol.suspendSession(ioSession);
         verify(ioSession).write(isA(SuspendMessage.class));
@@ -355,7 +355,7 @@ public class CougarProtocolTest {
 
     @Test
     public void testSuspendMessagesAreWrittenForV3Sessions() {
-        CougarProtocol protocol = CougarProtocol.getServerInstance(new NioLogger("NONE"), 5000, 5000, null, false, false);
+        DiscoProtocol protocol = DiscoProtocol.getServerInstance(new NioLogger("NONE"), 5000, 5000, null, false, false);
         IoSession ioSession = newV3Session();
         protocol.suspendSession(ioSession);
         verify(ioSession).write(isA(SuspendMessage.class));

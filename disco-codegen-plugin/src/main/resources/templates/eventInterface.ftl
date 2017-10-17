@@ -20,8 +20,8 @@ package ${package}.${majorVersion};
 
 import ${package}.${majorVersion}.to.*;
 import ${package}.${majorVersion}.enumerations.*;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
 
 import java.util.*;
 
@@ -33,7 +33,7 @@ import java.util.*;
  */
  
 @SuppressWarnings("all")
-public interface  ${service}EventHandler extends com.betfair.cougar.api.EventHandler {<#t>
+public interface  ${service}EventHandler extends uk.co.exemel.disco.api.EventHandler {<#t>
 <#recurse doc><#t>
 }<#t>
 <#t>

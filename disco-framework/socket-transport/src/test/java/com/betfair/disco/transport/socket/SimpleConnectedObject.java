@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
 import com.betfair.platform.virtualheap.ObjectNode;
 import com.betfair.platform.virtualheap.projection.ScalarProjection;

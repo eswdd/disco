@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
 import java.util.Date;
 
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,16 +29,16 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.LogExtension;
-import com.betfair.cougar.api.LoggableEvent;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.logging.EventLogger;
-import com.betfair.cougar.core.impl.logging.RequestLogEvent;
-import com.betfair.cougar.util.RequestUUIDImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.LogExtension;
+import uk.co.exemel.disco.api.LoggableEvent;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.logging.EventLogger;
+import uk.co.exemel.disco.core.impl.logging.RequestLogEvent;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -121,7 +121,7 @@ public class ServiceExecutableResolverTest {
 		ObserverFunction function = new ObserverFunction() {
 			@Override
 			public void perform(ExecutionObserver observer) {
-				observer.onResult(new ExecutionResult(new CougarFrameworkException("test error")));
+				observer.onResult(new ExecutionResult(new DiscoFrameworkException("test error")));
 			}
 		};
 		testLogging(function, new RequestLogEventMatcher("DSC-0002"));
@@ -173,7 +173,7 @@ public class ServiceExecutableResolverTest {
                 //Field 0 is request start time
                 assertTrue(eventFields[0] instanceof Date);
                 //Field 1 is Request UUID
-                assertEquals(requestuuid.toCougarLogString(), eventFields[1]);
+                assertEquals(requestuuid.toDiscoLogString(), eventFields[1]);
                 //Field 2 is version without the "v" character
                 assertEquals("1.0", eventFields[2]);
                 //Field 3 is the operation name

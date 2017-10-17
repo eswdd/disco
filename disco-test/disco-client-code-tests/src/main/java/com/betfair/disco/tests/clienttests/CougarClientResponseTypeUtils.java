@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.clienttests;
+package uk.co.exemel.disco.tests.clienttests;
 
 import com.betfair.baseline.v2.enumerations.SimpleEnum;
 import com.betfair.baseline.v2.to.BodyParamByteObject;
@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class CougarClientResponseTypeUtils {
+public class DiscoClientResponseTypeUtils {
 	
 	private static final String MACHINE_NAME_ERROR = "Unable to retrieve machine name";
 	

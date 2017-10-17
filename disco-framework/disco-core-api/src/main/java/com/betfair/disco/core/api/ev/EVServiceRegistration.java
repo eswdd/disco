@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.ev;
+package uk.co.exemel.disco.core.api.ev;
 
-import com.betfair.cougar.core.api.BindingDescriptorRegistrationListener;
-import com.betfair.cougar.core.api.ServiceRegistrar;
+import uk.co.exemel.disco.core.api.BindingDescriptorRegistrationListener;
+import uk.co.exemel.disco.core.api.ServiceRegistrar;
 
 import java.util.Iterator;
 

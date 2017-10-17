@@ -16,15 +16,15 @@
  */
 
 // Originally from ClientTests/Transport/StandardTesting/Client_Rescript_Get_RequestTypes_String_QueryParam_EscapedCharacters_Colon.xls;
-package com.betfair.cougar.tests.clienttests.standardtesting;
+package uk.co.exemel.disco.tests.clienttests.standardtesting;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.to.SimpleResponse;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientResponseTypeUtils;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientResponseTypeUtils;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -33,21 +33,21 @@ import java.util.Date;
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
- * Ensure that when escaped characters (:) are passed in a query parameter to cougar via a cougar client the request is sent and the response is handled correctly
+ * Ensure that when escaped characters (:) are passed in a query parameter to disco via a disco client the request is sent and the response is handled correctly
  */
 public class ClientGetRequestTypesStringQueryParamEscapedCharactersColonTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Set up the client to use rescript transport
-        CougarClientWrapper cougarClientWrapper1 = CougarClientWrapper.getInstance(tt);
-        CougarClientWrapper wrapper = cougarClientWrapper1;
-        BaselineSyncClient client = cougarClientWrapper1.getClient();
-        ExecutionContext context = cougarClientWrapper1.getCtx();
+        DiscoClientWrapper discoClientWrapper1 = DiscoClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = discoClientWrapper1;
+        BaselineSyncClient client = discoClientWrapper1.getClient();
+        ExecutionContext context = discoClientWrapper1.getCtx();
         // Create date object to pass as parameter
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils2 = new CougarClientResponseTypeUtils();
-        Date dateParam = cougarClientResponseTypeUtils2.createDateFromString("2009-06-01T13:50:00.0Z");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils2 = new DiscoClientResponseTypeUtils();
+        Date dateParam = discoClientResponseTypeUtils2.createDateFromString("2009-06-01T13:50:00.0Z");
 
-        CougarHelpers helper = new CougarHelpers();
+        DiscoHelpers helper = new DiscoHelpers();
          Date convertedDate= helper.convertToSystemTimeZone("2009-06-01T13:50:00.0Z");
 
         // Make call to the method via client and validate the response is as expected

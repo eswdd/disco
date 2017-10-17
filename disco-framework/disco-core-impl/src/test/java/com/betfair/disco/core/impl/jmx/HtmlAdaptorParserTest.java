@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.jmx;
+package uk.co.exemel.disco.core.impl.jmx;
 
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
@@ -27,9 +27,9 @@ import javax.management.AttributeList;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
 
-import com.betfair.cougar.test.CougarTestCase;
+import uk.co.exemel.disco.test.DiscoTestCase;
 
-public class HtmlAdaptorParserTest extends CougarTestCase {
+public class HtmlAdaptorParserTest extends DiscoTestCase {
     MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
     public void testgetMBeanInfo() throws Exception {

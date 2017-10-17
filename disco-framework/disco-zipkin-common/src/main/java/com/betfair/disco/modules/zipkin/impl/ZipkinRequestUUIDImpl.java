@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.impl;
+package uk.co.exemel.disco.modules.zipkin.impl;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.modules.zipkin.api.ZipkinData;
-import com.betfair.cougar.modules.zipkin.api.ZipkinDataBuilder;
-import com.betfair.cougar.modules.zipkin.api.ZipkinRequestUUID;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinData;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinDataBuilder;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinRequestUUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,53 +28,53 @@ import java.util.Objects;
 /**
  * Base implementation of ZipkinRequestUUID.
  *
- * @see com.betfair.cougar.modules.zipkin.api.ZipkinRequestUUID
+ * @see uk.co.exemel.disco.modules.zipkin.api.ZipkinRequestUUID
  */
 public class ZipkinRequestUUIDImpl implements ZipkinRequestUUID {
 
-    private RequestUUID cougarUuid;
+    private RequestUUID discoUuid;
 
     private ZipkinData zipkinData;
 
     private ZipkinDataBuilder zipkinDataBuilder;
 
-    public ZipkinRequestUUIDImpl(@Nonnull RequestUUID cougarUuid) {
-        this(cougarUuid, null);
+    public ZipkinRequestUUIDImpl(@Nonnull RequestUUID discoUuid) {
+        this(discoUuid, null);
     }
 
     /**
-     * Constuct a Cougar/Zipkin Request object.
+     * Constuct a Disco/Zipkin Request object.
      *
-     * @param cougarUuid        Traditional Cougar RequestUUID.
+     * @param discoUuid        Traditional Disco RequestUUID.
      * @param zipkinDataBuilder Zipkin data builder object to be populated later with the span name.
      *                          Passing null here means Zipkin tracing is not enabled for this request.
      */
-    public ZipkinRequestUUIDImpl(@Nonnull RequestUUID cougarUuid, @Nullable ZipkinDataBuilder zipkinDataBuilder) {
-        Objects.requireNonNull(cougarUuid);
+    public ZipkinRequestUUIDImpl(@Nonnull RequestUUID discoUuid, @Nullable ZipkinDataBuilder zipkinDataBuilder) {
+        Objects.requireNonNull(discoUuid);
 
-        this.cougarUuid = cougarUuid;
+        this.discoUuid = discoUuid;
         this.zipkinDataBuilder = zipkinDataBuilder;
     }
 
     @Override
     public String getRootUUIDComponent() {
-        return cougarUuid.getRootUUIDComponent();
+        return discoUuid.getRootUUIDComponent();
     }
 
     @Override
     public String getParentUUIDComponent() {
-        return cougarUuid.getParentUUIDComponent();
+        return discoUuid.getParentUUIDComponent();
     }
 
     @Override
     public String getLocalUUIDComponent() {
-        return cougarUuid.getLocalUUIDComponent();
+        return discoUuid.getLocalUUIDComponent();
     }
 
     @Override
     @Nonnull
     public RequestUUID getNewSubUUID() {
-        RequestUUID cougarSubUuid = cougarUuid.getNewSubUUID();
+        RequestUUID discoSubUuid = discoUuid.getNewSubUUID();
 
         if (isZipkinTracingEnabled()) {
             // Creating a child zipkin data builder object.
@@ -85,10 +85,10 @@ public class ZipkinRequestUUIDImpl implements ZipkinRequestUUID {
                     .parentSpanId(zipkinData.getSpanId())
                     .port(zipkinData.getPort());
 
-            return new ZipkinRequestUUIDImpl(cougarSubUuid, newZipkinDataBuilder);
+            return new ZipkinRequestUUIDImpl(discoSubUuid, newZipkinDataBuilder);
         } else {
             // If this request is not being traced by Zipkin, the next request can't be traced either.
-            return new ZipkinRequestUUIDImpl(cougarSubUuid);
+            return new ZipkinRequestUUIDImpl(discoSubUuid);
         }
     }
 
@@ -129,25 +129,25 @@ public class ZipkinRequestUUIDImpl implements ZipkinRequestUUID {
     }
 
     /**
-     * Returns standard conforming Cougar UUID, letting you use your own generator without affecting Zipkin specific
+     * Returns standard conforming Disco UUID, letting you use your own generator without affecting Zipkin specific
      * fields.
      *
-     * @return String representing the Cougar request uuid
+     * @return String representing the Disco request uuid
      */
     @Override
     public String getUUID() {
-        return cougarUuid.getUUID();
+        return discoUuid.getUUID();
     }
 
     @Override
-    public String toCougarLogString() {
-        return cougarUuid.toCougarLogString();
+    public String toDiscoLogString() {
+        return discoUuid.toDiscoLogString();
     }
 
     @Override
     public String toString() {
         return "ZipkinRequestUUIDImpl{" +
-                "cougarUuid=" + getUUID() +
+                "discoUuid=" + getUUID() +
                 ", zipkinData=" + zipkinData +
                 '}';
     }

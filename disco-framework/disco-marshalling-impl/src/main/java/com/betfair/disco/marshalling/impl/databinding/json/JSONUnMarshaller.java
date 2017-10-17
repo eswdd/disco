@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.json;
+package uk.co.exemel.disco.marshalling.impl.databinding.json;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,21 +23,21 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.*;
 
-import com.betfair.cougar.api.fault.FaultCode;
-import com.betfair.cougar.core.api.client.EnumWrapper;
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.core.api.fault.CougarFault;
-import com.betfair.cougar.core.api.fault.FaultDetail;
-import com.betfair.cougar.core.api.transcription.EnumDerialisationException;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.marshalling.api.databinding.FaultUnMarshaller;
+import uk.co.exemel.disco.api.fault.FaultCode;
+import uk.co.exemel.disco.core.api.client.EnumWrapper;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
+import uk.co.exemel.disco.core.api.fault.FaultDetail;
+import uk.co.exemel.disco.core.api.transcription.EnumDerialisationException;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultUnMarshaller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.SimpleType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.betfair.cougar.marshalling.api.databinding.UnMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.UnMarshaller;
 
 public class JSONUnMarshaller implements UnMarshaller, FaultUnMarshaller {
 
@@ -58,12 +58,12 @@ public class JSONUnMarshaller implements UnMarshaller, FaultUnMarshaller {
 			Reader reader = new BufferedReader(new InputStreamReader(inputStream,encoding));
 			return objectMapper.readValue(reader, clazz);
 		} catch (JsonProcessingException e) {
-//            if (e.getCause() instanceof CougarException) {
-//                throw (CougarException) e.getCause();
+//            if (e.getCause() instanceof DiscoException) {
+//                throw (DiscoException) e.getCause();
 //            }
-            throw CougarMarshallingException.unmarshallingException(getFormat(), e, client);
+            throw DiscoMarshallingException.unmarshallingException(getFormat(), e, client);
 		} catch (IOException e) {
-            throw CougarMarshallingException.unmarshallingException(getFormat(), "Failed to unmarshall object", e, client);
+            throw DiscoMarshallingException.unmarshallingException(getFormat(), "Failed to unmarshall object", e, client);
 		}
 	}
 
@@ -81,11 +81,11 @@ public class JSONUnMarshaller implements UnMarshaller, FaultUnMarshaller {
                 return objectMapper.readValue(reader, buildJavaType(parameterType));
             }
         } catch (EnumDerialisationException e) {
-            throw CougarMarshallingException.unmarshallingException(getFormat(), "Failed to unmarshall enum", e, client);
+            throw DiscoMarshallingException.unmarshallingException(getFormat(), "Failed to unmarshall enum", e, client);
         } catch (JsonProcessingException e) {
-            throw CougarMarshallingException.unmarshallingException(getFormat(), "Failed to unmarshall object", e, client);
+            throw DiscoMarshallingException.unmarshallingException(getFormat(), "Failed to unmarshall object", e, client);
         } catch (IOException e) {
-            throw CougarMarshallingException.unmarshallingException(getFormat(), "Failed to unmarshall object", e, client);
+            throw DiscoMarshallingException.unmarshallingException(getFormat(), "Failed to unmarshall object", e, client);
         }
 
     }
@@ -114,7 +114,7 @@ public class JSONUnMarshaller implements UnMarshaller, FaultUnMarshaller {
 
 
     @Override
-    public CougarFault unMarshallFault(InputStream inputStream, String encoding) {
+    public DiscoFault unMarshallFault(InputStream inputStream, String encoding) {
         //noinspection unchecked
         final HashMap<String,Object> faultMap = (HashMap<String,Object>) unmarshall(inputStream, HashMap.class, encoding, true);
 
@@ -140,7 +140,7 @@ public class JSONUnMarshaller implements UnMarshaller, FaultUnMarshaller {
 
         final FaultDetail fd=new FaultDetail(faultString, faultParams);
 
-        return new CougarFault() {
+        return new DiscoFault() {
             @Override
             public String getErrorCode() {
                 return faultString;

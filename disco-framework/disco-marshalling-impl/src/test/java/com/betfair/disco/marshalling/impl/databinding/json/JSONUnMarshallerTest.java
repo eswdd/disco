@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.json;
+package uk.co.exemel.disco.marshalling.impl.databinding.json;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.fault.CougarFault;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.marshalling.api.databinding.FaultUnMarshaller;
-import com.betfair.cougar.marshalling.api.databinding.UnMarshaller;
-import com.betfair.cougar.test.CougarTestCase;
-import com.betfair.cougar.util.dates.DateTimeUtility;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultUnMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.UnMarshaller;
+import uk.co.exemel.disco.test.DiscoTestCase;
+import uk.co.exemel.disco.util.dates.DateTimeUtility;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mockito.Mockito;
@@ -40,7 +40,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
-public class JSONUnMarshallerTest extends CougarTestCase {
+public class JSONUnMarshallerTest extends DiscoTestCase {
 
     UnMarshaller unMarshaller = new JSONBindingFactory().getUnMarshaller();
 
@@ -72,7 +72,7 @@ public class JSONUnMarshallerTest extends CougarTestCase {
         try {
             unMarshaller.unmarshall(new ByteArrayInputStream("{\"message\":\"foo\"".getBytes()), TestClass.class, UTF8, false);
             fail();
-        } catch (CougarMarshallingException dve) {
+        } catch (DiscoMarshallingException dve) {
             assertEquals(ResponseCode.BadRequest, dve.getResponseCode());
         }
     }
@@ -199,7 +199,7 @@ public class JSONUnMarshallerTest extends CougarTestCase {
                 }
             }, TEST_CLASS_PARAMETER_TYPE, UTF8, false);
             fail();
-        } catch (CougarMarshallingException dse) {
+        } catch (DiscoMarshallingException dse) {
             assertEquals(ex, dse.getCause());
         }
 
@@ -217,7 +217,7 @@ public class JSONUnMarshallerTest extends CougarTestCase {
                 }
             }, TestClass.class, UTF8, false);
             fail();
-        } catch (CougarMarshallingException dse) {
+        } catch (DiscoMarshallingException dse) {
             assertEquals(ex, dse.getCause());
         }
     }
@@ -246,7 +246,7 @@ public class JSONUnMarshallerTest extends CougarTestCase {
 
         when(mockedOM.readValue(any(Reader.class), eq(HashMap.class))).thenReturn((HashMap)aMap);
 
-        CougarFault fault = faultUnMarshaller.unMarshallFault(new ByteArrayInputStream(new byte[]{}), "utf-8");
+        DiscoFault fault = faultUnMarshaller.unMarshallFault(new ByteArrayInputStream(new byte[]{}), "utf-8");
         assertNotNull(fault);
         assertEquals(expectedFaultString, fault.getErrorCode());
         assertEquals("Client", fault.getFaultCode().name());

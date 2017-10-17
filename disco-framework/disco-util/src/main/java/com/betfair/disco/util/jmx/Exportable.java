@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.jmx;
+package uk.co.exemel.disco.util.jmx;
 
 /**
  * A class that implements this interface is capable of exporting itself

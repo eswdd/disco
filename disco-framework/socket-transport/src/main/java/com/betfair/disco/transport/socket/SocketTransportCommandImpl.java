@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
-import com.betfair.cougar.core.api.RequestTimer;
+import uk.co.exemel.disco.core.api.RequestTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.transport.api.protocol.CougarObjectInput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectInput;
 import org.apache.mina.common.IoSession;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,14 +28,14 @@ public class SocketTransportCommandImpl implements SocketTransportCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SocketTransportCommandImpl.class);
 
-	private final CougarObjectInput input;
+	private final DiscoObjectInput input;
     private final String remoteAddress;
 	private AtomicReference<CommandStatus> status = new AtomicReference<CommandStatus>(CommandStatus.InProgress);
 
     private RequestTimer timer = new RequestTimer();
     private IoSession session;
 
-    public SocketTransportCommandImpl(CougarObjectInput input, String remoteAddress, IoSession session) {
+    public SocketTransportCommandImpl(DiscoObjectInput input, String remoteAddress, IoSession session) {
 		this.input = input;
         this.remoteAddress = remoteAddress;
         this.session = session;
@@ -57,7 +57,7 @@ public class SocketTransportCommandImpl implements SocketTransportCommand {
 	}
 
 	@Override
-	public CougarObjectInput getInput() {
+	public DiscoObjectInput getInput() {
 		return input;
 	}
 

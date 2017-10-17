@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.ev;
+package uk.co.exemel.disco.core.api.ev;
 
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.exception.*;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.exception.*;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
 
 /**
  * Used to wrap the result of an execution event
  */
 public class ExecutionResult {
-    private CougarException fault;
+    private DiscoException fault;
     private Subscription subscription;
 
     public enum ResultType {
@@ -44,12 +44,12 @@ public class ExecutionResult {
     public ExecutionResult(Object result) {
         // todo: perhaps this shouldn't be done here, and instead should go in the service wrapper?
         //       then we wouldn't have anything to do with service in the core ev..
-        if (result instanceof CougarApplicationException) {
+        if (result instanceof DiscoApplicationException) {
             this.resultType = ResultType.Fault;
-            fault = new CougarServiceException(ServerFaultCode.ServiceCheckedException, "", (CougarApplicationException)result);
-        } else if (result instanceof CougarException) {
+            fault = new DiscoServiceException(ServerFaultCode.ServiceCheckedException, "", (DiscoApplicationException)result);
+        } else if (result instanceof DiscoException) {
             this.resultType = ResultType.Fault;
-            fault = (CougarException)result;
+            fault = (DiscoException)result;
         } else if (result instanceof Subscription) {
             this.resultType = ResultType.Subscription;
             subscription = (Subscription)result;
@@ -63,7 +63,7 @@ public class ExecutionResult {
         return result;
     }
 
-    public CougarException getFault() {
+    public DiscoException getFault() {
         return fault;
     }
 

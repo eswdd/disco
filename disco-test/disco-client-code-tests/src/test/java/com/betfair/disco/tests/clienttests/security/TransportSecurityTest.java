@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.clienttests.security;
+package uk.co.exemel.disco.tests.clienttests.security;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.to.CallSecurity;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -33,9 +33,9 @@ public class TransportSecurityTest {
 
 
     @Test(dataProvider = "ClientName")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Set up and call the method using requested transport
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
 
         BaselineSyncClient client = wrapper.getClient();
         ExecutionContext context = wrapper.getCtx();

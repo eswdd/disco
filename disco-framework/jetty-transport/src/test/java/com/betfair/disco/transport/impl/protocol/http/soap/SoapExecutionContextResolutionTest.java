@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http.soap;
+package uk.co.exemel.disco.transport.impl.protocol.http.soap;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.transport.api.TransportCommand;
-import com.betfair.cougar.transport.impl.protocol.http.AbstractHttpCommandProcessorTest;
-import com.betfair.cougar.transport.impl.protocol.http.AbstractHttpContextResolutionTest;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.transport.api.TransportCommand;
+import uk.co.exemel.disco.transport.impl.protocol.http.AbstractHttpCommandProcessorTest;
+import uk.co.exemel.disco.transport.impl.protocol.http.AbstractHttpContextResolutionTest;
 import org.apache.axiom.om.OMElement;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;

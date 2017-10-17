@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.transcription;
+package uk.co.exemel.disco.core.api.transcription;
 
 
-import com.betfair.cougar.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ServiceVersion;
 
 public interface TranscribableEnum {
 //	public void transcribe(TranscriptionOutput out, byte protocolVersion) throws Exception;

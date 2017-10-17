@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.impl;
+package uk.co.exemel.disco.modules.zipkin.impl;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.modules.zipkin.api.ZipkinData;
-import com.betfair.cougar.modules.zipkin.api.ZipkinRequestUUID;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinData;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinRequestUUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -44,7 +44,7 @@ public class ZipkinManagerTest {
     private ThreadLocal<SecureRandom> secureRandomTl;
 
     @Mock
-    private RequestUUID cougarUuid;
+    private RequestUUID discoUuid;
 
     private ZipkinManager victim = new ZipkinManager();
 
@@ -136,7 +136,7 @@ public class ZipkinManagerTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void createNewZipkinRequestUUID_WhenCougarUUIDIsNull_ShouldThrowNPE() {
+    public void createNewZipkinRequestUUID_WhenDiscoUUIDIsNull_ShouldThrowNPE() {
         victim.createNewZipkinRequestUUID(null, traceId, spanId, parentSpanId, sampled, flags, port);
     }
 
@@ -144,7 +144,7 @@ public class ZipkinManagerTest {
     public void createNewZipkinRequestUUID_WhenRequestIsMarkedAsNotSampled_ShouldNotFillZipkinData() {
         String notSampledHeader = "0";
 
-        ZipkinRequestUUID result = victim.createNewZipkinRequestUUID(cougarUuid, traceId, spanId, parentSpanId, notSampledHeader, flags, port);
+        ZipkinRequestUUID result = victim.createNewZipkinRequestUUID(discoUuid, traceId, spanId, parentSpanId, notSampledHeader, flags, port);
 
         assertNotNull(result);
         assertFalse(result.isZipkinTracingEnabled());
@@ -153,7 +153,7 @@ public class ZipkinManagerTest {
     @Test
     public void createNewZipkinRequestUUID_WhenRequestIsAlreadyBeingTraced_ShouldContinueTracing() {
 
-        ZipkinRequestUUID result = victim.createNewZipkinRequestUUID(cougarUuid, traceId, spanId, parentSpanId, sampled, flags, port);
+        ZipkinRequestUUID result = victim.createNewZipkinRequestUUID(discoUuid, traceId, spanId, parentSpanId, sampled, flags, port);
         ZipkinData resultingData = result.buildZipkinData("");
 
         assertNotNull(result);
@@ -172,7 +172,7 @@ public class ZipkinManagerTest {
 
         when(threadLocalRandom.nextInt(0, 1000)).thenReturn(500);
 
-        ZipkinRequestUUID result = victim.createNewZipkinRequestUUID(cougarUuid, null, null, null, null, null, port);
+        ZipkinRequestUUID result = victim.createNewZipkinRequestUUID(discoUuid, null, null, null, null, null, port);
 
         assertNotNull(result);
         assertFalse(result.isZipkinTracingEnabled());
@@ -185,7 +185,7 @@ public class ZipkinManagerTest {
 
         when(threadLocalRandom.nextInt(0, 1000)).thenReturn(499);
 
-        ZipkinRequestUUID result = victim.createNewZipkinRequestUUID(cougarUuid, null, null, null, null, null, port);
+        ZipkinRequestUUID result = victim.createNewZipkinRequestUUID(discoUuid, null, null, null, null, null, port);
 
         ZipkinData resultingData = result.buildZipkinData("");
 

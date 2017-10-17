@@ -15,16 +15,16 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/REST/Rest_Post_RequestTypes_Map_ComplexMap_JSON.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.rest;
 
-import com.betfair.testing.utils.cougar.misc.TimingHelpers;
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.misc.TimingHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -37,28 +37,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that when a Rest (JSON) Post operation is performed, Cougar can correctly handle a complex Map in the post body
+ * Ensure that when a Rest (JSON) Post operation is performed, Disco can correctly handle a complex Map in the post body
  */
 public class RestPostRequestTypesMapComplexMapJSONTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        discoManager1 = discoManager1;
         // Create date object that will appear in the returned map
 
-        String date1 = TimingHelpers.convertUTCDateTimeToCougarFormat((int) 2009, (int) 6, (int) 1, (int) 14, (int) 50, (int) 0, (int) 435);
+        String date1 = TimingHelpers.convertUTCDateTimeToDiscoFormat((int) 2009, (int) 6, (int) 1, (int) 14, (int) 50, (int) 0, (int) 435);
         // Create date object that will appear in the returned map
 
-        String date2 = TimingHelpers.convertUTCDateTimeToCougarFormat((int) 2009, (int) 6, (int) 2, (int) 14, (int) 50, (int) 0, (int) 435);
+        String date2 = TimingHelpers.convertUTCDateTimeToDiscoFormat((int) 2009, (int) 6, (int) 2, (int) 14, (int) 50, (int) 0, (int) 435);
         // Create date object that will appear in the returned map
 
-        String date3 = TimingHelpers.convertUTCDateTimeToCougarFormat((int) 2009, (int) 6, (int) 3, (int) 14, (int) 50, (int) 0, (int) 435);
+        String date3 = TimingHelpers.convertUTCDateTimeToDiscoFormat((int) 2009, (int) 6, (int) 3, (int) 14, (int) 50, (int) 0, (int) 435);
         
         getNewHttpCallBean1.setOperationName("complexMapOperation");
         
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean1.setVersion("v2");
         // Set the post body to contain a complex map using the dates created previously
@@ -69,9 +69,9 @@ public class RestPostRequestTypesMapComplexMapJSONTest {
 
         Timestamp getTimeAsTimeStamp10 = new Timestamp(System.currentTimeMillis());
         // Make JSON call to the operation requesting an XML response
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.XML);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.XML);
         // Make JSON call to the operation requesting a JSON response
-        cougarManager1.makeRestCougarHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager1.makeRestDiscoHTTPCall(getNewHttpCallBean1, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Create the expected response as an XML document
         XMLHelpers xMLHelpers7 = new XMLHelpers();
         Document expectedResponseXML = xMLHelpers7.createAsDocument(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(("<ComplexMapOperationResponse><ComplexMapOperationResponseObject><responseMap><entry key=\"aaa\"><SomeComplexObject><dateTimeParameter>"+date1+"</dateTimeParameter><listParameter><String>aaa List Entry 1</String><String>aaa List Entry 2</String><String>aaa List Entry 3</String></listParameter><enumParameter>BAR</enumParameter><stringParameter>String value for aaa</stringParameter></SomeComplexObject></entry><entry key=\"bbb\"><SomeComplexObject><dateTimeParameter>"+date2+"</dateTimeParameter><listParameter><String>bbb List Entry 1</String><String>bbb List Entry 2</String><String>bbb List Entry 3</String></listParameter><enumParameter>FOOBAR</enumParameter><stringParameter>String value for bbb</stringParameter></SomeComplexObject></entry><entry key=\"ccc\"><SomeComplexObject><dateTimeParameter>"+date3+"</dateTimeParameter><listParameter><String>ccc List Entry 1</String><String>ccc List Entry 2</String><String>ccc List Entry 3</String></listParameter><enumParameter>FOO</enumParameter><stringParameter>String value for ccc</stringParameter></SomeComplexObject></entry></responseMap></ComplexMapOperationResponseObject></ComplexMapOperationResponse>").getBytes())));
@@ -79,12 +79,12 @@ public class RestPostRequestTypesMapComplexMapJSONTest {
         JSONHelpers jSONHelpers8 = new JSONHelpers();
         JSONObject expectedResponseJSON = jSONHelpers8.createAsJSONObject(new JSONObject("{responseMap:{aaa:{dateTimeParameter:\""+date1+"\",listParameter:[aaa List Entry 1,aaa List Entry 2,aaa List Entry 3],enumParameter:\"BAR\",stringParameter:\"String value for aaa\"},bbb:{dateTimeParameter:\""+date2+"\",listParameter:[bbb List Entry 1,bbb List Entry 2,bbb List Entry 3],enumParameter:\"FOOBAR\",stringParameter:\"String value for bbb\"},ccc:{dateTimeParameter:\""+date3+"\",listParameter:[ccc List Entry 1,ccc List Entry 2,ccc List Entry 3],enumParameter:\"FOO\",stringParameter:\"String value for ccc\"}}}"));
         // Check the 2 responses are as expected
-        HttpResponseBean response9 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
+        HttpResponseBean response9 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
         AssertionUtils.multiAssertEquals(expectedResponseXML, response9.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response9.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response9.getHttpStatusText());
         
-        HttpResponseBean response10 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response10 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         AssertionUtils.multiAssertEquals(expectedResponseJSON, response10.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response10.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response10.getHttpStatusText());
@@ -92,7 +92,7 @@ public class RestPostRequestTypesMapComplexMapJSONTest {
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
         
-        cougarManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp10, new RequestLogRequirement("2.8", "complexMapOperation"),new RequestLogRequirement("2.8", "complexMapOperation") );
+        discoManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp10, new RequestLogRequirement("2.8", "complexMapOperation"),new RequestLogRequirement("2.8", "complexMapOperation") );
     }
 
 }

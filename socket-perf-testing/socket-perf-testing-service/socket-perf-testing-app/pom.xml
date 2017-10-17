@@ -19,7 +19,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
+        <groupId>uk.co.exemel.disco</groupId>
         <artifactId>socket-perf-testing</artifactId>
         <version>3.0-SNAPSHOT</version>
     </parent>
@@ -30,8 +30,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.betfair.cougar</groupId>
-                <artifactId>cougar-codegen-plugin</artifactId>
+                <groupId>uk.co.exemel.disco</groupId>
+                <artifactId>disco-codegen-plugin</artifactId>
                 <version>${project.version}</version>
                 <executions>
                     <execution>
@@ -75,17 +75,17 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>socket-perf-testing-idd</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-ev</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-ev</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>socket-transport</artifactId>
         </dependency>
     </dependencies>

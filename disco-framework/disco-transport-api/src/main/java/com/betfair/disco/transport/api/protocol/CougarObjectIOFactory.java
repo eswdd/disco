@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol;
+package uk.co.exemel.disco.transport.api.protocol;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public interface CougarObjectIOFactory {
+public interface DiscoObjectIOFactory {
 
-	public CougarObjectInput newCougarObjectInput(InputStream is, byte protocolVersion) ;
+	public DiscoObjectInput newDiscoObjectInput(InputStream is, byte protocolVersion) ;
 
-	public CougarObjectOutput newCougarObjectOutput(OutputStream os, byte protocolVersion);
+	public DiscoObjectOutput newDiscoObjectOutput(OutputStream os, byte protocolVersion);
 }

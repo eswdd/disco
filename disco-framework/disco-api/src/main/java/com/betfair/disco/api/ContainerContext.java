@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api;
+package uk.co.exemel.disco.api;
 
 
 import com.betfair.tornjak.monitor.MonitorRegistry;
 
 /**
- * Contextual information relating to an instance of Cougar.
+ * Contextual information relating to an instance of Disco.
  */
 public interface ContainerContext {
 
     /**
-     * Retrieves information regarding all service registered with this instance of Cougar.
+     * Retrieves information regarding all service registered with this instance of Disco.
      * @return
      */
     ServiceInfo[] getRegisteredServices();

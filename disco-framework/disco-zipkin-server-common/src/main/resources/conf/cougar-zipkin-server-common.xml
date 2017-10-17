@@ -19,12 +19,12 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="classpath:conf/cougar-module-zipkin.xml"/>
+    <import resource="classpath:conf/disco-module-zipkin.xml"/>
 
     <bean id="zipkinExecutionContextResolverFactory"
-          class="com.betfair.cougar.modules.zipkin.impl.ZipkinExecutionContextResolverFactory"/>
+          class="uk.co.exemel.disco.modules.zipkin.impl.ZipkinExecutionContextResolverFactory"/>
 
-    <bean parent="cougar.transport.ContextRegisterer" lazy-init="false">
+    <bean parent="disco.transport.ContextRegisterer" lazy-init="false">
         <constructor-arg index="1" ref="zipkinExecutionContextResolverFactory"/>
     </bean>
 </beans>

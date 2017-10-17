@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl;
+package uk.co.exemel.disco.marshalling.impl;
 
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
 
 import java.util.Collections;
 import java.util.List;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.xml;
+package uk.co.exemel.disco.marshalling.impl.databinding.xml;
 
 import javax.xml.bind.*;
 import javax.xml.bind.util.ValidationEventCollector;
@@ -27,18 +27,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 
-import com.betfair.cougar.api.fault.FaultCode;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.fault.CougarFault;
-import com.betfair.cougar.core.api.fault.FaultDetail;
-import com.betfair.cougar.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.api.fault.FaultCode;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
+import uk.co.exemel.disco.core.api.fault.FaultDetail;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.marshalling.api.databinding.FaultUnMarshaller;
-import com.betfair.cougar.marshalling.api.databinding.UnMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultUnMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.UnMarshaller;
 import org.xml.sax.SAXParseException;
 
 public class XMLUnMarshaller implements UnMarshaller, FaultUnMarshaller {
@@ -68,7 +68,7 @@ public class XMLUnMarshaller implements UnMarshaller, FaultUnMarshaller {
     }
 
     @Override
-    public CougarFault unMarshallFault(InputStream inputStream, String encoding) {
+    public DiscoFault unMarshallFault(InputStream inputStream, String encoding) {
         //noinspection unchecked
         final HashMap<String,Object> faultMap = (HashMap<String,Object>) unmarshall(inputStream, HashMap.class, encoding, true);
 
@@ -94,7 +94,7 @@ public class XMLUnMarshaller implements UnMarshaller, FaultUnMarshaller {
 
         final FaultDetail fd=new FaultDetail(faultString, faultParams);
 
-        return new CougarFault() {
+        return new DiscoFault() {
             @Override
             public String getErrorCode() {
                 return faultString;
@@ -135,7 +135,7 @@ public class XMLUnMarshaller implements UnMarshaller, FaultUnMarshaller {
 	        setSchema(jc, u);
 	        Object obj = u.unmarshal(reader);
 	        if (!clazz.isAssignableFrom(obj.getClass())) {
-	            throw CougarMarshallingException.unmarshallingException("xml", "Deserialised object was not of class "+clazz.getName(),false);
+	            throw DiscoMarshallingException.unmarshallingException("xml", "Deserialised object was not of class "+clazz.getName(),false);
 	        }
 	        validate(validationHandler);
 	        return obj;
@@ -144,18 +144,18 @@ public class XMLUnMarshaller implements UnMarshaller, FaultUnMarshaller {
             if(linkedException!=null) {
                 LOGGER.debug(linkedException.getMessage());
                 if (linkedException instanceof SAXParseException) {
-                    CougarException ce = schemaValidationFailureParser.parse((SAXParseException)linkedException, getFormat(), client);
+                    DiscoException ce = schemaValidationFailureParser.parse((SAXParseException)linkedException, getFormat(), client);
                     if (ce != null) {
                         throw ce;
                     }
                 }
-                throw CougarMarshallingException.unmarshallingException("xml",linkedException,client);
+                throw DiscoMarshallingException.unmarshallingException("xml",linkedException,client);
             }
-            throw CougarMarshallingException.unmarshallingException("xml",e,client);
-        } catch (CougarMarshallingException e) {
+            throw DiscoMarshallingException.unmarshallingException("xml",e,client);
+        } catch (DiscoMarshallingException e) {
             throw e;
 		} catch (Exception e) {
-			throw CougarMarshallingException.unmarshallingException(getFormat(), "Unable to deserialise REST/XML request", e, client);
+			throw DiscoMarshallingException.unmarshallingException(getFormat(), "Unable to deserialise REST/XML request", e, client);
         }
 	}
 

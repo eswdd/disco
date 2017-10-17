@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.app;
+package uk.co.exemel.disco.test.socket.app;
 
 import java.io.File;
 import java.io.IOException;

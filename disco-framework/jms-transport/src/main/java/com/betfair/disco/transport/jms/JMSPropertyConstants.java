@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms;
+package uk.co.exemel.disco.transport.jms;
 
 public class JMSPropertyConstants {
-    public static final String MESSAGE_ID_FIELD_NAME = "__cougar_messageid";
+    public static final String MESSAGE_ID_FIELD_NAME = "__disco_messageid";
 
-    public static final String MESSAGE_ROUTING_FIELD_NAME = "__cougar_message_route";
+    public static final String MESSAGE_ROUTING_FIELD_NAME = "__disco_message_route";
 
     public static final String COUGAR_ROUTING_SEPARATOR="|";
     public static final String TIMESTAMP_SEPARATOR="@";
 
-    public static final String EVENT_VERSION_FIELD_NAME = "__cougar_event_version";
-    public static final String EVENT_NAME_FIELD_NAME = "__cougar_event_name";
+    public static final String EVENT_VERSION_FIELD_NAME = "__disco_event_version";
+    public static final String EVENT_NAME_FIELD_NAME = "__disco_event_name";
 }

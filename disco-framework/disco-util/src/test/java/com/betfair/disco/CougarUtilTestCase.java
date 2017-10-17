@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar;
+package uk.co.exemel.disco;
 
-import com.betfair.cougar.logging.CougarLoggingUtils;
-import com.betfair.cougar.logging.LogDefinition;
+import uk.co.exemel.disco.logging.DiscoLoggingUtils;
+import uk.co.exemel.disco.logging.LogDefinition;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -30,22 +30,22 @@ import java.util.logging.LogRecord;
 import static org.mockito.Mockito.mock;
 
 
-public abstract class CougarUtilTestCase extends TestCase {
+public abstract class DiscoUtilTestCase extends TestCase {
 	public  static final String SEPARATOR = System.getProperty("line.separator");
 
     private Class classUnderTest;
     protected Logger traceLogger;
 
-    protected CougarUtilTestCase(Class classUnderTest) {
+    protected DiscoUtilTestCase(Class classUnderTest) {
         super();
         this.classUnderTest = classUnderTest;
     }
 
-	protected CougarUtilTestCase() {
+	protected DiscoUtilTestCase() {
 		super();
 	}
 
-	public CougarUtilTestCase(String name) {
+	public DiscoUtilTestCase(String name) {
 		super(name);
 	}
 
@@ -57,20 +57,20 @@ public abstract class CougarUtilTestCase extends TestCase {
         hnd.register();
 
         traceLogger = mock(Logger.class);
-        CougarLoggingUtils.setTraceLogger(traceLogger);
+        DiscoLoggingUtils.setTraceLogger(traceLogger);
     }
 
     @After
     public void tearDown() {
-        CougarLoggingUtils.setTraceLogger(null);
+        DiscoLoggingUtils.setTraceLogger(null);
     }
 /*
 	public List<LogRecord> getMessageLog() {
         if (classUnderTest != null) {
-            return ((MockCapturingLogger)CougarLoggingUtils.getLogger(classUnderTest)).getLogRecords();
+            return ((MockCapturingLogger)DiscoLoggingUtils.getLogger(classUnderTest)).getLogRecords();
         } else {
 
-		    return ((MockCapturingLogger)CougarLoggingUtils.getLogger("")).getLogRecords();
+		    return ((MockCapturingLogger)DiscoLoggingUtils.getLogger("")).getLogRecords();
         }
 	}*/
 }

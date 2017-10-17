@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.testing.concurrency;
+package uk.co.exemel.disco.testing.concurrency;
 
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

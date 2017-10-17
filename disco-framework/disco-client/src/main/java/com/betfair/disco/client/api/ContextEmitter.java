@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.api;
+package uk.co.exemel.disco.client.api;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.client.ClientCallContext;
-import com.betfair.cougar.transport.api.ExecutionContextComponent;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.client.ClientCallContext;
+import uk.co.exemel.disco.transport.api.ExecutionContextComponent;
 
 import java.util.Set;
 

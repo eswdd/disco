@@ -21,19 +21,19 @@ package ${package}.${majorVersion};
 import ${package}.${majorVersion}.to.*;
 import ${package}.${majorVersion}.events.*;
 import ${package}.${majorVersion}.enumerations.*;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.api.fault.CougarApplicationException;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
 
 
-import com.betfair.cougar.core.api.transports.EventTransport;
-import com.betfair.cougar.core.api.transports.EventTransportMode;
+import uk.co.exemel.disco.core.api.transports.EventTransport;
+import uk.co.exemel.disco.core.api.transports.EventTransportMode;
 
 import java.util.*;
 
 /**
- * Resolves Executables for event based actions in the remote Cougar instance
+ * Resolves Executables for event based actions in the remote Disco instance
  */
 @SuppressWarnings("all")
 public class ${service}ClientExecutableResolver implements RegisterableClientExecutableResolver {<#t>

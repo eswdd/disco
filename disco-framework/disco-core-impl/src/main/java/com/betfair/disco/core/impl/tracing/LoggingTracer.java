@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.tracing;
+package uk.co.exemel.disco.core.impl.tracing;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.logging.DiscoLoggingUtils;
 
 /**
  * Simple tracer implementation which writes trace messages to a trace log.
@@ -33,27 +33,27 @@ public class LoggingTracer extends AbstractTracer {
 
     @Override
     public void trace(RequestUUID uuid, String msg) {
-        CougarLoggingUtils.getTraceLogger().info(uuid.toCougarLogString()+": "+ msg);
+        DiscoLoggingUtils.getTraceLogger().info(uuid.toDiscoLogString()+": "+ msg);
     }
 
     @Override
     public void trace(RequestUUID uuid, String msg, Object arg1) {
-        CougarLoggingUtils.getTraceLogger().info(uuid.toCougarLogString()+": "+ msg, arg1);
+        DiscoLoggingUtils.getTraceLogger().info(uuid.toDiscoLogString()+": "+ msg, arg1);
     }
 
     @Override
     public void trace(RequestUUID uuid, String msg, Object arg1, Object arg2) {
-        CougarLoggingUtils.getTraceLogger().info(uuid.toCougarLogString()+": "+ msg, arg1, arg2);
+        DiscoLoggingUtils.getTraceLogger().info(uuid.toDiscoLogString()+": "+ msg, arg1, arg2);
     }
 
     @Override
     public void trace(RequestUUID uuid, String msg, Object arg1, Object arg2, Object arg3) {
-        CougarLoggingUtils.getTraceLogger().info(uuid.toCougarLogString()+": "+ msg, arg1, arg2, arg3);
+        DiscoLoggingUtils.getTraceLogger().info(uuid.toDiscoLogString()+": "+ msg, arg1, arg2, arg3);
     }
 
     @Override
     public void trace(RequestUUID uuid, String msg, Object... args) {
-        CougarLoggingUtils.getTraceLogger().info(uuid.toCougarLogString()+": "+ msg, args);
+        DiscoLoggingUtils.getTraceLogger().info(uuid.toDiscoLogString()+": "+ msg, args);
     }
 
     @Override
@@ -63,19 +63,19 @@ public class LoggingTracer extends AbstractTracer {
 
     @Override
     public void startCall(RequestUUID uuid, RequestUUID subUuid, OperationKey key) {
-        // parent uuid could be null if we're embedded in a non-cougar app and they've not set
+        // parent uuid could be null if we're embedded in a non-disco app and they've not set
         // uuid in the execution context
         if (uuid != null) {
-            trace(uuid,"Making request to %s with uuid %s",key,subUuid.toCougarLogString());
+            trace(uuid,"Making request to %s with uuid %s",key,subUuid.toDiscoLogString());
         }
     }
 
     @Override
     public void endCall(RequestUUID uuid, RequestUUID subUuid, OperationKey key) {
-        // parent uuid could be null if we're embedded in a non-cougar app and they've not set
+        // parent uuid could be null if we're embedded in a non-disco app and they've not set
         // uuid in the execution context
         if (uuid != null) {
-            trace(uuid,"Received response from %s with uuid %s",key,subUuid.toCougarLogString());
+            trace(uuid,"Received response from %s with uuid %s",key,subUuid.toDiscoLogString());
         }
     }
 }

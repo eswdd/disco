@@ -24,17 +24,17 @@ package ${package}.${majorVersion};
 import ${package}.${majorVersion}.to.*;
 import ${package}.${majorVersion}.enumerations.*;
 import ${package}.${majorVersion}.exception.*;
-import com.betfair.cougar.api.*;
-import com.betfair.cougar.core.api.client.EnumWrapper;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.impl.CougarInternalOperations;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.api.*;
+import uk.co.exemel.disco.core.api.client.EnumWrapper;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.impl.DiscoInternalOperations;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
 
 import com.betfair.tornjak.monitor.MonitorRegistry;
 
@@ -103,7 +103,7 @@ public class  ${service}SyncClientImpl implements ${service}SyncClient {<#t>
     }
 
     public ${service}SyncClientImpl(ExecutionVenue ev) {
-        this(ev, CougarInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
+        this(ev, DiscoInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
     }
 
     public ${service}SyncClientImpl(ExecutionVenue ev, String namespace) {
@@ -206,7 +206,7 @@ public class  ${service}SyncClientImpl implements ${service}SyncClient {<#t>
                    timeConstraints);
 
         if (!observer.await(timeConstraints)) {
-            throw new CougarClientException(ServerFaultCode.Timeout, "Operation ${operation.operationName} timed out!");
+            throw new DiscoClientException(ServerFaultCode.Timeout, "Operation ${operation.operationName} timed out!");
         }
 
         final ExecutionResult er = observer.getExecutionResult();
@@ -219,7 +219,7 @@ public class  ${service}SyncClientImpl implements ${service}SyncClient {<#t>
                 </#if>
 
             case Fault:
-                CougarException cex = er.getFault();
+                DiscoException cex = er.getFault();
 
                 if (cex.getServerFaultCode() == ServerFaultCode.ServiceCheckedException) {
                     List<String[]> exceptionParams = cex.getFault().getDetail().getFaultMessages();
@@ -249,11 +249,11 @@ public class  ${service}SyncClientImpl implements ${service}SyncClient {<#t>
                         throw new IllegalArgumentException("An unanticipated exception was received of class [" + className + "]");
                     }
                     <#else>
-                    throw new CougarClientException(ServerFaultCode.ServiceCheckedException, "Unknown checked exception received", cex);
+                    throw new DiscoClientException(ServerFaultCode.ServiceCheckedException, "Unknown checked exception received", cex);
                     </#if>
-                } else if (cex instanceof CougarFrameworkException) {
-                    CougarFrameworkException cfe = (CougarFrameworkException) cex;
-                    throw new CougarClientException(cfe.getServerFaultCode(), cfe.getMessage(), cfe.getCause());
+                } else if (cex instanceof DiscoFrameworkException) {
+                    DiscoFrameworkException cfe = (DiscoFrameworkException) cex;
+                    throw new DiscoClientException(cfe.getServerFaultCode(), cfe.getMessage(), cfe.getCause());
                 } else {
                   throw cex;
                 }

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.events;
+package uk.co.exemel.disco.transport.api.protocol.events;
 
-import com.betfair.cougar.core.api.events.Event;
-import com.betfair.cougar.core.api.exception.CougarException;
+import uk.co.exemel.disco.core.api.events.Event;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
 
 /**
  * This interface describes a marshaller for the supplied Event transport.  The marshaller
@@ -31,9 +31,9 @@ public interface EventMarshaller<T> {
      * @param event
      * @param session - JMS, for some unfathomable reason, insists that Messages can only be created by a valid session
      * @return returns a representation of the event as T
-     * @throws CougarException
+     * @throws DiscoException
      */
-    public T marshallEvent(EventServiceBindingDescriptor eventServiceBindingDescriptor, Event event, Object session) throws CougarException;
+    public T marshallEvent(EventServiceBindingDescriptor eventServiceBindingDescriptor, Event event, Object session) throws DiscoException;
 }
 
 

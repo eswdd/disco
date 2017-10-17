@@ -21,9 +21,9 @@ package ${package}.${majorVersion}.events;
 import ${package}.${majorVersion}.enumerations.*;
 import ${package}.${majorVersion}.to.*;
 
-import com.betfair.cougar.transport.api.protocol.events.AbstractEvent;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.transcription.*;
+import uk.co.exemel.disco.transport.api.protocol.events.AbstractEvent;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.transcription.*;
 
 import java.util.*;
 import javax.xml.bind.annotation.*;

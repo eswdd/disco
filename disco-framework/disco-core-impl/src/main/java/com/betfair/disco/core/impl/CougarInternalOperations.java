@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl;
+package uk.co.exemel.disco.core.impl;
 
-import com.betfair.cougar.CougarVersion;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.OperationKey;
+import uk.co.exemel.disco.DiscoVersion;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
 
 /**
  *
  */
-public class CougarInternalOperations {
-    private static ServiceVersion COUGAR_VERSION = new ServiceVersion("v"+CougarVersion.getMajorMinorVersion());
-    public static String COUGAR_INTERNAL_INTERFACE_NAME = "_CougarInternal";
+public class DiscoInternalOperations {
+    private static ServiceVersion COUGAR_VERSION = new ServiceVersion("v"+DiscoVersion.getMajorMinorVersion());
+    public static String COUGAR_INTERNAL_INTERFACE_NAME = "_DiscoInternal";
     public static OperationKey RESOLVE_IDENTITIES = new OperationKey(COUGAR_VERSION, COUGAR_INTERNAL_INTERFACE_NAME,"resolveIdentities", OperationKey.Type.Request);
     public static OperationKey BATCH_CALL = new OperationKey(COUGAR_VERSION, COUGAR_INTERNAL_INTERFACE_NAME,"batchCall", OperationKey.Type.Request);
     public static String COUGAR_IN_PROCESS_NAMESPACE = "_IN_PROCESS";

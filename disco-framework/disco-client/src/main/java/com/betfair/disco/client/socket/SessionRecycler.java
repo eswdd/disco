@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket;
+package uk.co.exemel.disco.client.socket;
 
-import com.betfair.cougar.client.socket.resolver.NetworkAddressResolver;
-import com.betfair.cougar.netutil.InetSocketAddressUtils;
-import com.betfair.cougar.util.NetworkAddress;
+import uk.co.exemel.disco.client.socket.resolver.NetworkAddressResolver;
+import uk.co.exemel.disco.netutil.InetSocketAddressUtils;
+import uk.co.exemel.disco.util.NetworkAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
@@ -32,7 +32,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-import static com.betfair.cougar.netutil.InetSocketAddressUtils.createInetSocketAddress;
+import static uk.co.exemel.disco.netutil.InetSocketAddressUtils.createInetSocketAddress;
 
 /**
  * Recycles socket sessions periodically

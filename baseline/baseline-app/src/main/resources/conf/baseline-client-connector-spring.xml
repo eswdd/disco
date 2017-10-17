@@ -21,15 +21,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-    <bean class="com.betfair.cougar.core.impl.ev.ClientServiceRegistration">
+    <bean class="uk.co.exemel.disco.core.impl.ev.ClientServiceRegistration">
         <property name="resolver">
             <bean class="com.betfair.baseline.v2.BaselineClientExecutableResolver" init-method="init">
                 <property name="defaultOperationTransport">
-                    <bean parent="cougar.client.AbstractRescriptTransport">
+                    <bean parent="disco.client.AbstractRescriptTransport">
                         <constructor-arg>
                             <bean class="com.betfair.baseline.v2.rescript.BaselineRescriptServiceBindingDescriptor"/>
                         </constructor-arg>
-                        <property name="remoteAddress" value="$BASELINE{cougar.client.rescript.remoteaddress}"/>
+                        <property name="remoteAddress" value="$BASELINE{disco.client.rescript.remoteaddress}"/>
                         <property name="exceptionFactory">
                             <bean class="com.betfair.baseline.v2.exception.BaselineExceptionFactory"/>
                         </property>
@@ -43,27 +43,27 @@
         <property name="namespace" value="RESCRIPT-CLI"/>
     </bean>
     <bean name="rescriptSyncClient"
-          class="com.betfair.baseline.v2.BaselineSyncClientImpl" parent="cougar.client.AbstractSyncClient">
+          class="com.betfair.baseline.v2.BaselineSyncClientImpl" parent="disco.client.AbstractSyncClient">
         <constructor-arg value="RESCRIPT-CLI"/>
     </bean>
 
     <bean name="rescriptAsyncClient"
-          class="com.betfair.baseline.v2.BaselineClientImpl" parent="cougar.client.AbstractClient">
+          class="com.betfair.baseline.v2.BaselineClientImpl" parent="disco.client.AbstractClient">
         <constructor-arg value="RESCRIPT-CLI"/>
     </bean>
 
 
 
-    <bean name="directAsyncClient" class="com.betfair.baseline.v2.BaselineClientImpl" parent="cougar.client.AbstractClient"/>
-    <bean name="directSyncClient" class="com.betfair.baseline.v2.BaselineSyncClientImpl" parent="cougar.client.AbstractSyncClient"/>
+    <bean name="directAsyncClient" class="com.betfair.baseline.v2.BaselineClientImpl" parent="disco.client.AbstractClient"/>
+    <bean name="directSyncClient" class="com.betfair.baseline.v2.BaselineSyncClientImpl" parent="disco.client.AbstractSyncClient"/>
 
 
 
-    <bean class="com.betfair.cougar.core.impl.ev.ClientServiceRegistration">
+    <bean class="uk.co.exemel.disco.core.impl.ev.ClientServiceRegistration">
         <property name="resolver">
             <bean class="com.betfair.baseline.v2.BaselineClientExecutableResolver" init-method="init">
                 <property name="defaultOperationTransport">
-                    <bean parent="cougar.client.AbstractSocketTransport">
+                    <bean parent="disco.client.AbstractSocketTransport">
                         <constructor-arg index="5" value="localhost:9003"/>
                     </bean>
                 </property>
@@ -74,23 +74,23 @@
         </property>
         <property name="namespace" value="SOCKET-CLI"/>
     </bean>
-    <bean name="socketSyncClient" class="com.betfair.baseline.v2.BaselineSyncClientImpl" parent="cougar.client.AbstractSyncClient">
+    <bean name="socketSyncClient" class="com.betfair.baseline.v2.BaselineSyncClientImpl" parent="disco.client.AbstractSyncClient">
             <constructor-arg value="SOCKET-CLI"/>
         </bean>
-    <bean name="socketAsyncClient" class="com.betfair.baseline.v2.BaselineClientImpl" parent="cougar.client.AbstractClient">
+    <bean name="socketAsyncClient" class="com.betfair.baseline.v2.BaselineClientImpl" parent="disco.client.AbstractClient">
         <constructor-arg value="SOCKET-CLI"/>
     </bean>
 
 
-    <bean class="com.betfair.cougar.core.impl.ev.ClientServiceRegistration">
+    <bean class="uk.co.exemel.disco.core.impl.ev.ClientServiceRegistration">
         <property name="resolver">
             <bean class="com.betfair.nonservice.v3.NonClientExecutableResolver" init-method="init">
                 <property name="defaultOperationTransport">
-                    <bean parent="cougar.client.AbstractRescriptTransport">
+                    <bean parent="disco.client.AbstractRescriptTransport">
                         <constructor-arg>
                             <bean class="com.betfair.nonservice.v3.rescript.NonRescriptServiceBindingDescriptor"/>
                         </constructor-arg>
-                        <property name="remoteAddress" value="$BASELINE{cougar.client.rescript.remoteaddress}"/>
+                        <property name="remoteAddress" value="$BASELINE{disco.client.rescript.remoteaddress}"/>
                         <property name="exceptionFactory">
                             <bean class="com.betfair.nonservice.v3.exception.NonExceptionFactory"/>
                         </property>
@@ -104,7 +104,7 @@
         <property name="namespace" value="NON-CLI"/>
     </bean>
     <bean name="nonServiceSyncClient"
-          class="com.betfair.nonservice.v3.NonSyncClientImpl" parent="cougar.client.AbstractSyncClient">
+          class="com.betfair.nonservice.v3.NonSyncClientImpl" parent="disco.client.AbstractSyncClient">
         <constructor-arg value="NON-CLI"/>
     </bean>
 </beans>

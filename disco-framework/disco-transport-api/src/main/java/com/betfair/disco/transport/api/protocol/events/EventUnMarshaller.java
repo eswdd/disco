@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.events;
+package uk.co.exemel.disco.transport.api.protocol.events;
 
-import com.betfair.cougar.core.api.events.Event;
-import com.betfair.cougar.core.api.exception.CougarException;
+import uk.co.exemel.disco.core.api.events.Event;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
 
 import java.util.List;
 
@@ -26,5 +26,5 @@ import java.util.List;
  * specific event representation into a strong typed @see Event
  */
 public interface EventUnMarshaller<T> {
-    public Event unmarshallEvent(List<Class<? extends Event>> eventBodyClasses, Class<? extends Event> defaultBodyClass, T transportEvent) throws CougarException;
+    public Event unmarshallEvent(List<Class<? extends Event>> eventBodyClasses, Class<? extends Event> defaultBodyClass, T transportEvent) throws DiscoException;
 }

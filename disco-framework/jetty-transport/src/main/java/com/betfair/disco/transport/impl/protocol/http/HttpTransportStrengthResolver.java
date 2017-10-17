@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.core.api.builder.DehydratedExecutionContextBuilder;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextComponent;
-import com.betfair.cougar.transport.api.SingleComponentResolver;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.jetty.SSLRequestUtils;
+import uk.co.exemel.disco.core.api.builder.DehydratedExecutionContextBuilder;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextComponent;
+import uk.co.exemel.disco.transport.api.SingleComponentResolver;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.jetty.SSLRequestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 

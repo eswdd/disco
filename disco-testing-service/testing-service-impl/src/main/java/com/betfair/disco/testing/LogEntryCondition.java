@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.testing;
+package uk.co.exemel.disco.testing;
 
 public interface LogEntryCondition {
 	public boolean matchesEntry(String logEntry);

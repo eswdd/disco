@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.mediatype;
+package uk.co.exemel.disco.core.api.mediatype;
 
-import com.betfair.cougar.core.api.mediatype.MediaTypeHeaderProvider;
+import uk.co.exemel.disco.core.api.mediatype.MediaTypeHeaderProvider;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 

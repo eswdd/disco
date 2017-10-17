@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.api.ContainerContext;
-import com.betfair.cougar.api.Service;
-import com.betfair.cougar.core.api.ServiceDefinition;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.security.IdentityResolverFactory;
-import com.betfair.cougar.core.impl.CougarInternalOperations;
-import com.betfair.cougar.util.configuration.PropertyConfigurer;
+import uk.co.exemel.disco.api.ContainerContext;
+import uk.co.exemel.disco.api.Service;
+import uk.co.exemel.disco.core.api.ServiceDefinition;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.security.IdentityResolverFactory;
+import uk.co.exemel.disco.core.impl.DiscoInternalOperations;
+import uk.co.exemel.disco.util.configuration.PropertyConfigurer;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import static com.betfair.cougar.core.impl.ev.BaseExecutionVenue.DefinedExecutable;
+import static uk.co.exemel.disco.core.impl.ev.BaseExecutionVenue.DefinedExecutable;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
@@ -50,8 +50,8 @@ public class ServiceRegisterableExecutionVenueTest {
     private OperationKey fooOp2Key = new OperationKey(op2Key, "foo");
     private OperationKey barOp1Key = new OperationKey(op1Key, "bar");
     private OperationKey barOp2Key = new OperationKey(op2Key, "bar");
-    private OperationKey internalOp1Key = new OperationKey(op1Key, CougarInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
-    private OperationKey internalOp2Key = new OperationKey(op2Key, CougarInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
+    private OperationKey internalOp1Key = new OperationKey(op1Key, DiscoInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
+    private OperationKey internalOp2Key = new OperationKey(op2Key, DiscoInternalOperations.COUGAR_IN_PROCESS_NAMESPACE);
 
     private OperationDefinition op1Def = new SimpleOperationDefinition(op1Key, null, null);
     private OperationDefinition op2Def = new SimpleOperationDefinition(op2Key, null, null);

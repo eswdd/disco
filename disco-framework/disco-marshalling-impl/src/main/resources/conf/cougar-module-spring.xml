@@ -20,5 +20,5 @@
         xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="classpath:conf/module-config-cougar-marshalling.xml" />
+    <import resource="classpath:conf/module-config-disco-marshalling.xml" />
 </beans>

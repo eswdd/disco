@@ -16,15 +16,15 @@
  */
 
 // Originally from UpdatedComponentTests/HealthCheck/Rest/Rest_HealthCheck_Summary_OK.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.aliasing;
+package uk.co.exemel.disco.tests.updatedcomponenttests.aliasing;
 
-import com.betfair.cougar.tests.updatedcomponenttests.healthcheck.rest.RestHealthCheckSummaryOKTest;
+import uk.co.exemel.disco.tests.updatedcomponenttests.healthcheck.rest.RestHealthCheckSummaryOKTest;
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;

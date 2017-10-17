@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
-import com.betfair.cougar.core.api.RequestTimer;
+import uk.co.exemel.disco.core.api.RequestTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.transport.api.protocol.CougarObjectInput;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectInput;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
 import org.apache.mina.common.IoSession;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 public class SocketTransportRPCCommandImpl extends SocketTransportCommandImpl implements SocketTransportRPCCommand {
 
-	private final CougarObjectOutput output;
+	private final DiscoObjectOutput output;
 
     private RequestTimer timer = new RequestTimer();
     private IoSession session;
 
-    public SocketTransportRPCCommandImpl(CougarObjectInput input, CougarObjectOutput output, String remoteAddress, IoSession session) {
+    public SocketTransportRPCCommandImpl(DiscoObjectInput input, DiscoObjectOutput output, String remoteAddress, IoSession session) {
         super(input, remoteAddress, session);
 		this.output = output;
 	}
 
 	@Override
-	public CougarObjectOutput getOutput() {
+	public DiscoObjectOutput getOutput() {
 		return output;
 	}
 }

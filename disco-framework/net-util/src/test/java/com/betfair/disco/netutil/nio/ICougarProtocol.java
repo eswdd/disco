@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
 import org.apache.mina.common.IoFilter;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
@@ -22,7 +22,7 @@ import org.springframework.jmx.export.annotation.ManagedAttribute;
 /**
  *
  */
-public interface ICougarProtocol extends IoFilter {
+public interface IDiscoProtocol extends IoFilter {
     void setEnabled(boolean healthy);
     public boolean isEnabled();
 }

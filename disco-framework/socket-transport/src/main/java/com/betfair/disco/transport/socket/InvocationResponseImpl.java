@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
-import com.betfair.cougar.core.api.client.EnumWrapper;
-import com.betfair.cougar.core.api.ev.ClientExecutionResult;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.transport.api.protocol.socket.InvocationResponse;
+import uk.co.exemel.disco.core.api.client.EnumWrapper;
+import uk.co.exemel.disco.core.api.ev.ClientExecutionResult;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.transport.api.protocol.socket.InvocationResponse;
 
 public class InvocationResponseImpl implements InvocationResponse {
 	private final Object result;
-	private final CougarException exception;
+	private final DiscoException exception;
 
     public InvocationResponseImpl(final Object result) {
         this(result, null);
     }
 
-	public InvocationResponseImpl(final Object result, final CougarException exception) {
+	public InvocationResponseImpl(final Object result, final DiscoException exception) {
 		this.result = result;
 		this.exception = exception;
 	}
@@ -58,7 +58,7 @@ public class InvocationResponseImpl implements InvocationResponse {
 		return result;
 	}
 
-	public CougarException getException() {
+	public DiscoException getException() {
 		return exception;
 	}
 }

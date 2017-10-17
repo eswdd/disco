@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.api;
+package uk.co.exemel.disco.client.api;
 
-import com.betfair.cougar.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import java.security.cert.X509Certificate;
 
 /**
  * {@code RescriptClientIdentityTokenResolver} defines contract for an IdentityTokenResolver that needs to be
- * implemented for the cougar client to marshal identity data.
+ * implemented for the disco client to marshal identity data.
  */
 public interface HttpClientIdentityTokenResolver extends IdentityTokenResolver<HttpUriRequest, HttpUriRequest, X509Certificate[]> {
 }

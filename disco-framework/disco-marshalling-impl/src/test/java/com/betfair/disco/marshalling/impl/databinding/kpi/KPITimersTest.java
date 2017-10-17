@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.kpi;
+package uk.co.exemel.disco.marshalling.impl.databinding.kpi;
 
 
 import static org.junit.Assert.assertEquals;
@@ -25,16 +25,16 @@ import static org.mockito.Mockito.*;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import com.betfair.cougar.marshalling.api.databinding.FaultMarshaller;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import com.betfair.cougar.marshalling.api.databinding.UnMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.UnMarshaller;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.betfair.cougar.core.api.fault.CougarFault;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
 import com.betfair.tornjak.kpi.KPIMonitor;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -53,7 +53,7 @@ public class KPITimersTest {
     private static final Object RESULT = new Object();
     private static final String ENCODING = "TESTENCODING";
     private OutputStream os;
-    private CougarFault fault;
+    private DiscoFault fault;
     private InputStream inputStream;
 
     private KPIMonitor monitor;
@@ -65,7 +65,7 @@ public class KPITimersTest {
 
     @Before
     public void setUp() {
-        fault = mock(CougarFault.class);
+        fault = mock(DiscoFault.class);
         inputStream = mock(InputStream.class);
         os = mock(OutputStream.class);
 

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket;
+package uk.co.exemel.disco.client.socket;
 
-import com.betfair.cougar.core.api.ev.Subscription;
-import com.betfair.cougar.netutil.nio.HeapDelta;
-import com.betfair.cougar.netutil.nio.connected.InitialUpdate;
+import uk.co.exemel.disco.core.api.ev.Subscription;
+import uk.co.exemel.disco.netutil.nio.HeapDelta;
+import uk.co.exemel.disco.netutil.nio.connected.InitialUpdate;
 import com.betfair.platform.virtualheap.Heap;
 import org.apache.mina.common.IoSession;
 

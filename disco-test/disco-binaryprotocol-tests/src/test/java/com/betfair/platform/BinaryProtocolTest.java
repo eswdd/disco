@@ -31,13 +31,13 @@ import com.betfair.baseline.v2.to.EnumOperationResponseObject;
 import com.betfair.baseline.v2.to.NonMandatoryParamsOperationResponseObject;
 import com.betfair.baseline.v2.to.NonMandatoryParamsRequest;
 import com.betfair.baseline.v2.to.SimpleResponse;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.client.socket.ExecutionVenueNioClient;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.impl.CougarSpringCtxFactoryImpl;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.client.socket.ExecutionVenueNioClient;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.impl.DiscoSpringCtxFactoryImpl;
+import uk.co.exemel.disco.logging.DiscoLoggingUtils;
 import org.slf4j.LoggerFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -79,21 +79,21 @@ public class BinaryProtocolTest
 
 	@BeforeClass
 	public static void beforeClass() throws ClientProtocolException, IOException, InterruptedException {
-        // set the relevant system props prior to starting cougar..
-        System.setProperty("cougar.client.rescript.remoteaddress","http://127.0.0.1:8080/");
+        // set the relevant system props prior to starting disco..
+        System.setProperty("disco.client.rescript.remoteaddress","http://127.0.0.1:8080/");
         System.setProperty("baseline.server.binaryProtocol.address","127.0.0.1:9003");
-        System.setProperty("cougar.log.CONSOLE.level","INFO");
-        System.setProperty("cougar.geoip.useDefault","true");
-        System.setProperty("cougar.client.socket.ssl.supportsTls","false");
-        System.setProperty("cougar.client.socket.ssl.requiresTls","false");
-        System.setProperty("cougar.client.socket.session.workerTimeout","2");
-        System.setProperty("cougar.client.socket.reconnectInterval","500");
-        System.setProperty("cougar.app.name","cougar-binaryprotocol-tests");
+        System.setProperty("disco.log.CONSOLE.level","INFO");
+        System.setProperty("disco.geoip.useDefault","true");
+        System.setProperty("disco.client.socket.ssl.supportsTls","false");
+        System.setProperty("disco.client.socket.ssl.requiresTls","false");
+        System.setProperty("disco.client.socket.session.workerTimeout","2");
+        System.setProperty("disco.client.socket.reconnectInterval","500");
+        System.setProperty("disco.app.name","disco-binaryprotocol-tests");
 
 		httpClient = new DefaultHttpClient();
 		setServerHealth(OK);
-		CougarLoggingUtils.setTraceLogger(null); //because trace log is static and multiple spring contexts will try to set it
-		CougarSpringCtxFactoryImpl context = new CougarSpringCtxFactoryImpl();
+		DiscoLoggingUtils.setTraceLogger(null); //because trace log is static and multiple spring contexts will try to set it
+		DiscoSpringCtxFactoryImpl context = new DiscoSpringCtxFactoryImpl();
 		springContext = context.create();
 		client = (BaselineSyncClient) springContext.getBean("baselineClient");
 		ec = ExecutionContextHelper.createContext("abc", "127.0.0.1");
@@ -128,7 +128,7 @@ public class BinaryProtocolTest
 		catch (SimpleException e) {
 			Assert.fail();
 		}
-		catch (CougarClientException e) {
+		catch (DiscoClientException e) {
 			//not connected
 		}
 
@@ -243,7 +243,7 @@ public class BinaryProtocolTest
 		catch (SimpleException e) {
 			Assert.fail("unexpected exception",e);
 		}
-		catch (CougarValidationException e) {
+		catch (DiscoValidationException e) {
 			//all is good
 		}
 	}
@@ -297,7 +297,7 @@ public class BinaryProtocolTest
 			Assert.fail("unexpected exception",e);
 		} catch (WotsitException e) {
 			Assert.fail("unexpected exception",e);
-		} catch (CougarClientException e) {
+		} catch (DiscoClientException e) {
 			//all good
 		}
 	}
@@ -319,7 +319,7 @@ public class BinaryProtocolTest
 
 
 	private static void setServerHealth(String health) throws ClientProtocolException, IOException, InterruptedException {
-		HttpPost post = new HttpPost("http://localhost:8080/www/cougarBaseline/v2.0/setHealthStatusInfo");
+		HttpPost post = new HttpPost("http://localhost:8080/www/discoBaseline/v2.0/setHealthStatusInfo");
 		post.setEntity(new StringEntity(health));
 		post.setHeader("Content-type", "application/json");
 		readFully(httpClient.execute(post));

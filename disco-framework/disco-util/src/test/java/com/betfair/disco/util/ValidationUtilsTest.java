@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util;
+package uk.co.exemel.disco.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.betfair.cougar.CougarUtilTestCase;
-import com.betfair.cougar.api.Validatable;
+import uk.co.exemel.disco.DiscoUtilTestCase;
+import uk.co.exemel.disco.api.Validatable;
 
-public class ValidationUtilsTest extends CougarUtilTestCase {
+public class ValidationUtilsTest extends DiscoUtilTestCase {
 	public void testValidateNull() {
 		ValidationUtils.validateMandatory(null);
 	}

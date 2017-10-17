@@ -15,12 +15,12 @@
  */
 
 // Originally from ClientTests/Transport/ImportSheets/CreateSomeComplexObjects.xls;
-package com.betfair.cougar.tests.clienttests.importsheets;
+package uk.co.exemel.disco.tests.clienttests.importsheets;
 
 import com.betfair.baseline.v2.to.SomeComplexObject;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientResponseTypeUtils;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientResponseTypeUtils;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -33,21 +33,21 @@ import java.util.List;
  */
 public class CreateSomeComplexObjectsTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Create a some complex object
         SomeComplexObject someComplexObject1 = new SomeComplexObject();
         someComplexObject1.setStringParameter("String value for aaa");
         SomeComplexObject someComplex1 = someComplexObject1;
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils2 = new CougarClientResponseTypeUtils();
-        Date dateParam1 = cougarClientResponseTypeUtils2.createDateFromString("2009-06-01T13:50:00.0Z");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils2 = new DiscoClientResponseTypeUtils();
+        Date dateParam1 = discoClientResponseTypeUtils2.createDateFromString("2009-06-01T13:50:00.0Z");
         
         someComplex1.setDateTimeParameter(dateParam1);
         
         someComplex1.setEnumParameter(com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum.BAR);
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils3 = new CougarClientResponseTypeUtils();
-        List<String> list1 = cougarClientResponseTypeUtils3.buildList("aaa List Entry 1,aaa List Entry 2,aaa List Entry 3");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils3 = new DiscoClientResponseTypeUtils();
+        List<String> list1 = discoClientResponseTypeUtils3.buildList("aaa List Entry 1,aaa List Entry 2,aaa List Entry 3");
         
         someComplex1.setListParameter(list1);
         // Create another some complex object
@@ -55,15 +55,15 @@ public class CreateSomeComplexObjectsTest {
         someComplexObject4.setStringParameter("String value for bbb");
         SomeComplexObject someComplex2 = someComplexObject4;
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils5 = new CougarClientResponseTypeUtils();
-        Date dateParam2 = cougarClientResponseTypeUtils5.createDateFromString("2009-06-02T13:50:00.435Z");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils5 = new DiscoClientResponseTypeUtils();
+        Date dateParam2 = discoClientResponseTypeUtils5.createDateFromString("2009-06-02T13:50:00.435Z");
         
         someComplex2.setDateTimeParameter(dateParam2);
         
         someComplex2.setEnumParameter(com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum.FOOBAR);
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils6 = new CougarClientResponseTypeUtils();
-        List<String> list2 = cougarClientResponseTypeUtils6.buildList("bbb List Entry 1,bbb List Entry 2,bbb List Entry 3");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils6 = new DiscoClientResponseTypeUtils();
+        List<String> list2 = discoClientResponseTypeUtils6.buildList("bbb List Entry 1,bbb List Entry 2,bbb List Entry 3");
         
         someComplex2.setListParameter(list2);
         // Create another some complex object
@@ -71,15 +71,15 @@ public class CreateSomeComplexObjectsTest {
         someComplexObject7.setStringParameter("String value for ccc");
         SomeComplexObject someComplex3 = someComplexObject7;
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils8 = new CougarClientResponseTypeUtils();
-        Date dateParam3 = cougarClientResponseTypeUtils8.createDateFromString("2009-06-03T13:50:00.435Z");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils8 = new DiscoClientResponseTypeUtils();
+        Date dateParam3 = discoClientResponseTypeUtils8.createDateFromString("2009-06-03T13:50:00.435Z");
         
         someComplex3.setDateTimeParameter(dateParam3);
         
         someComplex3.setEnumParameter(com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum.FOO);
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils9 = new CougarClientResponseTypeUtils();
-        List<String> list3 = cougarClientResponseTypeUtils9.buildList("ccc List Entry 1,ccc List Entry 2,ccc List Entry 3");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils9 = new DiscoClientResponseTypeUtils();
+        List<String> list3 = discoClientResponseTypeUtils9.buildList("ccc List Entry 1,ccc List Entry 2,ccc List Entry 3");
         
         someComplex3.setListParameter(list3);
         // Create a some complex object
@@ -87,15 +87,15 @@ public class CreateSomeComplexObjectsTest {
         someComplexObject10.setStringParameter("String value for aaa");
         someComplex1 = someComplexObject10;
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils11 = new CougarClientResponseTypeUtils();
-        dateParam1 = cougarClientResponseTypeUtils11.createDateFromString("2009-06-01T13:50:00.0Z");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils11 = new DiscoClientResponseTypeUtils();
+        dateParam1 = discoClientResponseTypeUtils11.createDateFromString("2009-06-01T13:50:00.0Z");
         
         someComplex1.setDateTimeParameter(dateParam1);
         
         someComplex1.setEnumParameter(com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum.BAR);
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils12 = new CougarClientResponseTypeUtils();
-        list1 = cougarClientResponseTypeUtils12.buildList("aaa List Entry 1,aaa List Entry 2,aaa List Entry 3");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils12 = new DiscoClientResponseTypeUtils();
+        list1 = discoClientResponseTypeUtils12.buildList("aaa List Entry 1,aaa List Entry 2,aaa List Entry 3");
         
         someComplex1.setListParameter(list1);
         // Create another some complex object
@@ -103,15 +103,15 @@ public class CreateSomeComplexObjectsTest {
         someComplexObject13.setStringParameter("String value for bbb");
         someComplex2 = someComplexObject13;
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils14 = new CougarClientResponseTypeUtils();
-        dateParam2 = cougarClientResponseTypeUtils14.createDateFromString("2009-06-02T13:50:00.435Z");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils14 = new DiscoClientResponseTypeUtils();
+        dateParam2 = discoClientResponseTypeUtils14.createDateFromString("2009-06-02T13:50:00.435Z");
         
         someComplex2.setDateTimeParameter(dateParam2);
         
         someComplex2.setEnumParameter(com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum.FOOBAR);
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils15 = new CougarClientResponseTypeUtils();
-        list2 = cougarClientResponseTypeUtils15.buildList("bbb List Entry 1,bbb List Entry 2,bbb List Entry 3");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils15 = new DiscoClientResponseTypeUtils();
+        list2 = discoClientResponseTypeUtils15.buildList("bbb List Entry 1,bbb List Entry 2,bbb List Entry 3");
         
         someComplex2.setListParameter(list2);
         // Create another some complex object
@@ -119,15 +119,15 @@ public class CreateSomeComplexObjectsTest {
         someComplexObject16.setStringParameter("String value for ccc");
         someComplex3 = someComplexObject16;
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils17 = new CougarClientResponseTypeUtils();
-        dateParam3 = cougarClientResponseTypeUtils17.createDateFromString("2009-06-03T13:50:00.435Z");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils17 = new DiscoClientResponseTypeUtils();
+        dateParam3 = discoClientResponseTypeUtils17.createDateFromString("2009-06-03T13:50:00.435Z");
         
         someComplex3.setDateTimeParameter(dateParam3);
         
         someComplex3.setEnumParameter(com.betfair.baseline.v2.enumerations.SomeComplexObjectEnumParameterEnum.FOO);
         
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils18 = new CougarClientResponseTypeUtils();
-        list3 = cougarClientResponseTypeUtils18.buildList("ccc List Entry 1,ccc List Entry 2,ccc List Entry 3");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils18 = new DiscoClientResponseTypeUtils();
+        list3 = discoClientResponseTypeUtils18.buildList("ccc List Entry 1,ccc List Entry 2,ccc List Entry 3");
         
         someComplex3.setListParameter(list3);
     }

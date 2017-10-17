@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test;
+package uk.co.exemel.disco.test;
 
 
-public class MockJMXControl extends com.betfair.cougar.util.jmx.JMXControl {
+public class MockJMXControl extends uk.co.exemel.disco.util.jmx.JMXControl {
 
 	public MockJMXControl() {
 		super(null);	// this'll do

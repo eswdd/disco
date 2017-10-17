@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.perf.socket;
+package uk.co.exemel.disco.perf.socket;
 
-import com.betfair.cougar.api.ContainerContext;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.core.api.ev.ConnectedResponse;
-import com.betfair.cougar.core.api.ev.Subscription;
-import com.betfair.cougar.core.impl.ev.ConnectedResponseImpl;
-import com.betfair.cougar.core.impl.ev.DefaultSubscription;
+import uk.co.exemel.disco.api.ContainerContext;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.core.api.ev.ConnectedResponse;
+import uk.co.exemel.disco.core.api.ev.Subscription;
+import uk.co.exemel.disco.core.impl.ev.ConnectedResponseImpl;
+import uk.co.exemel.disco.core.impl.ev.DefaultSubscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.betfair.platform.virtualheap.Heap;
 import com.betfair.platform.virtualheap.MutableHeap;
-import com.betfair.cougar.perf.socket.v1_0.SocketPerfTestingService;
-import com.betfair.cougar.perf.socket.v1_0.co.HeapTesterCO;
-import com.betfair.cougar.perf.socket.v1_0.co.RpcControlCO;
-import com.betfair.cougar.perf.socket.v1_0.co.server.HeapTesterServerCO;
-import com.betfair.cougar.perf.socket.v1_0.co.server.RpcControlServerCO;
+import uk.co.exemel.disco.perf.socket.v1_0.SocketPerfTestingService;
+import uk.co.exemel.disco.perf.socket.v1_0.co.HeapTesterCO;
+import uk.co.exemel.disco.perf.socket.v1_0.co.RpcControlCO;
+import uk.co.exemel.disco.perf.socket.v1_0.co.server.HeapTesterServerCO;
+import uk.co.exemel.disco.perf.socket.v1_0.co.server.RpcControlServerCO;
 import com.betfair.tornjak.monitor.MonitorRegistry;
 
 import java.util.concurrent.CountDownLatch;
@@ -41,7 +41,7 @@ import java.util.logging.Level;
 
 public class SocketPerfTestingServiceImpl implements SocketPerfTestingService {
 
-    private static CougarLogger LOG = CougarLoggingUtils.getLogger(SocketPerfTestingServiceImpl.class);
+    private static DiscoLogger LOG = DiscoLoggingUtils.getLogger(SocketPerfTestingServiceImpl.class);
 
     private int numHeapsForTest = 1000;
     private int concurrency = numHeapsForTest/3;

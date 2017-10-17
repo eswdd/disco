@@ -32,13 +32,13 @@ import ${package}.${majorVersion}.${serviceDefinitionName};
 import java.util.ArrayList;
 import java.util.List;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.OperationKey;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
 
-import com.betfair.cougar.transport.api.protocol.socket.SocketBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.socket.SocketBindingDescriptor;
 
-import com.betfair.cougar.transport.api.protocol.socket.SocketOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.socket.SocketOperationBindingDescriptor;
 
 public class ${serviceName}SocketServiceBindingDescriptor implements SocketBindingDescriptor {
 

@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.clienttests.features;
+package uk.co.exemel.disco.tests.clienttests.features;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
-import com.betfair.cougar.transport.api.protocol.http.ExecutionContextFactory;
-import com.betfair.cougar.util.RequestUUIDImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
+import uk.co.exemel.disco.transport.api.protocol.http.ExecutionContextFactory;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -44,9 +44,9 @@ public class ClientRequestUuidTest {
 
 
     @Test(dataProvider = "TransportType")
-    public void nullRequestUUid(CougarClientWrapper.TransportType tt) throws Exception {
+    public void nullRequestUUid(DiscoClientWrapper.TransportType tt) throws Exception {
         // Set up the client to use rescript transport
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
         BaselineSyncClient client = wrapper.getClient();
 
         RequestUUID uuid = null;
@@ -57,9 +57,9 @@ public class ClientRequestUuidTest {
         assertFalse(uuidResponse.contains(":"));
     }
     @Test(dataProvider = "TransportType")
-    public void withSingleRequestUUid(CougarClientWrapper.TransportType tt) throws Exception {
+    public void withSingleRequestUUid(DiscoClientWrapper.TransportType tt) throws Exception {
         // Set up the client to use rescript transport
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
         BaselineSyncClient client = wrapper.getClient();
 
         RequestUUID uuid = new RequestUUIDImpl("localhost123-12345678-0000000001");
@@ -74,9 +74,9 @@ public class ClientRequestUuidTest {
     }
 
     @Test(dataProvider = "TransportType")
-    public void withCompoundRequestUUid(CougarClientWrapper.TransportType tt) throws Exception {
+    public void withCompoundRequestUUid(DiscoClientWrapper.TransportType tt) throws Exception {
         // Set up the client to use rescript transport
-        CougarClientWrapper wrapper = CougarClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = DiscoClientWrapper.getInstance(tt);
         BaselineSyncClient client = wrapper.getClient();
 
         RequestUUID uuid = new RequestUUIDImpl("root123-12345678-0000000001:parent123-12345678-0000000001:child123-12345678-0000000001");

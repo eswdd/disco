@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging.records;
+package uk.co.exemel.disco.logging.records;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-public abstract class CougarLogRecord extends LogRecord {
+public abstract class DiscoLogRecord extends LogRecord {
 
     private static final long serialVersionUID = 1L;
 
 	private final long nanoTime;
 	private final AtomicReference<String> formattedMessage = new AtomicReference<String>();
 
-	public CougarLogRecord(String logName, Level level, String msg, Object... args) {
+	public DiscoLogRecord(String logName, Level level, String msg, Object... args) {
         super(level, msg);
         nanoTime = System.nanoTime();
         setParameters(args);

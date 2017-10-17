@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/REST/Rest_Get_RequestTypes_Parameters_ListOfStrings_1BlankEntry.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.rest;
 
-import com.betfair.testing.utils.cougar.CougarBaseline2_8TestingInvoker;
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.DiscoBaseline2_8TestingInvoker;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
 
 import org.testng.annotations.Test;
 
 /**
- * Ensure that when the 4 supported Rest XML/JSON Gets are performed, Cougar can handle an empty List of Strings being passed in the Header and Query parameters
+ * Ensure that when the 4 supported Rest XML/JSON Gets are performed, Disco can handle an empty List of Strings being passed in the Header and Query parameters
  */
 public class RestGetRequestTypesParametersListOfStrings1BlankEntryTest {
 
@@ -31,14 +31,14 @@ public class RestGetRequestTypesParametersListOfStrings1BlankEntryTest {
     public void doTest() {
         String expectedXmlResponse = "<StringListOperationResponse><NonMandatoryParamsOperationResponseObject><headerParameter/><queryParameter/></NonMandatoryParamsOperationResponseObject></StringListOperationResponse>";
         String expectedJsonResponse = "{queryParameter:\"\",headerParameter:\"\"}";
-        CougarBaseline2_8TestingInvoker.create()
+        DiscoBaseline2_8TestingInvoker.create()
                 .setOperation("stringListOperation")
                 .addHeaderParam("HeaderParam","")
                 .addQueryParam("queryParam","")
-                .setExpectedResponse(CougarMessageContentTypeEnum.XML, expectedXmlResponse)
-                .setExpectedResponse(CougarMessageContentTypeEnum.JSON, expectedJsonResponse)
+                .setExpectedResponse(DiscoMessageContentTypeEnum.XML, expectedXmlResponse)
+                .setExpectedResponse(DiscoMessageContentTypeEnum.JSON, expectedJsonResponse)
                 .setExpectedHttpResponse(200, "OK")
-                .makeMatrixRescriptCalls(CougarMessageContentTypeEnum.JSON, CougarMessageContentTypeEnum.XML)
+                .makeMatrixRescriptCalls(DiscoMessageContentTypeEnum.JSON, DiscoMessageContentTypeEnum.XML)
                 .verify();
 
     }

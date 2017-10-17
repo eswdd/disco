@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api;
+package uk.co.exemel.disco.transport.api;
 
-import com.betfair.cougar.core.api.RequestTimer;
+import uk.co.exemel.disco.core.api.RequestTimer;
 
 /**
  * An invocation from the Transport to process a unit of work.

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.api;
+package uk.co.exemel.disco.client.api;
 
-import com.betfair.cougar.api.security.IdentityChain;
+import uk.co.exemel.disco.api.security.IdentityChain;
 
 /**
- *	a mechanism for applications using cougar client to serialise the identity chain.  Cougar client cannot know the concrete types of the Identities within
+ *	a mechanism for applications using disco client to serialise the identity chain.  Disco client cannot know the concrete types of the Identities within
  *  the IdentityChain nor the appropriate wire format.  Applications must therefore supply their own serialiser.  Specialised interfaces are available for the
  *  various transport types
  */

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket;
+package uk.co.exemel.disco.client.socket;
 
 import com.betfair.platform.virtualheap.conflate.Conflater;
 import com.betfair.platform.virtualheap.conflate.SimpleConflater;

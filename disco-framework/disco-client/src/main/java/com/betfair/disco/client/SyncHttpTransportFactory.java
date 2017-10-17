@@ -15,17 +15,17 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.api.security.IdentityResolver;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.client.api.ContextEmitter;
-import com.betfair.cougar.client.exception.ExceptionTransformer;
-import com.betfair.cougar.client.query.QueryStringGeneratorFactory;
-import com.betfair.cougar.core.api.client.ExceptionFactory;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.api.security.IdentityResolver;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.client.api.ContextEmitter;
+import uk.co.exemel.disco.client.exception.ExceptionTransformer;
+import uk.co.exemel.disco.client.query.QueryStringGeneratorFactory;
+import uk.co.exemel.disco.core.api.client.ExceptionFactory;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.springframework.core.io.Resource;
 

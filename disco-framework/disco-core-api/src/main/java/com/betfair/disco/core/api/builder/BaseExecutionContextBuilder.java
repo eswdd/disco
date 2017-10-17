@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.builder;
+package uk.co.exemel.disco.core.api.builder;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
 
 import java.util.BitSet;
 import java.util.Date;

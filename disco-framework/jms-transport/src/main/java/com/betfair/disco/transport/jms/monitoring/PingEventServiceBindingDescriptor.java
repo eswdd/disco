@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms.monitoring;
+package uk.co.exemel.disco.transport.jms.monitoring;
 
-import com.betfair.cougar.CougarVersion;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.transport.api.protocol.events.EventBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.events.EventServiceBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.events.jms.JMSEventBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.events.jms.JMSParamBindingDescriptor;
+import uk.co.exemel.disco.DiscoVersion;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.transport.api.protocol.events.EventBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.events.EventServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.events.jms.JMSEventBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.events.jms.JMSParamBindingDescriptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class PingEventServiceBindingDescriptor implements EventServiceBindingDes
         bindingDescriptors.add(emissionTime);
         eventBindings = new EventBindingDescriptor[] { new JMSEventBindingDescriptor("PingEvent",bindingDescriptors,PingEvent.class) };
 
-        serviceVersion = new ServiceVersion("v"+CougarVersion.getMajorMinorVersion());
+        serviceVersion = new ServiceVersion("v"+DiscoVersion.getMajorMinorVersion());
     }
 
     @Override
@@ -51,12 +51,12 @@ public class PingEventServiceBindingDescriptor implements EventServiceBindingDes
 
     @Override
     public String getServiceName() {
-        return "CougarSonicTransportMonitoring";
+        return "DiscoSonicTransportMonitoring";
     }
 
     @Override
     public String getServiceNamespace() {
-        return "__cougar_internal";
+        return "__disco_internal";
     }
 
     @Override

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.enums;
+package com.betfair.testing.utils.disco.enums;
 
 /**
  * Enum representing the format the content of a request to be sent to a
- * Cougar container within the Betfair system.
+ * Disco container within the Betfair system.
  */
-public enum CougarMessageContentTypeEnum {
+public enum DiscoMessageContentTypeEnum {
 
 	XML,
 	JSON,

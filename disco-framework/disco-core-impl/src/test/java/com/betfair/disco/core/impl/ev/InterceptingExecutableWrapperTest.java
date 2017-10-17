@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
 import org.slf4j.LoggerFactory;
 import org.junit.*;
 import org.mockito.ArgumentCaptor;
@@ -44,8 +44,8 @@ public class InterceptingExecutableWrapperTest {
     private List<ExecutionPostProcessor> postExecutionInterceptorList = new ArrayList<ExecutionPostProcessor>();
 
     private final InterceptorResult SUCCESS = new InterceptorResult(InterceptorState.CONTINUE);
-    private final InterceptorResult FAILURE_UNCHECKED = new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION, new CougarFrameworkException(ServerFaultCode.ServiceRuntimeException, "Broken"));
-    private final InterceptorResult FAILURE_CHECKED = new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION, new CougarFrameworkException(ServerFaultCode.ServiceCheckedException, "Broken"));
+    private final InterceptorResult FAILURE_UNCHECKED = new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION, new DiscoFrameworkException(ServerFaultCode.ServiceRuntimeException, "Broken"));
+    private final InterceptorResult FAILURE_CHECKED = new InterceptorResult(InterceptorState.FORCE_ON_EXCEPTION, new DiscoFrameworkException(ServerFaultCode.ServiceCheckedException, "Broken"));
 
     private Executable executable;
     private ExecutionContext ctx;
@@ -109,7 +109,7 @@ public class InterceptingExecutableWrapperTest {
         verify(observer).onResult(executionResultArgumentCaptor.capture());
         ExecutionResult result = executionResultArgumentCaptor.getValue();
         assertTrue(result.isFault());
-        CougarException ex = result.getFault();
+        DiscoException ex = result.getFault();
         assertNotNull(ex);
         assertEquals(ex.getServerFaultCode(), ServerFaultCode.ServiceRuntimeException);
 
@@ -137,7 +137,7 @@ public class InterceptingExecutableWrapperTest {
         verify(observer).onResult(executionResultArgumentCaptor.capture());
         ExecutionResult result = executionResultArgumentCaptor.getValue();
         assertTrue(result.isFault());
-        CougarException ex = result.getFault();
+        DiscoException ex = result.getFault();
         assertNotNull(ex);
         assertEquals(ex.getServerFaultCode(), ServerFaultCode.ServiceCheckedException);
 
@@ -192,7 +192,7 @@ public class InterceptingExecutableWrapperTest {
         ExecutionResult executionResult = executionResultArgumentCaptor.getValue();
         assertNotNull(executionResult);
         assertTrue(executionResult.isFault());
-        CougarException ce = executionResult.getFault();
+        DiscoException ce = executionResult.getFault();
         assertNotNull(ce);
         assertEquals(ce.getServerFaultCode(), ServerFaultCode.ServiceRuntimeException);
     }

@@ -437,13 +437,13 @@
 			<parameter mandatory="false" name="initialiseHealthStatusObject" type="bool">
 				<description>Do you want to create a new HealthStatusDetail object</description>
 			</parameter>
-			<parameter mandatory="false" name="serviceStatusDetail" type="CougarComponentStatuses">
+			<parameter mandatory="false" name="serviceStatusDetail" type="DiscoComponentStatuses">
 				<description>Detailed status of the service</description>
 			</parameter>
-			<parameter mandatory="false" name="DBConnectionStatusDetail" type="CougarComponentStatuses">
+			<parameter mandatory="false" name="DBConnectionStatusDetail" type="DiscoComponentStatuses">
 				<description>Detailed status of the DB Connection Component</description>
 			</parameter>
-			<parameter mandatory="false" name="cacheAccessStatusDetail" type="CougarComponentStatuses">
+			<parameter mandatory="false" name="cacheAccessStatusDetail" type="DiscoComponentStatuses">
 				<description>Detailed status of the Cache Access Component</description>
 			</parameter>
 	</dataType>

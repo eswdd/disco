@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket;
+package uk.co.exemel.disco.client.socket;
 
-import com.betfair.cougar.netutil.nio.message.ProtocolMessage;
-import com.betfair.cougar.util.JMXReportingThreadPoolExecutor;
+import uk.co.exemel.disco.netutil.nio.message.ProtocolMessage;
+import uk.co.exemel.disco.util.JMXReportingThreadPoolExecutor;
 import org.apache.mina.common.IoSession;
 import org.junit.Before;
 import org.junit.Test;

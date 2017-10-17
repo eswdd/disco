@@ -15,17 +15,17 @@
  */
 
 // Originally from UpdatedComponentTests/StaticHTML/Error_404_NonExistantStaticFile.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.statichtml;
+package uk.co.exemel.disco.tests.updatedcomponenttests.statichtml;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
-import com.betfair.testing.utils.cougar.misc.DocumentHelpers;
-import com.betfair.testing.utils.cougar.misc.HttpService;
-import com.betfair.testing.utils.cougar.misc.HttptestPageBean;
-import com.betfair.testing.utils.cougar.misc.InputStreamHelpers;
+import com.betfair.testing.utils.disco.misc.DocumentHelpers;
+import com.betfair.testing.utils.disco.misc.HttpService;
+import com.betfair.testing.utils.disco.misc.HttptestPageBean;
+import com.betfair.testing.utils.disco.misc.InputStreamHelpers;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
@@ -33,26 +33,26 @@ import java.io.InputStream;
 import java.sql.Timestamp;
 
 /**
- * Ensure that Cougar returns the correct 404 page when requesting a non existant static file
+ * Ensure that Disco returns the correct 404 page when requesting a non existant static file
  */
 public class Error404NonExistantStaticFileTest {
 
     @Test
     public void doTest() throws Exception {
         // Create the HttpCallBean
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean httpCallBeanBaseline = cougarManager1.getNewHttpCallBean();
-        CougarManager cougarManagerBaseline = cougarManager1;
-        // Get the cougar logging attribute for getting log entries later
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean httpCallBeanBaseline = discoManager1.getNewHttpCallBean();
+        DiscoManager discoManagerBaseline = discoManager1;
+        // Get the disco logging attribute for getting log entries later
         // Point the created HttpCallBean at the correct service
-        httpCallBeanBaseline.setServiceName("baseline", "cougarBaseline");
+        httpCallBeanBaseline.setServiceName("baseline", "discoBaseline");
         
         httpCallBeanBaseline.setVersion("v2");
         // Get current time for getting log entries later
 
         Timestamp getTimeAsTimeStamp1 = new Timestamp(System.currentTimeMillis());
-        CougarManager cougarManager3 = CougarManager.getInstance();
-        CougarManager cougarManager2 = cougarManager3;
+        DiscoManager discoManager3 = DiscoManager.getInstance();
+        DiscoManager discoManager2 = discoManager3;
         // Get Expected 404 html page
         InputStream inputStream = InputStreamHelpers.getInputStreamForResource("static-html/errorpages/404.html");
         // Transfrom the input stream into a Document (XML) for assertion
@@ -64,7 +64,7 @@ public class Error404NonExistantStaticFileTest {
         Document actualDocument = HttpService.getPageDom(loadedPage);
         AssertionUtils.multiAssertEquals(expectedDocResponse, actualDocument);
         // Check the log entries are as expected
-        cougarManager2.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp1, new AccessLogRequirement(null, "/static-html/nonExistant.html", "NotFound") );
+        discoManager2.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp1, new AccessLogRequirement(null, "/static-html/nonExistant.html", "NotFound") );
     }
 
 }

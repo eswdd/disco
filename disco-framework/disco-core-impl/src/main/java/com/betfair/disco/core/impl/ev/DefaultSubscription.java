@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.core.api.ev.Subscription;
+import uk.co.exemel.disco.core.api.ev.Subscription;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

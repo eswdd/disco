@@ -5,7 +5,7 @@ Documentation Publishing
 ------------------------
 * Ensure you have configured a [GitHub SSH Key](https://help.github.com/articles/generating-ssh-keys)
 * Pull the latest [betfair/gh-pages-publishing](https://github.com/betfair/gh-pages-publishing)
-* Run ```./publish betfair/cougar <github-user> <branch-name>```
+* Run ```./publish betfair/disco <github-user> <branch-name>```
 
 Snapshot Deploy
 ---------------
@@ -15,16 +15,16 @@ Snapshot Deploy
 
 Releasing
 ---------
-* Branch cougar to create the release branch
+* Branch disco to create the release branch
 * Perform maven release - see below
-* Branch the cougar-documentation to create the release documentation
-* Publish the new cougar-documentation branch
-* Change the master cougar-documentation to reference the new release
+* Branch the disco-documentation to create the release documentation
+* Publish the new disco-documentation branch
+* Change the master disco-documentation to reference the new release
 * Branch the archetypes to create the release branch
 * Update the archetypes on the release branch to reference the release version
 * [Perform maven release](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide) on the archetype branch
 * Update the archetypes on the master branch to reference the new SNAPSHOT
-* Send notification email to betfair-cougar@googlegroups.com
+* Send notification email to betfair-disco@googlegroups.com
 
 Perform maven release
 ---------------------
@@ -47,9 +47,9 @@ mvn release:prepare
 # enter gpg passphrase when prompted
 # some fudgery required now, namely to install release binaries in local repo
 cd target
-git clone --branch 3.2.0 git@github.com:betfair/cougar checkout
+git clone --branch 3.2.0 git@github.com:betfair/disco checkout
 cd checkout
-git fetch git@github.com:betfair/cougar
+git fetch git@github.com:betfair/disco
 git checkout 3.2.0
 mvn install -Dmaven.test.skip=true
 cd ..
@@ -74,7 +74,7 @@ mvn release:clean
 If you have errors due to a pre-existing tag, then delete using:
 ```
 # remote
-git push origin :cougar-master-pom-3.2.0
+git push origin :disco-master-pom-3.2.0
 # local
-git tag -d cougar-master-pom-3.2.0
+git tag -d disco-master-pom-3.2.0
 ```

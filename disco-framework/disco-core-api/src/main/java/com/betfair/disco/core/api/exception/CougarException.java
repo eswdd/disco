@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.exception;
+package uk.co.exemel.disco.core.api.exception;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.core.api.fault.Fault;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.core.api.fault.Fault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,29 +29,29 @@ import org.slf4j.LoggerFactory;
  * An Exception that automatically logs itself
  */
 @SuppressWarnings("serial")
-public abstract class CougarException extends RuntimeException {
+public abstract class DiscoException extends RuntimeException {
 	private final ServerFaultCode serverFault;
-    private static Map<Class<? extends CougarException>,Logger> loggers = new HashMap<>();
+    private static Map<Class<? extends DiscoException>,Logger> loggers = new HashMap<>();
 
-    CougarException(Level level, ServerFaultCode serverFault) {
+    DiscoException(Level level, ServerFaultCode serverFault) {
 		super();
 		this.serverFault = serverFault;
 		logMe(serverFault, level);
 	}
 
-	CougarException(Level level, ServerFaultCode serverFault, Throwable e) {
+	DiscoException(Level level, ServerFaultCode serverFault, Throwable e) {
 		super(e);
 		this.serverFault = serverFault;
 		logMe(serverFault, level);
 	}
 
-	CougarException(Level level, ServerFaultCode serverFault, String cause) {
+	DiscoException(Level level, ServerFaultCode serverFault, String cause) {
 		super(cause);
 		this.serverFault = serverFault;
 		logMe(serverFault, level);
 	}
 
-	CougarException(Level level, ServerFaultCode serverFault, String cause, Throwable t) {
+	DiscoException(Level level, ServerFaultCode serverFault, String cause, Throwable t) {
 		super(cause, t);
 		this.serverFault = serverFault;
 		logMe(serverFault, level);
@@ -59,7 +59,7 @@ public abstract class CougarException extends RuntimeException {
 
     private Logger getLogger()
     {
-        Class<? extends CougarException> c = getClass();
+        Class<? extends DiscoException> c = getClass();
         Logger logger = loggers.get(c);
         if (logger == null)
         {

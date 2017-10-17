@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket.jmx;
+package uk.co.exemel.disco.transport.socket.jmx;
 
-import com.betfair.cougar.core.api.ev.Subscription;
-import com.betfair.cougar.core.api.jmx.JMXHttpParser;
-import com.betfair.cougar.core.api.jmx.JMXHttpParserReader;
-import com.betfair.cougar.netutil.nio.NioUtils;
-import com.betfair.cougar.netutil.nio.monitoring.SessionWriteQueueMonitor;
-import com.betfair.cougar.netutil.nio.monitoring.SessionWriteQueueMonitoring;
-import com.betfair.cougar.netutil.nio.HandlerListener;
-import com.betfair.cougar.transport.socket.PooledServerConnectedObjectManager;
+import uk.co.exemel.disco.core.api.ev.Subscription;
+import uk.co.exemel.disco.core.api.jmx.JMXHttpParser;
+import uk.co.exemel.disco.core.api.jmx.JMXHttpParserReader;
+import uk.co.exemel.disco.netutil.nio.NioUtils;
+import uk.co.exemel.disco.netutil.nio.monitoring.SessionWriteQueueMonitor;
+import uk.co.exemel.disco.netutil.nio.monitoring.SessionWriteQueueMonitoring;
+import uk.co.exemel.disco.netutil.nio.HandlerListener;
+import uk.co.exemel.disco.transport.socket.PooledServerConnectedObjectManager;
 import org.apache.mina.common.IoSession;
 
 import java.net.URLEncoder;

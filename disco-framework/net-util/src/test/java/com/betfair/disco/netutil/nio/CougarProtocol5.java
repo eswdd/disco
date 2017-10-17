@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
 import org.apache.mina.filter.SSLFilter;
 
 /**
  *
  */
-public class CougarProtocol5 extends CougarProtocol implements ICougarProtocol {
+public class DiscoProtocol5 extends DiscoProtocol implements IDiscoProtocol {
 
-    public CougarProtocol5(boolean server, NioLogger nioLogger, int keepAliveInterval, int keepAliveTimeout, SSLFilter sslFilter, boolean supportsTls, boolean requiresTls, long rpcTimeoutMillis) {
+    public DiscoProtocol5(boolean server, NioLogger nioLogger, int keepAliveInterval, int keepAliveTimeout, SSLFilter sslFilter, boolean supportsTls, boolean requiresTls, long rpcTimeoutMillis) {
         super(server, nioLogger, keepAliveInterval, keepAliveTimeout, sslFilter, supportsTls, requiresTls, rpcTimeoutMillis);
     }
 }

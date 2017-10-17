@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.client.api.ContextEmitter;
+import uk.co.exemel.disco.client.api.ContextEmitter;
 import org.apache.http.Header;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -27,13 +27,13 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
- * {@code HttpClientCougarRequestFactory} is an implementation of {@link CougarRequestFactory} for synchronous
+ * {@code HttpClientDiscoRequestFactory} is an implementation of {@link DiscoRequestFactory} for synchronous
  * http client.
  * See {@link HttpClientExecutable}
  */
-public class HttpClientCougarRequestFactory extends CougarRequestFactory<HttpUriRequest> {
+public class HttpClientDiscoRequestFactory extends DiscoRequestFactory<HttpUriRequest> {
 
-    public HttpClientCougarRequestFactory(ContextEmitter<HttpUriRequest,List<Header>> emission) {
+    public HttpClientDiscoRequestFactory(ContextEmitter<HttpUriRequest,List<Header>> emission) {
         super(emission);
     }
 

@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.exception;
+package uk.co.exemel.disco.client.exception;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.core.api.client.ExceptionFactory;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.fault.CougarFault;
-import com.betfair.cougar.marshalling.api.databinding.FaultUnMarshaller;
-import com.betfair.cougar.transport.api.protocol.http.ResponseCodeMapper;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.core.api.client.ExceptionFactory;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultUnMarshaller;
+import uk.co.exemel.disco.transport.api.protocol.http.ResponseCodeMapper;
 
 import java.io.InputStream;
 
 /**
- * Transforms an HTTP error into a CougarServiceException
+ * Transforms an HTTP error into a DiscoServiceException
  *
  */
-public class HTTPErrorToCougarExceptionTransformer extends AbstractExceptionTransformer {
+public class HTTPErrorToDiscoExceptionTransformer extends AbstractExceptionTransformer {
 
-    public HTTPErrorToCougarExceptionTransformer(FaultUnMarshaller faultUnMarshaller) {
+    public HTTPErrorToDiscoExceptionTransformer(FaultUnMarshaller faultUnMarshaller) {
         super(faultUnMarshaller);
     }
 
     public Exception convert(final InputStream inputStream, final ExceptionFactory exceptionFactory, final int httpStatusCode) {
-        CougarFault fault = getFaultFromInputStream(inputStream);
+        DiscoFault fault = getFaultFromInputStream(inputStream);
         ResponseCode responseCode = ResponseCodeMapper.getResponseCodeFromHttpCode(httpStatusCode, fault);
         return exceptionFactory.parseException(responseCode, fault.getErrorCode(),
                 fault.getFaultCode() + " fault received from remote server: "+ ServerFaultCode.getByDetailCode(fault.getErrorCode()), fault.getDetail().getFaultMessages());

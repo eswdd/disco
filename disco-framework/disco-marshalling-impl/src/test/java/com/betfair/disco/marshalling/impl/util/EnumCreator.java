@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.util;
+package uk.co.exemel.disco.marshalling.impl.util;
 
 import org.apache.bcel.generic.*;
 import org.apache.bcel.classfile.*;

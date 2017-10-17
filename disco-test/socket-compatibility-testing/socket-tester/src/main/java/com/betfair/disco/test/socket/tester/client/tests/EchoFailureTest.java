@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.tester.client.tests;
+package uk.co.exemel.disco.test.socket.tester.client.tests;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.WaitingObserver;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.test.socket.tester.client.*;
-import com.betfair.cougar.test.socket.tester.common.ClientAuthRequirement;
-import com.betfair.cougar.test.socket.tester.common.Common;
-import com.betfair.cougar.test.socket.tester.common.EchoException;
-import com.betfair.cougar.test.socket.tester.common.SslRequirement;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.WaitingObserver;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.test.socket.tester.client.*;
+import uk.co.exemel.disco.test.socket.tester.common.ClientAuthRequirement;
+import uk.co.exemel.disco.test.socket.tester.common.Common;
+import uk.co.exemel.disco.test.socket.tester.common.EchoException;
+import uk.co.exemel.disco.test.socket.tester.common.SslRequirement;
 
 /**
 *
@@ -66,8 +66,8 @@ public class EchoFailureTest implements ClientTest {
 
     @Override
     public void test(TestResult ret) throws Exception {
-        if (server.getMinProtocolVersion() > CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED) {
-            ret.setOutput("My protocol version too low: "+CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED+" < "+server.getMinProtocolVersion());
+        if (server.getMinProtocolVersion() > DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED) {
+            ret.setOutput("My protocol version too low: "+DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED+" < "+server.getMinProtocolVersion());
             return;
         }
 
@@ -83,9 +83,9 @@ public class EchoFailureTest implements ClientTest {
             }
 
             if (observer.getExecutionResult().getResultType() == ExecutionResult.ResultType.Fault) {
-                CougarException e = observer.getExecutionResult().getFault();
+                DiscoException e = observer.getExecutionResult().getFault();
                 if (expectSuccess) {
-                    if (e instanceof CougarClientException) {
+                    if (e instanceof DiscoClientException) {
                         if (e.getCause() instanceof EchoException) {
                             EchoException ee = (EchoException) e.getCause();
                             if (ee.getInfo().equals("Hello world!")) {

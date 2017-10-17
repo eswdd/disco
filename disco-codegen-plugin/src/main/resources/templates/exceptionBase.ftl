@@ -30,12 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.betfair.cougar.api.ResponseCode;
+import uk.co.exemel.disco.api.ResponseCode;
 import ${package}.${majorVersion}.enumerations.*;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.transcription.*;
-import com.betfair.cougar.core.api.transcription.EnumUtils;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.transcription.*;
+import uk.co.exemel.disco.core.api.transcription.EnumUtils;
 
 <#assign exception=parseException(doc, interface)>
 
@@ -46,7 +46,7 @@ import com.betfair.cougar.core.api.transcription.EnumUtils;
   </#if>
  */
 @SuppressWarnings("all")
-public class  ${service} extends CougarApplicationException implements Transcribable {
+public class  ${service} extends DiscoApplicationException implements Transcribable {
     private static final String prefix = "${doc.@prefix}-";
 
     private static final Parameter __responseCodeParameter = new Parameter("responseCode",new ParameterType(ResponseCode.class, null ),false);

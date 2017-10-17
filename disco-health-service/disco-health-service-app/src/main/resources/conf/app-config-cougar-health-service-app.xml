@@ -43,40 +43,40 @@
     </bean>
 
     <!-- Generate the service beans -->
-    <bean id="healthService" class="com.betfair.cougar.health.HealthServiceImpl">
+    <bean id="healthService" class="uk.co.exemel.disco.health.HealthServiceImpl">
     </bean>
 
-    <bean id="healthServiceResolver" class="com.betfair.cougar.health.service.v3.HealthSyncServiceExecutableResolver">
+    <bean id="healthServiceResolver" class="uk.co.exemel.disco.health.service.v3.HealthSyncServiceExecutableResolver">
         <property name="service" ref="healthService"/>
     </bean>
 
 
-    <bean class="com.betfair.cougar.core.impl.ev.ServiceRegistration">
+    <bean class="uk.co.exemel.disco.core.impl.ev.ServiceRegistration">
         <property name="resolver" ref="healthServiceResolver"/>
         <property name="serviceDefinition">
-            <bean class="com.betfair.cougar.health.service.v3.HealthServiceDefinition"/>
+            <bean class="uk.co.exemel.disco.health.service.v3.HealthServiceDefinition"/>
         </property>
         <property name="service" ref="healthService"/>
         <property name="bindingDescriptors">
             <util:set>
                 <!-- Declare the binding descriptors for the SOAP and RESCRIPT transports -->
-                <bean class="com.betfair.cougar.health.service.v3.rescript.HealthRescriptServiceBindingDescriptor"/>
-                <bean class="com.betfair.cougar.health.service.v3.soap.HealthSoapServiceBindingDescriptor"/>
-                <bean class="com.betfair.cougar.health.service.v3.jsonrpc.HealthJsonRpcServiceBindingDescriptor"/>
+                <bean class="uk.co.exemel.disco.health.service.v3.rescript.HealthRescriptServiceBindingDescriptor"/>
+                <bean class="uk.co.exemel.disco.health.service.v3.soap.HealthSoapServiceBindingDescriptor"/>
+                <bean class="uk.co.exemel.disco.health.service.v3.jsonrpc.HealthJsonRpcServiceBindingDescriptor"/>
             </util:set>
         </property>
     </bean>
-    <bean parent="cougar.core.PreProcessorInterceptorRegistrationHelper">
+    <bean parent="disco.core.PreProcessorInterceptorRegistrationHelper">
         <property name="interceptorList">
             <util:list>
-                <bean class="com.betfair.cougar.core.api.ev.processors.PreMatchingInterceptor">
+                <bean class="uk.co.exemel.disco.core.api.ev.processors.PreMatchingInterceptor">
                     <constructor-arg>
-                        <bean class="com.betfair.cougar.core.impl.interceptors.PrivateOnlyInterceptor">
-                            <constructor-arg ref="cougar.core.AddressClassifier"/>
+                        <bean class="uk.co.exemel.disco.core.impl.interceptors.PrivateOnlyInterceptor">
+                            <constructor-arg ref="disco.core.AddressClassifier"/>
                         </bean>
                     </constructor-arg>
                     <property name="matcher">
-                        <bean class="com.betfair.cougar.core.api.ev.processors.OperationKeyMatcher">
+                        <bean class="uk.co.exemel.disco.core.api.ev.processors.OperationKeyMatcher">
                             <property name="serviceName" value="Health"/>
                             <property name="operationName" value="getDetailedHealthStatus"/>
                         </bean>

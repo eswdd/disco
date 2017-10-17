@@ -22,14 +22,14 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import uk.co.exemel.disco.logging.DiscoLoggingUtils;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.betfair.cougar.core.api.exception.PanicInTheCougar;
-import com.betfair.cougar.core.impl.CougarSpringCtxFactoryImpl;
+import uk.co.exemel.disco.core.api.exception.PanicInTheDisco;
+import uk.co.exemel.disco.core.impl.DiscoSpringCtxFactoryImpl;
 import org.slf4j.LoggerFactory;
 
-public class TestClientContextFactory extends CougarSpringCtxFactoryImpl{
+public class TestClientContextFactory extends DiscoSpringCtxFactoryImpl{
 
 	public ClassPathXmlApplicationContext create(String config) {
         logInitialisation(System.getProperty(LOGGING_BOOTSTRAP_CLASS_PROPERTY));
@@ -51,8 +51,8 @@ public class TestClientContextFactory extends CougarSpringCtxFactoryImpl{
 
             return new ClassPathXmlApplicationContext(configs.toArray(new String[configs.size()]));
         } catch (Exception e) {
-            LoggerFactory.getLogger(CougarSpringCtxFactoryImpl.class).error("",e);
-            throw new PanicInTheCougar(e);
+            LoggerFactory.getLogger(DiscoSpringCtxFactoryImpl.class).error("",e);
+            throw new PanicInTheDisco(e);
         }
 	}
 

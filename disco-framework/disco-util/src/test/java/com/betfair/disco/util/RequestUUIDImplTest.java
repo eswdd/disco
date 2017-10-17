@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util;
+package uk.co.exemel.disco.util;
 
-import com.betfair.cougar.api.RequestUUID;
+import uk.co.exemel.disco.api.RequestUUID;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

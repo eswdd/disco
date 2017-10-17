@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api;
+package uk.co.exemel.disco.core.api;
 
 
-public interface CougarStartingGate {
+public interface DiscoStartingGate {
 
 	public boolean registerStartingListener(GateListener listener);
 }

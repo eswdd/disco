@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.tracing;
+package uk.co.exemel.disco.core.impl.tracing;
 
-import com.betfair.cougar.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
 
 /**
  * Utility to aid in registering tracer implementations from within Spring.

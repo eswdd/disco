@@ -25,7 +25,7 @@
         <property name="password" value="baseline"/>
     </bean>
 
-    <bean parent="cougar.core.EncryptorRegisterer" lazy-init="false">
+    <bean parent="disco.core.EncryptorRegisterer" lazy-init="false">
         <constructor-arg ref="strongEncryptor"/>
     </bean>
 

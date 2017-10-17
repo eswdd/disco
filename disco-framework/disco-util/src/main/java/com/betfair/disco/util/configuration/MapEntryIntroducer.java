@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.configuration;
+package uk.co.exemel.disco.util.configuration;
 
 import java.util.Map;
 

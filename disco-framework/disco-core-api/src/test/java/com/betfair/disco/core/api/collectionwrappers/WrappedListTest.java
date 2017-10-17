@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.collectionwrappers;
+package uk.co.exemel.disco.core.api.collectionwrappers;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,7 +23,7 @@ import java.util.ListIterator;
 
 import junit.framework.TestCase;
 
-import com.betfair.cougar.api.Result;
+import uk.co.exemel.disco.api.Result;
 
 
 public class WrappedListTest extends TestCase {

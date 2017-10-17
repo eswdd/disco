@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.hessian;
+package uk.co.exemel.disco.netutil.nio.hessian;
 
-import com.betfair.cougar.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ServiceVersion;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;

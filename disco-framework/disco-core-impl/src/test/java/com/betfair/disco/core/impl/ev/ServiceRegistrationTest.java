@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.Service;
-import com.betfair.cougar.core.api.*;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.transports.EventTransport;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.Service;
+import uk.co.exemel.disco.core.api.*;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.transports.EventTransport;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

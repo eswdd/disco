@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.misc;
+package com.betfair.testing.utils.disco.misc;
 
-import com.betfair.testing.utils.cougar.helpers.HttpHelpers;
+import com.betfair.testing.utils.disco.helpers.HttpHelpers;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

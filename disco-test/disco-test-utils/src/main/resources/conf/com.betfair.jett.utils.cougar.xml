@@ -23,29 +23,29 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-	<bean id="cougarHelpers" class="com.betfair.testing.utils.cougar.helpers.CougarHelpers">
-		<property name="cougarDAO" ref="cougarDefaultDAO"/>
+	<bean id="discoHelpers" class="com.betfair.testing.utils.disco.helpers.DiscoHelpers">
+		<property name="discoDAO" ref="discoDefaultDAO"/>
 	</bean>
 
-	<bean id="cougarDefaultDAO" class="com.betfair.testing.utils.cougar.daos.CougarDefaultDAO"/>
+	<bean id="discoDefaultDAO" class="com.betfair.testing.utils.disco.daos.DiscoDefaultDAO"/>
 
-	<bean id="restJSONCallMaker" class="com.betfair.testing.utils.cougar.callmaker.RestJSONCallMaker">
-		<property name="cougarHelpers" ref="cougarHelpers"/>
+	<bean id="restJSONCallMaker" class="com.betfair.testing.utils.disco.callmaker.RestJSONCallMaker">
+		<property name="discoHelpers" ref="discoHelpers"/>
 	</bean>
 
-	<bean id="restXMLCallMaker" class="com.betfair.testing.utils.cougar.callmaker.RestXMLCallMaker">
-		<property name="cougarHelpers" ref="cougarHelpers"/>
+	<bean id="restXMLCallMaker" class="com.betfair.testing.utils.disco.callmaker.RestXMLCallMaker">
+		<property name="discoHelpers" ref="discoHelpers"/>
 	</bean>
 
-	<bean id="restGenericCallMaker" class="com.betfair.testing.utils.cougar.callmaker.RestGenericCallMaker">
-		<property name="cougarHelpers" ref="cougarHelpers"/>
+	<bean id="restGenericCallMaker" class="com.betfair.testing.utils.disco.callmaker.RestGenericCallMaker">
+		<property name="discoHelpers" ref="discoHelpers"/>
 	</bean>
 
-	<bean id="soapCallMaker" class="com.betfair.testing.utils.cougar.callmaker.SoapCallMaker">
-		<property name="cougarHelpers" ref="cougarHelpers"/>
+	<bean id="soapCallMaker" class="com.betfair.testing.utils.disco.callmaker.SoapCallMaker">
+		<property name="discoHelpers" ref="discoHelpers"/>
 	</bean>
 	
-	<util:map id="requestBuilderMap" map-class="java.util.HashMap" key-type="com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum">
+	<util:map id="requestBuilderMap" map-class="java.util.HashMap" key-type="com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum">
 		<entry key="RESTJSON">
 			<ref bean="restJSONCallMaker"/>
 		</entry>

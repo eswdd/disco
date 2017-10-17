@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
 import java.util.*;
 
-import com.betfair.cougar.api.*;
-import com.betfair.cougar.core.api.ServiceDefinition;
-import com.betfair.cougar.core.api.ServiceRegistrar;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.security.IdentityResolverFactory;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.impl.CougarInternalOperations;
+import uk.co.exemel.disco.api.*;
+import uk.co.exemel.disco.core.api.ServiceDefinition;
+import uk.co.exemel.disco.core.api.ServiceRegistrar;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.security.IdentityResolverFactory;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.impl.DiscoInternalOperations;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.util.configuration.PropertyConfigurer;
+import uk.co.exemel.disco.util.configuration.PropertyConfigurer;
 import com.betfair.tornjak.kpi.KPIMonitor;
 import com.betfair.tornjak.monitor.MonitorRegistry;
 import org.springframework.context.ApplicationEvent;
@@ -116,7 +116,7 @@ public class ServiceRegisterableExecutionVenue extends BaseExecutionVenue implem
         if (namespace == null) {
             // register the in process one if this is the core service binding
             final InProcessExecutable inProcessExecutable = new InProcessExecutable(tracer);
-            registerServiceDefinition(CougarInternalOperations.COUGAR_IN_PROCESS_NAMESPACE, serviceDefinition, new ExecutableResolver() {
+            registerServiceDefinition(DiscoInternalOperations.COUGAR_IN_PROCESS_NAMESPACE, serviceDefinition, new ExecutableResolver() {
                 @Override
                 public Executable resolveExecutable(OperationKey operationKey, ExecutionVenue ev) {
                     return inProcessExecutable;

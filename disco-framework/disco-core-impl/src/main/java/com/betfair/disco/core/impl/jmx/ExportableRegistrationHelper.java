@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.jmx;
+package uk.co.exemel.disco.core.impl.jmx;
 
 import java.util.List;
 
-import com.betfair.cougar.util.jmx.Exportable;
-import com.betfair.cougar.util.jmx.ExportableRegistration;
+import uk.co.exemel.disco.util.jmx.Exportable;
+import uk.co.exemel.disco.util.jmx.ExportableRegistration;
 
 /**
  * Helper class for registering Exportables from Spring configuration.

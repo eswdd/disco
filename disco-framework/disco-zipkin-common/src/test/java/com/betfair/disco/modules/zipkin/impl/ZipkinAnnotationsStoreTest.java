@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.impl;
+package uk.co.exemel.disco.modules.zipkin.impl;
 
-import com.betfair.cougar.modules.zipkin.api.ZipkinData;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinData;
 import com.twitter.zipkin.gen.*;
 import org.junit.Before;
 import org.junit.Test;

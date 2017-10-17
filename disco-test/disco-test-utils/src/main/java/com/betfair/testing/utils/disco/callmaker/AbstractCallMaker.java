@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.callmaker;
+package com.betfair.testing.utils.disco.callmaker;
 
-import com.betfair.testing.utils.cougar.beans.*;
-import com.betfair.testing.utils.cougar.enums.*;
+import com.betfair.testing.utils.disco.beans.*;
+import com.betfair.testing.utils.disco.enums.*;
 
 public abstract class AbstractCallMaker {
 
 	/*
-	 * Make an HTTP call to a local instance of the Cougar container.
+	 * Make an HTTP call to a local instance of the Disco container.
 	 *   
 	 * @param httpCallBean
 	 * @param requestContentTypeEnum
 	 * @return
 	 */
-	public abstract HttpResponseBean makeCall(HttpCallBean httpCallBean, CougarMessageContentTypeEnum requestContentTypeEnum);
+	public abstract HttpResponseBean makeCall(HttpCallBean httpCallBean, DiscoMessageContentTypeEnum requestContentTypeEnum);
 	
 }

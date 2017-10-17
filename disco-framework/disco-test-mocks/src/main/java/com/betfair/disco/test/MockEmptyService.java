@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test;
+package uk.co.exemel.disco.test;
 
-import com.betfair.cougar.api.Service;
-import com.betfair.cougar.api.annotations.IDLService;
+import uk.co.exemel.disco.api.Service;
+import uk.co.exemel.disco.api.annotations.IDLService;
 
 
 @IDLService(name="Mock", version="v1.2")

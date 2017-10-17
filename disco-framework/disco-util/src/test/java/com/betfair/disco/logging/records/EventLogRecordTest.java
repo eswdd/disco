@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging.records;
+package uk.co.exemel.disco.logging.records;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.TimeZone;
 
-import com.betfair.cougar.api.LoggableEvent;
+import uk.co.exemel.disco.api.LoggableEvent;
 import org.junit.Before;
 import org.junit.Test;
 

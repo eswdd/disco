@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil;
+package uk.co.exemel.disco.netutil;
 
 
 import java.net.InetAddress;

@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
-import com.betfair.cougar.CougarVersion;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.core.api.RequestTimer;
+import uk.co.exemel.disco.DiscoVersion;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.core.api.RequestTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.transport.api.RequestLogger;
-import com.betfair.cougar.transport.api.protocol.http.ExecutionContextFactory;
-import com.betfair.cougar.transport.api.protocol.http.GeoLocationDeserializer;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.util.ServletResponseFileStreamer;
-import com.betfair.cougar.util.geolocation.GeoIPLocator;
+import uk.co.exemel.disco.transport.api.RequestLogger;
+import uk.co.exemel.disco.transport.api.protocol.http.ExecutionContextFactory;
+import uk.co.exemel.disco.transport.api.protocol.http.GeoLocationDeserializer;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.util.ServletResponseFileStreamer;
+import uk.co.exemel.disco.util.geolocation.GeoIPLocator;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
@@ -50,7 +50,7 @@ public class StaticContentServiceHandler extends ContextHandler {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StaticContentServiceHandler.class);
 
-    private static final String VERSION_HEADER = "Cougar 2 - "+CougarVersion.getVersion();
+    private static final String VERSION_HEADER = "Disco 2 - "+DiscoVersion.getVersion();
 
     private static final String INFER_CONTENT_TYPE = "INFER";
     private static final String DEFAULT_CONTENT_TYPE = "text/html";

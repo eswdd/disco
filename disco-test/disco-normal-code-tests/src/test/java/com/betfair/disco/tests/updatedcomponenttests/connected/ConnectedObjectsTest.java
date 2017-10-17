@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.updatedcomponenttests.connected;
+package uk.co.exemel.disco.tests.updatedcomponenttests.connected;
 
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -53,20 +53,20 @@ public class ConnectedObjectsTest {
 
     private void doConnectedObjectTest(String protocol) throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager = CougarManager.getInstance();
-        HttpCallBean callBean = cougarManager.getNewHttpCallBean();
+        DiscoManager discoManager = DiscoManager.getInstance();
+        HttpCallBean callBean = discoManager.getNewHttpCallBean();
 
         callBean.setOperationName("testConnectedObjects");
-        callBean.setServiceName("baseline", "cougarBaseline");
+        callBean.setServiceName("baseline", "discoBaseline");
         callBean.setVersion("v2");
         Map<String, String> params = new HashMap<String, String>();
         params.put("protocol", protocol);
         callBean.setQueryParams(params);
 
 
-        cougarManager.makeRestCougarHTTPCall(callBean, CougarMessageProtocolRequestTypeEnum.RESTXML, CougarMessageContentTypeEnum.XML);
+        discoManager.makeRestDiscoHTTPCall(callBean, DiscoMessageProtocolRequestTypeEnum.RESTXML, DiscoMessageContentTypeEnum.XML);
 
-        HttpResponseBean response = callBean.getResponseObjectsByEnum(CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
+        HttpResponseBean response = callBean.getResponseObjectsByEnum(DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
         Document responseDoc = (Document) response.getResponseObject();
 
         XPath xpath = XPathFactory.newInstance().newXPath();

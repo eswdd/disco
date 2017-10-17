@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.exception;
+package uk.co.exemel.disco.core.api.exception;
 
 import javax.ws.rs.core.MediaType;
 import java.util.logging.Level;
 
 
 @SuppressWarnings("serial")
-public class CougarMarshallingException extends CougarException {
+public class DiscoMarshallingException extends DiscoException {
 	private static final Level LOG_LEVEL = Level.FINE;
     private final String format;
 
-    private CougarMarshallingException(ServerFaultCode fault, String format, String message, Throwable t) {
+    private DiscoMarshallingException(ServerFaultCode fault, String format, String message, Throwable t) {
 		super(LOG_LEVEL, fault, format + ": "+message,t);
         this.format = format;
     }
@@ -35,23 +35,23 @@ public class CougarMarshallingException extends CougarException {
         return format;
     }
 
-    public static CougarMarshallingException marshallingException(String format, String message, Throwable t, boolean client) {
-        return new CougarMarshallingException(client ? ServerFaultCode.ClientSerialisationFailure : ServerFaultCode.ServerSerialisationFailure, format, message, t);
+    public static DiscoMarshallingException marshallingException(String format, String message, Throwable t, boolean client) {
+        return new DiscoMarshallingException(client ? ServerFaultCode.ClientSerialisationFailure : ServerFaultCode.ServerSerialisationFailure, format, message, t);
     }
 
-    public static CougarMarshallingException marshallingException(String format, Throwable t, boolean client) {
+    public static DiscoMarshallingException marshallingException(String format, Throwable t, boolean client) {
         return marshallingException(format, "", t, client);
     }
 
-    public static CougarMarshallingException unmarshallingException(String format, String message, Throwable t, boolean client) {
-        return new CougarMarshallingException(client ? ServerFaultCode.ClientDeserialisationFailure : ServerFaultCode.ServerDeserialisationFailure, format, message, t);
+    public static DiscoMarshallingException unmarshallingException(String format, String message, Throwable t, boolean client) {
+        return new DiscoMarshallingException(client ? ServerFaultCode.ClientDeserialisationFailure : ServerFaultCode.ServerDeserialisationFailure, format, message, t);
     }
 
-    public static CougarMarshallingException unmarshallingException(String format, Throwable t, boolean client) {
+    public static DiscoMarshallingException unmarshallingException(String format, Throwable t, boolean client) {
         return unmarshallingException(format, t.getMessage(), t, client);
     }
 
-    public static CougarMarshallingException unmarshallingException(String format, String message, boolean client) {
+    public static DiscoMarshallingException unmarshallingException(String format, String message, boolean client) {
         return unmarshallingException(format, message, null, client);
     }
 

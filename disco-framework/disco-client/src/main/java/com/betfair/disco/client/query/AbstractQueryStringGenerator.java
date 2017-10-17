@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.query;
+package uk.co.exemel.disco.client.query;
 
 import java.util.Map;
 

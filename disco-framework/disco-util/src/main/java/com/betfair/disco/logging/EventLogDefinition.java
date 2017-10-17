@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging;
+package uk.co.exemel.disco.logging;
 
 import java.io.IOException;
 
-import com.betfair.cougar.logging.handlers.AbstractLogHandler;
+import uk.co.exemel.disco.logging.handlers.AbstractLogHandler;
 
 public class EventLogDefinition {
 	private AbstractLogHandler handler;

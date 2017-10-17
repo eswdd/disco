@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline;
+package uk.co.exemel.disco.baseline;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -16,7 +16,7 @@
 
 package com.betfair.testing.utils.misc;
 
-import com.betfair.testing.utils.cougar.misc.TimingHelpers;
+import com.betfair.testing.utils.disco.misc.TimingHelpers;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -28,7 +28,7 @@ public class TestTimingHelpers {
 
     @Test
     public void summerTimeUTCConversion() {
-        String date1 = TimingHelpers.convertUTCDateTimeToCougarFormat((int) 2009, (int) 6, (int) 1, (int) 13, (int) 50, (int) 0, (int) 0);
+        String date1 = TimingHelpers.convertUTCDateTimeToDiscoFormat((int) 2009, (int) 6, (int) 1, (int) 13, (int) 50, (int) 0, (int) 0);
         assertEquals("2009-06-01T13:50:00.000Z",date1);
     }
 }

@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl;
+package uk.co.exemel.disco.transport.impl;
 
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolverFactory;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolution;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolverFactory;
 
 /**
  * Utility to aid registering of DehydratedExecutionContextFactorys.

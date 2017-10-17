@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.events.jms;
+package uk.co.exemel.disco.transport.api.protocol.events.jms;
 
 public class JMSParamBindingDescriptor {
     public enum ParamSource {

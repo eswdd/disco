@@ -16,15 +16,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/RPC/RPC_Get_RequestTypes_HeaderParams_QueryParams_StandardAndEnums.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.rpc;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.rpc;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.helpers.CougarHelpers;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.helpers.DiscoHelpers;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 
@@ -34,15 +34,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that when a Batched JSON request is performed against a Cougar operation with Header Params and Query Params set to standard and Enums values, the correct response is returned.
+ * Ensure that when a Batched JSON request is performed against a Disco operation with Header Params and Query Params set to standard and Enums values, the correct response is returned.
  */
 public class RPCGetRequestTypesHeaderParamsQueryParamsStandardAndEnumsTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean callBean = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        CougarManager cougarManager = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean callBean = discoManager1.getNewHttpCallBean("87.248.113.14");
+        DiscoManager discoManager = discoManager1;
         // Set the call bean to use JSON batching
         callBean.setJSONRPC(true);
         // Set the list of requests to make a batched call to
@@ -60,29 +60,29 @@ public class RPCGetRequestTypesHeaderParamsQueryParamsStandardAndEnumsTest {
 
         Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
         // Make JSON call to the operation requesting a JSON response
-        cougarManager.makeRestCougarHTTPCall(callBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        discoManager.makeRestDiscoHTTPCall(callBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Get the response to the batched query (store the response for further comparison as order of batched responses cannot be relied on)
-        HttpResponseBean response = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response = callBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         // Convert the time to system TimeZone
-        CougarHelpers cougarHelpers4 = new CougarHelpers();
-        Date convertedDate1 = cougarHelpers4.convertToSystemTimeZone("2009-06-01T13:50:00.0Z");
+        DiscoHelpers discoHelpers4 = new DiscoHelpers();
+        Date convertedDate1 = discoHelpers4.convertToSystemTimeZone("2009-06-01T13:50:00.0Z");
         // Convert the time to system TimeZone
-        CougarHelpers cougarHelpers5 = new CougarHelpers();
-        Date convertedDate2 = cougarHelpers5.convertToSystemTimeZone("2009-06-02T13:50:00.0Z");
+        DiscoHelpers discoHelpers5 = new DiscoHelpers();
+        Date convertedDate2 = discoHelpers5.convertToSystemTimeZone("2009-06-02T13:50:00.0Z");
         // Convert the returned json object to a map for comparison
-        CougarHelpers cougarHelpers6 = new CougarHelpers();
-        Map<String, Object> map7 = cougarHelpers6.convertBatchedResponseToMap(response);
-        AssertionUtils.multiAssertEquals("{\"id\":1,\"result\":{\"message\":\"headerParam=Foo,queryParam=qp1,dateQueryParam="+cougarHelpers4.dateInUTC(convertedDate1)+"\"},\"jsonrpc\":\"2.0\"}", map7.get("response1"));
-        AssertionUtils.multiAssertEquals("{\"id\":2,\"result\":{\"message\":\"headerParam=Foo,queryParam=qp2,dateQueryParam="+cougarHelpers4.dateInUTC(convertedDate2)+"\"},\"jsonrpc\":\"2.0\"}", map7.get("response2"));
+        DiscoHelpers discoHelpers6 = new DiscoHelpers();
+        Map<String, Object> map7 = discoHelpers6.convertBatchedResponseToMap(response);
+        AssertionUtils.multiAssertEquals("{\"id\":1,\"result\":{\"message\":\"headerParam=Foo,queryParam=qp1,dateQueryParam="+discoHelpers4.dateInUTC(convertedDate1)+"\"},\"jsonrpc\":\"2.0\"}", map7.get("response1"));
+        AssertionUtils.multiAssertEquals("{\"id\":2,\"result\":{\"message\":\"headerParam=Foo,queryParam=qp2,dateQueryParam="+discoHelpers4.dateInUTC(convertedDate2)+"\"},\"jsonrpc\":\"2.0\"}", map7.get("response2"));
         AssertionUtils.multiAssertEquals(200, map7.get("httpStatusCode"));
         AssertionUtils.multiAssertEquals("OK", map7.get("httpStatusText"));
         // Pause the test to allow the logs to be filled
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
 
-        cougarManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "testParameterStylesQA"),new RequestLogRequirement("2.8", "testParameterStylesQA") );
+        discoManager.verifyRequestLogEntriesAfterDate(timeStamp, new RequestLogRequirement("2.8", "testParameterStylesQA"),new RequestLogRequirement("2.8", "testParameterStylesQA") );
 
-        cougarManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
+        discoManager.verifyAccessLogEntriesAfterDate(timeStamp, new AccessLogRequirement("87.248.113.14", "/json-rpc", "Ok") );
     }
 
 }

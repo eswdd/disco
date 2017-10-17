@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$TRAVIS_REPO_SLUG" != "betfair/cougar" ]; then
+if [ "$TRAVIS_REPO_SLUG" != "betfair/disco" ]; then
   echo "WARNING: Not publishing snapshots as this is a branch" >&2
   exit 1
 fi

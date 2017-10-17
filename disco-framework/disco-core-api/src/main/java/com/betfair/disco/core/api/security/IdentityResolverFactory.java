@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.security;
+package uk.co.exemel.disco.core.api.security;
 
-import com.betfair.cougar.api.security.IdentityResolver;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
+import uk.co.exemel.disco.api.security.IdentityResolver;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
 
 /**
  *  This class provides a container to manage the singleton identity resolver
  *  This must be implemented by the application.  Note that there can be only
  *  one Identity resolver per application, and once its set is immutable
- *  @see com.betfair.cougar.api.security.IdentityResolver
+ *  @see uk.co.exemel.disco.api.security.IdentityResolver
  */
 public class IdentityResolverFactory {
     private IdentityResolver identityResolver;
@@ -34,7 +34,7 @@ public class IdentityResolverFactory {
 
     public void setIdentityResolver(IdentityResolver identityResolver) {
         if (this.identityResolver != null && identityResolver != null) {
-            throw new CougarFrameworkException("IdentityResolver is immutable!");
+            throw new DiscoFrameworkException("IdentityResolver is immutable!");
         }
         this.identityResolver = identityResolver;
     }

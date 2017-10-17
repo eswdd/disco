@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import com.betfair.cougar.netutil.nio.message.ResponseMessage;
+import uk.co.exemel.disco.netutil.nio.message.ResponseMessage;
 import org.apache.mina.common.IoSession;
 
 

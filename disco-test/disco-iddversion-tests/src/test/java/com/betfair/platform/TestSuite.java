@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.betfair.cougar.core.api.exception.CougarClientException;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
 import org.testng.annotations.Test;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
@@ -38,11 +38,11 @@ import com.betfair.baseline.v2.to.ComplexObject;
 import com.betfair.baseline.v2.to.NonMandatoryParamsOperationResponseObject;
 import com.betfair.baseline.v2.to.NonMandatoryParamsRequest;
 import com.betfair.baseline.v2.to.SimpleResponse;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.util.RequestUUIDImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
 
 public abstract class TestSuite {
 
@@ -89,16 +89,16 @@ public abstract class TestSuite {
 	}
 
     protected void initSystemProperties() {
-        // set the relevant system props prior to starting cougar..
-        System.setProperty("cougar.client.rescript.remoteaddress","http://127.0.0.1:8080/");
+        // set the relevant system props prior to starting disco..
+        System.setProperty("disco.client.rescript.remoteaddress","http://127.0.0.1:8080/");
         System.setProperty("baseline.server.binaryProtocol.address","127.0.0.1:9003");
-        System.setProperty("cougar.log.CONSOLE.level","INFO");
-        System.setProperty("cougar.geoip.useDefault","true");
-        System.setProperty("cougar.fault.detailed","true");
-        System.setProperty("cougar.client.socket.session.workerTimeout","2");
-        System.setProperty("cougar.app.name","cougar-iddversion-tests");
-        System.setProperty("cougar.client.socket.ssl.supportsTls","false");
-        System.setProperty("cougar.client.socket.ssl.requiresTls","false");
+        System.setProperty("disco.log.CONSOLE.level","INFO");
+        System.setProperty("disco.geoip.useDefault","true");
+        System.setProperty("disco.fault.detailed","true");
+        System.setProperty("disco.client.socket.session.workerTimeout","2");
+        System.setProperty("disco.app.name","disco-iddversion-tests");
+        System.setProperty("disco.client.socket.ssl.supportsTls","false");
+        System.setProperty("disco.client.socket.ssl.requiresTls","false");
     }
 
 
@@ -131,9 +131,9 @@ public abstract class TestSuite {
 	public void testMandatoryParameterAddedToService() throws SimpleException {
 		try {
 			SimpleResponse response = baselineClient.testSimpleGet(ec);
-			fail("expected cougar service exception");
+			fail("expected disco service exception");
 		}
-		catch (CougarClientException e) {
+		catch (DiscoClientException e) {
 			assertEquals("DSC-0018", e.getFault().getErrorCode());
 		}
 	}
@@ -150,9 +150,9 @@ public abstract class TestSuite {
 		co.setValue2(2);
 		try {
 			SimpleResponse response = baselineClient.testComplexMutator(ec, co);
-			fail("expected cougar service exception");
+			fail("expected disco service exception");
 		}
-		catch (CougarClientException e) {
+		catch (DiscoClientException e) {
 			assertEquals("DSC-0018", e.getFault().getErrorCode());
 		}
 	}
@@ -179,9 +179,9 @@ public abstract class TestSuite {
 	public void testValidValueRemoved() throws SimpleException {
 		try {
 			baselineClient.testParameterStylesQA(ec, TestParameterStylesQAHeaderParamEnum.Baz, "foo", new Date(0));
-			fail("expected cougar service exception");
+			fail("expected disco service exception");
 		}
-		catch (CougarClientException e) {
+		catch (DiscoClientException e) {
 			assertEquals(getExpectedValidValueRemovedErrorCode(), e.getFault().getErrorCode());
 		}
 	}

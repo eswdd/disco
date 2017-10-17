@@ -20,22 +20,22 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean class="com.betfair.cougar.util.configuration.PropertyConfigurer">
-        <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
-        <property name="defaultConfig" value="classpath:conf/cougar-caching-defaults.properties"/>
+    <bean class="uk.co.exemel.disco.util.configuration.PropertyConfigurer">
+        <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
+        <property name="defaultConfig" value="classpath:conf/disco-caching-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
         <property name="placeholderPrefix" value="$COUGAR_CACHING{"/>
     </bean>
 
-    <bean id="cacheFrameworkRegisterer" class="com.betfair.cougar.caching.CacheFrameworkRegisterer" abstract="true">
+    <bean id="cacheFrameworkRegisterer" class="uk.co.exemel.disco.caching.CacheFrameworkRegisterer" abstract="true">
         <constructor-arg ref="cacheFrameworkRegistry" index="0"/>
     </bean>
 
-    <bean id="cacheFrameworkRegistry" class="com.betfair.cougar.caching.CacheFrameworkRegistry" scope="singleton">
+    <bean id="cacheFrameworkRegistry" class="uk.co.exemel.disco.caching.CacheFrameworkRegistry" scope="singleton">
     </bean>
 
     <!-- exports -->
-    <alias name="cacheFrameworkRegisterer" alias="cougar.caching.CacheFrameworkRegisterer"/>
-    <alias name="cacheFrameworkRegistry" alias="cougar.caching.CacheFrameworkRegistry"/>
+    <alias name="cacheFrameworkRegisterer" alias="disco.caching.CacheFrameworkRegisterer"/>
+    <alias name="cacheFrameworkRegistry" alias="disco.caching.CacheFrameworkRegistry"/>
 
 </beans>

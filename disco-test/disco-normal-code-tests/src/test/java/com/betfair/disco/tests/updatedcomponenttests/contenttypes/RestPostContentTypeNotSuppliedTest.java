@@ -15,14 +15,14 @@
  */
 
 // Originally from UpdatedComponentTests/ContentTypes/Rest_Post_ContentTypeNotSupplied.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.contenttypes;
+package uk.co.exemel.disco.tests.updatedcomponenttests.contenttypes;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -32,22 +32,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that when a Rest Post is performed against Cougar without supplying a content type, the correct error is returned
+ * Ensure that when a Rest Post is performed against Disco without supplying a content type, the correct error is returned
  */
 public class RestPostContentTypeNotSuppliedTest {
     @Test
     public void doTest() throws Exception {
         // Create the HttpCallBean
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean httpCallBeanBaseline = cougarManager1.getNewHttpCallBean();
-        CougarManager cougarManagerBaseline = cougarManager1;
-        // Get the cougar logging attribute for getting log entries later
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean httpCallBeanBaseline = discoManager1.getNewHttpCallBean();
+        DiscoManager discoManagerBaseline = discoManager1;
+        // Get the disco logging attribute for getting log entries later
         // Point the created HttpCallBean at the correct service
-        httpCallBeanBaseline.setServiceName("baseline", "cougarBaseline");
+        httpCallBeanBaseline.setServiceName("baseline", "discoBaseline");
         
         httpCallBeanBaseline.setVersion("v2");
         // Turn off detailed fault reporting
-        cougarManagerBaseline.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        discoManagerBaseline.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         // Set up the Http Call Bean to make the request
         httpCallBeanBaseline.setOperationName("testComplexMutator", "complex");
         
@@ -62,19 +62,19 @@ public class RestPostContentTypeNotSuppliedTest {
 
         Timestamp Timestamp = new Timestamp(System.currentTimeMillis());
         // Make the REST call to the operation
-        cougarManagerBaseline.makeRestCougarHTTPCall(httpCallBeanBaseline, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.REST);
+        discoManagerBaseline.makeRestDiscoHTTPCall(httpCallBeanBaseline, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.REST);
         // Create the expected response as an XML document (fault)
         XMLHelpers xMLHelpers5 = new XMLHelpers();
         Document expResponse = xMLHelpers5.getXMLObjectFromString("<fault><faultcode>Client</faultcode><faultstring>DSC-0011</faultstring><detail/></fault>");
         // Check the response is as expected (correct error returned)
-        HttpResponseBean response6 = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.REST);
+        HttpResponseBean response6 = httpCallBeanBaseline.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.REST);
         AssertionUtils.multiAssertEquals(expResponse, response6.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 415, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Unsupported Media Type", response6.getHttpStatusText());
         // Check the log entries are as expected
         
         
-        cougarManagerBaseline.verifyAccessLogEntriesAfterDate(Timestamp, new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/complex", "UnsupportedMediaType") );
+        discoManagerBaseline.verifyAccessLogEntriesAfterDate(Timestamp, new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/complex", "UnsupportedMediaType") );
     }
 
 }

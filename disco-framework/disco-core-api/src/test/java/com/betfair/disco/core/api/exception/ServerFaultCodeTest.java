@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.exception;
+package uk.co.exemel.disco.core.api.exception;
 
-import com.betfair.cougar.api.security.CredentialFaultCode;
+import uk.co.exemel.disco.api.security.CredentialFaultCode;
 import org.junit.Test;
 
 import java.util.HashSet;

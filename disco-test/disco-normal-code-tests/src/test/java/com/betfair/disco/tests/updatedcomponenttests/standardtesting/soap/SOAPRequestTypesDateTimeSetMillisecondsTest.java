@@ -16,15 +16,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardTesting/SOAP/SOAP_RequestTypes_DateTimeSet_Milliseconds.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardtesting.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardtesting.soap;
 
-import com.betfair.testing.utils.cougar.misc.TimingHelpers;
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.TimingHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -35,7 +35,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Ensure that when a SOAP request is received, Cougar can handle the dateTimeSet datatype with milliseconds accuracy
+ * Ensure that when a SOAP request is received, Disco can handle the dateTimeSet datatype with milliseconds accuracy
  */
 public class SOAPRequestTypesDateTimeSetMillisecondsTest {
     @Test
@@ -44,9 +44,9 @@ public class SOAPRequestTypesDateTimeSetMillisecondsTest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document createAsDocument1 = xMLHelpers1.getXMLObjectFromString("<DateTimeSetOperationRequest><message><dateTimeSet><Date>2009-01-01T13:50:00.4Z</Date><Date>2009-01-02T13:50:00.4Z</Date></dateTimeSet></message></DateTimeSetOperationRequest>");
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean hbean = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        CougarManager hinstance = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean hbean = discoManager2.getNewHttpCallBean("87.248.113.14");
+        DiscoManager hinstance = discoManager2;
 
         hbean.setServiceName("Baseline");
 
@@ -63,13 +63,13 @@ public class SOAPRequestTypesDateTimeSetMillisecondsTest {
 
         Timestamp getTimeAsTimeStamp9 = new Timestamp(System.currentTimeMillis());
         // Make the SOAP call to the operation
-        hinstance.makeSoapCougarHTTPCalls(hbean);
+        hinstance.makeSoapDiscoHTTPCalls(hbean);
         // Create the expected response object as an XML document (using the date objects created earlier)
         XMLHelpers xMLHelpers6 = new XMLHelpers();
         Document createAsDocument11 = xMLHelpers6.createAsDocument(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(("<response><responseSet><Date>"+convertUTCDateTimeToLocalTimezoneXMLSchema26+"</Date><Date>"+convertUTCDateTimeToLocalTimezoneXMLSchema27+"</Date></responseSet></response>").getBytes())));
 
         // Check the response is as expected
-        HttpResponseBean response7 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response7 = hbean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(createAsDocument11, response7.getResponseObject());
 
         // generalHelpers.pauseTest(4000L);

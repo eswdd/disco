@@ -15,39 +15,39 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ExecutionContextImpl;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityResolver;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.client.exception.HTTPErrorToCougarExceptionTransformer;
-import com.betfair.cougar.client.query.QueryStringGenerator;
-import com.betfair.cougar.client.query.QueryStringGeneratorFactory;
-import com.betfair.cougar.core.api.ServiceDefinition;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.logging.CougarLoggingUtils;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ExecutionContextImpl;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityResolver;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.client.exception.HTTPErrorToDiscoExceptionTransformer;
+import uk.co.exemel.disco.client.query.QueryStringGenerator;
+import uk.co.exemel.disco.client.query.QueryStringGeneratorFactory;
+import uk.co.exemel.disco.core.api.ServiceDefinition;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.logging.DiscoLoggingUtils;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
-import com.betfair.cougar.marshalling.api.databinding.FaultMarshaller;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import com.betfair.cougar.marshalling.api.databinding.UnMarshaller;
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptBody;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptResponse;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.UnMarshaller;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptBody;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -88,9 +88,9 @@ public abstract class AbstractHttpExecutableTest<HttpRequest> {
     protected  Marshaller mockedMarshaller;
     protected UnMarshaller mockedUnMarshaller;
     protected FaultMarshaller mockedFaultMarshaller;
-    protected HTTPErrorToCougarExceptionTransformer mockedHttpErrorTransformer;
+    protected HTTPErrorToDiscoExceptionTransformer mockedHttpErrorTransformer;
 
-    protected CougarRequestFactory<HttpRequest> mockMethodFactory;
+    protected DiscoRequestFactory<HttpRequest> mockMethodFactory;
     protected ExecutionVenue ev;
 
     protected HttpRequest mockGetMethod;
@@ -100,7 +100,7 @@ public abstract class AbstractHttpExecutableTest<HttpRequest> {
 
     @BeforeClass
     public static void suppressLogs() {
-        CougarLoggingUtils.suppressAllRootLoggerOutput();
+        DiscoLoggingUtils.suppressAllRootLoggerOutput();
     }
 
     private Answer<HttpRequest> httpMethodFactoryCreatePostAnswer = new Answer<HttpRequest>() {
@@ -154,7 +154,7 @@ public abstract class AbstractHttpExecutableTest<HttpRequest> {
 
     @Before
     public void setup() throws Exception {
-        // Add dependent mocks to cougar client execution venue
+        // Add dependent mocks to disco client execution venue
         tsd = new TestServiceDefinition();
         TestServiceBindingDescriptor tsbd = new TestServiceBindingDescriptor();
         RequestUUIDImpl.setGenerator(new UUIDGeneratorImpl());
@@ -165,9 +165,9 @@ public abstract class AbstractHttpExecutableTest<HttpRequest> {
         mockedMarshaller = mock(Marshaller.class);
         mockedUnMarshaller = mock(UnMarshaller.class);
         mockedFaultMarshaller = mock(FaultMarshaller.class);
-        mockedHttpErrorTransformer = mock(HTTPErrorToCougarExceptionTransformer.class);
+        mockedHttpErrorTransformer = mock(HTTPErrorToDiscoExceptionTransformer.class);
 
-        mockMethodFactory = mock(CougarRequestFactory.class);
+        mockMethodFactory = mock(DiscoRequestFactory.class);
         when(mockMethodFactory.create(any(String.class), any(String.class), any(Message.class), any(Marshaller.class),
                 any(String.class), any(ClientCallContext.class), any(TimeConstraints.class))).thenReturn(mockGetMethod);
         qsgf = mock(QueryStringGeneratorFactory.class);

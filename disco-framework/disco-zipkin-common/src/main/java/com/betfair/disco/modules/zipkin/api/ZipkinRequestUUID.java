@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.api;
+package uk.co.exemel.disco.modules.zipkin.api;
 
-import com.betfair.cougar.api.RequestUUID;
+import uk.co.exemel.disco.api.RequestUUID;
 
 import javax.annotation.Nonnull;
 
 /**
  * ZipkinRequestUUID extends a RequestUUID with Zipkin-related data.
  *
- * @see com.betfair.cougar.api.RequestUUID
+ * @see uk.co.exemel.disco.api.RequestUUID
  */
 public interface ZipkinRequestUUID extends RequestUUID {
 

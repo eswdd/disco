@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.collectionwrappers;
+package uk.co.exemel.disco.core.api.collectionwrappers;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,7 +23,7 @@ import java.util.Map;
 import org.slf4j.LoggerFactory;
 import junit.framework.TestCase;
 
-import com.betfair.cougar.api.Result;
+import uk.co.exemel.disco.api.Result;
 import org.junit.BeforeClass;
 
 public class WrappedMapTest extends TestCase {

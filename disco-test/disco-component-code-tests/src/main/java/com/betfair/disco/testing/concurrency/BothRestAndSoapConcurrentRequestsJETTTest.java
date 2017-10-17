@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.testing.concurrency;
+package uk.co.exemel.disco.testing.concurrency;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 import org.w3c.dom.Document;
 
 import java.sql.Timestamp;
@@ -70,7 +70,7 @@ public class BothRestAndSoapConcurrentRequestsJETTTest {
 	}
 
 
-	public BothRestAndSoapConcurrentRequestsJETTTestResultBean executeTest(Integer numberOfThreadsPerOperation, Integer numberOfCallsPerThread, CougarMessageProtocolRequestTypeEnum protocolRequestType, CougarMessageContentTypeEnum responseContentType) throws InterruptedException {
+	public BothRestAndSoapConcurrentRequestsJETTTestResultBean executeTest(Integer numberOfThreadsPerOperation, Integer numberOfCallsPerThread, DiscoMessageProtocolRequestTypeEnum protocolRequestType, DiscoMessageContentTypeEnum responseContentType) throws InterruptedException {
 
 		//Build required calls and executors, and thread them
 		for (int i = 0; i < numberOfThreadsPerOperation; i++) {
@@ -146,23 +146,23 @@ public class BothRestAndSoapConcurrentRequestsJETTTest {
 		}
 
 		private XMLHelpers xHelpers = new XMLHelpers();
-		private CougarManager cougarManager = CougarManager.getInstance();
+		private DiscoManager discoManager = DiscoManager.getInstance();
 
 		private String identifier;
 		private int numberOfRequests;
-		private CougarMessageProtocolRequestTypeEnum requestProtocolTypeEnum;
+		private DiscoMessageProtocolRequestTypeEnum requestProtocolTypeEnum;
 
 		private Map<String, HttpResponseBean> expectedResponses = new LinkedHashMap<String, HttpResponseBean>();
 		private Map<String, HttpResponseBean> actualResponses = new LinkedHashMap<String, HttpResponseBean>();
 		private List<HttpCallBean> httpCallBeans = new ArrayList<HttpCallBean>();
 		private Map<String, Timestamp> expectedRequestTimes = new LinkedHashMap<String, Timestamp>();
 
-		public CougarMessageProtocolRequestTypeEnum getRequestProtocolTypeEnum() {
+		public DiscoMessageProtocolRequestTypeEnum getRequestProtocolTypeEnum() {
 			return requestProtocolTypeEnum;
 		}
 
 		public void setRequestProtocolTypeEnum(
-				CougarMessageProtocolRequestTypeEnum requestProtocolTypeEnum) {
+				DiscoMessageProtocolRequestTypeEnum requestProtocolTypeEnum) {
 			this.requestProtocolTypeEnum = requestProtocolTypeEnum;
 		}
 
@@ -170,12 +170,12 @@ public class BothRestAndSoapConcurrentRequestsJETTTest {
 			this.makeCalls();
 		}
 
-		public void buildCalls(CougarMessageContentTypeEnum responseContentTypeEnum) {
+		public void buildCalls(DiscoMessageContentTypeEnum responseContentTypeEnum) {
 
 			for (int i = 0; i < numberOfRequests+1; i++) {
 				//Setup call beans
 				HttpCallBean callBean = new HttpCallBean();
-				callBean.setServiceName("baseline","cougarBaseline");
+				callBean.setServiceName("baseline","discoBaseline");
 				callBean.setVersion("v2");
 				callBean.setOperationName("testSimpleGet","simple");
 				LinkedHashMap<String, String> queryParams = new LinkedHashMap<String, String>();
@@ -199,13 +199,13 @@ public class BothRestAndSoapConcurrentRequestsJETTTest {
 				HttpResponseBean responseBean = new HttpResponseBean();
 				String responseXmlString = "<SimpleResponse><message>" + queryParameter + "</message></SimpleResponse>";
 				Document responseBaseObject = xHelpers.getXMLObjectFromString(responseXmlString);
-				Map<CougarMessageProtocolRequestTypeEnum, Object> builtExpectedResponse = cougarManager.convertResponseToRestTypes(responseBaseObject, callBean);
+				Map<DiscoMessageProtocolRequestTypeEnum, Object> builtExpectedResponse = discoManager.convertResponseToRestTypes(responseBaseObject, callBean);
 				switch (responseContentTypeEnum) {
 				case XML:
-					responseBean.setResponseObject(builtExpectedResponse.get(CougarMessageProtocolRequestTypeEnum.RESTXML));
+					responseBean.setResponseObject(builtExpectedResponse.get(DiscoMessageProtocolRequestTypeEnum.RESTXML));
 					break;
 				case JSON:
-					responseBean.setResponseObject(builtExpectedResponse.get(CougarMessageProtocolRequestTypeEnum.RESTJSON));
+					responseBean.setResponseObject(builtExpectedResponse.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON));
 					break;
 				}
 				responseBean.setHttpStatusCode(OK_STATUS_CODE);
@@ -222,7 +222,7 @@ public class BothRestAndSoapConcurrentRequestsJETTTest {
 				Date time = new Date();
 				//System.out.println("Making call: " + identifier + "-" + "Response " + loopCounter + " at: " + time.getTime()) ;
 				expectedRequestTimes.put(identifier + "Response " + loopCounter, new Timestamp(time.getTime()));
-				cougarManager.makeRestCougarHTTPCall(callBean, requestProtocolTypeEnum);
+				discoManager.makeRestDiscoHTTPCall(callBean, requestProtocolTypeEnum);
 				loopCounter++;
 			}
 
@@ -230,7 +230,7 @@ public class BothRestAndSoapConcurrentRequestsJETTTest {
 			//Get actual responses
 			loopCounter=0;
 			for (HttpCallBean httpCallBean: httpCallBeans) {
-				HttpResponseBean responseBean = httpCallBean.getResponseObjectsByEnum(CougarMessageProtocolResponseTypeEnum.REST);
+				HttpResponseBean responseBean = httpCallBean.getResponseObjectsByEnum(DiscoMessageProtocolResponseTypeEnum.REST);
 				responseBean.clearResponseHeaders();
 				actualResponses.put(identifier + "Response " + loopCounter, responseBean);
 				loopCounter++;

@@ -19,9 +19,9 @@ package com.betfair.baseline;
 import com.betfair.baseline.v1.BaselineService;
 import com.betfair.baseline.v1.exception.SimpleException;
 import com.betfair.baseline.v1.to.SimpleResponse;
-import com.betfair.cougar.api.ContainerContext;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.api.ContainerContext;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
 import com.betfair.tornjak.monitor.*;
 
 import java.util.Collections;

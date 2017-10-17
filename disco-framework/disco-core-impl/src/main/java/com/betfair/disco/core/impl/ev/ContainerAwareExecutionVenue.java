@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
 import java.util.*;
 
-import com.betfair.cougar.core.api.*;
+import uk.co.exemel.disco.core.api.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +26,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import com.betfair.cougar.api.Service;
-import com.betfair.cougar.core.api.exception.PanicInTheCougar;
-import com.betfair.cougar.util.jmx.Exportable;
-import com.betfair.cougar.util.jmx.ExportableRegistration;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.api.Service;
+import uk.co.exemel.disco.core.api.exception.PanicInTheDisco;
+import uk.co.exemel.disco.util.jmx.Exportable;
+import uk.co.exemel.disco.util.jmx.ExportableRegistration;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import com.betfair.tornjak.monitor.Status;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
@@ -38,12 +38,12 @@ import org.springframework.jmx.export.annotation.ManagedResource;
  * Implementation of ExecutionVenue which is aware of the Spring container, and of the JMXControl.
  * It will ensure that once the Spring application is loaded all registered Exportable
  * beans will be registered with the JMXControl.
- * This implementation is also a CougarStartingGate, and notifies any registered listeners of when
+ * This implementation is also a DiscoStartingGate, and notifies any registered listeners of when
  * Spring is loaded and the application is ready to start.
  *
  */
 @ManagedResource
-public class ContainerAwareExecutionVenue extends ServiceRegisterableExecutionVenue implements CougarStartingGate, ExportableRegistration {
+public class ContainerAwareExecutionVenue extends ServiceRegisterableExecutionVenue implements DiscoStartingGate, ExportableRegistration {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(ContainerAwareExecutionVenue.class);
 
@@ -80,7 +80,7 @@ public class ContainerAwareExecutionVenue extends ServiceRegisterableExecutionVe
 				// see JMXControl javadocs for why we have to do it this way
 				JMXControl jmxControl = JMXControl.getFromContext(ctx);
 				if (jmxControl == null) {
-					throw new PanicInTheCougar("jmxControl bean not found in ApplicationContext");
+					throw new PanicInTheDisco("jmxControl bean not found in ApplicationContext");
 				}
 				if (exportables != null) {
 					for (Exportable exportable : exportables) {
@@ -107,15 +107,15 @@ public class ContainerAwareExecutionVenue extends ServiceRegisterableExecutionVe
                         .getStatusAggregator()
                         .getStatus();
                 if (status != Status.OK) {
-                    LOGGER.warn("Cougar returned status {} at startup", status);
+                    LOGGER.warn("Disco returned status {} at startup", status);
                 }
                 else {
-                    LOGGER.info("Cougar returned status {} at startup", status);
+                    LOGGER.info("Disco returned status {} at startup", status);
                 }
 			} catch (Exception e) {
-				throw new PanicInTheCougar("Failed to initialise server", e);
+				throw new PanicInTheDisco("Failed to initialise server", e);
 			}
-            logSuccessfulCougarStartup();
+            logSuccessfulDiscoStartup();
 		}
 	}
 
@@ -125,7 +125,7 @@ public class ContainerAwareExecutionVenue extends ServiceRegisterableExecutionVe
 	}
 
 
-	private void logSuccessfulCougarStartup() {
+	private void logSuccessfulDiscoStartup() {
         // Logging facade removes the ability for custom log levels, so just INFO
         LOGGER.info("**** COUGAR HAS STARTED *****");
     }
@@ -144,7 +144,7 @@ public class ContainerAwareExecutionVenue extends ServiceRegisterableExecutionVe
 		Collections.sort(startingListeners, LISTENER_COMPARATOR);
 		for (GateListener listener: startingListeners) {
 			LOGGER.info("({} of {}) Calling gate listener {}", ++cnt, numListeners, listener.getName());
-			listener.onCougarStart();
+			listener.onDiscoStart();
 		}
 	}
 

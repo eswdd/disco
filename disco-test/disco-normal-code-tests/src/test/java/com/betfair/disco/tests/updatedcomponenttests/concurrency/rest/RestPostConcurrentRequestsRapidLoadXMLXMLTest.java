@@ -15,14 +15,14 @@
  */
 
 // Originally from UpdatedComponentTests/Concurrency/Rest/Rest_Post_ConcurrentRequests_RapidLoad_XMLXML.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.concurrency.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.concurrency.rest;
 
-import com.betfair.cougar.testing.concurrency.RestConcurrentPostRequestsJETTTest;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import uk.co.exemel.disco.testing.concurrency.RestConcurrentPostRequestsJETTTest;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 
@@ -31,17 +31,17 @@ import java.util.Map;
 
 
 /**
- * Ensure that when concurrent Rest XML post requests are performed against Cougar with a rapid load of a large number of threads, each request is successfully sent and the XML response to each is correctly handled
+ * Ensure that when concurrent Rest XML post requests are performed against Disco with a rapid load of a large number of threads, each request is successfully sent and the XML response to each is correctly handled
  */
 public class RestPostConcurrentRequestsRapidLoadXMLXMLTest {
     @Test
     public void doTest() throws Exception {
-        CougarManager cougarManager1 = CougarManager.getInstance();
+        DiscoManager discoManager1 = DiscoManager.getInstance();
         // Get current time for getting log entries later
 
         Timestamp getTimeAsTimeStamp2 = new Timestamp(System.currentTimeMillis());
         // Execute the test, creating the given number of threads and making the given number of XML calls per thread
-        RestConcurrentPostRequestsJETTTest.RestConcurrentPostRequestsTestsResultBean executeTest3 = new RestConcurrentPostRequestsJETTTest().executeTest(100, 40, CougarMessageProtocolRequestTypeEnum.RESTXML, CougarMessageContentTypeEnum.XML);
+        RestConcurrentPostRequestsJETTTest.RestConcurrentPostRequestsTestsResultBean executeTest3 = new RestConcurrentPostRequestsJETTTest().executeTest(100, 40, DiscoMessageProtocolRequestTypeEnum.RESTXML, DiscoMessageContentTypeEnum.XML);
         // Get the expected responses to the requests made
         Map<String, HttpResponseBean> getExpectedResponses4 = executeTest3.getExpectedResponses();
         // Check the actual responses against the expected ones (with a date tolerance of 2000ms)

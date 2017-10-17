@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging;
+package uk.co.exemel.disco.logging;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
-import com.betfair.cougar.logging.records.CougarLogRecord;
-import com.betfair.cougar.logging.records.TraceLogRecord;
+import uk.co.exemel.disco.logging.records.DiscoLogRecord;
+import uk.co.exemel.disco.logging.records.TraceLogRecord;
 
 /**
  * Format a log record using a <a
@@ -59,7 +59,7 @@ public class PatternFormatter extends Formatter {
 	}
 
 	private String formatRecord(LogRecord record, String message) {
-        long nanoTime = (record instanceof CougarLogRecord) ? ((CougarLogRecord)record).getNanoTime() : 0;
+        long nanoTime = (record instanceof DiscoLogRecord) ? ((DiscoLogRecord)record).getNanoTime() : 0;
         String uUid = (record instanceof TraceLogRecord) ? ((TraceLogRecord)record).getUUID() : "";
 		return String.format(pattern,
 				record.getMillis(), // 1

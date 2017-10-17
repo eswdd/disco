@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging.records;
+package uk.co.exemel.disco.logging.records;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.Level;
 
 
-public class TraceLogRecord extends CougarLogRecord {
+public class TraceLogRecord extends DiscoLogRecord {
 	private final String uUID;
     private static final String TRACE_LOG_FORMAT = "%1$s: %2$s";
 

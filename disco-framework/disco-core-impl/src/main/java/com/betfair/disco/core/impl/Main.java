@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl;
+package uk.co.exemel.disco.core.impl;
 
 /**
  * Hello world!
@@ -22,7 +22,7 @@ package com.betfair.cougar.core.impl;
  */
 public class Main {
 	public static void main(String[] args) {
-	    CougarSpringCtxFactoryImpl ctx = new CougarSpringCtxFactoryImpl();
+	    DiscoSpringCtxFactoryImpl ctx = new DiscoSpringCtxFactoryImpl();
 	    if (args.length == 1) {
             // this used to be supported, but would be catastrophic now.
             throw new IllegalArgumentException("Setting configuration path is no longer supported");

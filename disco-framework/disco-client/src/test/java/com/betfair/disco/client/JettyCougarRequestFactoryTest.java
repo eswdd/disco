@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import org.eclipse.jetty.client.api.Request;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +43,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
  * Date: 30/01/2013
  * Time: 15:14
  */
-public class JettyCougarRequestFactoryTest {
+public class JettyDiscoRequestFactoryTest {
 
 
     @Mock
@@ -57,7 +57,7 @@ public class JettyCougarRequestFactoryTest {
     @Mock
     private TimeConstraints mockTimeConstraints;
 
-    private JettyCougarRequestFactory factory = new JettyCougarRequestFactory(new HttpContextEmitter<Request>(new DefaultGeoLocationSerializer(), "X-REQUEST-UUID", "X-REQUEST-UUID-PARENTS"));
+    private JettyDiscoRequestFactory factory = new JettyDiscoRequestFactory(new HttpContextEmitter<Request>(new DefaultGeoLocationSerializer(), "X-REQUEST-UUID", "X-REQUEST-UUID-PARENTS"));
 
     private String uri = "http://Some.uri";
     private String contentType = "application/X-my-type";
@@ -85,7 +85,7 @@ public class JettyCougarRequestFactoryTest {
     /*
     @Test
     public void shouldCreateGetRequest() {
-        CougarHttpExchange httpExchange = factory.create(uri, "GET", mockMessage, mockMarshaller, contentType,
+        DiscoHttpExchange httpExchange = factory.create(uri, "GET", mockMessage, mockMarshaller, contentType,
                 mockContext);
 
         httpExchange.getRequestFields();
@@ -96,7 +96,7 @@ public class JettyCougarRequestFactoryTest {
 
     @Test
     public void shouldCreatePostRequest() throws Exception {
-        CougarHttpExchange httpExchange = factory.create(uri, "POST", mockMessage, mockMarshaller, contentType,
+        DiscoHttpExchange httpExchange = factory.create(uri, "POST", mockMessage, mockMarshaller, contentType,
                 mockContext);
 
         httpExchange.getRequestFields();

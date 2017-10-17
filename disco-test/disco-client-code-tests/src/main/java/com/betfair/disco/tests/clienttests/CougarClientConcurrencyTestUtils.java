@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.clienttests;
+package uk.co.exemel.disco.tests.clienttests;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.exception.SimpleException;
@@ -24,7 +24,7 @@ import com.betfair.baseline.v2.to.BodyParamI32Object;
 import com.betfair.baseline.v2.to.BoolOperationResponseObject;
 import com.betfair.baseline.v2.to.I32OperationResponseObject;
 import com.betfair.baseline.v2.to.SimpleResponse;
-import com.betfair.cougar.api.ExecutionContext;
+import uk.co.exemel.disco.api.ExecutionContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,9 +33,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CougarClientConcurrencyTestUtils {
+public class DiscoClientConcurrencyTestUtils {
 
-	private CougarClientWrapper.TransportType transport;
+	private DiscoClientWrapper.TransportType transport;
 	private List<Thread> threads = new ArrayList<Thread>();
 	private List<Executor> executors = new ArrayList<Executor>();
 
@@ -43,7 +43,7 @@ public class CougarClientConcurrencyTestUtils {
 	private static final int I32_QUERY = 6;
 	private static final int I32_BODY = 7;
 
-    public ClientConcurrencyTestResultBean executeTest(CougarClientWrapper.TransportType transportType) throws Exception {
+    public ClientConcurrencyTestResultBean executeTest(DiscoClientWrapper.TransportType transportType) throws Exception {
 
         this.transport = transportType;
 
@@ -103,7 +103,7 @@ public class CougarClientConcurrencyTestUtils {
 
 
 		//Set up request wrapper
-		CougarClientWrapper simpleWrapper = CougarClientWrapper.getInstance(transport);
+		DiscoClientWrapper simpleWrapper = DiscoClientWrapper.getInstance(transport);
         Executor simpleExecutor = new Executor("testSimpleGet", simpleWrapper);
 
 		//Set up expected response object
@@ -119,7 +119,7 @@ public class CougarClientConcurrencyTestUtils {
 	public Executor createBoolExecutor() throws Exception{
 
 		//Set up request wrapper
-		CougarClientWrapper boolWrapper = CougarClientWrapper.getInstance(transport);
+		DiscoClientWrapper boolWrapper = DiscoClientWrapper.getInstance(transport);
 
         Executor boolExecutor = new Executor("boolOperation", boolWrapper);
 
@@ -139,7 +139,7 @@ public class CougarClientConcurrencyTestUtils {
 
 
 		//Set up request wrapper
-		CougarClientWrapper intWrapper = CougarClientWrapper.getInstance(transport);
+		DiscoClientWrapper intWrapper = DiscoClientWrapper.getInstance(transport);
         Executor intExecutor = new Executor("i32Operation", intWrapper);
 
 		//Set up expected response object
@@ -159,10 +159,10 @@ public class CougarClientConcurrencyTestUtils {
 		private String methodToExecute;
 		private JSONObject actualResponse;
 		private JSONObject expectedResponse;
-        private final CougarClientWrapper wrapper;
+        private final DiscoClientWrapper wrapper;
         private Exception exceptionResponse;
 
-        public Executor(String method, CougarClientWrapper wrapper){
+        public Executor(String method, DiscoClientWrapper wrapper){
 			this.methodToExecute = method;
             this.wrapper = wrapper;
 		}

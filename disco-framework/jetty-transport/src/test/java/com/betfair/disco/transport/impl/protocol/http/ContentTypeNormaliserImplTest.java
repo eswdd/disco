@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.util.MessageConstants;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.util.MessageConstants;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -110,8 +110,8 @@ public class ContentTypeNormaliserImplTest {
 		when(request.getContentType()).thenReturn("application/text");
 		try {
 			ctn.getNormalisedRequestMediaType(request);
-			fail("CougarValidationException should have been thrown");
-		} catch (CougarValidationException cve) {
+			fail("DiscoValidationException should have been thrown");
+		} catch (DiscoValidationException cve) {
 			assertEquals(ServerFaultCode.ContentTypeNotValid, cve.getServerFaultCode());
 			assertEquals(ResponseCode.UnsupportedMediaType, cve.getResponseCode());
 		}
@@ -123,8 +123,8 @@ public class ContentTypeNormaliserImplTest {
 		when(request.getContentType()).thenReturn("soxml");
 		try {
 			ctn.getNormalisedRequestMediaType(request);
-			fail("CougarValidationException should have been thrown");
-		} catch (CougarValidationException cve) {
+			fail("DiscoValidationException should have been thrown");
+		} catch (DiscoValidationException cve) {
 			assertEquals(ServerFaultCode.MediaTypeParseFailure, cve.getServerFaultCode());
 			assertEquals(ResponseCode.UnsupportedMediaType, cve.getResponseCode());
 		}
@@ -136,8 +136,8 @@ public class ContentTypeNormaliserImplTest {
 		when(request.getContentType()).thenReturn("application/*");
 		try {
 			ctn.getNormalisedRequestMediaType(request);
-			fail("CougarValidationException should have been thrown");
-		} catch (CougarValidationException cve) {
+			fail("DiscoValidationException should have been thrown");
+		} catch (DiscoValidationException cve) {
 			assertEquals(ServerFaultCode.InvalidInputMediaType, cve.getServerFaultCode());
 			assertEquals(ResponseCode.UnsupportedMediaType, cve.getResponseCode());
 		}
@@ -173,8 +173,8 @@ public class ContentTypeNormaliserImplTest {
 		when(request.getParameter(MessageConstants.FORMAT_PARAMETER)).thenReturn("soxml");
 		try {
 			ctn.getNormalisedResponseMediaType(request);
-			fail("CougarValidationException should have been thrown");
-		} catch (CougarValidationException cve) {
+			fail("DiscoValidationException should have been thrown");
+		} catch (DiscoValidationException cve) {
 			assertEquals(ServerFaultCode.MediaTypeParseFailure, cve.getServerFaultCode());
 			assertEquals(ResponseCode.UnsupportedMediaType, cve.getResponseCode());
 		}
@@ -193,8 +193,8 @@ public class ContentTypeNormaliserImplTest {
 		when(request.getHeader(MessageConstants.ACCEPT_HEADER)).thenReturn("application/text");
 		try {
 			ctn.getNormalisedResponseMediaType(request);
-			fail("CougarValidationException should have been thrown");
-		} catch (CougarValidationException cve) {
+			fail("DiscoValidationException should have been thrown");
+		} catch (DiscoValidationException cve) {
 			assertEquals(ServerFaultCode.AcceptTypeNotValid, cve.getServerFaultCode());
 			assertEquals(ResponseCode.MediaTypeNotAcceptable, cve.getResponseCode());
 		}
@@ -205,8 +205,8 @@ public class ContentTypeNormaliserImplTest {
 		when(request.getHeader(MessageConstants.ACCEPT_HEADER)).thenReturn("soxml");
 		try {
 			ctn.getNormalisedResponseMediaType(request);
-			fail("CougarValidationException should have been thrown");
-		} catch (CougarValidationException cve) {
+			fail("DiscoValidationException should have been thrown");
+		} catch (DiscoValidationException cve) {
 			assertEquals(ServerFaultCode.MediaTypeParseFailure, cve.getServerFaultCode());
 			assertEquals(ResponseCode.UnsupportedMediaType, cve.getResponseCode());
 		}
@@ -225,8 +225,8 @@ public class ContentTypeNormaliserImplTest {
 		when(request.getHeader(MessageConstants.ACCEPT_HEADER)).thenReturn("text/*");
 		try {
 			ctn.getNormalisedResponseMediaType(request);
-			fail("CougarValidationException should have been thrown");
-		} catch (CougarServiceException cve) {
+			fail("DiscoValidationException should have been thrown");
+		} catch (DiscoServiceException cve) {
 			assertEquals(ServerFaultCode.ResponseContentTypeNotValid, cve.getServerFaultCode());
 			assertEquals(ResponseCode.InternalError, cve.getResponseCode());
 		}

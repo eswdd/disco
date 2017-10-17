@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transformations.validators;
+package uk.co.exemel.disco.transformations.validators;
 
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.Set;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import com.betfair.cougar.codegen.ValidationException;
+import uk.co.exemel.disco.codegen.ValidationException;
 
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;

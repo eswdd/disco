@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol;
+package uk.co.exemel.disco.transport.impl.protocol;
 
-import com.betfair.cougar.transport.api.protocol.ProtocolBinding;
-import com.betfair.cougar.transport.api.protocol.ProtocolBindingRegistry;
+import uk.co.exemel.disco.transport.api.protocol.ProtocolBinding;
+import uk.co.exemel.disco.transport.api.protocol.ProtocolBindingRegistry;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.clienttests.standardtesting;
+package uk.co.exemel.disco.tests.clienttests.standardtesting;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.enumerations.EnumHandling3BodyParameterEnum;
 import com.betfair.baseline.v2.enumerations.EnumHandling3WrappedValueEnum;
-import com.betfair.cougar.core.api.client.EnumWrapper;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.core.api.client.EnumWrapper;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -40,22 +40,22 @@ import static org.testng.AssertJUnit.fail;
 public class ClientEnumAsLocalTypeHandlingModesTest {
 
     @Test(dataProvider = "TransportType")
-    public void clientSoftModeRecognizedServerValue(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper cougarClientWrapper = CougarClientWrapper.getInstance(tt, false);
+    public void clientSoftModeRecognizedServerValue(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper discoClientWrapper = DiscoClientWrapper.getInstance(tt, false);
 
-        BaselineSyncClient client = cougarClientWrapper.getClient();
-        EnumWrapper<EnumHandling3WrappedValueEnum> response = client.enumHandling3(cougarClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientServer, false);
+        BaselineSyncClient client = discoClientWrapper.getClient();
+        EnumWrapper<EnumHandling3WrappedValueEnum> response = client.enumHandling3(discoClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientServer, false);
 
         assertEquals(EnumHandling3WrappedValueEnum.ClientServer, response.getValue());
         assertEquals("ClientServer", response.getRawValue());
     }
 
     @Test(dataProvider = "TransportType")
-    public void clientSoftModeUnrecognizedServerValue(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper cougarClientWrapper = CougarClientWrapper.getInstance(tt, false);
+    public void clientSoftModeUnrecognizedServerValue(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper discoClientWrapper = DiscoClientWrapper.getInstance(tt, false);
 
-        BaselineSyncClient client = cougarClientWrapper.getClient();
-        EnumWrapper<EnumHandling3WrappedValueEnum> response = client.enumHandling3(cougarClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientServer, true);
+        BaselineSyncClient client = discoClientWrapper.getClient();
+        EnumWrapper<EnumHandling3WrappedValueEnum> response = client.enumHandling3(discoClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientServer, true);
 
         assertEquals(EnumHandling3WrappedValueEnum.UNRECOGNIZED_VALUE, response.getValue());
         assertEquals("ServerOnly", response.getRawValue());
@@ -63,52 +63,52 @@ public class ClientEnumAsLocalTypeHandlingModesTest {
     }
 
     @Test(dataProvider = "TransportType")
-    public void clientHardModeRecognizedServerValue(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper cougarClientWrapper = CougarClientWrapper.getInstance(tt, true);
+    public void clientHardModeRecognizedServerValue(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper discoClientWrapper = DiscoClientWrapper.getInstance(tt, true);
 
-        BaselineSyncClient client = cougarClientWrapper.getClient();
-        EnumWrapper<EnumHandling3WrappedValueEnum> response = client.enumHandling3(cougarClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientServer, false);
+        BaselineSyncClient client = discoClientWrapper.getClient();
+        EnumWrapper<EnumHandling3WrappedValueEnum> response = client.enumHandling3(discoClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientServer, false);
 
         assertEquals(EnumHandling3WrappedValueEnum.ClientServer, response.getValue());
         assertEquals("ClientServer", response.getRawValue());
     }
 
     @Test(dataProvider = "TransportType")
-    public void clientHardModeUnrecognizedServerValue(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper cougarClientWrapper = CougarClientWrapper.getInstance(tt, true);
+    public void clientHardModeUnrecognizedServerValue(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper discoClientWrapper = DiscoClientWrapper.getInstance(tt, true);
 
 
-        BaselineSyncClient client = cougarClientWrapper.getClient();
+        BaselineSyncClient client = discoClientWrapper.getClient();
         try {
-            client.enumHandling3(cougarClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientServer, true);
+            client.enumHandling3(discoClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientServer, true);
             fail("Expected an exception here");
         }
-        catch (CougarClientException cfe) {
+        catch (DiscoClientException cfe) {
             assertEquals(toString(cfe), ServerFaultCode.ClientDeserialisationFailure, cfe.getServerFaultCode());
         }
     }
 
     @Test(dataProvider = "TransportType")
-    public void serverHardModeRecognizedClientValue(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper cougarClientWrapper = CougarClientWrapper.getInstance(tt);
+    public void serverHardModeRecognizedClientValue(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper discoClientWrapper = DiscoClientWrapper.getInstance(tt);
 
 
-        BaselineSyncClient client = cougarClientWrapper.getClient();
-        EnumWrapper<EnumHandling3WrappedValueEnum> response = client.enumHandling3(cougarClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientServer, false);
+        BaselineSyncClient client = discoClientWrapper.getClient();
+        EnumWrapper<EnumHandling3WrappedValueEnum> response = client.enumHandling3(discoClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientServer, false);
 
         assertEquals(EnumHandling3WrappedValueEnum.ClientServer, response.getValue());
         assertEquals("ClientServer", response.getRawValue());
     }
 
     @Test(dataProvider = "TransportType")
-    public void serverHardModeUnrecognizedClientValue(CougarClientWrapper.TransportType tt) throws Exception {
-        CougarClientWrapper cougarClientWrapper = CougarClientWrapper.getInstance(tt);
+    public void serverHardModeUnrecognizedClientValue(DiscoClientWrapper.TransportType tt) throws Exception {
+        DiscoClientWrapper discoClientWrapper = DiscoClientWrapper.getInstance(tt);
 
-        BaselineSyncClient client = cougarClientWrapper.getClient();
+        BaselineSyncClient client = discoClientWrapper.getClient();
         try {
-            client.enumHandling3(cougarClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientOnly, false);
+            client.enumHandling3(discoClientWrapper.getCtx(), EnumHandling3BodyParameterEnum.ClientOnly, false);
         }
-        catch (CougarClientException cfe) {
+        catch (DiscoClientException cfe) {
             String expected;
             switch (tt.getUnderlyingTransport()) {
                 case HTTP:

@@ -19,43 +19,43 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>cougar-framework</artifactId>
-        <groupId>com.betfair.cougar</groupId>
+        <artifactId>disco-framework</artifactId>
+        <groupId>uk.co.exemel.disco</groupId>
         <version>3.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cougar-zipkin-server-socket</artifactId>
+    <artifactId>disco-zipkin-server-socket</artifactId>
 
     <dependencies>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-zipkin-common</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-zipkin-common</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-zipkin-server-common</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-zipkin-server-common</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-core-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-core-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-util</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-util</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
+            <groupId>uk.co.exemel.disco</groupId>
             <artifactId>net-util</artifactId>
         </dependency>
 

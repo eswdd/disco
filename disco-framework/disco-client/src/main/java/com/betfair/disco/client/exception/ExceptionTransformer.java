@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.exception;
+package uk.co.exemel.disco.client.exception;
 
-import com.betfair.cougar.core.api.client.ExceptionFactory;
+import uk.co.exemel.disco.core.api.client.ExceptionFactory;
 
 import java.io.InputStream;
 

@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.health;
+package uk.co.exemel.disco.health;
 
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
 import com.betfair.tornjak.monitor.service.InOutServiceMonitor;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
-import com.betfair.cougar.api.ContainerContext;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.health.service.v3.HealthService;
-import com.betfair.cougar.health.service.v3.enumerations.HealthExceptionErrorCodeEnum;
-import com.betfair.cougar.health.service.v3.enumerations.HealthStatus;
-import com.betfair.cougar.health.service.v3.enumerations.RestrictedHealthStatus;
-import com.betfair.cougar.health.service.v3.exception.HealthException;
-import com.betfair.cougar.health.service.v3.to.HealthDetailResponse;
-import com.betfair.cougar.health.service.v3.to.HealthSummaryResponse;
-import com.betfair.cougar.health.service.v3.to.SubComponentStatus;
+import uk.co.exemel.disco.api.ContainerContext;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.health.service.v3.HealthService;
+import uk.co.exemel.disco.health.service.v3.enumerations.HealthExceptionErrorCodeEnum;
+import uk.co.exemel.disco.health.service.v3.enumerations.HealthStatus;
+import uk.co.exemel.disco.health.service.v3.enumerations.RestrictedHealthStatus;
+import uk.co.exemel.disco.health.service.v3.exception.HealthException;
+import uk.co.exemel.disco.health.service.v3.to.HealthDetailResponse;
+import uk.co.exemel.disco.health.service.v3.to.HealthSummaryResponse;
+import uk.co.exemel.disco.health.service.v3.to.SubComponentStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.betfair.tornjak.monitor.Monitor;

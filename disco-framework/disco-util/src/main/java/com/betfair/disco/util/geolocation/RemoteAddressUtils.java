@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.geolocation;
+package uk.co.exemel.disco.util.geolocation;
 
-import com.betfair.cougar.util.NetworkAddress;
+import uk.co.exemel.disco.util.NetworkAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,12 +38,12 @@ public class RemoteAddressUtils {
     public static final String localAddress;
     static {
         try {
-            // just for testing hence not done as a cougar property
-            boolean allowLoopback = "true".equals(System.getProperty("cougar.addressUtils.allowLoopBackIfNoOthers", "false"));
+            // just for testing hence not done as a disco property
+            boolean allowLoopback = "true".equals(System.getProperty("disco.addressUtils.allowLoopBackIfNoOthers", "false"));
             StringBuilder localAddresses = new StringBuilder();
             Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
             if (enumeration == null) {
-                throw new RuntimeException("Failed to retrieve any network interfaces, consider setting system property \"cougar.addressUtils.allowLoopBackIfNoOthers\" to true");
+                throw new RuntimeException("Failed to retrieve any network interfaces, consider setting system property \"disco.addressUtils.allowLoopBackIfNoOthers\" to true");
             }
             // we only use this if there are no others and we're willing to accept the loopback
             NetworkInterface loopback = null;

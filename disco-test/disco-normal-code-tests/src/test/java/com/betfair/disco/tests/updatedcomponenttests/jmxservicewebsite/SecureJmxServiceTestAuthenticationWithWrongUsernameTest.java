@@ -15,11 +15,11 @@
  */
 
 // Originally from UpdatedComponentTests/JMXServiceWebsite/Secure_JmxServiceTest_AuthenticationWithWrongUsername.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.jmxservicewebsite;
+package uk.co.exemel.disco.tests.updatedcomponenttests.jmxservicewebsite;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpPageBean;
-import com.betfair.testing.utils.cougar.manager.HttpPageManager;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpPageBean;
+import com.betfair.testing.utils.disco.manager.HttpPageManager;
 import org.testng.annotations.Test;
 
 /**

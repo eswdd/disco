@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util;
+package uk.co.exemel.disco.util;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -29,8 +29,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.api.Result;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.api.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

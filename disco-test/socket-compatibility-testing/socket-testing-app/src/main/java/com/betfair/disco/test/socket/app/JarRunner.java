@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.test.socket.app;
+package uk.co.exemel.disco.test.socket.app;
 
 import org.apache.commons.io.IOUtils;
 
@@ -23,7 +23,7 @@ import java.util.Properties;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-import static com.betfair.cougar.test.socket.app.SocketCompatibilityTestingApp.jsonString;
+import static uk.co.exemel.disco.test.socket.app.SocketCompatibilityTestingApp.jsonString;
 
 /**
  *
@@ -42,7 +42,7 @@ public abstract class JarRunner {
 
     private void init() throws IOException {
         JarFile jar = new JarFile(jarFile);
-        ZipEntry entry = jar.getEntry("META-INF/maven/com.betfair.cougar/socket-tester/pom.properties");
+        ZipEntry entry = jar.getEntry("META-INF/maven/uk.co.exemel.disco/socket-tester/pom.properties");
         Properties props = new Properties();
         props.load(jar.getInputStream(entry));
         version = props.getProperty("version");

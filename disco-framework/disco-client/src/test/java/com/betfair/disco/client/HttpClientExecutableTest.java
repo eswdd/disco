@@ -15,26 +15,26 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.client.api.ContextEmitter;
-import com.betfair.cougar.core.api.ev.ClientExecutionResult;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.client.ExceptionFactory;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.client.api.ContextEmitter;
+import uk.co.exemel.disco.core.api.ev.ClientExecutionResult;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.client.ExceptionFactory;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -56,8 +56,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.betfair.cougar.client.AbstractHttpExecutable.DEFAULT_REQUEST_UUID_PARENTS_HEADER;
-import static com.betfair.cougar.client.HttpClientExecutable.DEFAULT_REQUEST_UUID_HEADER;
+import static uk.co.exemel.disco.client.AbstractHttpExecutable.DEFAULT_REQUEST_UUID_PARENTS_HEADER;
+import static uk.co.exemel.disco.client.HttpClientExecutable.DEFAULT_REQUEST_UUID_HEADER;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -69,7 +69,7 @@ public class HttpClientExecutableTest extends AbstractHttpExecutableTest<HttpUri
 
     // --------------- Initialisation stuff ----------------
 	HttpClient mockHttpClient;
-    CougarClientConnManager mockManager;
+    DiscoClientConnManager mockManager;
     private ContextEmitter emitter;
 
     @Override
@@ -80,7 +80,7 @@ public class HttpClientExecutableTest extends AbstractHttpExecutableTest<HttpUri
         when(response.getStatusLine()).thenReturn(new BasicStatusLine(new ProtocolVersion("HTTP",1,1), 200, "OK"));
         emitter = mock(ContextEmitter.class);
 
-        mockManager = mock(CougarClientConnManager.class);
+        mockManager = mock(DiscoClientConnManager.class);
 
         HttpClientExecutable ret = new HttpClientExecutable(tsbd, emitter, tracer, mockManager);
         ret.setClient(mockHttpClient);
@@ -88,7 +88,7 @@ public class HttpClientExecutableTest extends AbstractHttpExecutableTest<HttpUri
     }
 
     protected void preInit() throws Exception {
-		// Add dependent mocks to cougar client execution venue
+		// Add dependent mocks to disco client execution venue
 
         HttpUriRequest request = mock(HttpUriRequest.class);
         when(mockMethodFactory.create(any(String.class), any(String.class), any(Message.class), any(Marshaller.class), any(String.class), any(ClientCallContext.class), any(TimeConstraints.class))).thenReturn(request);
@@ -107,10 +107,10 @@ public class HttpClientExecutableTest extends AbstractHttpExecutableTest<HttpUri
         when(httpResponse.getEntity()).thenReturn(entity);
         when(httpResponse.getStatusLine()).thenReturn(statusLine);
 
-        final Header cougarHeader=mock(Header.class);
-        when(cougarHeader.getValue()).thenReturn("Cougar 2");
+        final Header discoHeader=mock(Header.class);
+        when(discoHeader.getValue()).thenReturn("Disco 2");
         when(httpResponse.containsHeader("Server")).thenReturn(true);
-        when(httpResponse.getFirstHeader("Server")).thenReturn(cougarHeader);
+        when(httpResponse.getFirstHeader("Server")).thenReturn(discoHeader);
 
         try {
             final byte[] responseBytes = response.getBytes("UTF-8");
@@ -166,7 +166,7 @@ public class HttpClientExecutableTest extends AbstractHttpExecutableTest<HttpUri
         final BasicHttpResponse httpResponse = new BasicHttpResponse(new BasicStatusLine(HttpVersion.HTTP_1_1, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ""));
         when(mockHttpClient.execute(any(HttpUriRequest.class))).thenReturn(httpResponse);
         when(mockMethodFactory.create(anyString(), anyString(), any(Message.class), any(Marshaller.class), anyString(), any(ClientCallContext.class), any(TimeConstraints.class))).thenReturn(mockMethod);
-        when(mockedHttpErrorTransformer.convert(any(InputStream.class), any(ExceptionFactory.class), anyInt())).thenReturn(new CougarClientException(ServerFaultCode.RemoteCougarCommunicationFailure, "bang"));
+        when(mockedHttpErrorTransformer.convert(any(InputStream.class), any(ExceptionFactory.class), anyInt())).thenReturn(new DiscoClientException(ServerFaultCode.RemoteDiscoCommunicationFailure, "bang"));
 
         HttpParams mockParams = mock(HttpParams.class);
         when(mockMethod.getParams()).thenReturn(mockParams);
@@ -195,7 +195,7 @@ public class HttpClientExecutableTest extends AbstractHttpExecutableTest<HttpUri
 
         when(mockHttpClient.execute(any(HttpUriRequest.class))).thenReturn(httpResponse);
         when(mockMethodFactory.create(anyString(), anyString(), any(Message.class), any(Marshaller.class), anyString(), any(ClientCallContext.class), any(TimeConstraints.class))).thenReturn(mockMethod);
-        when(mockedHttpErrorTransformer.convert(any(InputStream.class),  any(ExceptionFactory.class), anyInt())).thenReturn(new CougarClientException(ServerFaultCode.RemoteCougarCommunicationFailure, "bang"));
+        when(mockedHttpErrorTransformer.convert(any(InputStream.class),  any(ExceptionFactory.class), anyInt())).thenReturn(new DiscoClientException(ServerFaultCode.RemoteDiscoCommunicationFailure, "bang"));
 
         HttpParams mockParams = mock(HttpParams.class);
         when(mockMethod.getParams()).thenReturn(mockParams);
@@ -210,7 +210,7 @@ public class HttpClientExecutableTest extends AbstractHttpExecutableTest<HttpUri
         ArgumentCaptor<ExecutionResult> resultCaptor = ArgumentCaptor.forClass(ExecutionResult.class);
         verify(mockedObserver).onResult(resultCaptor.capture());
         ExecutionResult actual = resultCaptor.getValue();
-        assertEquals(actual.getFault().getServerFaultCode(), ServerFaultCode.RemoteCougarCommunicationFailure);
+        assertEquals(actual.getFault().getServerFaultCode(), ServerFaultCode.RemoteDiscoCommunicationFailure);
         assertEquals(actual.getFault().getResponseCode(), ResponseCode.ServiceUnavailable);
         assertEquals(0, ((ClientExecutionResult)actual).getResultSize());
     }

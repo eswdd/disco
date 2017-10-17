@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.dates;
+package uk.co.exemel.disco.util.dates;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.Date;

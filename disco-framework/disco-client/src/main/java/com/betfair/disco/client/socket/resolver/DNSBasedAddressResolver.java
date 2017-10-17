@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.socket.resolver;
+package uk.co.exemel.disco.client.socket.resolver;
 
 import org.springframework.jmx.export.annotation.ManagedResource;
 

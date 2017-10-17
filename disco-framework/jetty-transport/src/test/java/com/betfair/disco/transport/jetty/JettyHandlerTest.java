@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.transport.api.TransportCommandProcessor;
-import com.betfair.cougar.transport.api.protocol.ProtocolBinding;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.transport.api.TransportCommandProcessor;
+import uk.co.exemel.disco.transport.api.protocol.ProtocolBinding;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
 import org.eclipse.jetty.continuation.Continuation;
 import org.eclipse.jetty.continuation.ContinuationListener;
 import org.eclipse.jetty.continuation.ContinuationThrowable;
@@ -139,10 +139,10 @@ public class JettyHandlerTest {
     }
 
     @Test
-    public void testHandleCougarException() throws Exception {
+    public void testHandleDiscoException() throws Exception {
         JettyHandler.IdentityTokenResolverLookup identityTokenResolverLookup =
                 Mockito.mock(JettyHandler.IdentityTokenResolverLookup.class);
-        when(identityTokenResolverLookup.lookupIdentityTokenResolver(anyString())).thenThrow(new CougarValidationException(ServerFaultCode.NoSuchService));
+        when(identityTokenResolverLookup.lookupIdentityTokenResolver(anyString())).thenThrow(new DiscoValidationException(ServerFaultCode.NoSuchService));
 
         JettyHandler jh = new JettyHandler(commandProcessor, null, identityTokenResolverLookup, true);
         jh.handle(null, jettyRequest, request, response);
@@ -847,7 +847,7 @@ public class JettyHandlerTest {
         try {
             lookup.extractVersion("/thereIsNoVersionHere");
             fail("This should have thrown an exception as the uri did not contain a version");
-        } catch (CougarValidationException expected) {}
+        } catch (DiscoValidationException expected) {}
     }
 
     @Test
@@ -875,7 +875,7 @@ public class JettyHandlerTest {
         try {
             lookup.lookupIdentityTokenResolver("noVersionHere");
             fail("This should have thrown an exception as the uri did not contain a version");
-        } catch (CougarValidationException expected) {}
+        } catch (DiscoValidationException expected) {}
     }
 }
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.exception;
+package uk.co.exemel.disco.core.api.exception;
 
 import org.junit.Test;
 
@@ -24,15 +24,15 @@ import java.io.StringWriter;
 
 import static junit.framework.Assert.assertTrue;
 
-public class CougarClientExceptionTest {
+public class DiscoClientExceptionTest {
 
     @Test
     public void stackTraceContainsServerWarning() {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        new CougarClientException(ServerFaultCode.RemoteCougarCommunicationFailure, "Some error", false).printStackTrace(pw);
+        new DiscoClientException(ServerFaultCode.RemoteDiscoCommunicationFailure, "Some error", false).printStackTrace(pw);
 
-        assertTrue(sw.toString(), sw.toString().contains("Server not confirmed to be a Cougar"));
+        assertTrue(sw.toString(), sw.toString().contains("Server not confirmed to be a Disco"));
     }
 
 }

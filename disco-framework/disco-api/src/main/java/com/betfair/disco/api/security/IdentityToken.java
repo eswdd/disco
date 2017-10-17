@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api.security;
+package uk.co.exemel.disco.api.security;
 
 /**
  * An identity token read

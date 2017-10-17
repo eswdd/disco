@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.ev;
+package uk.co.exemel.disco.core.impl.ev;
 
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
 
 /**
  *
@@ -42,9 +42,9 @@ public class ServiceExceptionHandlingObserver implements ExecutionObserver {
             return;
         }
 
-        CougarException ce = executionResult.getFault();
-        if (ce instanceof CougarClientException) {
-            wrapped.onResult(new ExecutionResult(new CougarServiceException(ServerFaultCode.ServiceRuntimeException,"Unhandled client exception",ce)));
+        DiscoException ce = executionResult.getFault();
+        if (ce instanceof DiscoClientException) {
+            wrapped.onResult(new ExecutionResult(new DiscoServiceException(ServerFaultCode.ServiceRuntimeException,"Unhandled client exception",ce)));
         }
         else {
             wrapped.onResult(executionResult);

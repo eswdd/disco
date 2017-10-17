@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.transcription;
+package uk.co.exemel.disco.core.api.transcription;
 
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
 
 /**
  *
  */
 // todo: would like to make this a marshalling exception, but we need to know media types and whether client or server
-public class EnumDerialisationException extends CougarFrameworkException {
+public class EnumDerialisationException extends DiscoFrameworkException {
     public EnumDerialisationException(IllegalArgumentException t) {
         super(t.getMessage(), t);
     }

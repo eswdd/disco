@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api;
+package uk.co.exemel.disco.api;
 
-import com.betfair.cougar.api.fault.FaultCode;
+import uk.co.exemel.disco.api.fault.FaultCode;
 
 
 public enum ResponseCode implements Result {

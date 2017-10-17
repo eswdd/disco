@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.events;
+package uk.co.exemel.disco.transport.api.protocol.events;
 
-import com.betfair.cougar.core.api.events.Event;
+import uk.co.exemel.disco.core.api.events.Event;
 
 /**
  * This interface details the binding of an event to its generated

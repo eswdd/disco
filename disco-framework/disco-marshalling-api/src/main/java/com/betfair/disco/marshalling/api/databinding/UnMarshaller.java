@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.api.databinding;
+package uk.co.exemel.disco.marshalling.api.databinding;
 
-import com.betfair.cougar.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
 
 import java.io.InputStream;
 

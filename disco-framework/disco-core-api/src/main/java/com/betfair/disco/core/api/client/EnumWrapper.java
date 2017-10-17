@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.client;
+package uk.co.exemel.disco.core.api.client;
 
-import com.betfair.cougar.core.api.transcription.EnumUtils;
+import uk.co.exemel.disco.core.api.transcription.EnumUtils;
 
 /**
  *

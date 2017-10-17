@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.http;
+package uk.co.exemel.disco.transport.api.protocol.http;
 
 import static org.junit.Assert.assertEquals;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.FaultCode;
-import com.betfair.cougar.core.api.fault.CougarFault;
-import com.betfair.cougar.core.api.fault.Fault;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.FaultCode;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
+import uk.co.exemel.disco.core.api.fault.Fault;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletResponse;
@@ -30,14 +30,14 @@ public class ResponseCodeMapperTest{
 
     @Test
     public void testStandardMapping() {
-        CougarFault fault = new Fault(FaultCode.Server, "DSC-0015");
+        DiscoFault fault = new Fault(FaultCode.Server, "DSC-0015");
         ResponseCode responseCode = ResponseCodeMapper.getResponseCodeFromHttpCode(HttpServletResponse.SC_FORBIDDEN, fault);
         assertEquals(ResponseCode.Forbidden, responseCode);
     }
 
     @Test
     public void testBusinessExceptionMapping() {
-        CougarFault fault = new Fault(FaultCode.Server, "DSC-0001");
+        DiscoFault fault = new Fault(FaultCode.Server, "DSC-0001");
         ResponseCode responseCode = ResponseCodeMapper.getResponseCodeFromHttpCode(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, fault);
         assertEquals(ResponseCode.InternalError, responseCode);
 
@@ -48,7 +48,7 @@ public class ResponseCodeMapperTest{
 
     @Test
     public void testIdentityExceptionMappings() {
-        CougarFault fault = new Fault(FaultCode.Client, "DSC-0033"); // UnidentifiedCaller
+        DiscoFault fault = new Fault(FaultCode.Client, "DSC-0033"); // UnidentifiedCaller
         ResponseCode responseCode = ResponseCodeMapper.getResponseCodeFromHttpCode(HttpServletResponse.SC_BAD_REQUEST, fault);
         assertEquals(ResponseCode.BadRequest, responseCode);
 

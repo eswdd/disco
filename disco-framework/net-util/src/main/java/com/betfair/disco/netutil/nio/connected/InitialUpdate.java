@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.connected;
+package uk.co.exemel.disco.netutil.nio.connected;
 
 public class InitialUpdate extends Update {
 

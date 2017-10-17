@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.activemq;
+package uk.co.exemel.disco.transport.activemq;
 
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
 //import org.apache.activemq.transport.TransportListener;
 //import progress.message.jclient.ConnectionStateChangeListener;
 //import progress.message.jclient.Constants;
@@ -65,7 +65,7 @@ public class ActiveMQSubscriptionEventListener  {
             for (WeakReference<ExecutionObserver> ref : executionObservers) {
                 ExecutionObserver obs = ref.get();
                 if (obs != null) {
-                    obs.onResult(new ExecutionResult(new CougarFrameworkException(ServerFaultCode.JMSTransportCommunicationFailure, "Connection to ActiveMQ has been lost")));
+                    obs.onResult(new ExecutionResult(new DiscoFrameworkException(ServerFaultCode.JMSTransportCommunicationFailure, "Connection to ActiveMQ has been lost")));
                 }
             }
             executionObservers = new HashSet<WeakReference<ExecutionObserver>>();

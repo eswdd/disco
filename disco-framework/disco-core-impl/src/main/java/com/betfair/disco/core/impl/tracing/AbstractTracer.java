@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.tracing;
+package uk.co.exemel.disco.core.impl.tracing;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.core.api.tracing.Tracer;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
 
 /**
  * Convenience base class for Tracer implementations.

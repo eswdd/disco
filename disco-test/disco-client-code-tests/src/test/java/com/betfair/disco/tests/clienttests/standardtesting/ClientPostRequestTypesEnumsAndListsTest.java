@@ -15,15 +15,15 @@
  */
 
 // Originally from ClientTests/Transport/StandardTesting/Client_Rescript_Post_RequestTypes_EnumsAndLists.xls;
-package com.betfair.cougar.tests.clienttests.standardtesting;
+package uk.co.exemel.disco.tests.clienttests.standardtesting;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.to.ComplexObject;
 import com.betfair.baseline.v2.to.LargeRequest;
 import com.betfair.baseline.v2.to.SimpleResponse;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -32,11 +32,11 @@ import java.util.Arrays;
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
- * Ensure that when a request is made against cougar via a cougar client, with a body that containis both enums and list, the request is sent and the response received is as expected (to show cougar deserialised the parameter correctly)
+ * Ensure that when a request is made against disco via a disco client, with a body that containis both enums and list, the request is sent and the response received is as expected (to show disco deserialised the parameter correctly)
  */
 public class ClientPostRequestTypesEnumsAndListsTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Create a complex object
         ComplexObject complexObject1 = new ComplexObject();
         complexObject1.setName("ssasdf");
@@ -62,10 +62,10 @@ public class ClientPostRequestTypesEnumsAndListsTest {
         
         largeRequest.setObjects(Arrays.asList(complex1, complex2));
         // Set up the client to use rescript transport
-        CougarClientWrapper cougarClientWrapper4 = CougarClientWrapper.getInstance(tt);
-        CougarClientWrapper wrapper = cougarClientWrapper4;
-        BaselineSyncClient client = cougarClientWrapper4.getClient();
-        ExecutionContext context = cougarClientWrapper4.getCtx();
+        DiscoClientWrapper discoClientWrapper4 = DiscoClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = discoClientWrapper4;
+        BaselineSyncClient client = discoClientWrapper4.getClient();
+        ExecutionContext context = discoClientWrapper4.getCtx();
         // Make call to the method via client and validate response is as expected
         SimpleResponse response5 = client.testLargePostQA(context, largeRequest);
         assertEquals("There were 1 items specified in the list, 2 actually", response5.getMessage());

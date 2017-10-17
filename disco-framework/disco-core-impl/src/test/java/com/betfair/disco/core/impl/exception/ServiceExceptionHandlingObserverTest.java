@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.exception;
+package uk.co.exemel.disco.core.impl.exception;
 
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.exception.*;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.impl.ev.ServiceExceptionHandlingObserver;
-import com.betfair.cougar.test.MockException;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.exception.*;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.impl.ev.ServiceExceptionHandlingObserver;
+import uk.co.exemel.disco.test.MockException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -65,8 +65,8 @@ public class ServiceExceptionHandlingObserverTest {
     }
 
     @Test
-    public void cougarException() {
-        CougarException ce = new CougarFrameworkException("Wibble");
+    public void discoException() {
+        DiscoException ce = new DiscoFrameworkException("Wibble");
         ExecutionResult er = execute(new ExecutionResult(ce));
 
         assertEquals(ExecutionResult.ResultType.Fault, er.getResultType());
@@ -74,27 +74,27 @@ public class ServiceExceptionHandlingObserverTest {
     }
 
     @Test
-    public void cougarClientException() {
-        CougarException ce = new ClientException(ServerFaultCode.ServiceCheckedException,"message",new MockException());
+    public void discoClientException() {
+        DiscoException ce = new ClientException(ServerFaultCode.ServiceCheckedException,"message",new MockException());
         ExecutionResult er = execute(new ExecutionResult(ce));
 
         assertEquals(ExecutionResult.ResultType.Fault, er.getResultType());
-        assertTrue(er.getFault() instanceof CougarServiceException);
+        assertTrue(er.getFault() instanceof DiscoServiceException);
         assertEquals(ServerFaultCode.ServiceRuntimeException, er.getFault().getServerFaultCode());
         assertEquals(ce, er.getFault().getCause());
     }
 
     @Test
     public void serviceCheckedException() {
-        CougarApplicationException cae = new MockException();
+        DiscoApplicationException cae = new MockException();
         ExecutionResult er = execute(new ExecutionResult(cae));
 
         assertEquals(ExecutionResult.ResultType.Fault, er.getResultType());
         assertEquals(cae, er.getFault().getCause());
     }
 
-    private class ClientException extends CougarClientException {
-        private ClientException(ServerFaultCode fault, String message, CougarApplicationException dae) {
+    private class ClientException extends DiscoClientException {
+        private ClientException(ServerFaultCode fault, String message, DiscoApplicationException dae) {
             super(fault, message, dae);
         }
     }

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline.security;
+package uk.co.exemel.disco.baseline.security;
 
-import com.betfair.cougar.api.security.IdentityToken;
-import com.betfair.cougar.client.api.HttpClientIdentityTokenResolver;
+import uk.co.exemel.disco.api.security.IdentityToken;
+import uk.co.exemel.disco.client.api.HttpClientIdentityTokenResolver;
 import org.apache.http.Header;
 import org.apache.http.client.methods.HttpUriRequest;
 

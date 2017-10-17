@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.http.rescript;
+package uk.co.exemel.disco.transport.api.protocol.http.rescript;
 
 public interface RescriptResponse {
 

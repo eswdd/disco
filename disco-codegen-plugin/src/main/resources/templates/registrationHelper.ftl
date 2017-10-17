@@ -23,13 +23,13 @@
 // Generated from registrationHelper.ftl
 package ${package}.${majorVersion};
 
-import com.betfair.cougar.api.Service;
-import com.betfair.cougar.core.api.ServiceDefinition;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.core.api.ev.ExecutableResolver;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.util.AbstractRegistrationHelper;
-import com.betfair.cougar.transport.api.protocol.events.EventTransport;
+import uk.co.exemel.disco.api.Service;
+import uk.co.exemel.disco.core.api.ServiceDefinition;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.core.api.ev.ExecutableResolver;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.util.AbstractRegistrationHelper;
+import uk.co.exemel.disco.transport.api.protocol.events.EventTransport;
 
 /**
  * Helper class for wiring together all the generated service dependencies for the ${service}Service.

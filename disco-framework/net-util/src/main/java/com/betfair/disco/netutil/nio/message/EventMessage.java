@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.message;
+package uk.co.exemel.disco.netutil.nio.message;
 
-import com.betfair.cougar.netutil.nio.CougarProtocol;
-import com.betfair.cougar.netutil.nio.CougarProtocolEncoder;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocolEncoder;
 import org.apache.mina.common.ByteBuffer;
 
 import java.util.HashMap;
@@ -34,8 +34,8 @@ public class EventMessage extends AbstractMessage implements ProtocolMessage {
     }
 
     private void serialise() {
-        for (byte b=CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED; b<=CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED; b++) {
-            serialisedForms.put(b, CougarProtocolEncoder.encode(this, b));
+        for (byte b=DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED; b<=DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MAX_SUPPORTED; b++) {
+            serialisedForms.put(b, DiscoProtocolEncoder.encode(this, b));
         }
     }
 

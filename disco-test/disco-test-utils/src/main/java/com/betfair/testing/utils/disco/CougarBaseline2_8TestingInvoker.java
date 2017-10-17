@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar;
+package com.betfair.testing.utils.disco;
 
 /**
- * Utility to aid invoking cougar baseline 2.8 for testing purposes.
+ * Utility to aid invoking disco baseline 2.8 for testing purposes.
  */
-public class CougarBaseline2_8TestingInvoker {
-    public static CougarTestingInvoker create() {
-        return LegacyCougarTestingInvoker.create().setService("Baseline","cougarBaseline").setVersion("2.8");
+public class DiscoBaseline2_8TestingInvoker {
+    public static DiscoTestingInvoker create() {
+        return LegacyDiscoTestingInvoker.create().setService("Baseline","discoBaseline").setVersion("2.8");
     }
 }

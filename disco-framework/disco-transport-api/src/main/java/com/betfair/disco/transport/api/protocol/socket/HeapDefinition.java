@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.socket;
+package uk.co.exemel.disco.transport.api.protocol.socket;
 
 public class HeapDefinition {
     private long heapId;

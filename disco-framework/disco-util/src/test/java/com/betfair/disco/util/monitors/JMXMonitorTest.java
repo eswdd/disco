@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.monitors;
+package uk.co.exemel.disco.util.monitors;
 
-import com.betfair.cougar.CougarUtilTestCase;
-import com.betfair.cougar.util.monitors.JMXMonitor.IsHealthyExpression;
+import uk.co.exemel.disco.DiscoUtilTestCase;
+import uk.co.exemel.disco.util.monitors.JMXMonitor.IsHealthyExpression;
 import com.betfair.tornjak.monitor.Monitor;
 import com.betfair.tornjak.monitor.MonitorRegistry;
 import com.betfair.tornjak.monitor.Status;
@@ -34,7 +34,7 @@ import java.lang.reflect.Field;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
-public class JMXMonitorTest extends CougarUtilTestCase {
+public class JMXMonitorTest extends DiscoUtilTestCase {
 	private MonitorRegistry registry;
 	private MBeanServer mBeanServer;
     private Logger logger;

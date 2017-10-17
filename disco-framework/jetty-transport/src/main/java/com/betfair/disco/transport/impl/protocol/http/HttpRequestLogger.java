@@ -15,22 +15,22 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.LoggableEvent;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.LoggableEvent;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.logging.EventLogDefinition;
-import com.betfair.cougar.logging.EventLoggingRegistry;
-import com.betfair.cougar.logging.records.EventLogRecord;
-import com.betfair.cougar.transport.api.RequestLogger;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.util.HeaderUtils;
+import uk.co.exemel.disco.logging.EventLogDefinition;
+import uk.co.exemel.disco.logging.EventLoggingRegistry;
+import uk.co.exemel.disco.logging.records.EventLogRecord;
+import uk.co.exemel.disco.transport.api.RequestLogger;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.util.HeaderUtils;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
@@ -121,7 +121,7 @@ public class HttpRequestLogger implements RequestLogger {
                     }
                     return new Object[] {
                             command.getTimer().getReceivedTime(),
-                            context != null ? context.getRequestUUID().toCougarLogString() : "",
+                            context != null ? context.getRequestUUID().toDiscoLogString() : "",
                             command.getFullPath(),
                             compression,
                             location != null ? location.getRemoteAddr() : "",
@@ -141,7 +141,7 @@ public class HttpRequestLogger implements RequestLogger {
             if (invokableLogger != null) {
                 loggerFactory.getLogger(invokableLogger.getLogName()).info(eventLogRecord.getMessage());
             } else {
-                throw new CougarFrameworkException("Logger "+eventLogRecord.getLoggerName()+" is not an event logger");
+                throw new DiscoFrameworkException("Logger "+eventLogRecord.getLoggerName()+" is not an event logger");
             }
         }
         httpRequests.incrementAndGet();

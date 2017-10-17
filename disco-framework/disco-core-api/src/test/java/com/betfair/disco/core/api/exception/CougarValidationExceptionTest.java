@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.exception;
+package uk.co.exemel.disco.core.api.exception;
 
 import java.util.Arrays;
 import java.util.List;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.fault.CougarFault;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.fault.DiscoFault;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class CougarValidationExceptionTest {
+public class DiscoValidationExceptionTest {
 
     @Test
-    public void testCougarApplicationException() {
-        CougarValidationException e = new CougarValidationException(ServerFaultCode.Timeout, new MockException());
-        CougarFault fault = e.getFault();
+    public void testDiscoApplicationException() {
+        DiscoValidationException e = new DiscoValidationException(ServerFaultCode.Timeout, new MockException());
+        DiscoFault fault = e.getFault();
         assertEquals(ResponseCode.Timeout.getFaultCode(), fault.getFaultCode());
         assertEquals(ResponseCode.Timeout, e.getResponseCode());
     }
 
-    private static class MockException extends CougarApplicationException {
+    private static class MockException extends DiscoApplicationException {
 
         public MockException() {
             super(ResponseCode.InternalError, "DUMMY");

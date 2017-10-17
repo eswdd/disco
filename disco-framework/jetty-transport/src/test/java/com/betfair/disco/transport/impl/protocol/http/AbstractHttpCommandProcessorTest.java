@@ -15,35 +15,35 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.RequestTimer;
-import com.betfair.cougar.core.api.ServiceBindingDescriptor;
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.PanicInTheCougar;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.core.api.transcription.ParameterType;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.logging.CougarLoggingUtils;
-import com.betfair.cougar.transport.api.*;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.impl.CommandValidatorRegistry;
-import com.betfair.cougar.transport.impl.protocol.http.rescript.RescriptOperationBindingTest;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.RequestTimer;
+import uk.co.exemel.disco.core.api.ServiceBindingDescriptor;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.PanicInTheDisco;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.core.api.transcription.ParameterType;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.logging.DiscoLoggingUtils;
+import uk.co.exemel.disco.transport.api.*;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.impl.CommandValidatorRegistry;
+import uk.co.exemel.disco.transport.impl.protocol.http.rescript.RescriptOperationBindingTest;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -124,7 +124,7 @@ public abstract class AbstractHttpCommandProcessorTest<CredentialContainer> {
 
     @BeforeClass
     public static void suppressLogging() {
-        CougarLoggingUtils.suppressAllRootLoggerOutput();
+        DiscoLoggingUtils.suppressAllRootLoggerOutput();
     }
 
 	@Before
@@ -183,7 +183,7 @@ public abstract class AbstractHttpCommandProcessorTest<CredentialContainer> {
         }
     }
 
-    @Test(expected = PanicInTheCougar.class)
+    @Test(expected = PanicInTheDisco.class)
     public void testMultipleServiceBindSameVersion() {
         final ServiceVersion sv = new ServiceVersion("v3.2");
         final String serviceName = "testServiceName";
@@ -214,7 +214,7 @@ public abstract class AbstractHttpCommandProcessorTest<CredentialContainer> {
         commandProcessor.bind(sbd);
     }
 
-    @Test(expected = PanicInTheCougar.class)
+    @Test(expected = PanicInTheDisco.class)
     public void testMultipleServiceBindingSameMajorVersion() {
         final String serviceName = "testServiceName";
 
@@ -405,8 +405,8 @@ public abstract class AbstractHttpCommandProcessorTest<CredentialContainer> {
         HttpCommand command = new TestHttpCommand(null, null);
         CommandValidator<HttpCommand> validator = new CommandValidator<HttpCommand>() {
             @Override
-            public void validate(HttpCommand command) throws CougarException {
-                throw new CougarServiceException(ServerFaultCode.SecurityException, "wibble");
+            public void validate(HttpCommand command) throws DiscoException {
+                throw new DiscoServiceException(ServerFaultCode.SecurityException, "wibble");
             }
         };
         validatorRegistry.addValidator(validator);
@@ -614,7 +614,7 @@ public abstract class AbstractHttpCommandProcessorTest<CredentialContainer> {
         }
     };
 
-	protected static class TestApplicationException extends CougarApplicationException {
+	protected static class TestApplicationException extends DiscoApplicationException {
 
         private final List<String[]> faultMessages;
 
@@ -679,12 +679,12 @@ public abstract class AbstractHttpCommandProcessorTest<CredentialContainer> {
         }
 
         @Override
-        protected void writeErrorResponse(HttpCommand command, DehydratedExecutionContext context, CougarException e, boolean traceStarted) {
+        protected void writeErrorResponse(HttpCommand command, DehydratedExecutionContext context, DiscoException e, boolean traceStarted) {
             errorCalled = true;
         }
 
         @Override
-        public void onCougarStart() {
+        public void onDiscoStart() {
         }
 
         private boolean errorCalled() {

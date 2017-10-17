@@ -15,41 +15,41 @@
  */
 
 // Originally from ClientTests/Transport/StandardTesting/Client_Rescript_Post_RequestTypes_Bytes.xls;
-package com.betfair.cougar.tests.clienttests.standardtesting;
+package uk.co.exemel.disco.tests.clienttests.standardtesting;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
 import com.betfair.baseline.v2.to.BodyParamByteObject;
 import com.betfair.baseline.v2.to.ByteOperationResponseObject;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientResponseTypeUtils;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientResponseTypeUtils;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
- * Ensure that when a Byte object is passed in parameters to cougar via a cougar client, the request is sent and the response is handled correctly
+ * Ensure that when a Byte object is passed in parameters to disco via a disco client, the request is sent and the response is handled correctly
  */
 public class ClientPostRequestTypesBytesTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         
-        CougarClientWrapper cougarClientWrapper1 = CougarClientWrapper.getInstance(tt);
-        CougarClientWrapper wrapper = cougarClientWrapper1;
-        BaselineSyncClient client = cougarClientWrapper1.getClient();
-        ExecutionContext context = cougarClientWrapper1.getCtx();
+        DiscoClientWrapper discoClientWrapper1 = DiscoClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = discoClientWrapper1;
+        BaselineSyncClient client = discoClientWrapper1.getClient();
+        ExecutionContext context = discoClientWrapper1.getCtx();
         // Create body parameter to be passed
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils2 = new CougarClientResponseTypeUtils();
-        BodyParamByteObject bodyParam = cougarClientResponseTypeUtils2.buildByteBodyParamObject("1,2,3,4,5");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils2 = new DiscoClientResponseTypeUtils();
+        BodyParamByteObject bodyParam = discoClientResponseTypeUtils2.buildByteBodyParamObject("1,2,3,4,5");
         // Make call to the method via client and validate response is as expected
         ByteOperationResponseObject response = client.byteOperation(context, (byte) 127, (byte) 1, bodyParam);
         assertEquals(1, (byte) response.getQueryParameter());
         assertEquals(127, (byte) response.getHeaderParameter());
         // Compare the byte array stored in the body parameter to check the inputted version against the returned version
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils4 = new CougarClientResponseTypeUtils();
-        boolean match = cougarClientResponseTypeUtils4.compareByteArrays(bodyParam, response);
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils4 = new DiscoClientResponseTypeUtils();
+        boolean match = discoClientResponseTypeUtils4.compareByteArrays(bodyParam, response);
         assertEquals(true, match);
     }
 

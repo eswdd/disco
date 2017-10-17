@@ -16,8 +16,8 @@
 
 package com.betfair.platform;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.security.*;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.security.*;
 
 import java.util.LinkedList;
 import java.util.List;

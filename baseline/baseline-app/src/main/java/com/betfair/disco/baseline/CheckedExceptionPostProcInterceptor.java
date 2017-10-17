@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline;
+package uk.co.exemel.disco.baseline;
 
 import com.betfair.baseline.v2.enumerations.PreOrPostInterceptorException;
 import com.betfair.baseline.v2.enumerations.SimpleExceptionErrorCodeEnum;
 import com.betfair.baseline.v2.exception.SimpleException;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.core.api.ev.*;
-import com.betfair.cougar.core.impl.ev.PostProcessingInterceptorWrapper;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.core.api.ev.*;
+import uk.co.exemel.disco.core.impl.ev.PostProcessingInterceptorWrapper;
 
 import java.util.List;
 

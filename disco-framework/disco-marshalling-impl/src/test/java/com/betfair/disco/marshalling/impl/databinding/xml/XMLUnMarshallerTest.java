@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.xml;
+package uk.co.exemel.disco.marshalling.impl.databinding.xml;
 
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.core.api.exception.CougarMarshallingException;
-import com.betfair.cougar.marshalling.api.databinding.UnMarshaller;
-import com.betfair.cougar.test.CougarTestCase;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.core.api.exception.DiscoMarshallingException;
+import uk.co.exemel.disco.marshalling.api.databinding.UnMarshaller;
+import uk.co.exemel.disco.test.DiscoTestCase;
 import org.junit.Ignore;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.ByteArrayInputStream;
 
 
-public class XMLUnMarshallerTest extends CougarTestCase {
+public class XMLUnMarshallerTest extends DiscoTestCase {
 
 	public void testUnmarshall() {
 		UnMarshaller unMarshaller = new XMLDataBindingFactory(new JdkEmbeddedXercesSchemaValidationFailureParser()).getUnMarshaller();
@@ -56,13 +56,13 @@ public class XMLUnMarshallerTest extends CougarTestCase {
 
 		try {
 			unMarshaller.unmarshall(new ByteArrayInputStream("<TestEnum><message>bar</message></TestEnum>".getBytes()),TestClassUnmarshallEnum.class,"UTF-8", false);
-		} catch (CougarMarshallingException e) {
+		} catch (DiscoMarshallingException e) {
 			assertTrue(e.getMessage().contains("bar"));
 		}
 		try {
 			unMarshaller.unmarshall(new ByteArrayInputStream("<TestEnum><message></message></TestEnum>".getBytes()),TestClassUnmarshallEnum.class,"UTF-8", false);
 			fail();
-		} catch (CougarMarshallingException e) {
+		} catch (DiscoMarshallingException e) {
 			assertTrue(e.getMessage().contains("foo"));
 		}
 
@@ -76,7 +76,7 @@ public class XMLUnMarshallerTest extends CougarTestCase {
 		try {
 			unMarshaller.unmarshall(new ByteArrayInputStream("<TestInt><message>bar</message></TestInt>".getBytes()),TestClassUnmarshallInt.class,"UTF-8", false);
 			fail();
-		} catch (CougarMarshallingException e) {
+		} catch (DiscoMarshallingException e) {
 			assertTrue(e.getMessage().contains("bar"));
 		}
 
@@ -87,14 +87,14 @@ public class XMLUnMarshallerTest extends CougarTestCase {
 		try {
 			unMarshaller.unmarshall(new ByteArrayInputStream("<Test><message>foo<message></Test>".getBytes()),TestClassUnmarshall.class,"UTF-8", false);
 			fail();
-		} catch (CougarMarshallingException e) {
+		} catch (DiscoMarshallingException e) {
 			assertTrue(e.getMessage().contains("message"));
 
 		}
 		try {
 			unMarshaller.unmarshall(new ByteArrayInputStream("<Test><message>foo</message><fish>plaice</fish></Test>".getBytes()),TestClassUnmarshall.class,"UTF-8", false);
 			fail();
-		} catch (CougarMarshallingException e) {
+		} catch (DiscoMarshallingException e) {
 			assertTrue(e.getMessage().contains("fish"));
 		}
 

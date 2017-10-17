@@ -14,43 +14,43 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar;
+package uk.co.exemel.disco;
 
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 
 /**
- * Unit test for @See CougarServerVersion
+ * Unit test for @See DiscoServerVersion
  */
-public class CougarVersionTest {
+public class DiscoVersionTest {
 
     @Test
     public void test() {
-        CougarVersion.init("/version/CougarVersionHappy.properties");
-        String v = CougarVersion.getVersion();
+        DiscoVersion.init("/version/DiscoVersionHappy.properties");
+        String v = DiscoVersion.getVersion();
         assertEquals("Versions do not agree", "2.3.4", v);
     }
 
     @Test
     public void testMajorMinor() {
-        CougarVersion.init("/version/CougarVersionHappy.properties");
-        String v = CougarVersion.getMajorMinorVersion();
+        DiscoVersion.init("/version/DiscoVersionHappy.properties");
+        String v = DiscoVersion.getMajorMinorVersion();
         assertEquals("Versions do not agree", "2.3", v);
     }
 
     @Test
     public void testMajorMinorWithSnapshot() {
-        CougarVersion.init("/version/CougarVersionSnapshot.properties");
-        String v = CougarVersion.getMajorMinorVersion();
+        DiscoVersion.init("/version/DiscoVersionSnapshot.properties");
+        String v = DiscoVersion.getMajorMinorVersion();
         assertEquals("Versions do not agree", "2.3", v);
     }
 
-    @Test(expected = CougarFrameworkException.class)
+    @Test(expected = DiscoFrameworkException.class)
     public void testMajorMinorNoPropertiesFile() {
-        CougarVersion.init("/version/wibble.properties");
-        CougarVersion.getMajorMinorVersion();
+        DiscoVersion.init("/version/wibble.properties");
+        DiscoVersion.getMajorMinorVersion();
     }
 
 

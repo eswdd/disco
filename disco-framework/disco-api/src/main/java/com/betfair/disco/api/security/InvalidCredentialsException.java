@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api.security;
+package uk.co.exemel.disco.api.security;
 
 /**
  * Exception to be thrown when an IdentityResolver can't resolve credentials into an

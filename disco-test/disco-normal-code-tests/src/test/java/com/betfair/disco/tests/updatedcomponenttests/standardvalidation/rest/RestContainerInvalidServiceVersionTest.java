@@ -15,15 +15,15 @@
  */
 
 // Originally from UpdatedComponentTests/StandardValidation/REST/Rest_Container_InvalidServiceVersion.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.standardvalidation.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.standardvalidation.rest;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -33,23 +33,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Ensure that Cougar returns the correct DSC-0021 fault when a  REST XML/JSON request is made to a version of a Service that doesn't exist. Error should be "Not Found"
+ * Ensure that Disco returns the correct DSC-0021 fault when a  REST XML/JSON request is made to a version of a Service that doesn't exist. Error should be "Not Found"
  */
 public class RestContainerInvalidServiceVersionTest {
     @Test
     public void doTest() throws Exception {
         // Create the HttpCallBean
-        CougarManager cougarManager = CougarManager.getInstance();
+        DiscoManager discoManager = DiscoManager.getInstance();
 
         // Set up the Http Call Bean to make the request
-        HttpCallBean getNewHttpCallBean = cougarManager.getNewHttpCallBean("87.248.113.14");
-        cougarManager = cougarManager;
+        HttpCallBean getNewHttpCallBean = discoManager.getNewHttpCallBean("87.248.113.14");
+        discoManager = discoManager;
 
-        cougarManager.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        discoManager.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
 
         getNewHttpCallBean.setOperationName("testSimpleGet", "simple");
 
-        getNewHttpCallBean.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean.setServiceName("baseline", "discoBaseline");
         // Point the request at a verions of the service that doesn't exist
         getNewHttpCallBean.setVersion("v0.1");
 
@@ -60,38 +60,38 @@ public class RestContainerInvalidServiceVersionTest {
 
         Timestamp getTimeAsTimeStamp9 = new Timestamp(System.currentTimeMillis());
         // Make the 4 REST calls to the operation (store the expected HTML response as a string)
-        cougarManager.makeRestCougarHTTPCalls(getNewHttpCallBean);
+        discoManager.makeRestDiscoHTTPCalls(getNewHttpCallBean);
         // Create the expected response as an XML document (Fault)
         XMLHelpers xMLHelpers5 = new XMLHelpers();
         Document createAsDocument10 = xMLHelpers5.getXMLObjectFromString("<fault><faultcode>Client</faultcode><faultstring>DSC-0021</faultstring><detail/></fault>");
         // Convert the expected response to REST types for comparison with actual responses
-        Map<CougarMessageProtocolRequestTypeEnum, Object> responseObjects = cougarManager.convertResponseToRestTypes(createAsDocument10, getNewHttpCallBean);
+        Map<DiscoMessageProtocolRequestTypeEnum, Object> responseObjects = discoManager.convertResponseToRestTypes(createAsDocument10, getNewHttpCallBean);
         // Check the 4 responses are as expected (Not Found error)
-        HttpResponseBean response6 = getNewHttpCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
-        AssertionUtils.multiAssertEquals(responseObjects.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response6.getResponseObject());
+        HttpResponseBean response6 = getNewHttpCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
+        AssertionUtils.multiAssertEquals(responseObjects.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response6.getResponseObject());
         AssertionUtils.multiAssertEquals(404, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Not Found", response6.getHttpStatusText());
 
-        HttpResponseBean response7 = getNewHttpCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
-        AssertionUtils.multiAssertEquals(responseObjects.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response7.getResponseObject());
+        HttpResponseBean response7 = getNewHttpCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        AssertionUtils.multiAssertEquals(responseObjects.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response7.getResponseObject());
         AssertionUtils.multiAssertEquals(404, response7.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Not Found", response7.getHttpStatusText());
 
-        HttpResponseBean response8 = getNewHttpCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
-        AssertionUtils.multiAssertEquals(responseObjects.get(CougarMessageProtocolRequestTypeEnum.RESTJSON), response8.getResponseObject());
+        HttpResponseBean response8 = getNewHttpCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        AssertionUtils.multiAssertEquals(responseObjects.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON), response8.getResponseObject());
         AssertionUtils.multiAssertEquals(404, response8.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Not Found", response8.getHttpStatusText());
 
-        HttpResponseBean response9 = getNewHttpCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
-        AssertionUtils.multiAssertEquals(responseObjects.get(CougarMessageProtocolRequestTypeEnum.RESTXML), response9.getResponseObject());
+        HttpResponseBean response9 = getNewHttpCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
+        AssertionUtils.multiAssertEquals(responseObjects.get(DiscoMessageProtocolRequestTypeEnum.RESTXML), response9.getResponseObject());
         AssertionUtils.multiAssertEquals(404, response9.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("Not Found", response9.getHttpStatusText());
         // Check the log entries are as expected
-        cougarManager.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9
-                ,new AccessLogRequirement("87.248.113.14","/cougarBaseline/v0.1/simple","NotFound")
-                ,new AccessLogRequirement("87.248.113.14","/cougarBaseline/v0.1/simple","NotFound")
-                ,new AccessLogRequirement("87.248.113.14","/cougarBaseline/v0.1/simple","NotFound")
-                ,new AccessLogRequirement("87.248.113.14","/cougarBaseline/v0.1/simple","NotFound")
+        discoManager.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp9
+                ,new AccessLogRequirement("87.248.113.14","/discoBaseline/v0.1/simple","NotFound")
+                ,new AccessLogRequirement("87.248.113.14","/discoBaseline/v0.1/simple","NotFound")
+                ,new AccessLogRequirement("87.248.113.14","/discoBaseline/v0.1/simple","NotFound")
+                ,new AccessLogRequirement("87.248.113.14","/discoBaseline/v0.1/simple","NotFound")
         );
     }
 

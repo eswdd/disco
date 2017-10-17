@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api;
+package uk.co.exemel.disco.transport.api;
 
 import java.util.Date;
 

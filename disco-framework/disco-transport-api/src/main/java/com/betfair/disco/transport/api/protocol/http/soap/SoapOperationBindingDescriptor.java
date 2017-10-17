@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.http.soap;
+package uk.co.exemel.disco.transport.api.protocol.http.soap;
 
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
 
 
 /**

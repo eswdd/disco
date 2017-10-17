@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.xml;
+package uk.co.exemel.disco.marshalling.impl.databinding.xml;
 
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarValidationException;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
 import org.xml.sax.SAXParseException;
 
 import javax.ws.rs.core.MediaType;
@@ -26,5 +26,5 @@ import javax.ws.rs.core.MediaType;
  *
  */
 public interface SchemaValidationFailureParser {
-    CougarException parse(SAXParseException spe, String format, boolean client);
+    DiscoException parse(SAXParseException spe, String format, boolean client);
 }

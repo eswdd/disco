@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transformations.manglers;
+package uk.co.exemel.disco.transformations.manglers;
 
-import com.betfair.cougar.transformations.AbstractTransformer;
-import com.betfair.cougar.codegen.DocumentMangler;
+import uk.co.exemel.disco.transformations.AbstractTransformer;
+import uk.co.exemel.disco.codegen.DocumentMangler;
 
 public abstract class AbstractMangler extends AbstractTransformer implements DocumentMangler {
 	// Well this does nowt. But it might. So leave it in.

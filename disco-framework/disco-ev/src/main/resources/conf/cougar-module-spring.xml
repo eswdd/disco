@@ -20,15 +20,15 @@
         xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean class="com.betfair.cougar.util.configuration.PropertyConfigurer">
-        <constructor-arg index="0" ref="cougar.core.EncryptorRegistry"/>
-        <property name="defaultConfig" value="classpath:conf/cougar-ev-defaults.properties"/>
+    <bean class="uk.co.exemel.disco.util.configuration.PropertyConfigurer">
+        <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
+        <property name="defaultConfig" value="classpath:conf/disco-ev-defaults.properties"/>
         <property name="configOverride" value="overrides.properties"/>
         <property name="placeholderPrefix" value="$COUGAR-EV{"/>
     </bean>
 
     <import resource="classpath:conf/event-logging.xml"/>
 
-    <import resource="classpath:conf/module-config-cougar-ev.xml" />
+    <import resource="classpath:conf/module-config-disco-ev.xml" />
 
 </beans>

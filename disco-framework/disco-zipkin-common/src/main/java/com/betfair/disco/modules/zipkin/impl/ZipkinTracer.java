@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.impl;
+package uk.co.exemel.disco.modules.zipkin.impl;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.impl.tracing.AbstractTracer;
-import com.betfair.cougar.modules.zipkin.api.ZipkinData;
-import com.betfair.cougar.modules.zipkin.api.ZipkinRequestUUID;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.impl.tracing.AbstractTracer;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinData;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinRequestUUID;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -28,7 +28,7 @@ import java.util.Objects;
 /**
  * Zipkin tracer implementation.
  *
- * @see com.betfair.cougar.core.impl.tracing.AbstractTracer
+ * @see uk.co.exemel.disco.core.impl.tracing.AbstractTracer
  */
 public class ZipkinTracer extends AbstractTracer {
 

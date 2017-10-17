@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.configuration;
+package uk.co.exemel.disco.util.configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,7 +52,7 @@ public class PropertyConfigurer implements BeanFactoryAware, BeanNameAware, Bean
 	private static final String DEFAULT_CONFIG_HOST_PROPERTY = "betfair.config.host";
     private static final String JMX_PORT_KEY = "jmx.html.port";
     private static final String HOSTNAME_KEY = "system.hostname";
-    private static final String NODEID_KEY = "cougar.core.nodeid";
+    private static final String NODEID_KEY = "disco.core.nodeid";
 
 	public static final String HOSTNAME;
 
@@ -88,7 +88,7 @@ public class PropertyConfigurer implements BeanFactoryAware, BeanNameAware, Bean
             @Override
             public void load(Properties props, InputStream is) throws IOException {
                 props.put(HOSTNAME_KEY, HOSTNAME);
-                CougarNodeId.initialiseNodeId(props);
+                DiscoNodeId.initialiseNodeId(props);
                 super.load(props, is);
                 for (String propName: props.stringPropertyNames()) {
                     allLoadedProperties.put(propName, System.getProperty(propName, props.getProperty(propName)));
@@ -146,8 +146,8 @@ public class PropertyConfigurer implements BeanFactoryAware, BeanNameAware, Bean
         propertyPlaceholderConfigurer.setLocations(pl.constructResourceList());
 	}
 
-    // Inner class containing the logic for defining the cougar.core.nodeId property
-    public static class CougarNodeId{
+    // Inner class containing the logic for defining the disco.core.nodeId property
+    public static class DiscoNodeId{
 
          // Create a unique node id for the service by combining the host name and jmx port
          // If no jmx port is defined then leave the node id property undefined

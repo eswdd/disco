@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.baseline.security;
+package uk.co.exemel.disco.baseline.security;
 
 public enum SimpleIdentityTokenName {
     Username, Password

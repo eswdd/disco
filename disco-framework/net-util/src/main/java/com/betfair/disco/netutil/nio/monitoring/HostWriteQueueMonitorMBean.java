@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.monitoring;
+package uk.co.exemel.disco.netutil.nio.monitoring;
 
 public interface HostWriteQueueMonitorMBean {
     long getTotalWriteQueueDepth();

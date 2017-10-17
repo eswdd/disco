@@ -16,12 +16,12 @@
 private static final class ${dataTypeName}MapEntryPair${mapIndex} {
     @XmlAttribute(name="key",required=true)
     <#if mapKeyType=="Date">
-        @XmlJavaTypeAdapter(value=com.betfair.cougar.util.dates.XMLDateAdapter.class)
+        @XmlJavaTypeAdapter(value=uk.co.exemel.disco.util.dates.XMLDateAdapter.class)
     </#if>
     ${mapKeyType} key${mapKeyType};
     @XmlElement(name="${mapValueType}")
     <#if mapValueType=="Date">
-        @XmlJavaTypeAdapter(value=com.betfair.cougar.util.dates.XMLDateAdapter.class)
+        @XmlJavaTypeAdapter(value=uk.co.exemel.disco.util.dates.XMLDateAdapter.class)
     </#if>
     ${mapValueType} ${mapValueType?uncap_first}Val;
 

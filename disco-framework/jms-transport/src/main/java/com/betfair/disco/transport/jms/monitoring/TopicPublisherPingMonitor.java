@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jms.monitoring;
+package uk.co.exemel.disco.transport.jms.monitoring;
 
-import com.betfair.cougar.transport.jms.JmsEventTransportImpl;
+import uk.co.exemel.disco.transport.jms.JmsEventTransportImpl;
 import com.betfair.tornjak.monitor.OnDemandMonitor;
 import com.betfair.tornjak.monitor.Status;
 import org.springframework.jmx.export.annotation.ManagedAttribute;

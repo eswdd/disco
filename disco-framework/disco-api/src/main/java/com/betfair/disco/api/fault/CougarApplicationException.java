@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api.fault;
+package uk.co.exemel.disco.api.fault;
 
 import java.util.List;
 import java.util.Set;
 
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.Result;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.Result;
 
 
 /**
@@ -28,18 +28,18 @@ import com.betfair.cougar.api.Result;
  *
  */
 @SuppressWarnings("serial")
-public abstract class CougarApplicationException extends Exception implements Result {
+public abstract class DiscoApplicationException extends Exception implements Result {
 
 	private ResponseCode code = ResponseCode.BadRequest;
     private final String exceptionCode;
 
-    public CougarApplicationException(ResponseCode code, String exceptionCode) {
+    public DiscoApplicationException(ResponseCode code, String exceptionCode) {
 		super();
 		this.code = code;
         this.exceptionCode = exceptionCode;
 	}
 
-    public CougarApplicationException(ResponseCode code, String exceptionCode, Throwable cause) {
+    public DiscoApplicationException(ResponseCode code, String exceptionCode, Throwable cause) {
 		super(cause);
 		this.code = code;
         this.exceptionCode = exceptionCode;

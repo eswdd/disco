@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.configuration;
+package uk.co.exemel.disco.util.configuration;
 
 import org.mockito.Mockito;
 import org.springframework.core.io.Resource;
@@ -35,7 +35,7 @@ public class PropertyLoaderTest{
         PropertyLoader pl = new PropertyLoader(mockResource, "overrides.properties");
         Resource[] resources = pl.constructResourceList();
         assertNotNull(resources);
-        assertEquals(1, resources.length); // Assert only one resource being loaded from as no cougar-application.properties or overrides.properties exist
+        assertEquals(1, resources.length); // Assert only one resource being loaded from as no disco-application.properties or overrides.properties exist
     }
 
     @Test

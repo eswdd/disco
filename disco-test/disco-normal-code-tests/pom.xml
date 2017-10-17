@@ -17,13 +17,13 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>cougar-test</artifactId>
-        <groupId>com.betfair.cougar</groupId>
+        <artifactId>disco-test</artifactId>
+        <groupId>uk.co.exemel.disco</groupId>
         <version>3.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cougar-normal-code-tests</artifactId>
+    <artifactId>disco-normal-code-tests</artifactId>
     <name>${project.artifactId}</name>
 
     <properties>
@@ -107,7 +107,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>cougar-test-utils</artifactId>
+            <artifactId>disco-test-utils</artifactId>
             <version>${project.version}</version>
             <exclusions>
                 <exclusion>
@@ -157,7 +157,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>cougar-component-code-tests</artifactId>
+            <artifactId>disco-component-code-tests</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -189,7 +189,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>cougar-ci-test-listener</artifactId>
+            <artifactId>disco-ci-test-listener</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -19,14 +19,14 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <import resource="classpath:conf/cougar-zipkin-server-common.xml"/>
+    <import resource="classpath:conf/disco-zipkin-server-common.xml"/>
 
     <bean id="httpRequestResolver"
-          class="com.betfair.cougar.modules.zipkin.impl.http.ZipkinHttpRequestUuidResolver">
+          class="uk.co.exemel.disco.modules.zipkin.impl.http.ZipkinHttpRequestUuidResolver">
         <constructor-arg ref="zipkinExecutionContextResolverFactory"/>
         <constructor-arg ref="zipkinManager"/>
-        <constructor-arg value="$COUGAR-JETTY{cougar.http.uuidheader}"/>
-        <constructor-arg value="$COUGAR-JETTY{cougar.http.uuidparentsheader}"/>
+        <constructor-arg value="$COUGAR-JETTY{disco.http.uuidheader}"/>
+        <constructor-arg value="$COUGAR-JETTY{disco.http.uuidparentsheader}"/>
     </bean>
 
 </beans>

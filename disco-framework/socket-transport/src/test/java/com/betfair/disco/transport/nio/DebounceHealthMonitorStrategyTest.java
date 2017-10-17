@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.nio;
+package uk.co.exemel.disco.transport.nio;
 
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
@@ -24,7 +24,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.betfair.cougar.transport.nio.HealthMonitorStrategy.HealthMonitorStrategyListener;
+import uk.co.exemel.disco.transport.nio.HealthMonitorStrategy.HealthMonitorStrategyListener;
 
 
 public class DebounceHealthMonitorStrategyTest {

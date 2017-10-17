@@ -21,8 +21,8 @@ import ${package}.${majorVersion}.to.*;
 import ${package}.${majorVersion}.enumerations.*;
 import ${package}.${majorVersion}.exception.*;
 
-import com.betfair.cougar.api.*;
-import com.betfair.cougar.api.annotations.*;
+import uk.co.exemel.disco.api.*;
+import uk.co.exemel.disco.api.annotations.*;
 
 import javax.annotation.Resource;
 import javax.jws.*;
@@ -32,7 +32,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.*;
 import java.util.*;
-import com.betfair.cougar.core.api.ev.*;
+import uk.co.exemel.disco.core.api.ev.*;
 <@compress single_line=true>
 <#include "common.ftl">
 <#include "interfaceParser.ftl">
@@ -45,7 +45,7 @@ import com.betfair.cougar.core.api.ev.*;
 </@compress>
 @WebService(serviceName="${service}Service",portName="${service}Service",targetNamespace="http://www.betfair.com/serviceapi/${dotMajorMinorVersion}/${service}")
 @IDLService(name="${service}", version="${dotMajorMinorVersion}")
-public interface ${service}Client extends com.betfair.cougar.api.Service {<#t>
+public interface ${service}Client extends uk.co.exemel.disco.api.Service {<#t>
 
 <#list operations as operation>
 	<@compress single_line=true>

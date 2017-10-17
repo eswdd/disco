@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api.export;
+package uk.co.exemel.disco.api.export;
 
 public enum Protocol {
     RESCRIPT(ProtocolParadigm.Rpc),

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.jmx;
+package uk.co.exemel.disco.core.impl.jmx;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

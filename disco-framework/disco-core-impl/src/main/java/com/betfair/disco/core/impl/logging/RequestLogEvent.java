@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.logging;
+package uk.co.exemel.disco.core.impl.logging;
 
 import java.util.Date;
 
-import com.betfair.cougar.api.LoggableEvent;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.core.api.ev.OperationKey;
+import uk.co.exemel.disco.api.LoggableEvent;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
 
 public class RequestLogEvent implements LoggableEvent {
     private final String logName;
@@ -48,7 +48,7 @@ public class RequestLogEvent implements LoggableEvent {
 	public Object[] getFieldsToLog() {
 		return new Object[] {
 		        receivedTime,
-				uuid.toCougarLogString(),
+				uuid.toDiscoLogString(),
 				String.format("%1$d.%2$d", operationKey.getVersion().getMajor(), operationKey.getVersion().getMinor()),
 				operationKey.getOperationName(),
 				faultCode,

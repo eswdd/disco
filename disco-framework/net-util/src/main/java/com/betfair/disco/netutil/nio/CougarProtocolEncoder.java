@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
-import com.betfair.cougar.netutil.nio.message.*;
-import com.betfair.cougar.netutil.nio.message.ProtocolMessage.ProtocolMessageType;
-import com.betfair.cougar.util.jmx.Exportable;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.netutil.nio.message.*;
+import uk.co.exemel.disco.netutil.nio.message.ProtocolMessage.ProtocolMessageType;
+import uk.co.exemel.disco.util.jmx.Exportable;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoderAdapter;
@@ -29,11 +29,11 @@ import org.springframework.jmx.export.annotation.ManagedResource;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.betfair.cougar.netutil.nio.NioLogger.LoggingLevel.ALL;
-import static com.betfair.cougar.netutil.nio.NioLogger.LoggingLevel.PROTOCOL;
+import static uk.co.exemel.disco.netutil.nio.NioLogger.LoggingLevel.ALL;
+import static uk.co.exemel.disco.netutil.nio.NioLogger.LoggingLevel.PROTOCOL;
 
 @ManagedResource
-public class CougarProtocolEncoder extends ProtocolEncoderAdapter implements Exportable {
+public class DiscoProtocolEncoder extends ProtocolEncoderAdapter implements Exportable {
     private final NioLogger nioLogger;
 
     private final AtomicLong badMessagesRequested = new AtomicLong();
@@ -49,7 +49,7 @@ public class CougarProtocolEncoder extends ProtocolEncoderAdapter implements Exp
     private final AtomicLong tlsRequestsSent = new AtomicLong();
     private final AtomicLong tlsResponsesSent = new AtomicLong();
 
-    public CougarProtocolEncoder(NioLogger nioLogger) {
+    public DiscoProtocolEncoder(NioLogger nioLogger) {
         this.nioLogger = nioLogger;
 
         export(nioLogger.getJmxControl());
@@ -85,7 +85,7 @@ public class CougarProtocolEncoder extends ProtocolEncoderAdapter implements Exp
 
             case MESSAGE_REQUEST:
                 RequestMessage req = (RequestMessage) pm;
-                ProtocolMessageType reqMsgType = protocolVersion == CougarProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC ? ProtocolMessageType.MESSAGE : ProtocolMessageType.MESSAGE_REQUEST;
+                ProtocolMessageType reqMsgType = protocolVersion == DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC ? ProtocolMessageType.MESSAGE : ProtocolMessageType.MESSAGE_REQUEST;
                 buffer = NioUtils.createMessageHeader(req.getPayload().length + 8, reqMsgType);
                 buffer.putLong(req.getCorrelationId());
                 buffer.put(req.getPayload());
@@ -93,7 +93,7 @@ public class CougarProtocolEncoder extends ProtocolEncoderAdapter implements Exp
             case MESSAGE_RESPONSE:
                 ResponseMessage resp = (ResponseMessage) pm;
                 // backwards compatibility with version 1 protocol
-                ProtocolMessageType responseType = protocolVersion == CougarProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC ? ProtocolMessageType.MESSAGE : ProtocolMessageType.MESSAGE_RESPONSE;
+                ProtocolMessageType responseType = protocolVersion == DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC ? ProtocolMessageType.MESSAGE : ProtocolMessageType.MESSAGE_RESPONSE;
                 buffer = NioUtils.createMessageHeader(resp.getPayload().length + 8, responseType);
                 buffer.putLong(resp.getCorrelationId());
                 buffer.put(resp.getPayload());
@@ -101,7 +101,7 @@ public class CougarProtocolEncoder extends ProtocolEncoderAdapter implements Exp
 
             case EVENT:
                 EventMessage em = (EventMessage) pm;
-                if (protocolVersion < CougarProtocol.TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC) {
+                if (protocolVersion < DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC) {
                     return null;
                 }
                 buffer = NioUtils.createMessageHeader(em.getPayload().length, em);
@@ -109,21 +109,21 @@ public class CougarProtocolEncoder extends ProtocolEncoderAdapter implements Exp
                 break;
 
             case SUSPEND:
-                if (protocolVersion < CougarProtocol.TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC) {
+                if (protocolVersion < DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC) {
                     return null;
                 }
                 buffer = NioUtils.createMessageHeader(0, pm);
                 break;
 
             case START_TLS_REQUEST:
-                if (protocolVersion < CougarProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS) {
+                if (protocolVersion < DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS) {
                     return null;
                 }
                 buffer = NioUtils.createMessageHeader(1, pm);
                 buffer.put(((StartTLSRequestMessage) pm).getRequirement().getValue());
                 break;
             case START_TLS_RESPONSE:
-                if (protocolVersion < CougarProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS) {
+                if (protocolVersion < DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS) {
                     return null;
                 }
                 buffer = NioUtils.createMessageHeader(1, pm);
@@ -142,12 +142,12 @@ public class CougarProtocolEncoder extends ProtocolEncoderAdapter implements Exp
         final ByteBuffer buffer;
         if (message instanceof ProtocolMessage) {
             ProtocolMessage pm = (ProtocolMessage) message;
-            nioLogger.log(PROTOCOL, session, "CougarProtocolEncoder: Writing protocol message %s", pm.getProtocolMessageType());
+            nioLogger.log(PROTOCOL, session, "DiscoProtocolEncoder: Writing protocol message %s", pm.getProtocolMessageType());
 
-            Byte version = (Byte) session.getAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME);
+            Byte version = (Byte) session.getAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME);
             // go for lowest likely common denominator, since this will likely only occur for RejectMessages
             if (version == null) {
-                version = CougarProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED;
+                version = DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_MIN_SUPPORTED;
             }
             buffer = pm.getSerialisedForm(version);
             if (buffer == null) {
@@ -177,16 +177,16 @@ public class CougarProtocolEncoder extends ProtocolEncoderAdapter implements Exp
 
                 case MESSAGE_REQUEST:
                     messageRequestsSent.incrementAndGet();
-                    nioLogger.log(ALL, session, "CougarProtocolEncoder: Writing message of length %s", (((RequestMessage) pm).getPayload().length + 8));
+                    nioLogger.log(ALL, session, "DiscoProtocolEncoder: Writing message of length %s", (((RequestMessage) pm).getPayload().length + 8));
                     break;
                 case MESSAGE_RESPONSE:
                     messageRequestsSent.incrementAndGet();
-                    nioLogger.log(ALL, session, "CougarProtocolEncoder: Writing message of length %s", ((ResponseMessage) pm).getPayload().length);
+                    nioLogger.log(ALL, session, "DiscoProtocolEncoder: Writing message of length %s", ((ResponseMessage) pm).getPayload().length);
                     break;
 
                 case EVENT:
                     eventsSent.incrementAndGet();
-                    nioLogger.log(ALL, session, "CougarProtocolEncoder: Writing event of length %s", ((EventMessage) pm).getPayload().length);
+                    nioLogger.log(ALL, session, "DiscoProtocolEncoder: Writing event of length %s", ((EventMessage) pm).getPayload().length);
                     break;
                 case SUSPEND:
                     suspendsSent.incrementAndGet();

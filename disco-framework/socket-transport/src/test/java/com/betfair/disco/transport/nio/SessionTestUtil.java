@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.nio;
+package uk.co.exemel.disco.transport.nio;
 
-import com.betfair.cougar.netutil.nio.CougarProtocol;
+import uk.co.exemel.disco.netutil.nio.DiscoProtocol;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.common.WriteFuture;
 
@@ -31,21 +31,21 @@ public class SessionTestUtil {
 
     public static IoSession newSession(byte version) {
         final IoSession mockSession = mock(IoSession.class);
-        when(mockSession.getAttribute(CougarProtocol.PROTOCOL_VERSION_ATTR_NAME)).thenReturn(version);
+        when(mockSession.getAttribute(DiscoProtocol.PROTOCOL_VERSION_ATTR_NAME)).thenReturn(version);
         final WriteFuture mockFuture = mock(WriteFuture.class);
         when(mockSession.write(any())).thenReturn(mockFuture);
         return mockSession;
     }
 
     public static IoSession newV1Session() {
-        return newSession(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC);
+        return newSession(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_CLIENT_ONLY_RPC);
     }
 
     public static IoSession newV2Session() {
-        return newSession(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC);
+        return newSession(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_BIDIRECTION_RPC);
     }
 
     public static IoSession newV3Session() {
-        return newSession(CougarProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS);
+        return newSession(DiscoProtocol.TRANSPORT_PROTOCOL_VERSION_START_TLS);
     }
 }

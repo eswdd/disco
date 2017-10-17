@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.dates;
+package uk.co.exemel.disco.util.dates;
 
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.jmx;
+package uk.co.exemel.disco.core.impl.jmx;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.betfair.cougar.core.api.jmx.JMXHttpParser;
+import uk.co.exemel.disco.core.api.jmx.JMXHttpParser;
 
 /**
  * Borrowed from Joe's dodgy JSP. Totally uncleaned for posterity so everyone

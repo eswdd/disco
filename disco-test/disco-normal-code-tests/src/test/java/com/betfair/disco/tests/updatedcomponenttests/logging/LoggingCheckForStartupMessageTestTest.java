@@ -15,10 +15,10 @@
  */
 
 // Originally from UpdatedComponentTests/Logging/Logging_CheckForStartupMessage_Test.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.logging;
+package uk.co.exemel.disco.tests.updatedcomponenttests.logging;
 
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -31,9 +31,9 @@ public class LoggingCheckForStartupMessageTestTest {
     @Test
     public void doTest() throws Exception {
         // Set up a Http Call Bean to make a request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean callBean = cougarManager1.getNewHttpCallBean();
-        CougarManager manager = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean callBean = discoManager1.getNewHttpCallBean();
+        DiscoManager manager = discoManager1;
         // Set up the call bean to change the log level to INFO
         callBean.setOperationName("changeLogLevel");
         
@@ -42,11 +42,11 @@ public class LoggingCheckForStartupMessageTestTest {
         map2.put("level","INFO");
         callBean.setQueryParams(map2);
         
-        callBean.setServiceName("baseline", "cougarBaseline");
+        callBean.setServiceName("baseline", "discoBaseline");
         
         callBean.setVersion("v2");
         // Make the REST JSON call to the operation to change the log level
-        manager.makeRestCougarHTTPCall(callBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        manager.makeRestDiscoHTTPCall(callBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Change the call bean to make a log entry
         callBean.setOperationName("logMessage");
         
@@ -55,7 +55,7 @@ public class LoggingCheckForStartupMessageTestTest {
         map3.put("logLevel","INFO");
         callBean.setQueryParams(map3);
         // Make the REST JSON call to the operation
-        manager.makeRestCougarHTTPCall(callBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+        manager.makeRestDiscoHTTPCall(callBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
         // Set up the call bean to change the log level back to WARNING
         callBean.setOperationName("changeLogLevel");
         
@@ -64,18 +64,18 @@ public class LoggingCheckForStartupMessageTestTest {
         map4.put("level","WARNING");
         callBean.setQueryParams(map4);
         // Make the REST JSON call to the operation to change the log level
-        manager.makeRestCougarHTTPCall(callBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
-        // Get the cougar logging attribute
-        CougarManager cougarManager5 = CougarManager.getInstance();
-        manager = cougarManager5;
+        manager.makeRestDiscoHTTPCall(callBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
+        // Get the disco logging attribute
+        DiscoManager discoManager5 = DiscoManager.getInstance();
+        manager = discoManager5;
         // Get the uptime of the baseline
-        Integer upTime = manager.getCougarUpTimeInMins("Uptime");
+        Integer upTime = manager.getDiscoUpTimeInMins("Uptime");
         // todo: SML: fix this bit..
-        // Get the contents of the server log that contains the cougar start (possibly an archived version)
-//        LogFileBean log = manager.getServerLogContainingCougarStart(cougarManager1.getBaseLogDirectory(), upTime);
+        // Get the contents of the server log that contains the disco start (possibly an archived version)
+//        LogFileBean log = manager.getServerLogContainingDiscoStart(discoManager1.getBaseLogDirectory(), upTime);
         // Get the log contains the statup success message
-//        CougarHelpers cougarHelpers6 = new CougarHelpers();
-//        boolean presentInLog = cougarHelpers6.checkLogContainsEntryHeaderValue(log, "com.betfair.cougar.core.impl.ev.ContainerAwareExecutionVenue INFO - **** COUGAR HAS STARTED *****");
+//        DiscoHelpers discoHelpers6 = new DiscoHelpers();
+//        boolean presentInLog = discoHelpers6.checkLogContainsEntryHeaderValue(log, "uk.co.exemel.disco.core.impl.ev.ContainerAwareExecutionVenue INFO - **** COUGAR HAS STARTED *****");
 //        AssertionUtils.multiAssertEquals(true, presentInLog);
     }
 

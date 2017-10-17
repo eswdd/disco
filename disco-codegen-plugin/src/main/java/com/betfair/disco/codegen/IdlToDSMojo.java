@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.codegen;
+package uk.co.exemel.disco.codegen;
 
-import com.betfair.cougar.codegen.except.PluginException;
-import com.betfair.cougar.codegen.resolver.DefaultSchemaCatalogSource;
-import com.betfair.cougar.codegen.resolver.InterceptingResolver;
-import com.betfair.cougar.codegen.resolver.SchemaCatalogSource;
-import com.betfair.cougar.codegen.resource.ResourceLoader;
-import com.betfair.cougar.transformations.CougarTransformations;
+import uk.co.exemel.disco.codegen.except.PluginException;
+import uk.co.exemel.disco.codegen.resolver.DefaultSchemaCatalogSource;
+import uk.co.exemel.disco.codegen.resolver.InterceptingResolver;
+import uk.co.exemel.disco.codegen.resolver.SchemaCatalogSource;
+import uk.co.exemel.disco.codegen.resource.ResourceLoader;
+import uk.co.exemel.disco.transformations.DiscoTransformations;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
@@ -38,9 +38,9 @@ import java.util.List;
 
 
 /**
- * A plugin which is responsible for generating Cougar-based services. This encompasses a number
+ * A plugin which is responsible for generating Disco-based services. This encompasses a number
  * of code- and file-generation steps, as well as validation. The intention is for this mojo to
- * do everything needed, keeping the plugins/plugin section of a Cougar service's pom as simple as
+ * do everything needed, keeping the plugins/plugin section of a Disco service's pom as simple as
  * possible.
  * <p>
  * <h2>NOTE: idd dependencies</h2>
@@ -260,7 +260,7 @@ public class IdlToDSMojo extends AbstractMojo {
     public void execute()
         throws MojoExecutionException
     {
-        getLog().info("Starting Cougar code generation");
+        getLog().info("Starting Disco code generation");
         if (isOffline()) {
             getLog().warn("Maven in offline mode, plugin is NOT validating IDDs against schemas");
         }
@@ -296,7 +296,7 @@ public class IdlToDSMojo extends AbstractMojo {
             throw new MojoExecutionException("Failed processing IDL: " + e, e);
         }
 
-        getLog().info("Completed Cougar code generation");
+        getLog().info("Completed Disco code generation");
     }
 
     private void prepIddStripperXsl() throws MojoExecutionException {
@@ -546,7 +546,7 @@ public class IdlToDSMojo extends AbstractMojo {
 	}
 
     protected Transformations getTransformations() {
-        return new CougarTransformations(legacyExceptionParamValidation);
+        return new DiscoTransformations(legacyExceptionParamValidation);
     }
 
     @SuppressWarnings("unchecked")

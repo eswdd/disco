@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
-import com.betfair.cougar.netutil.nio.message.*;
-import com.betfair.cougar.netutil.nio.message.ProtocolMessage.ProtocolMessageType;
-import com.betfair.cougar.util.jmx.Exportable;
-import com.betfair.cougar.util.jmx.JMXControl;
+import uk.co.exemel.disco.netutil.nio.message.*;
+import uk.co.exemel.disco.netutil.nio.message.ProtocolMessage.ProtocolMessageType;
+import uk.co.exemel.disco.util.jmx.Exportable;
+import uk.co.exemel.disco.util.jmx.JMXControl;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoSession;
 import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
@@ -31,11 +31,11 @@ import org.springframework.jmx.export.annotation.ManagedResource;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.betfair.cougar.netutil.nio.NioLogger.LoggingLevel.ALL;
+import static uk.co.exemel.disco.netutil.nio.NioLogger.LoggingLevel.ALL;
 
 @ManagedResource
-public class CougarProtocolDecoder extends CumulativeProtocolDecoder implements Exportable {
-    private static final Logger LOG = LoggerFactory.getLogger(CougarProtocolDecoder.class);
+public class DiscoProtocolDecoder extends CumulativeProtocolDecoder implements Exportable {
+    private static final Logger LOG = LoggerFactory.getLogger(DiscoProtocolDecoder.class);
     private final NioLogger nioLogger;
 
     private final AtomicLong badMessagesReceived = new AtomicLong();
@@ -52,7 +52,7 @@ public class CougarProtocolDecoder extends CumulativeProtocolDecoder implements 
     private final AtomicLong tlsRequestsReceived = new AtomicLong();
     private final AtomicLong tlsResponsesReceived = new AtomicLong();
 
-    public CougarProtocolDecoder(NioLogger nioLogger) {
+    public DiscoProtocolDecoder(NioLogger nioLogger) {
         this.nioLogger = nioLogger;
 
         export(nioLogger.getJmxControl());
@@ -66,7 +66,7 @@ public class CougarProtocolDecoder extends CumulativeProtocolDecoder implements 
             byte[] messageBody;
             // we need to know if we're acting as a client or a server and treat appropriately
             if (pm == ProtocolMessageType.MESSAGE) {
-                Boolean b = (Boolean) session.getAttribute(CougarProtocol.IS_SERVER_ATTR_NAME);
+                Boolean b = (Boolean) session.getAttribute(DiscoProtocol.IS_SERVER_ATTR_NAME);
                 if (b != null) {
                     pm = b ? ProtocolMessageType.MESSAGE_REQUEST : ProtocolMessageType.MESSAGE_RESPONSE;
                 } else {
@@ -77,7 +77,7 @@ public class CougarProtocolDecoder extends CumulativeProtocolDecoder implements 
                 case MESSAGE_REQUEST:
                     messageRequestsReceived.incrementAndGet();
                     messageBody = new byte[msgLen - 8];
-                    nioLogger.log(ALL, session, "CougarProtocolDecoder: MESSAGE_REQUEST: Message of length %s received", msgLen);
+                    nioLogger.log(ALL, session, "DiscoProtocolDecoder: MESSAGE_REQUEST: Message of length %s received", msgLen);
                     long reqCorrelationId = buffer.getLong();
                     buffer.get(messageBody);
                     RequestMessage req = new RequestMessage(reqCorrelationId, messageBody);
@@ -86,7 +86,7 @@ public class CougarProtocolDecoder extends CumulativeProtocolDecoder implements 
                 case MESSAGE_RESPONSE:
                     messageResponsesReceived.incrementAndGet();
                     messageBody = new byte[msgLen - 8];
-                    nioLogger.log(ALL, session, "CougarProtocolDecoder: MESSAGE_RESPONSE: Message of length %s received", msgLen);
+                    nioLogger.log(ALL, session, "DiscoProtocolDecoder: MESSAGE_RESPONSE: Message of length %s received", msgLen);
                     long respCorrelationId = buffer.getLong();
                     buffer.get(messageBody);
                     ResponseMessage res = new ResponseMessage(respCorrelationId, messageBody);
@@ -95,7 +95,7 @@ public class CougarProtocolDecoder extends CumulativeProtocolDecoder implements 
                 case EVENT:
                     eventsReceived.incrementAndGet();
                     messageBody = new byte[msgLen];
-                    nioLogger.log(ALL, session, "CougarProtocolDecoder: EVENT: Message of length %s received", msgLen);
+                    nioLogger.log(ALL, session, "DiscoProtocolDecoder: EVENT: Message of length %s received", msgLen);
                     buffer.get(messageBody);
                     EventMessage em = new EventMessage(messageBody);
                     out.write(em);
@@ -162,7 +162,7 @@ public class CougarProtocolDecoder extends CumulativeProtocolDecoder implements 
 
         } else {
             incompleteMessagesReceived.incrementAndGet();
-            nioLogger.log(ALL, session, "CougarProtocolDecoder: Returning FALSE, remaining was %s", buffer.remaining());
+            nioLogger.log(ALL, session, "DiscoProtocolDecoder: Returning FALSE, remaining was %s", buffer.remaining());
             return false;
         }
     }

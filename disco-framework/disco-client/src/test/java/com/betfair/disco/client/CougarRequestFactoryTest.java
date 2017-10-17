@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.client.api.GeoLocationSerializer;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.client.api.GeoLocationSerializer;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import org.apache.http.Header;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -47,7 +47,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class CougarRequestFactoryTest {
+public class DiscoRequestFactoryTest {
     private static final String CONTENT_TYPE = "application/x-my-type";
 
     @Mock
@@ -72,7 +72,7 @@ public class CougarRequestFactoryTest {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = ISODateTimeFormat.dateTime();
 
-    private TestCougarRequestFactory factory = new TestCougarRequestFactory(mockGeoLocationSerializer, "X-REQUEST-UUID", "X-REQUEST-UUID-PARENTS");
+    private TestDiscoRequestFactory factory = new TestDiscoRequestFactory(mockGeoLocationSerializer, "X-REQUEST-UUID", "X-REQUEST-UUID-PARENTS");
 
     @Before
     public void setUp() throws Exception {
@@ -93,7 +93,7 @@ public class CougarRequestFactoryTest {
         assertSame(httpRequest, result);
         assertEquals(5, headers.size());
         assertHeadersContains(headers, ACCEPT, contentType);
-        assertHeadersContains(headers, USER_AGENT, CougarRequestFactory.USER_AGENT_HEADER);
+        assertHeadersContains(headers, USER_AGENT, DiscoRequestFactory.USER_AGENT_HEADER);
         assertHeadersContains(headers, "X-REQUEST-UUID");
         assertHeadersContains(headers, "X-RequestTime");
         assertHeadersContains(headers, "X-RequestTimeout", "0");
@@ -116,7 +116,7 @@ public class CougarRequestFactoryTest {
         assertSame(httpRequest, result);
         assertEquals(9, headers.size());
         assertHeadersContains(headers, ACCEPT, contentType);
-        assertHeadersContains(headers, USER_AGENT, CougarRequestFactory.USER_AGENT_HEADER);
+        assertHeadersContains(headers, USER_AGENT, DiscoRequestFactory.USER_AGENT_HEADER);
         assertHeadersContains(headers, ACCEPT_ENCODING, "gzip");
         assertHeadersContains(headers, "X-Trace-Me", "true");
         String uuidHeaderParent = assertHeadersContains(headers, "X-REQUEST-UUID-PARENTS");
@@ -153,7 +153,7 @@ public class CougarRequestFactoryTest {
         assertSame(httpRequest, result);
         assertEquals(5, headers.size());
         assertHeadersContains(headers, ACCEPT, contentType);
-        assertHeadersContains(headers, USER_AGENT, CougarRequestFactory.USER_AGENT_HEADER);
+        assertHeadersContains(headers, USER_AGENT, DiscoRequestFactory.USER_AGENT_HEADER);
         assertHeadersContains(headers, "X-REQUEST-UUID");
         assertHeadersContains(headers, "X-RequestTime");
         assertHeadersContains(headers, "X-RequestTimeout", "0");
@@ -181,29 +181,29 @@ public class CougarRequestFactoryTest {
     }
 
 
-    private class TestCougarRequestFactory extends CougarRequestFactory<Object> {
+    private class TestDiscoRequestFactory extends DiscoRequestFactory<Object> {
 
-        public TestCougarRequestFactory(GeoLocationSerializer geoLocation, String uuidHeader, String uuidParentsHeader) {
+        public TestDiscoRequestFactory(GeoLocationSerializer geoLocation, String uuidHeader, String uuidParentsHeader) {
             super(new HttpContextEmitter<Object>(geoLocation,uuidHeader,uuidParentsHeader));
         }
 
         @Override
         protected void addHeaders(Object o, List<Header> headers) {
             assertSame(httpRequest, o);
-            CougarRequestFactoryTest.this.headers = headers;
+            DiscoRequestFactoryTest.this.headers = headers;
         }
 
         @Override
         protected void addPostEntity(Object o, String postEntity, String contentType) {
             assertSame(httpRequest, o);
-            assertSame(CougarRequestFactoryTest.this.contentType, contentType);
-            CougarRequestFactoryTest.this.postEntity = postEntity;
+            assertSame(DiscoRequestFactoryTest.this.contentType, contentType);
+            DiscoRequestFactoryTest.this.postEntity = postEntity;
         }
 
         @Override
         protected Object createRequest(String httpMethod, String uri) {
-            assertSame(CougarRequestFactoryTest.this.httpMethod, httpMethod);
-            assertSame(CougarRequestFactoryTest.this.uri, uri);
+            assertSame(DiscoRequestFactoryTest.this.httpMethod, httpMethod);
+            assertSame(DiscoRequestFactoryTest.this.uri, uri);
             return httpRequest;
         }
     }

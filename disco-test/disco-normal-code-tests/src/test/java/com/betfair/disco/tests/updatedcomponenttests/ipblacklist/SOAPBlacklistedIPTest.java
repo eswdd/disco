@@ -16,14 +16,14 @@
  */
 
 // Originally from UpdatedComponentTests/IPBlacklist/SOAP/SOAP_BlacklistedIP.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.ipblacklist;
+package uk.co.exemel.disco.tests.updatedcomponenttests.ipblacklist;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -32,7 +32,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Test that the Cougar service forbids access for the blacklisted IP (SOAP)
+ * Test that the Disco service forbids access for the blacklisted IP (SOAP)
  */
 public class SOAPBlacklistedIPTest {
     @Test
@@ -70,10 +70,10 @@ public class SOAPBlacklistedIPTest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document requestDocument = xMLHelpers1.getXMLObjectFromString("<StringSimpleTypeEchoRequest><msg>foo</msg></StringSimpleTypeEchoRequest>");
         // Get an HTTPCallBean
-        CougarManager cougarManager = CougarManager.getInstance();
-        HttpCallBean HTTPCallBean = cougarManager.getNewHttpCallBean(testIPAddress.replace(";", ","));
-        // Set Cougar Fault Controller attributes
-        cougarManager.setCougarFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
+        DiscoManager discoManager = DiscoManager.getInstance();
+        HttpCallBean HTTPCallBean = discoManager.getNewHttpCallBean(testIPAddress.replace(";", ","));
+        // Set Disco Fault Controller attributes
+        discoManager.setDiscoFaultControllerJMXMBeanAttrbiute("DetailedFaults", "false");
         // Set service name to call
         HTTPCallBean.setServiceName("Baseline");
         // Set service version to call
@@ -83,17 +83,17 @@ public class SOAPBlacklistedIPTest {
         // Get current time
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        // Make Cougar SOAP call
-        cougarManager.makeSoapCougarHTTPCalls(HTTPCallBean);
+        // Make Disco SOAP call
+        discoManager.makeSoapDiscoHTTPCalls(HTTPCallBean);
         // Create a soap response structure as a Document object
         if (!ok) {
             XMLHelpers xMLHelpers4 = new XMLHelpers();
             Document responseDocument = xMLHelpers4.getXMLObjectFromString("<soapenv:Fault><faultcode>soapenv:Client</faultcode><faultstring>DSC-0015</faultstring><detail/></soapenv:Fault>");
             // Get the actual SOAP response and compare it to the expected response
-            HttpResponseBean response6 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+            HttpResponseBean response6 = HTTPCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
             AssertionUtils.multiAssertEquals(responseDocument, response6.getResponseObject());
         }
         // Get access log entries after the time recorded earlier in the test
-        cougarManager.verifyAccessLogEntriesAfterDate(timestamp, new AccessLogRequirement(testIPAddress, "/BaselineService/v2", ok ? "Ok" : "Forbidden"));
+        discoManager.verifyAccessLogEntriesAfterDate(timestamp, new AccessLogRequirement(testIPAddress, "/BaselineService/v2", ok ? "Ok" : "Forbidden"));
     }
 }

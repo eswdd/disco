@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transformations.manglers;
+package uk.co.exemel.disco.transformations.manglers;
 
 import java.util.List;
 
 import org.w3c.dom.Node;
 
-import com.betfair.cougar.codegen.ValidationException;
+import uk.co.exemel.disco.codegen.ValidationException;
 
 /**
  * Scan the document for shared include files and flatten thrir structure

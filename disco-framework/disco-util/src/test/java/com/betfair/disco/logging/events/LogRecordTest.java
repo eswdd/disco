@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging.events;
+package uk.co.exemel.disco.logging.events;
 
 import java.util.logging.Level;
 
-import com.betfair.cougar.CougarUtilTestCase;
-import com.betfair.cougar.api.LoggableEvent;
-import com.betfair.cougar.logging.records.CougarLogRecord;
-import com.betfair.cougar.logging.records.EventLogRecord;
-import com.betfair.cougar.logging.records.TraceLogRecord;
+import uk.co.exemel.disco.DiscoUtilTestCase;
+import uk.co.exemel.disco.api.LoggableEvent;
+import uk.co.exemel.disco.logging.records.DiscoLogRecord;
+import uk.co.exemel.disco.logging.records.EventLogRecord;
+import uk.co.exemel.disco.logging.records.TraceLogRecord;
 
-public class LogRecordTest extends CougarUtilTestCase {
+public class LogRecordTest extends DiscoUtilTestCase {
 
 	public void testLogFormattingSimple() {
 		String msg = "MESSAGE";
-		CougarLogRecord e = new CougarLogRecord("NAME", Level.INFO, msg) {};
+		DiscoLogRecord e = new DiscoLogRecord("NAME", Level.INFO, msg) {};
 		assertTrue(e.getMessage() == msg);
 	}
 
 	public void testLogFormattingComplex() {
 		String msg = "String {}, float %1.2f, int %d";
-		CougarLogRecord e = new CougarLogRecord("NAME", Level.INFO, msg, "string", 3.14, 100) {};
+		DiscoLogRecord e = new DiscoLogRecord("NAME", Level.INFO, msg, "string", 3.14, 100) {};
 		assertTrue(e.getMessage().equals("String string, float 3.14, int 100"));
 	}
 
@@ -63,7 +63,7 @@ public class LogRecordTest extends CougarUtilTestCase {
 	}
 	public void testLogMessageStored() {
 		String msg = "MESSAGE";
-		CougarLogRecord e = new CougarLogRecord("NAME", Level.INFO, msg) {};
+		DiscoLogRecord e = new DiscoLogRecord("NAME", Level.INFO, msg) {};
 		assertTrue(e.getMessage() == msg);
 		e.setMessage("UNUSED");
 		assertTrue(e.getMessage() == msg);
@@ -72,7 +72,7 @@ public class LogRecordTest extends CougarUtilTestCase {
 	public void testLogNanoTime() throws Exception {
 		long nanoStart = System.nanoTime();
 		Thread.sleep(1);
-		CougarLogRecord e = new CougarLogRecord("NAME", Level.INFO, "foo") {};
+		DiscoLogRecord e = new DiscoLogRecord("NAME", Level.INFO, "foo") {};
 		Thread.sleep(1);
 		long nanoEnd = System.nanoTime();
 		assertTrue(nanoStart < e.getNanoTime());

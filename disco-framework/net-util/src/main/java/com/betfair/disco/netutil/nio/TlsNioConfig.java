@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio;
+package uk.co.exemel.disco.netutil.nio;
 
-import com.betfair.cougar.netutil.SslContextFactory;
-import com.betfair.cougar.netutil.nio.monitoring.SessionWriteQueueMonitoring;
-import com.betfair.cougar.util.KeyStoreManagement;
+import uk.co.exemel.disco.netutil.SslContextFactory;
+import uk.co.exemel.disco.netutil.nio.monitoring.SessionWriteQueueMonitoring;
+import uk.co.exemel.disco.util.KeyStoreManagement;
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.ThreadModel;
 import org.apache.mina.common.support.BaseIoServiceConfig;
@@ -147,17 +147,17 @@ public class TlsNioConfig extends NioConfig implements BeanNameAware {
                 }
             }
 
-            CougarProtocol protocol;
+            DiscoProtocol protocol;
             if (isServer) {
-                protocol = CougarProtocol.getServerInstance(getNioLogger(), getKeepAliveInterval(), getKeepAliveTimeout(), sslFilter, supportsTls, requiresTls);
+                protocol = DiscoProtocol.getServerInstance(getNioLogger(), getKeepAliveInterval(), getKeepAliveTimeout(), sslFilter, supportsTls, requiresTls);
             }
             else {
-                protocol = CougarProtocol.getClientInstance(getNioLogger(), getKeepAliveInterval(), getKeepAliveTimeout(), sslFilter, supportsTls, requiresTls, getRpcTimeoutMillis());
+                protocol = DiscoProtocol.getClientInstance(getNioLogger(), getKeepAliveInterval(), getKeepAliveTimeout(), sslFilter, supportsTls, requiresTls, getRpcTimeoutMillis());
             }
 
             config.getFilterChain().addLast("slowHandling", new SessionWriteQueueMonitoring(getNioLogger(), getMaxWriteQueueSize()));
             config.getFilterChain().addLast("codec",
-                    new ProtocolCodecFilter(new CougarProtocolEncoder(getNioLogger()), new CougarProtocolDecoder(getNioLogger())));
+                    new ProtocolCodecFilter(new DiscoProtocolEncoder(getNioLogger()), new DiscoProtocolDecoder(getNioLogger())));
             config.getFilterChain().addLast("protocol", protocol);
 
             config.setThreadModel(ThreadModel.MANUAL);

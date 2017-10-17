@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.codegen.except;
+package uk.co.exemel.disco.codegen.except;
 
 /**
  * Exception thrown by internal code (facilitates some intelligence and avoiding ugly chaining

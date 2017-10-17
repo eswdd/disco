@@ -15,19 +15,19 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.core.api.ev.ClientExecutionResult;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.client.ExceptionFactory;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.core.api.ev.ClientExecutionResult;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.client.ExceptionFactory;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
 import org.eclipse.jetty.client.*;
 import org.eclipse.jetty.client.api.Connection;
 import org.eclipse.jetty.client.api.Request;
@@ -144,7 +144,7 @@ public class AsyncHttpExecutableTest extends AbstractHttpExecutableTest<Request>
         generateEV(tsd, null);
 
         when(mockedHttpErrorTransformer.convert(any(InputStream.class),  any(ExceptionFactory.class),
-                anyInt())).thenReturn(new CougarClientException(ServerFaultCode.RemoteCougarCommunicationFailure, "bang"));
+                anyInt())).thenReturn(new DiscoClientException(ServerFaultCode.RemoteDiscoCommunicationFailure, "bang"));
 
         final PassFailExecutionObserver observer = new PassFailExecutionObserver(true, false);
         new Thread(new Runnable() {
@@ -168,7 +168,7 @@ public class AsyncHttpExecutableTest extends AbstractHttpExecutableTest<Request>
         generateEV(tsd, null);
 
         when(mockedHttpErrorTransformer.convert(any(InputStream.class),  any(ExceptionFactory.class),
-                anyInt())).thenReturn(new CougarClientException(ServerFaultCode.RemoteCougarCommunicationFailure, "bang"));
+                anyInt())).thenReturn(new DiscoClientException(ServerFaultCode.RemoteDiscoCommunicationFailure, "bang"));
 
         final PassFailExecutionObserver observer = new PassFailExecutionObserver(false, true);
         new Thread(new Runnable() {

@@ -23,34 +23,34 @@
 	http://www.springframework.org/schema/util
 	http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-    <bean id="eventLogger" class="com.betfair.cougar.core.impl.logging.EventLoggerImpl">
+    <bean id="eventLogger" class="uk.co.exemel.disco.core.impl.logging.EventLoggerImpl">
         <property name="registry" ref="eventLoggingRegistry"/>
-        <property name="enabled" value="$COUGAR{cougar.log.request}"/>
+        <property name="enabled" value="$COUGAR{disco.log.request}"/>
     </bean>
 
-    <bean id="eventLoggingRegistry" class="com.betfair.cougar.logging.EventLoggingRegistry"/>
+    <bean id="eventLoggingRegistry" class="uk.co.exemel.disco.logging.EventLoggingRegistry"/>
 
-    <bean class="com.betfair.cougar.logging.EventLogDefinition" init-method="register">
+    <bean class="uk.co.exemel.disco.logging.EventLogDefinition" init-method="register">
         <property name="logName" value="COUGAR-SERVICE-LOG-" />
         <property name="registry" ref="eventLoggingRegistry"/>
         <property name="abstract" value="true"/>
         <property name="handler">
-            <bean factory-bean="cougar.core.logHandlerFactory" factory-method="registerLogHandler">
+            <bean factory-bean="disco.core.logHandlerFactory" factory-method="registerLogHandler">
                 <constructor-arg type="java.util.Map">
                     <util:map map-class="java.util.HashMap">
-                        <entry key="fileName" value="$COUGAR{cougar.log.dir}/dw/$COUGAR{system.hostname}-$COUGAR{cougar.app.name}-request-##NAME####NAMESPACE##.log"/>
-                        <entry key="flush" value="$COUGAR{cougar.log.COUGAR-SERVICE-LOG.flush}"/>
-                        <entry key="append" value="$COUGAR{cougar.log.COUGAR-SERVICE-LOG.append}"/>
-                        <entry key="rotation" value="$COUGAR{cougar.log.COUGAR-SERVICE-LOG.rotation}"/>
+                        <entry key="fileName" value="$COUGAR{disco.log.dir}/dw/$COUGAR{system.hostname}-$COUGAR{disco.app.name}-request-##NAME####NAMESPACE##.log"/>
+                        <entry key="flush" value="$COUGAR{disco.log.COUGAR-SERVICE-LOG.flush}"/>
+                        <entry key="append" value="$COUGAR{disco.log.COUGAR-SERVICE-LOG.append}"/>
+                        <entry key="rotation" value="$COUGAR{disco.log.COUGAR-SERVICE-LOG.rotation}"/>
                         <entry key="abstractLogger" value="true"/>
-                        <entry key="immediateFlush" value="$COUGAR{cougar.log.COUGAR-SERVICE-LOG.immediateFlush}"/>
+                        <entry key="immediateFlush" value="$COUGAR{disco.log.COUGAR-SERVICE-LOG.immediateFlush}"/>
                     </util:map>
                 </constructor-arg>
             </bean>
         </property>
     </bean>
 
-    <alias name="eventLogger"                alias="cougar.core.EventLogger"/>
-    <alias name="eventLoggingRegistry"       alias="cougar.core.EventLoggingRegistry"/>
+    <alias name="eventLogger"                alias="disco.core.EventLogger"/>
+    <alias name="eventLoggingRegistry"       alias="disco.core.EventLoggingRegistry"/>
 </beans>
 

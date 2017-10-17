@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.manager;
+package com.betfair.testing.utils.disco.manager;
 
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;

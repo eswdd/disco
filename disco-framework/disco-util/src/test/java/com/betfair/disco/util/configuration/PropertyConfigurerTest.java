@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.configuration;
+package uk.co.exemel.disco.util.configuration;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class PropertyConfigurerTest {
 
     private static final String JMX_PORT_KEY = "jmx.html.port";
     private static final String HOSTNAME_KEY = "system.hostname";
-    private static final String NODEID_KEY = "cougar.core.nodeid";
+    private static final String NODEID_KEY = "disco.core.nodeid";
 
 	private PropertyConfigurer pc;
 	private Resource mockResource = mock(Resource.class);
@@ -85,17 +85,17 @@ public class PropertyConfigurerTest {
         props.setProperty(HOSTNAME_KEY,"TEST_HOST_NAME");
 
         // Try to initialize node id without setting the jmx port property - not defined
-        PropertyConfigurer.CougarNodeId.initialiseNodeId(props);
+        PropertyConfigurer.DiscoNodeId.initialiseNodeId(props);
         assertNull(props.getProperty(NODEID_KEY));
 
         // Set jmx port property to ignore value, try to initialize the node id - not defined
         props.setProperty(JMX_PORT_KEY,"-1");
-        PropertyConfigurer.CougarNodeId.initialiseNodeId(props);
+        PropertyConfigurer.DiscoNodeId.initialiseNodeId(props);
         assertNull(props.getProperty(NODEID_KEY));
 
         // Set jmx port property, try to initialize the node id - defined
         props.setProperty(JMX_PORT_KEY,"_WITH_TEST_PORT");
-        PropertyConfigurer.CougarNodeId.initialiseNodeId(props);
+        PropertyConfigurer.DiscoNodeId.initialiseNodeId(props);
         assertEquals("TEST_HOST_NAME_WITH_TEST_PORT", props.getProperty(NODEID_KEY));
     }
 }

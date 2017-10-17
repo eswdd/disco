@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import com.betfair.cougar.util.RequestUUIDImpl;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.util.RequestUUIDImpl;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.client.methods.HttpGet;
@@ -51,7 +51,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
  * Date: 30/01/2013
  * Time: 15:14
  */
-public class HttpClientCougarRequestFactoryTest {
+public class HttpClientDiscoRequestFactoryTest {
 
     @Mock
     private ClientCallContext mockCallContext;
@@ -64,7 +64,7 @@ public class HttpClientCougarRequestFactoryTest {
     @Mock
     private TimeConstraints mockTimeConstraints;
 
-    private HttpClientCougarRequestFactory factory = new HttpClientCougarRequestFactory(new HttpContextEmitter<HttpUriRequest>(new DefaultGeoLocationSerializer(), "X-REQUEST-UUID", "X-REQUEST-UUID-PARENTS"));
+    private HttpClientDiscoRequestFactory factory = new HttpClientDiscoRequestFactory(new HttpContextEmitter<HttpUriRequest>(new DefaultGeoLocationSerializer(), "X-REQUEST-UUID", "X-REQUEST-UUID-PARENTS"));
 
     private String uri = "http://Some.uri";
     private String contentType = "application/X-my-type";

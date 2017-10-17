@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.nio;
+package uk.co.exemel.disco.transport.nio;
 
 import java.util.Set;
 import java.util.concurrent.Executors;
@@ -27,9 +27,9 @@ import com.betfair.tornjak.monitor.MonitorRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.betfair.cougar.api.Service;
-import com.betfair.cougar.core.api.ServiceAware;
-import com.betfair.cougar.transport.nio.HealthMonitorStrategy.HealthMonitorStrategyListener;
+import uk.co.exemel.disco.api.Service;
+import uk.co.exemel.disco.core.api.ServiceAware;
+import uk.co.exemel.disco.transport.nio.HealthMonitorStrategy.HealthMonitorStrategyListener;
 import com.betfair.tornjak.monitor.Status;
 import com.betfair.tornjak.monitor.StatusAggregator;
 import com.betfair.tornjak.monitor.StatusChangeEvent;

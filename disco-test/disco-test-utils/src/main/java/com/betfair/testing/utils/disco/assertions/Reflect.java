@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.assertions;
+package com.betfair.testing.utils.disco.assertions;
 
-import com.betfair.testing.utils.cougar.misc.StringHelpers;
+import com.betfair.testing.utils.disco.misc.StringHelpers;
 import org.json.JSONException;
 
 import java.lang.reflect.Array;

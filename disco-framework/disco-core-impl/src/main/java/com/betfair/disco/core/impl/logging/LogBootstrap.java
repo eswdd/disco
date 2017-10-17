@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.logging;
+package uk.co.exemel.disco.core.impl.logging;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -29,9 +29,9 @@ import java.util.Properties;
  * If you want to initialise a logging system that is not log4j, then point the
  * System variable to your own implementation of this interface.
  *
- *  <code>cougar.core.log.bootstrap.class</code> System variable to point to your implementation
+ *  <code>disco.core.log.bootstrap.class</code> System variable to point to your implementation
  *
- * See @CougarLog4JBootstrap
+ * See @DiscoLog4JBootstrap
  */
 
 public interface LogBootstrap {

@@ -14,38 +14,38 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.factory;
+package uk.co.exemel.disco.client.factory;
 
-import com.betfair.cougar.api.Service;
-import com.betfair.cougar.api.security.IdentityResolver;
-import com.betfair.cougar.api.security.IdentityTokenResolver;
-import com.betfair.cougar.client.HttpClientExecutable;
-import com.betfair.cougar.client.SyncHttpTransportFactory;
-import com.betfair.cougar.client.api.ContextEmitter;
-import com.betfair.cougar.core.api.ServiceDefinition;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.ev.RegisterableClientExecutableResolver;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.client.ExceptionFactory;
-import com.betfair.cougar.core.impl.CougarIntroductionService;
-import com.betfair.cougar.core.impl.ev.ClientServiceRegistration;
-import com.betfair.cougar.transport.api.protocol.http.HttpServiceBindingDescriptor;
+import uk.co.exemel.disco.api.Service;
+import uk.co.exemel.disco.api.security.IdentityResolver;
+import uk.co.exemel.disco.api.security.IdentityTokenResolver;
+import uk.co.exemel.disco.client.HttpClientExecutable;
+import uk.co.exemel.disco.client.SyncHttpTransportFactory;
+import uk.co.exemel.disco.client.api.ContextEmitter;
+import uk.co.exemel.disco.core.api.ServiceDefinition;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.ev.RegisterableClientExecutableResolver;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.client.ExceptionFactory;
+import uk.co.exemel.disco.core.impl.DiscoIntroductionService;
+import uk.co.exemel.disco.core.impl.ev.ClientServiceRegistration;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpServiceBindingDescriptor;
 import org.springframework.core.io.Resource;
 
 import java.util.concurrent.Executor;
 
 /**
- * Base cougar client service factory that registers client services
+ * Base disco client service factory that registers client services
  * with the specified parameters.  Currently works with only synchronous
  * http transport.
  * - Creates a new instance of the transport
  * - Initialises the executable resolver with the transport and the operation keys
  * - Packages the whole thing into a service registration request and introduces the service to EV
  */
-public abstract class AbstractCougarClientFactory {
+public abstract class AbstractDiscoClientFactory {
 
     private SyncHttpTransportFactory syncHttpTransportFactory;
-    private CougarIntroductionService cougarIntroductionService;
+    private DiscoIntroductionService discoIntroductionService;
     protected ExecutionVenue executionVenue;
     protected Executor executor;
 
@@ -87,14 +87,14 @@ public abstract class AbstractCougarClientFactory {
             clientServiceRegistration.setNamespace(namespace);
 
             // register with ev
-            cougarIntroductionService.registerService(clientServiceRegistration);
+            discoIntroductionService.registerService(clientServiceRegistration);
         } catch (Exception ex) {
-            throw new CougarFrameworkException("Error while registering client with ev", ex);
+            throw new DiscoFrameworkException("Error while registering client with ev", ex);
         }
     }
 
-    public void setCougarIntroductionService(CougarIntroductionService cougarIntroductionService) {
-        this.cougarIntroductionService = cougarIntroductionService;
+    public void setDiscoIntroductionService(DiscoIntroductionService discoIntroductionService) {
+        this.discoIntroductionService = discoIntroductionService;
     }
 
     public void setSyncHttpTransportFactory(SyncHttpTransportFactory syncHttpTransportFactory) {

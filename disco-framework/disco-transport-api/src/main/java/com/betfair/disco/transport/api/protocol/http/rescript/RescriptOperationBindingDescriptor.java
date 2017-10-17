@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.http.rescript;
+package uk.co.exemel.disco.transport.api.protocol.http.rescript;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
 
 /**
- * Describes how to bind a cougar Service Operation to a Rescript Request.
+ * Describes how to bind a disco Service Operation to a Rescript Request.
  * This may be generated from an idd extensions xml file.
  *
  */

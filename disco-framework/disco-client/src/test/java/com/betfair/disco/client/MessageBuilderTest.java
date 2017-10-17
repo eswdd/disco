@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client;
+package uk.co.exemel.disco.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,14 +22,14 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.betfair.cougar.core.api.exception.CougarValidationException;
+import uk.co.exemel.disco.core.api.exception.DiscoValidationException;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.betfair.cougar.core.api.transcription.Parameter;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor.ParamSource;
+import uk.co.exemel.disco.core.api.transcription.Parameter;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.rescript.RescriptParamBindingDescriptor.ParamSource;
 
 public class MessageBuilderTest {
 	MessageBuilder mb;
@@ -142,7 +142,7 @@ public class MessageBuilderTest {
 			mb.build(new Object[] {null}, mockParameters, mockOperationBinding);
 			fail();
 
-		} catch (CougarValidationException a) {
+		} catch (DiscoValidationException a) {
 			//pass
 		}
 	}

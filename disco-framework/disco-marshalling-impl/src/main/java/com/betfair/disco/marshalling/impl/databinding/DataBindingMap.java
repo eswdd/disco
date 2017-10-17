@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding;
+package uk.co.exemel.disco.marshalling.impl.databinding;
 
 
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
 
 import javax.ws.rs.core.MediaType;
 import java.util.Set;

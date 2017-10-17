@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.ResponseCode;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.api.security.*;
-import com.betfair.cougar.core.api.CougarStartingGate;
-import com.betfair.cougar.core.api.GateListener;
-import com.betfair.cougar.core.api.ServiceBindingDescriptor;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.api.exception.*;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.ResponseCode;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.api.security.*;
+import uk.co.exemel.disco.core.api.DiscoStartingGate;
+import uk.co.exemel.disco.core.api.GateListener;
+import uk.co.exemel.disco.core.api.ServiceBindingDescriptor;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.api.exception.*;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.transport.api.CommandValidator;
-import com.betfair.cougar.transport.api.RequestLogger;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommand;
-import com.betfair.cougar.transport.api.protocol.http.HttpCommandProcessor;
-import com.betfair.cougar.transport.impl.AbstractCommandProcessor;
-import com.betfair.cougar.transport.impl.CommandValidatorRegistry;
-import com.betfair.cougar.util.stream.ByteCountingInputStream;
-import com.betfair.cougar.util.stream.LimitedByteCountingInputStream;
+import uk.co.exemel.disco.transport.api.CommandValidator;
+import uk.co.exemel.disco.transport.api.RequestLogger;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommand;
+import uk.co.exemel.disco.transport.api.protocol.http.HttpCommandProcessor;
+import uk.co.exemel.disco.transport.impl.AbstractCommandProcessor;
+import uk.co.exemel.disco.transport.impl.CommandValidatorRegistry;
+import uk.co.exemel.disco.util.stream.ByteCountingInputStream;
+import uk.co.exemel.disco.util.stream.LimitedByteCountingInputStream;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 
 import javax.servlet.http.HttpServletRequest;
@@ -108,12 +108,12 @@ public abstract class AbstractHttpCommandProcessor<CredentialsContainer> extends
 
 	/**
 	 * By setting the starting gate property this CommandProcessor will register
-	 * itself with the CougarStartingGate
+	 * itself with the DiscoStartingGate
 	 *
 	 * @param startingGate
 	 *            the starting gate for the application
 	 */
-	public void setStartingGate(CougarStartingGate startingGate) {
+	public void setStartingGate(DiscoStartingGate startingGate) {
 		startingGate.registerStartingListener(this);
 	}
 
@@ -152,7 +152,7 @@ public abstract class AbstractHttpCommandProcessor<CredentialsContainer> extends
 
 	/**
 	 * Adds the binding descriptor to a list for binding later. The actual
-	 * binding occurs onCougarStart, to be implemented by subclasses, when it
+	 * binding occurs onDiscoStart, to be implemented by subclasses, when it
 	 * can be guaranteed that all services have been registered with the EV.
 	 */
 	@Override
@@ -161,7 +161,7 @@ public abstract class AbstractHttpCommandProcessor<CredentialsContainer> extends
                 "-v" + bindingDescriptor.getServiceVersion().getMajor();
 
         if (serviceBindingDescriptors.containsKey(servicePlusMajorVersion)) {
-                throw new PanicInTheCougar("More than one version of service [" + bindingDescriptor.getServiceName() +
+                throw new PanicInTheDisco("More than one version of service [" + bindingDescriptor.getServiceName() +
                         "] is attempting to be bound for the same major version. The clashing versions are [" +
                         serviceBindingDescriptors.get(servicePlusMajorVersion).getServiceVersion() + ", " +
                         bindingDescriptor.getServiceVersion() +
@@ -277,15 +277,15 @@ public abstract class AbstractHttpCommandProcessor<CredentialsContainer> extends
      * If an exception is received while writing a response to the client, it might be
      * because the that client has closed their connection. If so, the problem should be ignored.
      */
-    protected CougarException handleResponseWritingIOException(Exception e, Class resultClass) {
+    protected DiscoException handleResponseWritingIOException(Exception e, Class resultClass) {
         String errorMessage = "Exception writing "+ resultClass.getCanonicalName() +" to http stream";
         IOException ioe = getIOException(e);
         if (ioe == null) {
-            CougarException ce;
-            if (e instanceof CougarException) {
-                ce = (CougarException)e;
+            DiscoException ce;
+            if (e instanceof DiscoException) {
+                ce = (DiscoException)e;
             } else {
-                ce = new CougarFrameworkException(errorMessage, e);
+                ce = new DiscoFrameworkException(errorMessage, e);
             }
             return ce;
         }
@@ -300,7 +300,7 @@ public abstract class AbstractHttpCommandProcessor<CredentialsContainer> extends
 				e.getClass().getCanonicalName(),
 				e.getMessage()
 		);
-		return new CougarServiceException(ServerFaultCode.OutputChannelClosedCantWrite, errorMessage, e);
+		return new DiscoServiceException(ServerFaultCode.OutputChannelClosedCantWrite, errorMessage, e);
 	}
 
 	private IOException getIOException(Throwable e) {

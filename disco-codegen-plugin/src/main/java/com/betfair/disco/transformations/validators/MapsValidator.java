@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transformations.validators;
+package uk.co.exemel.disco.transformations.validators;
 
 import java.util.List;
 
 import org.w3c.dom.Node;
 
-import com.betfair.cougar.codegen.ValidationException;
+import uk.co.exemel.disco.codegen.ValidationException;
 
 public class MapsValidator extends AbstractValidator {
 

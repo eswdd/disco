@@ -19,20 +19,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.betfair.cougar</groupId>
-        <artifactId>cougar-framework</artifactId>
+        <groupId>uk.co.exemel.disco</groupId>
+        <artifactId>disco-framework</artifactId>
         <version>3.3-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.betfair.cougar</groupId>
-    <artifactId>cougar-null-geoip-locator</artifactId>
-    <name>cougar-null-geoip-locator</name>
+    <groupId>uk.co.exemel.disco</groupId>
+    <artifactId>disco-null-geoip-locator</artifactId>
+    <name>disco-null-geoip-locator</name>
     <version>3.3-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>cougar-util</artifactId>
+            <artifactId>disco-util</artifactId>
         </dependency>
     </dependencies>
 

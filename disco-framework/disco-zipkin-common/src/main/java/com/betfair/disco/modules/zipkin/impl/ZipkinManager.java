@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.modules.zipkin.impl;
+package uk.co.exemel.disco.modules.zipkin.impl;
 
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.modules.zipkin.api.ZipkinDataBuilder;
-import com.betfair.cougar.modules.zipkin.api.ZipkinKeys;
-import com.betfair.cougar.modules.zipkin.api.ZipkinRequestUUID;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinDataBuilder;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinKeys;
+import uk.co.exemel.disco.modules.zipkin.api.ZipkinRequestUUID;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
@@ -102,7 +102,7 @@ public class ZipkinManager {
      * Creates a new ZipkinRequestUUID. This method will generate any required Zipkin data if it does not exist (e.g. if
      * this invocation corresponds to the first request in the chain).
      *
-     * @param cougarUuid   The cougar UUID
+     * @param discoUuid   The disco UUID
      * @param traceId      The trace ID of the span (null to request generation)
      * @param spanId       The ID of the span (null to request generation)
      * @param parentSpanId The ID of the parent span
@@ -111,16 +111,16 @@ public class ZipkinManager {
      * @param port         The port corresponding to the span
      * @return The newly created ZipkinRequestUUID
      */
-    public ZipkinRequestUUID createNewZipkinRequestUUID(@Nonnull RequestUUID cougarUuid, @Nullable String traceId,
+    public ZipkinRequestUUID createNewZipkinRequestUUID(@Nonnull RequestUUID discoUuid, @Nullable String traceId,
                                                         @Nullable String spanId, @Nullable String parentSpanId,
                                                         @Nullable String sampled, @Nullable String flags, int port) {
-        Objects.requireNonNull(cougarUuid);
+        Objects.requireNonNull(discoUuid);
 
         if (Boolean.FALSE.equals(ZipkinKeys.sampledToBoolean(sampled))) {
             // short-circuit: if the request was already marked as not sampled, we don't even try to sample it now
             // otherwise, we don't care which sampled value we have (if it is true then the traceId/spanId should
             // also be != null)
-            return new ZipkinRequestUUIDImpl(cougarUuid, null);
+            return new ZipkinRequestUUIDImpl(discoUuid, null);
         }
 
         ZipkinDataBuilder zipkinDataBuilder;
@@ -156,7 +156,7 @@ public class ZipkinManager {
 
         }
 
-        return new ZipkinRequestUUIDImpl(cougarUuid, zipkinDataBuilder);
+        return new ZipkinRequestUUIDImpl(discoUuid, zipkinDataBuilder);
     }
 
     /**

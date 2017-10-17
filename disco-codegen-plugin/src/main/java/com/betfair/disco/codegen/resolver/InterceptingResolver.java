@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.codegen.resolver;
+package uk.co.exemel.disco.codegen.resolver;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +28,8 @@ import org.w3c.dom.ls.LSInput;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.betfair.cougar.codegen.except.PluginException;
-import com.betfair.cougar.codegen.resource.ResourceLoader;
+import uk.co.exemel.disco.codegen.except.PluginException;
+import uk.co.exemel.disco.codegen.resource.ResourceLoader;
 
 /**
  * Our own custom resolver which knows to go looking for include files (*.inc) as resources, if

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.tests.updatedcomponenttests.countrycode;
+package uk.co.exemel.disco.tests.updatedcomponenttests.countrycode;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import com.betfair.testing.utils.JSONHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -96,16 +96,16 @@ public class GetCountryCodeTest {
 
    }
    public void getInferedCountry(String host, String value)throws Exception{
-    CougarManager cougarManager=CougarManager.getInstance();
-    HttpCallBean getNewHttpCallBean=cougarManager.getNewHttpCallBean("87.248.113.14");
+    DiscoManager discoManager=DiscoManager.getInstance();
+    HttpCallBean getNewHttpCallBean=discoManager.getNewHttpCallBean("87.248.113.14");
     getNewHttpCallBean.setOperationName("getInferredCountryCode","inferredCountryCode");
-    getNewHttpCallBean.setServiceName("baseline","cougarBaseline");
+    getNewHttpCallBean.setServiceName("baseline","discoBaseline");
     getNewHttpCallBean.setVersion("v2");
     Map map3 = new HashMap();
     map3.put("Host",host);
     getNewHttpCallBean.setHeaderParams(map3);
     // Make REST JSON call to the operation requesting a JSON response
-    cougarManager.makeRestCougarHTTPCall(getNewHttpCallBean, com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum.JSON);
+    discoManager.makeRestDiscoHTTPCall(getNewHttpCallBean, com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum.RESTJSON, com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum.JSON);
    //Create expected response as XML document
     XMLHelpers xMLHelpers = new XMLHelpers();
    //Document createAsDocument = xMLHelpers.getXMLObjectFromString("<String><></></String>");
@@ -114,7 +114,7 @@ public class GetCountryCodeTest {
     JSONHelpers jSONHelpers = new JSONHelpers();
     JSONObject convertXMLDocumentToJSONObjectRemoveRootElement = jSONHelpers.convertXMLDocumentToJSONObjectRemoveRootElement(createAsDocument);
     // Check the 2 responses are as expected (Bad Request)
-    HttpResponseBean response = getNewHttpCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+    HttpResponseBean response = getNewHttpCallBean.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
     AssertionUtils.multiAssertEquals(convertXMLDocumentToJSONObjectRemoveRootElement, response.getResponseObject());
         }
     }

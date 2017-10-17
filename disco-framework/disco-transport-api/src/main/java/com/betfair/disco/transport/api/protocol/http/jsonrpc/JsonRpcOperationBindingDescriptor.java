@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.api.protocol.http.jsonrpc;
+package uk.co.exemel.disco.transport.api.protocol.http.jsonrpc;
 
-import com.betfair.cougar.core.api.OperationBindingDescriptor;
-import com.betfair.cougar.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.OperationBindingDescriptor;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
 
 /**
  * OperationKey only binding descriptor implementation for JsonRpc

@@ -22,7 +22,7 @@
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 
-    <bean parent="cougar.transport.AbstractProtocolBinding" scope="singleton">
+    <bean parent="disco.transport.AbstractProtocolBinding" scope="singleton">
         <property name="contextRoot" value=""/>
         <property name="protocol" value="RESCRIPT"/>
     </bean>

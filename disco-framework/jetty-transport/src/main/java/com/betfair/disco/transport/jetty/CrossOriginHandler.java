@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.jetty;
+package uk.co.exemel.disco.transport.jetty;
 
-import com.betfair.cougar.CougarVersion;
+import uk.co.exemel.disco.DiscoVersion;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -81,7 +81,7 @@ public class CrossOriginHandler extends AbstractHandler {
 
 	@Override
 	public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.setHeader("Server", "Cougar 2 - " + CougarVersion.getVersion());
+        response.setHeader("Server", "Disco 2 - " + DiscoVersion.getVersion());
         /*
          Mark the request as handled by default. Leave the responsibility to undo this statement (if necessary) to
          the request chain.

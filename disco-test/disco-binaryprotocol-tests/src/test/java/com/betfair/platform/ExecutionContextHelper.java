@@ -16,14 +16,14 @@
 
 package com.betfair.platform;
 
-import com.betfair.cougar.api.ExecutionContext;
+import uk.co.exemel.disco.api.ExecutionContext;
 
 import java.util.Date;
 
 /**
  * Helper class to aid in the creation of a client side execution context.
  *
- * Pass in the known params data and this class will generate an {@link com.betfair.cougar.api.ExecutionContext}
+ * Pass in the known params data and this class will generate an {@link uk.co.exemel.disco.api.ExecutionContext}
  * that will pass the required data across.
  */
 public class ExecutionContextHelper {

@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.health;
+package uk.co.exemel.disco.health;
 
-import com.betfair.cougar.api.ContainerContext;
-import com.betfair.cougar.api.LogExtension;
-import com.betfair.cougar.api.LoggableEvent;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.api.RequestUUID;
-import com.betfair.cougar.api.ServiceInfo;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.api.security.IdentityChain;
-import com.betfair.cougar.core.impl.DefaultTimeConstraints;
-import com.betfair.cougar.health.service.v3.HealthService;
-import com.betfair.cougar.health.service.v3.enumerations.HealthStatus;
-import com.betfair.cougar.health.service.v3.enumerations.RestrictedHealthStatus;
-import com.betfair.cougar.health.service.v3.exception.HealthException;
-import com.betfair.cougar.health.service.v3.to.HealthDetailResponse;
-import com.betfair.cougar.health.service.v3.to.HealthSummaryResponse;
-import com.betfair.cougar.health.service.v3.to.SubComponentStatus;
-import com.betfair.cougar.logging.CougarLoggingUtils;
+import uk.co.exemel.disco.api.ContainerContext;
+import uk.co.exemel.disco.api.LogExtension;
+import uk.co.exemel.disco.api.LoggableEvent;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.api.RequestUUID;
+import uk.co.exemel.disco.api.ServiceInfo;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.api.security.IdentityChain;
+import uk.co.exemel.disco.core.impl.DefaultTimeConstraints;
+import uk.co.exemel.disco.health.service.v3.HealthService;
+import uk.co.exemel.disco.health.service.v3.enumerations.HealthStatus;
+import uk.co.exemel.disco.health.service.v3.enumerations.RestrictedHealthStatus;
+import uk.co.exemel.disco.health.service.v3.exception.HealthException;
+import uk.co.exemel.disco.health.service.v3.to.HealthDetailResponse;
+import uk.co.exemel.disco.health.service.v3.to.HealthSummaryResponse;
+import uk.co.exemel.disco.health.service.v3.to.SubComponentStatus;
+import uk.co.exemel.disco.logging.DiscoLoggingUtils;
 import org.slf4j.LoggerFactory;
 import com.betfair.tornjak.monitor.ActiveMethodMonitor;
 import com.betfair.tornjak.monitor.ErrorCountingPolicy;
@@ -74,7 +74,7 @@ public class HealthServiceImplTest {
 
     @BeforeClass
     public static void suppressLogs() {
-        CougarLoggingUtils.suppressAllRootLoggerOutput();
+        DiscoLoggingUtils.suppressAllRootLoggerOutput();
     }
 
 

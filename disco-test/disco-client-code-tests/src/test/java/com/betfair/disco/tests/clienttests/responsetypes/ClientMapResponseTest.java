@@ -15,13 +15,13 @@
  */
 
 // Originally from ClientTests/Transport/ResponseTypes/Client_Rescript_MapResponse.xls;
-package com.betfair.cougar.tests.clienttests.responsetypes;
+package uk.co.exemel.disco.tests.clienttests.responsetypes;
 
 import com.betfair.baseline.v2.BaselineSyncClient;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.tests.clienttests.ClientTestsHelper;
-import com.betfair.cougar.tests.clienttests.CougarClientResponseTypeUtils;
-import com.betfair.cougar.tests.clienttests.CougarClientWrapper;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.tests.clienttests.ClientTestsHelper;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientResponseTypeUtils;
+import uk.co.exemel.disco.tests.clienttests.DiscoClientWrapper;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -30,19 +30,19 @@ import java.util.Map;
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
- * Ensure an operation performed against cougar via a cougar client can have a map as a response object
+ * Ensure an operation performed against disco via a disco client can have a map as a response object
  */
 public class ClientMapResponseTest {
     @Test(dataProvider = "TransportType")
-    public void doTest(CougarClientWrapper.TransportType tt) throws Exception {
+    public void doTest(DiscoClientWrapper.TransportType tt) throws Exception {
         // Set up client
-        CougarClientWrapper cougarClientWrapper1 = CougarClientWrapper.getInstance(tt);
-        CougarClientWrapper wrapper = cougarClientWrapper1;
-        BaselineSyncClient client = cougarClientWrapper1.getClient();
-        ExecutionContext context = cougarClientWrapper1.getCtx();
+        DiscoClientWrapper discoClientWrapper1 = DiscoClientWrapper.getInstance(tt);
+        DiscoClientWrapper wrapper = discoClientWrapper1;
+        BaselineSyncClient client = discoClientWrapper1.getClient();
+        ExecutionContext context = discoClientWrapper1.getCtx();
         // Build the map object that is the expected repsonse
-        CougarClientResponseTypeUtils cougarClientResponseTypeUtils2 = new CougarClientResponseTypeUtils();
-        Map<String, String> requestMap = cougarClientResponseTypeUtils2.buildMap("entry1,entry2,entry3,entry4", "aaa,bbb,ccc,ddd");
+        DiscoClientResponseTypeUtils discoClientResponseTypeUtils2 = new DiscoClientResponseTypeUtils();
+        Map<String, String> requestMap = discoClientResponseTypeUtils2.buildMap("entry1,entry2,entry3,entry4", "aaa,bbb,ccc,ddd");
         // Call method using recript transport and check the received map response is as expected
         Map<String, String> map3 = client.testSimpleMapGet(context, requestMap);
         assertEquals("aaa", map3.get("entry1"));

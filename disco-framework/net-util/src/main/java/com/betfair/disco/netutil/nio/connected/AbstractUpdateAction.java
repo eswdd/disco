@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.netutil.nio.connected;
+package uk.co.exemel.disco.netutil.nio.connected;
 
-import com.betfair.cougar.netutil.nio.AbstractHeapTranscribable;
+import uk.co.exemel.disco.netutil.nio.AbstractHeapTranscribable;
 
 /**
  *

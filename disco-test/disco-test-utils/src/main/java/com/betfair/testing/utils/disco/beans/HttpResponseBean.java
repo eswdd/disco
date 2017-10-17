@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.betfair.testing.utils.cougar.beans;
+package com.betfair.testing.utils.disco.beans;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Bean to hold the response information returned from a call made to a Cougar
+ * Bean to hold the response information returned from a call made to a Disco
  * container within the Betfair system.
  */
 public class HttpResponseBean {

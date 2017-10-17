@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl.databinding.kpi;
+package uk.co.exemel.disco.marshalling.impl.databinding.kpi;
 
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
-import com.betfair.cougar.marshalling.api.databinding.FaultMarshaller;
-import com.betfair.cougar.marshalling.api.databinding.FaultUnMarshaller;
-import com.betfair.cougar.marshalling.api.databinding.Marshaller;
-import com.betfair.cougar.marshalling.api.databinding.UnMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.FaultUnMarshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.Marshaller;
+import uk.co.exemel.disco.marshalling.api.databinding.UnMarshaller;
 import com.betfair.tornjak.kpi.KPIMonitor;
 import org.junit.Before;
 import org.junit.Test;
@@ -111,22 +111,22 @@ public class KPITimingDataBindingFactoryTest {
 
     private void expectMarshall() {
         verify(mockMarshaller).marshall(null,null, null, false);
-        verify(monitor).addEvent(eq("Cougar.ws.foo.marshall"), anyLong(), eq(true));
+        verify(monitor).addEvent(eq("Disco.ws.foo.marshall"), anyLong(), eq(true));
     }
 
     private void expectFaultMarshall() {
         verify(mockFaultMarshaller).marshallFault(null, null, null);
-        verify(monitor).addEvent(eq("Cougar.ws.foo.marshallFault"), anyLong(), eq(true));
+        verify(monitor).addEvent(eq("Disco.ws.foo.marshallFault"), anyLong(), eq(true));
     }
 
     private void expectUnMarshall() {
         verify(mockUnMarshaller).unmarshall(any(InputStream.class), any(Class.class), anyString(), anyBoolean());
-        verify(monitor).addEvent(eq("Cougar.ws.foo.unmarshall"), anyLong(), eq(true));
+        verify(monitor).addEvent(eq("Disco.ws.foo.unmarshall"), anyLong(), eq(true));
     }
 
     private void expectFaultUnMarshall() {
         verify(mockFaultUnMarshaller).unMarshallFault(any(InputStream.class), anyString());
-        verify(monitor).addEvent(eq("Cougar.ws.foo.unmarshallFault"), anyLong(), eq(true));
+        verify(monitor).addEvent(eq("Disco.ws.foo.unmarshallFault"), anyLong(), eq(true));
     }
 
 

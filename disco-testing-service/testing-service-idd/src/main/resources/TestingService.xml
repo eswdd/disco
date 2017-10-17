@@ -18,7 +18,7 @@
 <interface name="Testing" version="1.0"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		    xsi:noNamespaceSchemaLocation="http://www.betfair.com/BSIDL/4.0.xsd">
-	<description>The Cougar Testing Service</description>
+	<description>The Disco Testing Service</description>
 	<operation name="refreshAllCaches" since="1.0.0">
 		<description>returns a list of caches</description>
 		<parameters>

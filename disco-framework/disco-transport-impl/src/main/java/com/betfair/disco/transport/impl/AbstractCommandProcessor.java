@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl;
+package uk.co.exemel.disco.transport.impl;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.tracing.Tracer;
-import com.betfair.cougar.transport.api.CommandResolver;
-import com.betfair.cougar.transport.api.CommandValidator;
-import com.betfair.cougar.transport.api.ExecutionCommand;
-import com.betfair.cougar.transport.api.TransportCommand;
-import com.betfair.cougar.transport.api.TransportCommandProcessor;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.tracing.Tracer;
+import uk.co.exemel.disco.transport.api.CommandResolver;
+import uk.co.exemel.disco.transport.api.CommandValidator;
+import uk.co.exemel.disco.transport.api.ExecutionCommand;
+import uk.co.exemel.disco.transport.api.TransportCommand;
+import uk.co.exemel.disco.transport.api.TransportCommandProcessor;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 
 import java.util.ArrayList;
@@ -94,16 +94,16 @@ public abstract class AbstractCommandProcessor<T extends TransportCommand> imple
 			ctx = resolver.resolveExecutionContext();
             List<ExecutionCommand> executionCommands = resolver.resolveExecutionCommands();
             if (executionCommands.size() > 1) {
-                throw new CougarFrameworkException("Resolved >1 command in a non-batch call!");
+                throw new DiscoFrameworkException("Resolved >1 command in a non-batch call!");
             }
             ExecutionCommand exec = executionCommands.get(0);
             tracer.start(ctx.getRequestUUID(), exec.getOperationKey());
             traceStarted = true;
 			executeCommand(exec, ctx);
-		} catch(CougarException ce) {
+		} catch(DiscoException ce) {
             executeError(command, ctx, ce, traceStarted);
 		} catch (Exception e) {
-            executeError(command, ctx, new CougarFrameworkException("Unexpected exception while processing transport command", e), traceStarted);
+            executeError(command, ctx, new DiscoFrameworkException("Unexpected exception while processing transport command", e), traceStarted);
 		}
 	}
 
@@ -115,7 +115,7 @@ public abstract class AbstractCommandProcessor<T extends TransportCommand> imple
     /**
      * Enables validation (and rejection) of processing of a command.
      */
-    protected void validateCommand(final T command) throws CougarException {
+    protected void validateCommand(final T command) throws DiscoException {
         List<CommandValidator<T>> validators = getCommandValidators();
         for (CommandValidator<T> v : validators) {
             v.validate(command);
@@ -137,7 +137,7 @@ public abstract class AbstractCommandProcessor<T extends TransportCommand> imple
                    finalExec.getTimeConstraints());
     }
 
-    protected void executeError(final T finalExec, final DehydratedExecutionContext finalCtx, final CougarException finalError, final boolean traceStarted) {
+    protected void executeError(final T finalExec, final DehydratedExecutionContext finalCtx, final DiscoException finalError, final boolean traceStarted) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -162,7 +162,7 @@ public abstract class AbstractCommandProcessor<T extends TransportCommand> imple
      * @param e the exception that was thrown
      * @param traceStarted
      */
-	protected abstract void writeErrorResponse(T command, DehydratedExecutionContext context, CougarException e, boolean traceStarted);
+	protected abstract void writeErrorResponse(T command, DehydratedExecutionContext context, DiscoException e, boolean traceStarted);
 
 	protected final OperationDefinition getOperationDefinition(OperationKey key) {
 		return ev.getOperationDefinition(key);

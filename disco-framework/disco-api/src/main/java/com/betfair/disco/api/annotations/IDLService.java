@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.api.annotations;
+package uk.co.exemel.disco.api.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

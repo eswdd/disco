@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.socket;
+package uk.co.exemel.disco.transport.socket;
 
-import com.betfair.cougar.api.DehydratedExecutionContext;
-import com.betfair.cougar.api.LogExtension;
-import com.betfair.cougar.api.UUIDGenerator;
-import com.betfair.cougar.core.api.ev.ConnectedResponse;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.OperationDefinition;
-import com.betfair.cougar.core.api.ev.Subscription;
-import com.betfair.cougar.core.api.exception.CougarFrameworkException;
-import com.betfair.cougar.core.api.logging.EventLogger;
-import com.betfair.cougar.core.impl.logging.ConnectedObjectLogEvent;
+import uk.co.exemel.disco.api.DehydratedExecutionContext;
+import uk.co.exemel.disco.api.LogExtension;
+import uk.co.exemel.disco.api.UUIDGenerator;
+import uk.co.exemel.disco.core.api.ev.ConnectedResponse;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.OperationDefinition;
+import uk.co.exemel.disco.core.api.ev.Subscription;
+import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
+import uk.co.exemel.disco.core.api.logging.EventLogger;
+import uk.co.exemel.disco.core.impl.logging.ConnectedObjectLogEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.betfair.cougar.netutil.nio.*;
-import com.betfair.cougar.netutil.nio.connected.InitialUpdate;
-import com.betfair.cougar.netutil.nio.connected.TerminateHeap;
-import com.betfair.cougar.netutil.nio.connected.Update;
-import com.betfair.cougar.netutil.nio.message.EventMessage;
-import com.betfair.cougar.transport.api.protocol.CougarObjectIOFactory;
-import com.betfair.cougar.transport.api.protocol.CougarObjectOutput;
-import com.betfair.cougar.transport.api.protocol.socket.NewHeapSubscription;
-import com.betfair.cougar.util.UUIDGeneratorImpl;
+import uk.co.exemel.disco.netutil.nio.*;
+import uk.co.exemel.disco.netutil.nio.connected.InitialUpdate;
+import uk.co.exemel.disco.netutil.nio.connected.TerminateHeap;
+import uk.co.exemel.disco.netutil.nio.connected.Update;
+import uk.co.exemel.disco.netutil.nio.message.EventMessage;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectIOFactory;
+import uk.co.exemel.disco.transport.api.protocol.DiscoObjectOutput;
+import uk.co.exemel.disco.transport.api.protocol.socket.NewHeapSubscription;
+import uk.co.exemel.disco.util.UUIDGeneratorImpl;
 import com.betfair.platform.virtualheap.Heap;
 import org.apache.mina.common.IoSession;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.betfair.cougar.core.api.ev.Subscription.CloseReason.*;
+import static uk.co.exemel.disco.core.api.ev.Subscription.CloseReason.*;
 
 @ManagedResource
 public class PooledServerConnectedObjectManager implements ServerConnectedObjectManager {
@@ -71,7 +71,7 @@ public class PooledServerConnectedObjectManager implements ServerConnectedObject
     private Map<IoSession, Multiset<String>> heapsByClient = new HashMap<IoSession, Multiset<String>>();
 
     private AtomicLong heapIdGenerator = new AtomicLong(0);
-    private CougarObjectIOFactory objectIOFactory;
+    private DiscoObjectIOFactory objectIOFactory;
 
     private int numProcessingThreads;
     private List<ConnectedObjectPusher> pushers = new ArrayList<ConnectedObjectPusher>();
@@ -130,7 +130,7 @@ public class PooledServerConnectedObjectManager implements ServerConnectedObject
         this.nioLogger = nioLogger;
     }
 
-    public void setObjectIOFactory(CougarObjectIOFactory objectIOFactory) {
+    public void setObjectIOFactory(DiscoObjectIOFactory objectIOFactory) {
         this.objectIOFactory = objectIOFactory;
     }
 
@@ -284,7 +284,7 @@ public class PooledServerConnectedObjectManager implements ServerConnectedObject
                         // note this won't notify this sub, which never got started. the publisher code won't expect a call back for this since
                         // it's just terminated the heap, which implies it wants to disconnect all clients anyway
                         terminateSubscriptions(command.getSession(), heapUri, REQUESTED_BY_PUBLISHER);
-                        commandProcessor.writeErrorResponse(command, context, new CougarFrameworkException("Subscription requested for terminated heap: " + heapUri), true);
+                        commandProcessor.writeErrorResponse(command, context, new DiscoFrameworkException("Subscription requested for terminated heap: " + heapUri), true);
                         return;
                     }
 
@@ -591,13 +591,13 @@ public class PooledServerConnectedObjectManager implements ServerConnectedObject
                                         // we really only want to serialise this once per protocol version (given that serialisation can change by protocol version)
                                         Set<Byte> protocolVersions = new HashSet<Byte>();
                                         for (IoSession session : heapState.getSessions()) {
-                                            protocolVersions.add(CougarProtocol.getProtocolVersion(session));
+                                            protocolVersions.add(DiscoProtocol.getProtocolVersion(session));
                                         }
                                         Map<Byte, EventMessage> serialisedUpdatesByProtocolVersion = new HashMap<Byte, EventMessage>();
                                         long updateId = heapState.getNextUpdateId();
                                         for (Byte version : protocolVersions) {
                                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                            CougarObjectOutput out = objectIOFactory.newCougarObjectOutput(baos, version);
+                                            DiscoObjectOutput out = objectIOFactory.newDiscoObjectOutput(baos, version);
                                             out.writeObject(new HeapDelta(heapState.getHeapId(), updateId, updatesThisBatch));
                                             out.flush();
                                             serialisedUpdatesByProtocolVersion.put(version, new EventMessage(baos.toByteArray()));
@@ -605,7 +605,7 @@ public class PooledServerConnectedObjectManager implements ServerConnectedObject
                                         // now write these out for each session
                                         for (IoSession session : heapState.getSessions()) {
                                             nioLogger.log(NioLogger.LoggingLevel.TRANSPORT, session, "Sending heap delta of size %s and with updateId = %s for heapId = %s", updatesThisBatch.size(), updateId, heapState.getHeapId());
-                                            session.write(serialisedUpdatesByProtocolVersion.get(CougarProtocol.getProtocolVersion(session)));
+                                            session.write(serialisedUpdatesByProtocolVersion.get(DiscoProtocol.getProtocolVersion(session)));
                                         }
 
                                         numQueuedHeapChangesSent += updatesThisBatch.size();

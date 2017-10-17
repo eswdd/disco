@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl;
+package uk.co.exemel.disco.core.impl;
 
-import com.betfair.cougar.core.api.CougarStartingGate;
-import com.betfair.cougar.core.api.GateListener;
-import com.betfair.cougar.core.api.ServiceRegistrar;
-import com.betfair.cougar.core.api.ev.CompoundExecutableResolver;
-import com.betfair.cougar.core.api.ev.EVServiceRegistration;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.transports.TransportRegistry;
+import uk.co.exemel.disco.core.api.DiscoStartingGate;
+import uk.co.exemel.disco.core.api.GateListener;
+import uk.co.exemel.disco.core.api.ServiceRegistrar;
+import uk.co.exemel.disco.core.api.ev.CompoundExecutableResolver;
+import uk.co.exemel.disco.core.api.ev.EVServiceRegistration;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.transports.TransportRegistry;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -30,10 +30,10 @@ import org.springframework.context.ApplicationContextAware;
 import java.util.Collection;
 
 /**
- * This bean locates all ServiceExporter instances and introduces each to Cougar and the collection of
+ * This bean locates all ServiceExporter instances and introduces each to Disco and the collection of
  * transports
  */
-public class CougarIntroductionService implements ApplicationContextAware, GateListener {
+public class DiscoIntroductionService implements ApplicationContextAware, GateListener {
     private ApplicationContext applicationContext;
 
     private TransportRegistry transportRegistry;
@@ -48,7 +48,7 @@ public class CougarIntroductionService implements ApplicationContextAware, GateL
     }
 
     @Override
-    public void onCougarStart() {
+    public void onDiscoStart() {
         performIntroductions();
     }
 
@@ -70,7 +70,7 @@ public class CougarIntroductionService implements ApplicationContextAware, GateL
 
     @Override
     public String getName() {
-        return "CougarIntroductionService";
+        return "DiscoIntroductionService";
     }
 
     @Override
@@ -80,11 +80,11 @@ public class CougarIntroductionService implements ApplicationContextAware, GateL
 
     /**
      * By setting the starting gate property this IntroductionService will register
-     * itself with the CougarStartingGate
+     * itself with the DiscoStartingGate
      *
      * @param startingGate the starting gate for the application
      */
-    public void setStartingGate(CougarStartingGate startingGate) {
+    public void setStartingGate(DiscoStartingGate startingGate) {
         startingGate.registerStartingListener(this);
     }
 

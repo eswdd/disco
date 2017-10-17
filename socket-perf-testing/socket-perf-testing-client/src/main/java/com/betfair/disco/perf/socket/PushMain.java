@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.perf.socket;
+package uk.co.exemel.disco.perf.socket;
 
-import com.betfair.cougar.api.ExecutionContextImpl;
-import com.betfair.cougar.api.geolocation.GeoLocationDetails;
-import com.betfair.cougar.core.api.ev.ConnectedResponse;
-import com.betfair.cougar.core.api.ev.Subscription;
-import com.betfair.cougar.core.impl.CougarSpringCtxFactoryImpl;
+import uk.co.exemel.disco.api.ExecutionContextImpl;
+import uk.co.exemel.disco.api.geolocation.GeoLocationDetails;
+import uk.co.exemel.disco.core.api.ev.ConnectedResponse;
+import uk.co.exemel.disco.core.api.ev.Subscription;
+import uk.co.exemel.disco.core.impl.DiscoSpringCtxFactoryImpl;
 import com.betfair.platform.virtualheap.Heap;
 import com.betfair.platform.virtualheap.HeapListener;
 import com.betfair.platform.virtualheap.updates.UpdateBlock;
-import com.betfair.cougar.perf.socket.v1_0.SocketPerfTestingSyncClient;
-import com.betfair.cougar.perf.socket.v1_0.co.client.HeapTesterClientCO;
+import uk.co.exemel.disco.perf.socket.v1_0.SocketPerfTestingSyncClient;
+import uk.co.exemel.disco.perf.socket.v1_0.co.client.HeapTesterClientCO;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Collections;
@@ -52,8 +52,8 @@ public class PushMain {
 
         System.setProperty("server.address", targetAddress);
 
-        CougarSpringCtxFactoryImpl cougarSpringCtxFactory = new CougarSpringCtxFactoryImpl();
-        ClassPathXmlApplicationContext context = cougarSpringCtxFactory.create();
+        DiscoSpringCtxFactoryImpl discoSpringCtxFactory = new DiscoSpringCtxFactoryImpl();
+        ClassPathXmlApplicationContext context = discoSpringCtxFactory.create();
 
         final SocketPerfTestingSyncClient client = (SocketPerfTestingSyncClient) context.getBean("perfTestClient");
         final ExecutionContextImpl ctx = new ExecutionContextImpl();

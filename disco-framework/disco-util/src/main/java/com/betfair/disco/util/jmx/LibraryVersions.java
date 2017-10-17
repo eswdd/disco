@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.util.jmx;
+package uk.co.exemel.disco.util.jmx;
 
 import com.sun.org.apache.xerces.internal.impl.io.MalformedByteSequenceException;
 import org.slf4j.Logger;

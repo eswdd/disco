@@ -16,14 +16,14 @@
  */
 
 // Originally from UpdatedComponentTests/ResponseTypes/SOAP/SOAP_MapResponse_SimpleMap_NullValue.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.responsetypes.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.responsetypes.soap;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -32,7 +32,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Test that when SOAP request operation is performed against Cougar, passing in a Map with a null value , it is correctly  processed and the correct response map is returned.
+ * Test that when SOAP request operation is performed against Disco, passing in a Map with a null value , it is correctly  processed and the correct response map is returned.
  */
 public class SOAPMapResponseSimpleMapNullValueTest {
     @Test
@@ -41,12 +41,12 @@ public class SOAPMapResponseSimpleMapNullValueTest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document createAsDocument1 = xMLHelpers1.getXMLObjectFromString("<TestSimpleMapGetRequest><inputMap><entry key=\"aaa\"><String>Value for aaa</String></entry><entry key=\"bbb\"><String>Value for bbb</String></entry><entry key=\"ccc\"><String>Value for ccc</String></entry><entry key=\"ddd\"><String/></entry></inputMap></TestSimpleMapGetRequest>");
 
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean2 = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        cougarManager2 = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean2 = discoManager2.getNewHttpCallBean("87.248.113.14");
+        discoManager2 = discoManager2;
 
 
-        getNewHttpCallBean2.setServiceName("Baseline", "cougarBaseline");
+        getNewHttpCallBean2.setServiceName("Baseline", "discoBaseline");
 
         getNewHttpCallBean2.setVersion("v2");
 
@@ -55,20 +55,20 @@ public class SOAPMapResponseSimpleMapNullValueTest {
 
         Timestamp getTimeAsTimeStamp7 = new Timestamp(System.currentTimeMillis());
 
-        cougarManager2.makeSoapCougarHTTPCalls(getNewHttpCallBean2);
+        discoManager2.makeSoapDiscoHTTPCalls(getNewHttpCallBean2);
 
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument9 = xMLHelpers4.getXMLObjectFromString("<response><entry key=\"aaa\"><String>Value for aaa</String></entry><entry key=\"ccc\"><String>Value for ccc</String></entry><entry key=\"bbb\"><String>Value for bbb</String></entry><entry key=\"ddd\"><String/></entry></response>");
 
 
 
-        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(createAsDocument9, (Document)response5.getResponseObject(), "/*[local-name()='response']");
 
         // generalHelpers.pauseTest(2000L);
 
 
-        cougarManager2.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "testSimpleMapGet") );
+        discoManager2.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "testSimpleMapGet") );
     }
 
 }

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.client.query;
+package uk.co.exemel.disco.client.query;
 
-import com.betfair.cougar.marshalling.api.databinding.DataBindingFactory;
+import uk.co.exemel.disco.marshalling.api.databinding.DataBindingFactory;
 
 /**
  * Factory implementation to get the correct query string generator family version

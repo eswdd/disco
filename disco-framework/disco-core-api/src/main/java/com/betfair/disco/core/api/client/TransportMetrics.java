@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api.client;
+package uk.co.exemel.disco.core.api.client;
 
 /**
  * Exposes some metrics and health measurements about the transport. Not all values may be relevant to all Transports.

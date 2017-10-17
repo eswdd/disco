@@ -24,9 +24,9 @@ import ${package}.${majorVersion}.to.*;
 import ${package}.${majorVersion}.enumerations.*;
 import ${package}.${majorVersion}.exception.*;
 
-import com.betfair.cougar.api.*;
-import com.betfair.cougar.core.api.client.EnumWrapper;
-import com.betfair.cougar.core.api.ev.*;
+import uk.co.exemel.disco.api.*;
+import uk.co.exemel.disco.core.api.client.EnumWrapper;
+import uk.co.exemel.disco.core.api.ev.*;
 
 import java.util.*;
 
@@ -37,7 +37,7 @@ import java.util.*;
   </#if>
  */
 @SuppressWarnings("all")
-public interface  ${service}Service extends com.betfair.cougar.api.Service {<#t>
+public interface  ${service}Service extends uk.co.exemel.disco.api.Service {<#t>
 <#recurse doc><#t>
 }<#t>
 <#t>

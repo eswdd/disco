@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.testing.concurrency;
+package uk.co.exemel.disco.testing.concurrency;
 
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.enums.CougarMessageContentTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolRequestTypeEnum;
-import com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.enums.DiscoMessageContentTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolRequestTypeEnum;
+import com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
 import org.w3c.dom.Document;
 
 import java.sql.Timestamp;
@@ -36,10 +36,10 @@ import java.util.Map;
 public class RestSustainedPostRequestsJETTTest {
 
 	private XMLHelpers xHelpers = new XMLHelpers();
-	private CougarManager cougarManager = CougarManager.getInstance();
+	private DiscoManager discoManager = DiscoManager.getInstance();
 	private static final int OK_STATUS_CODE = 200;
 
-	public RestSustainedPostRequestsTestResultBean executeTest(Integer numberOfRequests, CougarMessageProtocolRequestTypeEnum protocolRequestType, CougarMessageContentTypeEnum responseContentType) {
+	public RestSustainedPostRequestsTestResultBean executeTest(Integer numberOfRequests, DiscoMessageProtocolRequestTypeEnum protocolRequestType, DiscoMessageContentTypeEnum responseContentType) {
 
 		List<HttpCallBean> httpCallBeans = new ArrayList<HttpCallBean>();
 		Map<String, HttpResponseBean> expectedResponses = new LinkedHashMap<String, HttpResponseBean>();
@@ -63,7 +63,7 @@ public class RestSustainedPostRequestsJETTTest {
 			Date time = new Date();
 			expectedRequestTimes.put("Response " + loopCounter, new Timestamp(time.getTime()));
 
-			cougarManager.makeRestCougarHTTPCall(callBean, protocolRequestType);
+			discoManager.makeRestDiscoHTTPCall(callBean, protocolRequestType);
 			loopCounter++;
 		}
 
@@ -71,7 +71,7 @@ public class RestSustainedPostRequestsJETTTest {
 		//Get actual responses
 		loopCounter=0;
 		for (HttpCallBean httpCallBean: httpCallBeans) {
-			HttpResponseBean responseBean = httpCallBean.getResponseObjectsByEnum(CougarMessageProtocolResponseTypeEnum.REST);
+			HttpResponseBean responseBean = httpCallBean.getResponseObjectsByEnum(DiscoMessageProtocolResponseTypeEnum.REST);
 			responseBean.clearResponseHeaders();
 			actualResponses.put("Response " + loopCounter, responseBean);
 			loopCounter++;
@@ -92,10 +92,10 @@ public class RestSustainedPostRequestsJETTTest {
 		return returnBean;
 	}
 
-	private HttpCallBean createComplexCallBean(CougarMessageContentTypeEnum responseContentType, int i){
+	private HttpCallBean createComplexCallBean(DiscoMessageContentTypeEnum responseContentType, int i){
 
 		HttpCallBean callBean = new HttpCallBean();
-		callBean.setServiceName("baseline","cougarBaseline");
+		callBean.setServiceName("baseline","discoBaseline");
 		callBean.setVersion("v2");
 		callBean.setOperationName("testComplexMutator","complex");
 
@@ -118,18 +118,18 @@ public class RestSustainedPostRequestsJETTTest {
 		return callBean;
 	}
 
-	private HttpResponseBean createExpectedResponse(CougarMessageContentTypeEnum responseContentType, HttpCallBean callBean, int i){
+	private HttpResponseBean createExpectedResponse(DiscoMessageContentTypeEnum responseContentType, HttpCallBean callBean, int i){
 
 		HttpResponseBean responseBean = new HttpResponseBean();
 		String responseXmlString = "<SimpleResponse><message>sum = " + i*2 + "</message></SimpleResponse>";
 		Document responseBaseObject = xHelpers.getXMLObjectFromString(responseXmlString);
-		Map<CougarMessageProtocolRequestTypeEnum, Object> builtExpectedResponse = cougarManager.convertResponseToRestTypes(responseBaseObject, callBean);
+		Map<DiscoMessageProtocolRequestTypeEnum, Object> builtExpectedResponse = discoManager.convertResponseToRestTypes(responseBaseObject, callBean);
 		switch (responseContentType) {
 		case XML:
-			responseBean.setResponseObject(builtExpectedResponse.get(CougarMessageProtocolRequestTypeEnum.RESTXML));
+			responseBean.setResponseObject(builtExpectedResponse.get(DiscoMessageProtocolRequestTypeEnum.RESTXML));
 			break;
 		case JSON:
-			responseBean.setResponseObject(builtExpectedResponse.get(CougarMessageProtocolRequestTypeEnum.RESTJSON));
+			responseBean.setResponseObject(builtExpectedResponse.get(DiscoMessageProtocolRequestTypeEnum.RESTJSON));
 			break;
 		}
 		responseBean.setHttpStatusCode(OK_STATUS_CODE);

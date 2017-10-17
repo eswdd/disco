@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.marshalling.impl;
+package uk.co.exemel.disco.marshalling.impl;
 
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.core.api.transcription.*;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.core.api.transcription.*;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.util.Set;

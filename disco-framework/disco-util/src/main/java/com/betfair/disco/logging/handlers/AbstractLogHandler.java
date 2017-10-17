@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging.handlers;
+package uk.co.exemel.disco.logging.handlers;
 
 import java.io.IOException;
 

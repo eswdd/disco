@@ -24,12 +24,12 @@ package ${package}.${majorVersion}.soap;
 
 import ${package}.${majorVersion}.${serviceDefinitionName};
 
-import com.betfair.cougar.core.api.ServiceVersion;
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ServiceVersion;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
 
-import com.betfair.cougar.transport.api.protocol.http.soap.SoapServiceBindingDescriptor;
-import com.betfair.cougar.transport.api.protocol.http.soap.SoapOperationBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.soap.SoapServiceBindingDescriptor;
+import uk.co.exemel.disco.transport.api.protocol.http.soap.SoapOperationBindingDescriptor;
 
 public class ${serviceName}SoapServiceBindingDescriptor implements SoapServiceBindingDescriptor {
 

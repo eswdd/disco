@@ -19,14 +19,14 @@
     <modelVersion>4.0.0</modelVersion>
 
   <parent>
-  	<artifactId>cougar-framework</artifactId>
-  	<groupId>com.betfair.cougar</groupId>
+  	<artifactId>disco-framework</artifactId>
+  	<groupId>uk.co.exemel.disco</groupId>
 	<version>3.3-SNAPSHOT</version>
   </parent>
 
-    <artifactId>cougar-transport-api</artifactId>
+    <artifactId>disco-transport-api</artifactId>
     <packaging>jar</packaging>
-    <name>cougar-transport-api</name>
+    <name>disco-transport-api</name>
 
     <dependencies>
         <dependency>
@@ -34,8 +34,8 @@
             <artifactId>spring-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.betfair.cougar</groupId>
-            <artifactId>cougar-core-api</artifactId>
+            <groupId>uk.co.exemel.disco</groupId>
+            <artifactId>disco-core-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

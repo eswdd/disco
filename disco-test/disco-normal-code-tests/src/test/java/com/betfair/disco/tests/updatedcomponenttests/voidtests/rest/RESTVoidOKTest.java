@@ -15,14 +15,14 @@
  */
 
 // Originally from UpdatedComponentTests/VoidTests/REST/REST_Void_OK.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.voidtests.rest;
+package uk.co.exemel.disco.tests.updatedcomponenttests.voidtests.rest;
 
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.AccessLogRequirement;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.AccessLogRequirement;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 
@@ -33,19 +33,19 @@ import java.util.Map;
 import static org.testng.AssertJUnit.assertNull;
 
 /**
- * Ensure that when a simple Rest call to a void operation is performed against Cougar,it is handled correctly with no response received
+ * Ensure that when a simple Rest call to a void operation is performed against Disco,it is handled correctly with no response received
  */
 public class RESTVoidOKTest {
     @Test
     public void doTest() throws Exception {
         // Set up the Http Call Bean to make the request
-        CougarManager cougarManager1 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean1 = cougarManager1.getNewHttpCallBean("87.248.113.14");
-        cougarManager1 = cougarManager1;
+        DiscoManager discoManager1 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean1 = discoManager1.getNewHttpCallBean("87.248.113.14");
+        discoManager1 = discoManager1;
         
         getNewHttpCallBean1.setOperationName("voidResponseOperation");
         
-        getNewHttpCallBean1.setServiceName("baseline", "cougarBaseline");
+        getNewHttpCallBean1.setServiceName("baseline", "discoBaseline");
         
         getNewHttpCallBean1.setVersion("v2");
         
@@ -56,33 +56,33 @@ public class RESTVoidOKTest {
 
         Timestamp getTimeAsTimeStamp7 = new Timestamp(System.currentTimeMillis());
         // Make the REST calls to the operation
-        cougarManager1.makeRestCougarHTTPCalls(getNewHttpCallBean1);
+        discoManager1.makeRestDiscoHTTPCalls(getNewHttpCallBean1);
         // Check the responses are as expected (with a null/void responseObject)
-        HttpResponseBean response4 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLXML);
+        HttpResponseBean response4 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLXML);
         assertNull(response4.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response4.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response4.getHttpStatusText());
         
-        HttpResponseBean response5 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONJSON);
+        HttpResponseBean response5 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONJSON);
         assertNull(response5.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response5.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response5.getHttpStatusText());
         
-        HttpResponseBean response6 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTXMLJSON);
+        HttpResponseBean response6 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTXMLJSON);
         assertNull(response6.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response6.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response6.getHttpStatusText());
         
-        HttpResponseBean response7 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.RESTJSONXML);
+        HttpResponseBean response7 = getNewHttpCallBean1.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.RESTJSONXML);
         assertNull(response7.getResponseObject());
         AssertionUtils.multiAssertEquals((int) 200, response7.getHttpStatusCode());
         AssertionUtils.multiAssertEquals("OK", response7.getHttpStatusText());
         
         // generalHelpers.pauseTest(500L);
         // Check the log entries are as expected
-        cougarManager1.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp7, new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/voidResponseOperation", "Ok"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/voidResponseOperation", "Ok"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/voidResponseOperation", "Ok"),new AccessLogRequirement("87.248.113.14", "/cougarBaseline/v2/voidResponseOperation", "Ok") );
+        discoManager1.verifyAccessLogEntriesAfterDate(getTimeAsTimeStamp7, new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/voidResponseOperation", "Ok"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/voidResponseOperation", "Ok"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/voidResponseOperation", "Ok"),new AccessLogRequirement("87.248.113.14", "/discoBaseline/v2/voidResponseOperation", "Ok") );
         
-        cougarManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "voidResponseOperation"),new RequestLogRequirement("2.8", "voidResponseOperation"),new RequestLogRequirement("2.8", "voidResponseOperation"),new RequestLogRequirement("2.8", "voidResponseOperation") );
+        discoManager1.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "voidResponseOperation"),new RequestLogRequirement("2.8", "voidResponseOperation"),new RequestLogRequirement("2.8", "voidResponseOperation"),new RequestLogRequirement("2.8", "voidResponseOperation") );
     }
 
 }

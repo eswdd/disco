@@ -23,22 +23,22 @@ import ${package}.${majorVersion}.co.*;
 import ${package}.${majorVersion}.to.*;
 import ${package}.${majorVersion}.enumerations.*;
 import ${package}.${majorVersion}.exception.*;
-import com.betfair.cougar.core.api.ev.ConnectedResponse;
-import com.betfair.cougar.api.ExecutionContext;
-import com.betfair.cougar.api.RequestContext;
-import com.betfair.cougar.api.fault.CougarApplicationException;
-import com.betfair.cougar.core.api.exception.CougarException;
-import com.betfair.cougar.core.api.exception.CougarClientException;
-import com.betfair.cougar.core.api.exception.CougarServiceException;
-import com.betfair.cougar.core.api.exception.ServerFaultCode;
-import com.betfair.cougar.core.api.ev.Executable;
-import com.betfair.cougar.core.api.ev.ExecutableResolver;
-import com.betfair.cougar.core.api.ev.ExecutionObserver;
-import com.betfair.cougar.core.api.ev.ExecutionResult;
-import com.betfair.cougar.core.api.ev.ExecutionVenue;
-import com.betfair.cougar.core.api.ev.OperationKey;
-import com.betfair.cougar.core.api.ev.TimeConstraints;
-import com.betfair.cougar.core.impl.ev.ServiceExceptionHandlingObserver;
+import uk.co.exemel.disco.core.api.ev.ConnectedResponse;
+import uk.co.exemel.disco.api.ExecutionContext;
+import uk.co.exemel.disco.api.RequestContext;
+import uk.co.exemel.disco.api.fault.DiscoApplicationException;
+import uk.co.exemel.disco.core.api.exception.DiscoException;
+import uk.co.exemel.disco.core.api.exception.DiscoClientException;
+import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
+import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
+import uk.co.exemel.disco.core.api.ev.Executable;
+import uk.co.exemel.disco.core.api.ev.ExecutableResolver;
+import uk.co.exemel.disco.core.api.ev.ExecutionObserver;
+import uk.co.exemel.disco.core.api.ev.ExecutionResult;
+import uk.co.exemel.disco.core.api.ev.ExecutionVenue;
+import uk.co.exemel.disco.core.api.ev.OperationKey;
+import uk.co.exemel.disco.core.api.ev.TimeConstraints;
+import uk.co.exemel.disco.core.impl.ev.ServiceExceptionHandlingObserver;
 
 import java.util.*;
 
@@ -100,11 +100,11 @@ public class ${service}SyncServiceExecutableResolver implements ExecutableResolv
                     ${call}
                     exceptionHandlingObserver.onResult(new ExecutionResult());
                     </#if>
-                } catch (CougarException ce) {
+                } catch (DiscoException ce) {
                     exceptionHandlingObserver.onResult(new ExecutionResult(ce));
                 <#list operation.parameters.exceptions.exception as exception>
                 } catch (${exception.@type} ex) {
-                    exceptionHandlingObserver.onResult(new ExecutionResult((CougarApplicationException)ex));
+                    exceptionHandlingObserver.onResult(new ExecutionResult((DiscoApplicationException)ex));
                 </#list>
                 };
             }

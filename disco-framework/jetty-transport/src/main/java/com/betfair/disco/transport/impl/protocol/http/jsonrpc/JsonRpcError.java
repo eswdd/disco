@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http.jsonrpc;
+package uk.co.exemel.disco.transport.impl.protocol.http.jsonrpc;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

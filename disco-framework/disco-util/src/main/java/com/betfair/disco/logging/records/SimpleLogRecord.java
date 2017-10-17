@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.logging.records;
+package uk.co.exemel.disco.logging.records;
 
 import java.util.logging.Level;
 
 
-public class SimpleLogRecord extends CougarLogRecord {
+public class SimpleLogRecord extends DiscoLogRecord {
 
 	public SimpleLogRecord(String logName, Level level, String msg, Object... args) {
 		super(logName, level, msg, args);

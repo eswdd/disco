@@ -16,14 +16,14 @@
  */
 
 // Originally from UpdatedComponentTests/ResponseTypes/SOAP/SOAP_SetResponse_SimpleSet.xls;
-package com.betfair.cougar.tests.updatedcomponenttests.responsetypes.soap;
+package uk.co.exemel.disco.tests.updatedcomponenttests.responsetypes.soap;
 
-import com.betfair.testing.utils.cougar.misc.XMLHelpers;
-import com.betfair.testing.utils.cougar.assertions.AssertionUtils;
-import com.betfair.testing.utils.cougar.beans.HttpCallBean;
-import com.betfair.testing.utils.cougar.beans.HttpResponseBean;
-import com.betfair.testing.utils.cougar.manager.CougarManager;
-import com.betfair.testing.utils.cougar.manager.RequestLogRequirement;
+import com.betfair.testing.utils.disco.misc.XMLHelpers;
+import com.betfair.testing.utils.disco.assertions.AssertionUtils;
+import com.betfair.testing.utils.disco.beans.HttpCallBean;
+import com.betfair.testing.utils.disco.beans.HttpResponseBean;
+import com.betfair.testing.utils.disco.manager.DiscoManager;
+import com.betfair.testing.utils.disco.manager.RequestLogRequirement;
 
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -32,7 +32,7 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 /**
- * Ensure that when a SOAP request operation is performed against Cougar, passing in a Set , it is correctly processed and the correct Set response returned.
+ * Ensure that when a SOAP request operation is performed against Disco, passing in a Set , it is correctly processed and the correct Set response returned.
  */
 public class SOAPSetResponseSimpleSetTest {
     @Test
@@ -41,12 +41,12 @@ public class SOAPSetResponseSimpleSetTest {
         XMLHelpers xMLHelpers1 = new XMLHelpers();
         Document createAsDocument1 = xMLHelpers1.getXMLObjectFromString("<TestSimpleSetGetRequest><inputSet><String>aaa string</String><String>bbb string</String><String>ccc string</String><String>ddd string</String></inputSet></TestSimpleSetGetRequest>");
 
-        CougarManager cougarManager2 = CougarManager.getInstance();
-        HttpCallBean getNewHttpCallBean2 = cougarManager2.getNewHttpCallBean("87.248.113.14");
-        cougarManager2 = cougarManager2;
+        DiscoManager discoManager2 = DiscoManager.getInstance();
+        HttpCallBean getNewHttpCallBean2 = discoManager2.getNewHttpCallBean("87.248.113.14");
+        discoManager2 = discoManager2;
 
 
-        getNewHttpCallBean2.setServiceName("Baseline", "cougarBaseline");
+        getNewHttpCallBean2.setServiceName("Baseline", "discoBaseline");
 
         getNewHttpCallBean2.setVersion("v2");
 
@@ -55,20 +55,20 @@ public class SOAPSetResponseSimpleSetTest {
 
         Timestamp getTimeAsTimeStamp7 = new Timestamp(System.currentTimeMillis());
 
-        cougarManager2.makeSoapCougarHTTPCalls(getNewHttpCallBean2);
+        discoManager2.makeSoapDiscoHTTPCalls(getNewHttpCallBean2);
 
         XMLHelpers xMLHelpers4 = new XMLHelpers();
         Document createAsDocument9 = xMLHelpers4.getXMLObjectFromString("<response><String>aaa string</String><String>bbb string</String><String>ccc string</String><String>ddd string</String></response>");
 
 
 
-        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.cougar.enums.CougarMessageProtocolResponseTypeEnum.SOAP);
+        HttpResponseBean response5 = getNewHttpCallBean2.getResponseObjectsByEnum(com.betfair.testing.utils.disco.enums.DiscoMessageProtocolResponseTypeEnum.SOAP);
         AssertionUtils.multiAssertEquals(createAsDocument9, (Document)response5.getResponseObject(), "/*[local-name()='response']");
 
         // generalHelpers.pauseTest(2000L);
 
 
-        cougarManager2.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "testSimpleSetGet") );
+        discoManager2.verifyRequestLogEntriesAfterDate(getTimeAsTimeStamp7, new RequestLogRequirement("2.8", "testSimpleSetGet") );
     }
 
 }

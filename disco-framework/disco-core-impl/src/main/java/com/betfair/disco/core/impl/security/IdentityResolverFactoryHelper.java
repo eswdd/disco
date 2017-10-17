@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.impl.security;
+package uk.co.exemel.disco.core.impl.security;
 
-import com.betfair.cougar.api.security.IdentityResolver;
-import com.betfair.cougar.core.api.security.IdentityResolverFactory;
+import uk.co.exemel.disco.api.security.IdentityResolver;
+import uk.co.exemel.disco.core.api.security.IdentityResolverFactory;
 
 /**
  */

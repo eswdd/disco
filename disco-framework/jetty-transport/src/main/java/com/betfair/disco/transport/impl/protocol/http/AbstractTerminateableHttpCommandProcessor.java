@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.transport.impl.protocol.http;
+package uk.co.exemel.disco.transport.impl.protocol.http;
 
-import com.betfair.cougar.api.export.Protocol;
-import com.betfair.cougar.transport.api.DehydratedExecutionContextResolution;
+import uk.co.exemel.disco.api.export.Protocol;
+import uk.co.exemel.disco.transport.api.DehydratedExecutionContextResolution;
 
 /**
  * Used to form the abstract base of a command processor that will cease execution

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.betfair.cougar.core.api;
+package uk.co.exemel.disco.core.api;
 
 import org.springframework.util.Assert;
 
 /**
  * A stateless (or even anonymous) bean which registers one or more {@link GateListener}
- * instances with a given {@link CougarStartingGate}. Use these to save listeners having to
+ * instances with a given {@link DiscoStartingGate}. Use these to save listeners having to
  * register themselves programmatically.
  * <p>
  * You can control ordering of listeners in Spring config by having different registerers
@@ -39,10 +39,10 @@ public class GateRegisterer {
 	 * @param gate
 	 * @param listeners listeners to register with the gate (see note about wiring, above)
 	 */
-	public GateRegisterer(CougarStartingGate gate, GateListener... listeners) {
+	public GateRegisterer(DiscoStartingGate gate, GateListener... listeners) {
 
 		Assert.notEmpty(listeners, "GateRegisterer has no listeners.");
-		Assert.notNull(gate, "GateRegisterer has not had a CougarStartingGate set.");
+		Assert.notNull(gate, "GateRegisterer has not had a DiscoStartingGate set.");
 
 		for (GateListener listener : listeners) {
 			gate.registerStartingListener(listener);

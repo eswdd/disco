@@ -16,8 +16,8 @@
 
 package com.betfair.platform;
 
-import com.betfair.cougar.api.security.Identity;
-import com.betfair.cougar.api.security.IdentityChain;
+import uk.co.exemel.disco.api.security.Identity;
+import uk.co.exemel.disco.api.security.IdentityChain;
 
 import java.util.ArrayList;
 import java.util.List;
