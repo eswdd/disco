@@ -22,10 +22,6 @@ import com.betfair.baseline.v1.to.SimpleResponse;
 import uk.co.exemel.disco.api.ContainerContext;
 import uk.co.exemel.disco.api.RequestContext;
 import uk.co.exemel.disco.core.api.ev.TimeConstraints;
-import com.betfair.tornjak.monitor.*;
-
-import java.util.Collections;
-import java.util.Set;
 
 /**
  */

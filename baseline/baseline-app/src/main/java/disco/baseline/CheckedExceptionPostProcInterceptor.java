@@ -22,9 +22,6 @@ import com.betfair.baseline.v2.exception.SimpleException;
 import uk.co.exemel.disco.api.ExecutionContext;
 import uk.co.exemel.disco.api.ResponseCode;
 import uk.co.exemel.disco.core.api.ev.*;
-import uk.co.exemel.disco.core.impl.ev.PostProcessingInterceptorWrapper;
-
-import java.util.List;
 
 public class CheckedExceptionPostProcInterceptor implements ExecutionPostProcessor {
     @Override

@@ -51,7 +51,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.1.1</version>
                 <configuration>
-                    <mainClass>uk.co.exemel.disco.core.impl.Main</mainClass>
+                    <mainClass>Main</mainClass>
                     <classpathScope>runtime</classpathScope>
                     <commandlineArgs>-verbose:gc -Xmn256m -Xmx1g -Xms1g -XX:PermSize=128m -XX:MaxPermSize=128m -XX:SurvivorRatio=16 -XX:MaxTenuringThreshold=4 -XX:+CMSScavengeBeforeRemark -XX:CMSWaitDuration=15000 -XX:CMSInitiatingOccupancyFraction=70 -XX:+HeapDumpOnOutOfMemoryError -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -Xloggc:logs/gc.log</commandlineArgs>
                     <systemProperties>
@@ -132,7 +132,7 @@
                         <configuration>
                             <programs>
                                 <program>
-                                    <mainClass>uk.co.exemel.disco.core.impl.Main</mainClass>
+                                    <mainClass>Main</mainClass>
                                     <name>socketTestServer.sh</name>
                                 </program>
                             </programs>

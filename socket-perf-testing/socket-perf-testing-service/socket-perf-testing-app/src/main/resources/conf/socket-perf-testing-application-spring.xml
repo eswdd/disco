@@ -22,7 +22,7 @@
 						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 
-    <bean class="uk.co.exemel.disco.util.configuration.PropertyConfigurer">
+    <bean class="PropertyConfigurer">
         <constructor-arg index="0" ref="disco.core.EncryptorRegistry"/>
 	    <property name="defaultConfig" value="classpath:conf/socket-perf-testing-defaults.properties"/>
 	    <property name="configOverride" value="overrides.properties"/>
@@ -30,7 +30,7 @@
 	</bean>
 
 	<!-- define a log file -->
-	<bean class="uk.co.exemel.disco.logging.EventLogDefinition" init-method="register">
+	<bean class="EventLogDefinition" init-method="register">
 		<property name="logName" value="PUSH-ASYNC-LOG"/>
 		<property name="registry" ref="eventLoggingRegistry"/>
         <property name="handler">
@@ -60,7 +60,7 @@
 
 
 
-    <bean class="uk.co.exemel.disco.core.impl.ev.ServiceRegistration">
+    <bean class="ServiceRegistration">
         <property name="resolver">
             <bean class="uk.co.exemel.disco.perf.socket.v1.SocketPerfTestingSyncServiceExecutableResolver">
                 <property name="service" ref="socketPerfTestingService"/>

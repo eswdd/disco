@@ -30,12 +30,10 @@ import com.betfair.testingservice.v1.exception.TestingException;
 import com.betfair.testingservice.v1.to.CallResponse;
 import com.betfair.testingservice.v1.to.IDD;
 import com.betfair.testingservice.v1.to.LogFileResponse;
-import com.betfair.tornjak.monitor.*;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
 
 @ManagedResource
 public class TestingServiceImpl implements TestingService {

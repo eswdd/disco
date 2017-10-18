@@ -37,7 +37,7 @@ private InstructionFactory _factory;
   private ClassGen           _cg;
 
   public ComplexObjectCreator(String objectType) {
-    _cg = new ClassGen(objectType, "java.lang.Object", "ComplexObject.java", ACC_PUBLIC | ACC_SUPER, new String[] { "uk.co.exemel.disco.api.Result" });
+    _cg = new ClassGen(objectType, "java.lang.Object", "ComplexObject.java", ACC_PUBLIC | ACC_SUPER, new String[] { "Result" });
 
     _cp = _cg.getConstantPool();
     _factory = new InstructionFactory(_cg, _cp);

@@ -17,14 +17,9 @@
 package uk.co.exemel.disco.test.socket.tester.server;
 
 import uk.co.exemel.disco.api.ExecutionContext;
-import uk.co.exemel.disco.api.security.Identity;
 import uk.co.exemel.disco.core.api.ev.*;
-import uk.co.exemel.disco.core.api.exception.DiscoFrameworkException;
-import uk.co.exemel.disco.core.api.exception.DiscoServiceException;
-import uk.co.exemel.disco.core.api.exception.ServerFaultCode;
 import uk.co.exemel.disco.core.impl.ev.ConnectedResponseImpl;
 import uk.co.exemel.disco.core.impl.ev.DefaultSubscription;
-import uk.co.exemel.disco.core.impl.security.SSLAwareTokenResolver;
 import uk.co.exemel.disco.test.socket.tester.common.*;
 import com.betfair.platform.virtualheap.*;
 
