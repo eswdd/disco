@@ -5,7 +5,7 @@ Welcome to Disco!
 
 Disco is a framework for making building network exposed service interfaces easy. It supports multiple paradigms of interface interaction over multiple network transports and protocols. It has an asynchronous core, supporting high throughput, highly concurrent implementations, and yet offers simpler synchronous interfaces when you want to trade speed for simpler code. It also comprises an interface definition language, client and server stub generator, plus a whole bunch of other goodies to make your life as simple as possible and to free you up to implement your business logic.
 
-Read more on [Disco's site](http://betfair.github.io/disco).
+Read more on [Disco's site](http://eswdd.github.io/disco).
 
 Project admin
 -------------
@@ -14,12 +14,14 @@ Project admin
 
 [Sonar report](http://nemo.sonarqube.org/dashboard/index?id=uk.co.exemel.disco%3Adisco-master-pom)
 
-[![Build Status](https://travis-ci.org/betfair/disco.png?branch=master)](https://travis-ci.org/betfair/disco)
+[![Build Status](https://travis-ci.org/eswdd/disco.png?branch=master)](https://travis-ci.org/eswdd/disco)
 
 Licensing & Copyright
 ---------------------
 
-Main project: Copyright 2013-2014, The Sporting Exchange Limited. Specific files may differ.
+Source project (Cougar): Copyright 2013-2014, The Sporting Exchange Limited. Specific files may differ.
+
+All changes post fork: Copyright 2017, Simon Matic Langford.
 
 Disco is covered by "[The Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)":
 
