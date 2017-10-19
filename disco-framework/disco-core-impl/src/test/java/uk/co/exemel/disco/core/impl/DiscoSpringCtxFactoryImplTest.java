@@ -16,6 +16,7 @@
 
 package uk.co.exemel.disco.core.impl;
 
+import org.junit.Ignore;
 import uk.co.exemel.disco.core.impl.logging.NullLogBootstrap;
 import org.junit.Test;
 
@@ -39,7 +40,7 @@ public class DiscoSpringCtxFactoryImplTest {
         assertEquals(DiscoSpringCtxFactoryImpl.DEFAULT_DISCO_LOG_INIT_CLASS, logInitialisationClass);
 
         //Now check that we can chose one of our own doing
-        logInitialisationClass = classUnderTest.establishLogInitialisationClass("TestLogBootstrap");
+        logInitialisationClass = classUnderTest.establishLogInitialisationClass("uk.co.exemel.disco.core.impl.TestLogBootstrap");
         assertNotNull(logInitialisationClass);
         assertEquals(TestLogBootstrap.class, logInitialisationClass);
 

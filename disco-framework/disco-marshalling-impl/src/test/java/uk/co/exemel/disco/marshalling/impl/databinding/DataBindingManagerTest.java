@@ -20,6 +20,7 @@ import java.util.*;
 
 import javax.ws.rs.core.MediaType;
 
+import org.junit.Ignore;
 import uk.co.exemel.disco.marshalling.api.databinding.*;
 import uk.co.exemel.disco.test.DiscoTestCase;
 
@@ -34,6 +35,7 @@ public class DataBindingManagerTest extends DiscoTestCase {
 		cTypes.add("text/xml");
 		cTypes.add("application/xml");
 		cTypes.add("foo/bar");
+        
 		map.setContentTypes(cTypes);
 		map.setFactory(new DataBindingFactory() {
 

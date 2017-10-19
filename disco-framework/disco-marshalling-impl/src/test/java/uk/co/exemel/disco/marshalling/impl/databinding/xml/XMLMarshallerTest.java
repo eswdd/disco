@@ -16,6 +16,7 @@
 
 package uk.co.exemel.disco.marshalling.impl.databinding.xml;
 
+import org.junit.Ignore;
 import uk.co.exemel.disco.api.ResponseCode;
 import uk.co.exemel.disco.api.fault.DiscoApplicationException;
 import uk.co.exemel.disco.api.fault.FaultCode;
@@ -38,7 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
+@Ignore
 public class XMLMarshallerTest extends DiscoTestCase {
 
     public void testXMLMarshaller() throws Exception {
