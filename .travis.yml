@@ -1,15 +1,8 @@
 sudo: false
 language: java
 jdk:
-  - oraclejdk7
   - openjdk7
   - oraclejdk8
-notifications:
-  email:
-    recipients:
-      - betfair-disco-dev@googlegroups.com
-    on_success: always
-    on_failure: always
 before_install:
    - "gem install faraday -v 0.8.9"
    - "gem install mime-types -v 2.6.2"
@@ -26,7 +19,7 @@ env:
  global:
    - "MAVEN_OPTS=-Xmx3072m"
    - "ARTIFACTS_AWS_REGION=eu-west-1"
-   - "ARTIFACTS_S3_BUCKET=betfair.travis-ci"
+   - "ARTIFACTS_S3_BUCKET=eswdd.travis-ci"
    # S3 credentials
    - secure: "PMdX+2QqkQPpGbKiMRQDPRQeYNMLAqnXvnGb/EhEWdRF9o7pxten5AllxUAVXkx5b88X5x1wPhd4UZj43/lDoRLIwsnHe7Nstc3kWX4g0xXsKty2s2he40bu4Q7aZvsEfpTjm/KNe5cLVOcBKWP3ovgY4JFUP7qWz9R0Z+ttU5Y="
    - secure: "UIM47HAplfuaXAQLe3R10KpK1wCDtzVTLb2Vu6gp92JTlAxnMDJj7AYt0aN7ETaVF+6ZPac7kELQdufctcSKSD6N93tpOusw5yKmk2yk10t8uhzbXsHkN3scUi/0VSZ7gdHOWaNFVejtKSFOHqHOgN6ll93T0iviMhvl6xj7Y/c="
