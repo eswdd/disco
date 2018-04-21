@@ -15,6 +15,7 @@ Project admin
 [Sonar report](http://nemo.sonarqube.org/dashboard/index?id=uk.co.exemel.disco%3Adisco-master-pom)
 
 [![Build Status](https://travis-ci.org/eswdd/disco.png?branch=master)](https://travis-ci.org/eswdd/disco)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Feswdd%2Fdisco.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Feswdd%2Fdisco?ref=badge_shield)
 
 Licensing & Copyright
 ---------------------
@@ -38,3 +39,6 @@ Disco is covered by "[The Apache License, Version 2.0](http://www.apache.org/lic
     limitations under the License.
 
 Neither the copyright notices nor the license may removed or changed except with permission of the copyright holders or in compliance of the license terms.
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Feswdd%2Fdisco.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Feswdd%2Fdisco?ref=badge_large)
